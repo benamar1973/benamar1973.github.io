@@ -3,180 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع خدماتي - النسخة النهائية المصححة</title>
+    <title>موقع خدماتي - تطبيق ويب</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+
     <style>
         :root {
-            --bg-body: #f4f6f9;
-            --bg-card: #ffffff;
-            --text-dark: #1a1a1a;
-            --text-gray: #636e72;
-            --accent-black: #1a1a1a;
-            --border-color: #e1e8ed;
-            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --bg-body: #f4f6f9; --bg-card: #ffffff; --text-dark: #1a1a1a;
+            --text-gray: #636e72; --accent-black: #1a1a1a; --border-color: #e1e8ed;
         }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
-        /* شريط المعلومات العلوي */
-        .top-info-bar {
-            background: var(--bg-card);
-            padding: 12px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .info-group { display: flex; gap: 20px; }
-        .info-item span { color: #2980b9; }
-
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-body); margin: 0; padding: 0; }
+        .top-info-bar { background: var(--bg-card); padding: 12px 5%; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; font-size: 0.85rem; font-weight: 600; }
         header { text-align: center; padding: 40px 20px 20px; }
-        header h1 { font-size: 2.2rem; margin: 0 0 10px; color: var(--accent-black); letter-spacing: -1px; }
-        header p { color: var(--text-gray); font-size: 1rem; max-width: 600px; margin: 0 auto; }
-
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: 0.3s;
-        }
-
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--accent-black); }
-        .card h3 { margin: 0 0 10px; font-size: 1.15rem; color: var(--accent-black); }
-        .card p { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1; }
-
-        .btn-black {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            background: var(--accent-black);
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-            transition: 0.2s;
-        }
-
-        .btn-black:hover { background: #404040; }
-
-        .footer { text-align: center; padding: 40px; color: #b2bec3; font-size: 0.8rem; }
-
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent-black); }
+        .btn-black { display: block; text-align: center; padding: 12px; background: var(--accent-black); color: #ffffff; text-decoration: none; border-radius: 10px; font-weight: 600; margin-top: auto; }
         @media (max-width: 600px) { .top-info-bar { flex-direction: column; gap: 8px; text-align: center; } }
     </style>
 </head>
 <body>
 
     <div class="top-info-bar">
-        <div class="info-group">
-            <div class="info-item">🕌 الصلاة القادمة: <span id="prayer-name">جاري التحديد</span> <span id="prayer-time"></span></div>
-        </div>
-        <div class="info-group">
-            <div class="info-item">📈 السكوار: <span>24.20 DA</span></div>
-            <div class="info-item">🏦 البنك: <span>148.50 DA</span></div>
+        <div class="info-group">🕌 الصلاة القادمة: <span id="prayer-name">...</span> <span id="prayer-time"></span></div>
+        <div style="display: flex; gap: 15px;">
+            <div>📈 السكوار: <span>24.20 DA</span></div>
+            <div>🏦 البنك: <span>148.50 DA</span></div>
         </div>
     </div>
 
     <header>
         <h1>موقع خدماتي</h1>
-        <p>البوابة الموحدة للوصول إلى الخدمات الرقمية والروابط الرسمية بالجزائر</p>
+        <p>البوابة الموحدة للخدمات الرقمية بالجزائر</p>
     </header>
 
     <div class="main-container">
         <div class="services-grid">
-            
             <div class="card">
-                <div><h3>فضاء الأولياء</h3><p>متابعة النتائج المدرسية وكشوف النقاط للأطوار الثلاثة.</p></div>
-                <a href="https://educationdz.com/tharwa-education-gov-dz/" target="_blank" class="btn-black">دخول الفضاء الرقمي</a>
+                <h3>فضاء الأولياء</h3>
+                <p>متابعة النتائج المدرسية وكشوف النقاط.</p>
+                <a href="https://educationdz.com/tharwa-education-gov-dz/" target="_blank" class="btn-black">دخول</a>
             </div>
-
             <div class="card">
-                <div><h3>الجيش الوطني الشعبي</h3><p>موقع التسجيل المسبق للإنضمام لصفوف الجيش الوطني الشعبي.</p></div>
-                <a href="https://preinscription.mdn.dz/" target="_blank" class="btn-black">رابط التسجيل المسبق</a>
+                <h3>الجيش الوطني الشعبي</h3>
+                <p>موقع التسجيل المسبق للإنضمام للجيش.</p>
+                <a href="https://preinscription.mdn.dz/" target="_blank" class="btn-black">تسجيل</a>
             </div>
-
             <div class="card">
-                <div><h3>وكالة عدل (AADL 3)</h3><p>رابط منصة التسجيلات لبرنامج سكنات عدل 3.</p></div>
-                <a href="https://www.aadl.dz/relogin" target="_blank" class="btn-black">تسجيل الدخول</a>
+                <h3>وكالة عدل (AADL 3)</h3>
+                <p>رابط منصة التسجيلات لبرنامج عدل 3.</p>
+                <a href="https://www.aadl.dz/relogin" target="_blank" class="btn-black">دخول</a>
             </div>
-
             <div class="card">
-                <div><h3>التكوين المهني</h3><p>التسجيل في مراكز التكوين والتمهين عبر منصة "مهنتي".</p></div>
-                <a href="https://takwin.dz/" target="_blank" class="btn-black">رابط التسجيل (Takwin)</a>
+                <h3>التكوين المهني</h3>
+                <p>التسجيل في مراكز التكوين عبر منصة "مهنتي".</p>
+                <a href="https://takwin.dz/" target="_blank" class="btn-black">تسجيل</a>
             </div>
-
             <div class="card">
-                <div><h3>منحة البطالة</h3><p>التسجيل الأولي وحجز مواعد المقابلة (ANEM).</p></div>
-                <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn-black">رابط التسجيل الأولي</a>
+                <h3>منحة البطالة</h3>
+                <p>التسجيل الأولي وحجز مواعد المقابلة.</p>
+                <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn-black">تسجيل</a>
             </div>
-
-            <div class="card : تجديد طلب العمل">
-                <div><h3>تجديد طلب العمل</h3><p>تجديد التسجيل السداسي في منصة وسيط أونلاين.</p></div>
-                <a href="https://wassitonline.anem.dz/" target="_blank" class="btn-black">تجديد طلب العمل</a>
-            </div>
-
             <div class="card">
-                <div><h3>المخيمات الصيفية</h3><p>الرابط الرسمي لتسجيل المخيمات الصيفية لوزارة الشباب والرياضة.</p></div>
-                <a href="https://youthcamp.mjeunesse.gov.dz/" target="_blank" class="btn-black">رابط التسجيل (Mjeunesse)</a>
+                <h3>المخيمات الصيفية</h3>
+                <p>الرابط الرسمي لتسجيل المخيمات الصيفية.</p>
+                <a href="https://youthcamp.mjeunesse.gov.dz/" target="_blank" class="btn-black">تسجيل</a>
             </div>
-
-            <div class="card">
-                <div><h3>منصة الأضاحي</h3><p>تحديد نقاط بيع الأضاحي المراقبة (adhahi.dz).</p></div>
-                <a href="https://adhahi.dz" target="_blank" class="btn-black">زيارة المنصة</a>
-            </div>
-
         </div>
     </div>
 
-    <div class="footer">حقوق النشر &copy; 2026 - منصة خدماتي الجزائرية</div>
-
     <script>
-        function updatePrayerTimes() {
-            const now = new Date();
-            const h = now.getHours();
-            let name = "";
-            let time = "";
-
-            if (h >= 0 && h < 5) { name = "الفجر"; time = "04:15"; }
-            else if (h >= 5 && h < 13) { name = "الظهر"; time = "12:45"; }
-            else if (h >= 13 && h < 16) { name = "العصر"; time = "16:30"; }
-            else if (h >= 16 && h < 19) { name = "المغرب"; time = "19:15"; }
-            else if (h >= 19 && h < 21) { name = "العشاء"; time = "20:45"; }
-            else { name = "الفجر"; time = "04:15"; }
-
-            document.getElementById('prayer-name').innerText = name;
-            document.getElementById('prayer-time').innerText = "(" + time + ")";
+        // تفعيل ميزة التطبيق (PWA)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
         }
-        updatePrayerTimes();
-        setInterval(updatePrayerTimes, 60000);
+
+        // تحديث الصلاة
+        function updatePrayer() {
+            const h = new Date().getHours();
+            let n = "الفجر"; let t = "04:15";
+            if (h >= 5 && h < 13) { n="الظهر"; t="12:45"; }
+            else if (h >= 13 && h < 16) { n="العصر"; t="16:30"; }
+            else if (h >= 16 && h < 19) { n="المغرب"; t="19:15"; }
+            else if (h >= 19 && h < 21) { n="العشاء"; t="20:45"; }
+            document.getElementById('prayer-name').innerText = n;
+            document.getElementById('prayer-time').innerText = "("+t+")";
+        }
+        updatePrayer();
     </script>
 </body>
 </html>
