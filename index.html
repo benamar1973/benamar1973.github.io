@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع خدماتي - النسخة المكتملة</title>
+    <title>موقع خدماتي - النسخة النهائية المصححة</title>
     <style>
         :root {
             --bg-body: #f4f6f9;
@@ -97,7 +97,7 @@
 
     <div class="top-info-bar">
         <div class="info-group">
-            <div class="info-item">🕌 الصلاة القادمة: <span id="prayer-name">...</span> <span id="prayer-time"></span></div>
+            <div class="info-item">🕌 الصلاة القادمة: <span id="prayer-name">جاري التحديد</span> <span id="prayer-time"></span></div>
         </div>
         <div class="info-group">
             <div class="info-item">📈 السكوار: <span>24.20 DA</span></div>
@@ -138,14 +138,14 @@
                 <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn-black">رابط التسجيل الأولي</a>
             </div>
 
-            <div class="card">
+            <div class="card : تجديد طلب العمل">
                 <div><h3>تجديد طلب العمل</h3><p>تجديد التسجيل السداسي في منصة وسيط أونلاين.</p></div>
                 <a href="https://wassitonline.anem.dz/" target="_blank" class="btn-black">تجديد طلب العمل</a>
             </div>
 
             <div class="card">
-                <div><h3>المخيمات الصيفية</h3><p>التسجيل الرسمي في المخيمات الصيفية لوزارة الشباب والرياضة.</p></div>
-                <a href="https://youthcamp.mjeunesse.gov.dz/" target="_blank" class="btn-black">رابط التسجيل (Youth Camp)</a>
+                <div><h3>المخيمات الصيفية</h3><p>الرابط الرسمي لتسجيل المخيمات الصيفية لوزارة الشباب والرياضة.</p></div>
+                <a href="https://youthcamp.mjeunesse.gov.dz/" target="_blank" class="btn-black">رابط التسجيل (Mjeunesse)</a>
             </div>
 
             <div class="card">
@@ -159,11 +159,9 @@
     <div class="footer">حقوق النشر &copy; 2026 - منصة خدماتي الجزائرية</div>
 
     <script>
-        // دالة عرض مواقيت الصلاة التقريبية بناءً على توقيت الجزائر
         function updatePrayerTimes() {
             const now = new Date();
             const h = now.getHours();
-            
             let name = "";
             let time = "";
 
@@ -177,7 +175,6 @@
             document.getElementById('prayer-name').innerText = name;
             document.getElementById('prayer-time').innerText = "(" + time + ")";
         }
-
         updatePrayerTimes();
         setInterval(updatePrayerTimes, 60000);
     </script>
