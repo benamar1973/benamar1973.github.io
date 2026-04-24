@@ -6,37 +6,41 @@
     <title>موقع خدماتي - النسخة المحدثة</title>
     <style>
         :root {
-            /* لوحة ألوان "مينيماليست" عصرية وهادئة */
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #2c3e50;
-            --accent-blue: #34495e; /* أزرق داكن احترافي */
-            --success-green: #27ae60;
-            --soft-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            --border-radius: 12px;
+            --bg-body: #f4f6f9;
+            --bg-card: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-gray: #636e72;
+            --accent-black: #1a1a1a;
+            --border-color: #e1e8ed;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
             margin: 0;
             padding: 0;
             line-height: 1.6;
         }
 
-        /* شريط المعلومات الحقيقية (الصلاة والسكوار) */
         .top-info-bar {
-            background: var(--card-bg);
-            padding: 12px 6%;
+            background: var(--bg-card);
+            padding: 12px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .info-group {
@@ -44,34 +48,35 @@
             gap: 20px;
         }
 
-        .info-item {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
         .info-item span {
-            color: var(--success-green);
+            color: #2980b9;
         }
 
-        /* العنوان الرئيسي */
         header {
             text-align: center;
-            padding: 50px 20px 30px;
+            padding: 60px 20px 40px;
         }
 
         header h1 {
             font-size: 2.2rem;
-            margin-bottom: 10px;
-            color: var(--accent-blue);
+            margin: 0 0 10px;
+            color: var(--accent-black);
+            letter-spacing: -1px;
         }
 
-        .container {
+        header p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-container {
             max-width: 1100px;
-            margin: auto;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
         }
 
-        /* شبكة الخدمات */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -79,79 +84,67 @@
         }
 
         .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
+            background: var(--bg-card);
+            border-radius: 16px;
             padding: 30px;
-            text-align: center;
-            box-shadow: var(--soft-shadow);
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-            border-color: #d1d8e0;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-black);
         }
 
         .card h3 {
-            margin-top: 0;
-            font-size: 1.3rem;
-            color: var(--accent-blue);
+            margin: 0 0 12px;
+            font-size: 1.25rem;
+            color: var(--accent-black);
         }
 
         .card p {
-            color: #7f8c8d;
+            color: var(--text-gray);
             font-size: 0.95rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            flex-grow: 1;
         }
 
-        /* الأزرار */
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 8px;
+        .btn-black {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            background: var(--accent-black);
+            color: #ffffff;
             text-decoration: none;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s;
             border: none;
+            transition: background 0.2s ease;
         }
 
-        .btn-link {
-            background-color: var(--bg-color);
-            color: var(--accent-blue);
-            border: 1px solid #d1d8e0;
-        }
-
-        .btn-link:hover {
-            background-color: var(--accent-blue);
-            color: white;
-        }
-
-        .btn-extract {
-            background-color: var(--success-green);
-            color: white;
-            margin-top: 10px;
-        }
-
-        .btn-extract:hover {
-            opacity: 0.9;
+        .btn-black:hover {
+            background: #404040;
         }
 
         .footer {
             text-align: center;
-            padding: 50px;
-            font-size: 0.8rem;
-            color: #95a5a6;
+            padding: 40px;
+            color: #b2bec3;
+            font-size: 0.85rem;
         }
 
         @media (max-width: 600px) {
-            .top-info-bar { flex-direction: column; gap: 10px; text-align: center; }
+            .top-info-bar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -159,81 +152,81 @@
 
     <div class="top-info-bar">
         <div class="info-group">
-            <div class="info-item">🕌 الصلاة القادمة: <span id="prayer-time">جاري التحديث...</span></div>
+            <div class="info-item">🕌 الصلاة القادمة: <span id="prayer-time">جاري التحديد...</span></div>
         </div>
         <div class="info-group">
-            <div class="info-item">📈 الأورو (السكوار): <span>24.20 DA</span></div>
-            <div class="info-item">🏦 الأورو (البنك): <span>148.50 DA</span></div>
+            <div class="info-item">💶 الأورو (سكوار): <span>24.20 DA</span></div>
+            <div class="info-item">🏦 الأورو (بنك): <span>148.50 DA</span></div>
         </div>
     </div>
 
     <header>
         <h1>موقع خدماتي</h1>
-        <p>الروابط الرسمية واستخراج الملفات في واجهة واحدة</p>
+        <p>الروابط الرسمية للخدمات الإدارية والتربوية في مكان واحد</p>
     </header>
 
-    <div class="container">
+    <div class="main-container">
         <div class="services-grid">
             
             <div class="card">
                 <div>
                     <h3>فضاء الأولياء</h3>
-                    <p>الاطلاع على كشوف النقاط والنتائج المدرسية.</p>
+                    <p>كشوف النقاط، النتائج المدرسية، والتسجيلات عن بعد عبر نظام معلومات قطاع التربية.</p>
                 </div>
-                <a href="https://educationdz.com/" target="_blank" class="btn btn-link">زيارة الموقع الرسمي</a>
+                <a href="https://educationdz.com/tharwa-education-gov-dz/" target="_blank" class="btn-black">دخول الفضاء الرقمي</a>
             </div>
 
             <div class="card">
                 <div>
                     <h3>منحة البطالة</h3>
-                    <p>التسجيل الأولي وحجز موعد المقابلة.</p>
+                    <p>رابط التسجيل الأولي لطالبي العمل وحجز مواعد المقابلة (minha.anem.dz).</p>
                 </div>
-                <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn btn-link">رابط التسجيل الأولي</a>
+                <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn-black">رابط التسجيل</a>
             </div>
 
             <div class="card">
                 <div>
                     <h3>تجديد طلب العمل (وسيط)</h3>
-                    <p>تجديد التسجيل في الوكالة الوطنية للتشغيل عن بعد.</p>
+                    <p>تجديد التسجيل السداسي في الوكالة الوطنية للتشغيل عبر منصة وسيط أونلاين.</p>
                 </div>
-                <a href="https://wassitonline.anem.dz/" target="_blank" class="btn btn-link">الدخول إلى وسيط أونلاين</a>
+                <a href="https://wassitonline.anem.dz/" target="_blank" class="btn-black">تجديد التسجيل</a>
             </div>
 
             <div class="card">
                 <div>
-                    <h3>استخراج طلب خطي</h3>
-                    <p>توليد طلب خطي مهني أو إداري بصيغة PDF فوراً.</p>
+                    <h3>منصة الأضاحي (adhahi.dz)</h3>
+                    <p>الموقع الرسمي لتحديد نقاط بيع الأضاحي المراقبة عبر التراب الوطني.</p>
                 </div>
-                <button onclick="generatePDF()" class="btn btn-extract">استخراج الملف (PDF)</button>
+                <a href="https://adhahi.dz" target="_blank" class="btn-black">زيارة المنصة</a>
             </div>
 
             <div class="card">
                 <div>
-                    <h3>أرشيف العملات</h3>
-                    <p>رسم بياني لتطور سعر الصرف عبر السنوات.</p>
+                    <h3>مخيمات الشباب (Youth Camp)</h3>
+                    <p>رابط التسجيل في المخيمات الصيفية والنشاطات الترفيهية لوزارة الشباب والرياضة.</p>
                 </div>
-                <a href="#" class="btn btn-link">فتح الأرشيف</a>
+                <a href="https://youthcamp.dz" target="_blank" class="btn-black">رابط youthcamp</a>
             </div>
 
         </div>
     </div>
 
     <div class="footer">
-        منصة خدماتي الجزائرية &copy; 2026 - تجربة مستخدم عصرية
+        منصة خدماتي &copy; 2026
     </div>
 
     <script>
-        // تحديث مواقيت الصلاة (تجريبي بناءً على توقيتك الحالي)
-        function updatePrayer() {
-            document.getElementById('prayer-time').innerText = "الفجر (04:15)";
+        function updateLiveInfo() {
+            const now = new Date();
+            const hours = now.getHours();
+            let nextPrayer = "الفجر";
+            if (hours >= 5 && hours < 13) nextPrayer = "الظهر";
+            else if (hours >= 13 && hours < 16) nextPrayer = "العصر";
+            else if (hours >= 16 && hours < 19) nextPrayer = "المغرب";
+            else if (hours >= 19 && hours < 21) nextPrayer = "العشاء";
+            document.getElementById('prayer-time').innerText = nextPrayer;
         }
-        updatePrayer();
-
-        // وظيفة استخراج الملفات
-        function generatePDF() {
-            alert("سيتم فتح محرر الملفات الآن لتعبئة بياناتك وتوليد الـ PDF فوراً.");
-            // هنا يتم ربط مكتبة مثل jsPDF لاحقاً
-        }
+        updateLiveInfo();
     </script>
 
 </body>
