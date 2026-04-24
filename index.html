@@ -3,25 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - البوابة الرقمية للمواطن الجزائري</title>
-    <meta name="description" content="منصة تجمع كل الخدمات الإدارية والمالية في الجزائر في مكان واحد.">
+    <title>خدماتي - البوابة الرقمية الجزائرية</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f0f2f5; padding: 40px; color: #1c1e21; }
-        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: auto; border-top: 10px solid #27ae60; }
-        h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 10px; }
-        p { font-size: 1.2em; line-height: 1.6; color: #606770; }
-        .status-badge { display: inline-block; background: #e7f3ff; color: #1877f2; padding: 8px 20px; border-radius: 50px; font-weight: bold; margin-bottom: 25px; font-size: 0.9em; }
-        .footer { margin-top: 30px; font-size: 0.8em; color: #90949c; }
+        :root {
+            --edu-color: #3498db;
+            --job-color: #27ae60;
+            --admin-color: #7f8c8d;
+            --season-color: #e67e22;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #2c3e50; }
+        .container { max-width: 800px; margin: auto; }
+        .header { text-align: center; padding: 20px 0; background: #2c3e50; color: white; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9em; }
+
+        .section { margin-bottom: 25px; }
+        .section-title { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; padding-right: 10px; display: flex; align-items: center; }
+        
+        /* ألوان الأقسام */
+        .title-edu { border-right: 5px solid var(--edu-color); color: var(--edu-color); }
+        .title-job { border-right: 5px solid var(--job-color); color: var(--job-color); }
+        .title-admin { border-right: 5px solid var(--admin-color); color: var(--admin-color); }
+        .title-season { border-right: 5px solid var(--season-color); color: var(--season-color); }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .card { 
+            background: white; padding: 15px; border-radius: 12px; text-decoration: none; 
+            color: #333; text-align: center; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; transition: 0.3s; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #eee;
+        }
+        .card:active { transform: scale(0.95); background: #f9f9f9; }
+        .card i { font-size: 2em; margin-bottom: 10px; }
+        .card span { font-size: 0.9em; font-weight: 600; line-height: 1.4; }
+
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 0.8em; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="status-badge">النطاق قيد التفعيل: khadamati.dz</div>
+
+<div class="container">
+    <div class="header">
         <h1>موقع خدماتي</h1>
-        <p>مرحباً بكم! نحن نعمل بجد لإطلاق أول بوابة رقمية شاملة تجمع كل الروابط والخدمات الإدارية التي تهم المواطن الجزائري في منصة واحدة سهلة وسريعة.</p>
-        <hr style="border: 0; border-top: 1px dashed #ddd; margin: 30px 0;">
-        <p>قريباً: استخراج الوثائق، بريد الجزائر، وأسعار الصرف الحية.</p>
+        <p>جميع الروابط الرسمية الجزائرية في مكان واحد</p>
     </div>
-    <div class="footer">جميع الحقوق محفوظة &copy; 2026 - مشروع خدماتي</div>
+
+    <div class="section">
+        <div class="section-title title-edu">🎓 التربية والتكوين</div>
+        <div class="grid">
+            <a href="https://awlya.education.gov.dz" target="_blank" class="card"><span>فضاء الأولياء<br>(كشوف النقاط)</span></a>
+            <a href="https://awlyaa.education.gov.dz" target="_blank" class="card"><span>تسجيلات الابتدائي<br>والتحضيري</span></a>
+            <a href="https://takwin.dz/" target="_blank" class="card"><span>منصة تكوين<br>(التكوين المهني)</span></a>
+            <a href="https://progres.mesrs.dz/webetu" target="_blank" class="card"><span>بوابة الطالب<br>(الجامعة)</span></a>
+            <a href="https://www.onec.dz" target="_blank" class="card"><span>نتائج الامتحانات<br>BEM / BAC</span></a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title title-job">💼 التشغيل والتجنيد</div>
+        <div class="grid">
+            <a href="https://minha.anem.dz" target="_blank" class="card"><span>منحة البطالة<br>(حجز موعد)</span></a>
+            <a href="https://preinscription.mdn.dz" target="_blank" class="card"><span>تجنيد الجيش<br>الوطني الشعبي</span></a>
+            <a href="https://wasitonline.anem.dz" target="_blank" class="card"><span>تجديد وطلب العمل<br>(وسيط)</span></a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title title-admin">📄 الإدارة والمالية</div>
+        <div class="grid">
+            <a href="https://eccp.poste.dz" target="_blank" class="card"><span>بريد الجزائر<br>(ECCP)</span></a>
+            <a href="https://edahabia.poste.dz" target="_blank" class="card"><span>طلب البطاقة<br>الذهبية</span></a>
+            <a href="https://etatcivil.interieur.gov.dz" target="_blank" class="card"><span>وثائق الحالة<br>المدنية</span></a>
+            <a href="https://portail.mjustice.dz/" target="_blank" class="card"><span>شهادة السوابق<br>العدلية</span></a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title title-season">🌟 خدمات موسمية</div>
+        <div class="grid">
+            <a href="https://youthcamp.mjeunesse.gov.dz/" target="_blank" class="card"><span>منصة المخيمات<br>الصيفية</span></a>
+            <a href="https://adhahi.dz" target="_blank" class="card"><span>شراء أضحية العيد<br>(Adhahi)</span></a>
+        </div>
+    </div>
+
+    <div class="footer">
+        بوابة خدماتي &copy; 2026 - جميع الروابط توجه للمواقع الرسمية
+    </div>
+</div>
+
 </body>
 </html>
