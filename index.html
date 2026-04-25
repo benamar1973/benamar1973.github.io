@@ -10,7 +10,6 @@
         :root { --dark: #1a1a1a; --bg: #f4f7f6; --green: #27ae60; --blue: #2980b9; --army: #4b5320; --orange: #f39c12; }
         body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; color: #333; padding-bottom: 50px; }
         
-        /* شريط مواقيت الصلاة والأسعار */
         .info-bar { background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; padding: 10px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 0.65rem; background: #1a1a1a; color: #eee; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
         .prayer-grid div b { color: #f1c40f; }
@@ -23,8 +22,7 @@
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 10px; max-width: 1000px; margin: 0 auto; }
         .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 10px; transition: 0.2s; }
-        .btn:active { transform: scale(0.95); }
+        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 10px; }
         .btn-green { background: var(--green); }
         .btn-army { background: var(--army); }
         .btn-blue { background: var(--blue); }
@@ -47,10 +45,10 @@
         </div>
         
         <div class="rates">
-            <div>🏦 البنك: <span style="color:var(--green)">155.17</span></div>
-            <div>💵 السكوار: <span style="color:var(--green)">282</span></div>
+            <div>🏦 البنك: <span style="color:var(--green)">148.20</span></div>
+            <div>💵 السكوار: <span style="color:var(--green)">24.20</span></div>
         </div>
-        <div id="date-display" class="update-text">تحديث: 25 أفريل 2026</div>
+        <div id="date-display" class="update-text">تحديث البيانات: 25 أفريل 2026</div>
     </div>
 
     <div class="section-header">مناسبات وترفيه</div>
@@ -77,7 +75,7 @@
         <div class="card">
             <h4>منحة البطالة</h4>
             <p>التسجيل الأولي ANEM</p>
-            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn">سجل الآن</a>
+            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn btn-army">سجل الآن</a>
         </div>
     </div>
 
@@ -91,7 +89,7 @@
         <div class="card">
             <h4>وكالة عدل</h4>
             <p>دخول - منصة عدل 3</p>
-            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn">دخول</a>
+            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn btn-green">دخول</a>
         </div>
     </div>
 
@@ -113,10 +111,6 @@
         const dateObj = new Date();
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('date-display').innerText = "تحديث البيانات: " + dateObj.toLocaleDateString('ar-DZ', dateOptions);
-        
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
     </script>
 </body>
 </html>
