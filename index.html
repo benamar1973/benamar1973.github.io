@@ -3,108 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الشامل للروابط الجزائرية</title>
+    <title>خدماتي - الدليل الرسمي</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a1a1a">
     <style>
-        :root { --dark: #1a1a1a; --bg: #f0f2f5; --green: #27ae60; --blue: #2980b9; --gold: #d4af37; }
+        :root { --dark: #1a1a1a; --bg: #f0f2f5; --green: #27ae60; --blue: #2980b9; --army: #4b5320; }
         body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; color: #333; padding-bottom: 50px; }
-        .header { background: var(--dark); color: white; padding: 30px 15px; box-shadow: 0 2px 15px rgba(0,0,0,0.3); }
+        .header { background: var(--dark); color: white; padding: 25px 15px; }
         
-        .info-bar { background: #fff; padding: 12px; display: flex; justify-content: space-around; font-size: 0.9rem; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
-        .update-tag { color: #e74c3c; font-weight: bold; font-size: 0.75rem; width: 100%; margin-top: 5px; }
+        /* شريط العملات ومواقيت الصلاة */
+        .info-bar { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; font-size: 0.8rem; }
+        .currency-row { display: flex; justify-content: space-around; margin-bottom: 5px; background: #f9f9f9; padding: 5px; border-radius: 5px; }
+        .prayer-row { display: flex; justify-content: center; gap: 15px; font-weight: bold; }
+        .update-tag { color: #e74c3c; font-size: 0.7rem; margin-top: 5px; font-weight: bold; }
 
-        .section-title { margin: 25px 0 10px; font-size: 1.1rem; color: var(--dark); border-right: 5px solid var(--green); padding-right: 15px; text-align: right; width: 92%; margin-right: auto; margin-left: auto; font-weight: bold; }
+        .section-title { margin: 20px 0 10px; font-size: 1.1rem; color: var(--dark); border-right: 5px solid var(--green); padding-right: 12px; text-align: right; width: 92%; margin-right: auto; margin-left: auto; font-weight: bold; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding: 15px; max-width: 1100px; margin: 0 auto; }
-        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-        .card:active { transform: scale(0.95); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 10px; max-width: 1100px; margin: 0 auto; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.85rem; margin-top: 10px; }
+        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 8px; }
         .btn-green { background: var(--green); }
+        .btn-army { background: var(--army); }
         .btn-blue { background: var(--blue); }
-        .btn-army { background: #4b5320; } /* لون عسكري */
 
-        h4 { margin: 5px 0; font-size: 0.95rem; color: #222; }
-        p { font-size: 0.75rem; color: #777; margin: 0; flex-grow: 1; }
+        h4 { margin: 0 0 5px 0; font-size: 0.9rem; }
+        p { font-size: 0.7rem; color: #666; margin: 0; }
     </style>
 </head>
 <body>
 
     <div class="info-bar">
-        <div>🕌 <span id="prayer-name">الصلاة</span>: <b id="prayer-time">--:--</b></div>
-        <div>💵 السكوار: <b>24.20 DA</b></div>
+        <div class="currency-row">
+            <div>🏦 البنك: <b>148.20 DA</b></div>
+            <div>💵 السكوار: <b>24.20 DA</b></div>
+        </div>
+        <div class="prayer-row">
+            <div>🕌 <span id="prayer-name">الصلاة</span>: <b id="prayer-time">--:--</b></div>
+        </div>
         <div id="update-date" class="update-tag">جاري التحديث...</div>
     </div>
 
     <div class="header">
-        <h1 style="margin:0; font-size: 1.6rem;">خـدماتـي الجزائـر</h1>
-        <p style="color: #bbb; margin-top: 5px; font-size: 0.9rem;">بوابة الخدمات الرقمية الموحدة</p>
+        <h2 style="margin:0;">خـدماتـي</h2>
     </div>
 
     <div class="section-title">وزارة الدفاع الوطني</div>
     <div class="grid">
         <div class="card">
             <h4>تجنيد الجيش</h4>
-            <p>التسجيل الأولي بصفوف الجيش الوطني</p>
+            <p>التسجيل في صفوف الجيش</p>
             <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">رابط التسجيل</a>
         </div>
         <div class="card">
             <h4>منصة مخيمي</h4>
-            <p>خدمات التخييم لوزارة الدفاع</p>
-            <a href="https://preinscription.mdn.dz/moukhayami/" target="_blank" class="btn btn-army">منصة مخيمي</a>
+            <p>متابعة طلبات التخييم</p>
+            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">منصة مخيمي</a>
         </div>
     </div>
 
-    <div class="section-title">خدمات اجتماعية ودينية</div>
+    <div class="section-title">السكن والتشغيل</div>
     <div class="grid">
         <div class="card">
-            <h4>أضحية العيد</h4>
-            <p>منصة شراء أضحية العيد إلكترونياً</p>
-            <a href="https://www.adhahi.dz/" target="_blank" class="btn btn-green">منصة أضاحي</a>
+            <h4>وكالة عدل</h4>
+            <p>تسجيل الدخول - عدل 3</p>
+            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn">دخول عدل</a>
         </div>
         <div class="card">
             <h4>منحة البطالة</h4>
-            <p>تسيير وطلب منحة البطالة</p>
-            <a href="https://minha.anem.dz/" target="_blank" class="btn">دخول</a>
+            <p>التسجيل الأولي للمنحة</p>
+            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn">رابط التسجيل</a>
         </div>
     </div>
 
-    <div class="section-title">التكوين والتعليم</div>
+    <div class="section-title">البريد والمالية</div>
+    <div class="grid">
+        <div class="card">
+            <h4>بريد الجزائر</h4>
+            <p>الولوج لحساب ECCP</p>
+            <a href="https://eccp.poste.dz/" target="_blank" class="btn btn-green">دخول ECCP</a>
+        </div>
+        <div class="card">
+            <h4>أضحية العيد</h4>
+            <p>منصة أضاحي</p>
+            <a href="https://www.adhahi.dz/" target="_blank" class="btn btn-green">منصة أضاحي</a>
+        </div>
+    </div>
+
+    <div class="section-title">التعليم والتكوين</div>
     <div class="grid">
         <div class="card">
             <h4>التكوين المهني</h4>
-            <p>منصة "مهنتي" للتسجيل في التكوين</p>
+            <p>منصة مهنتي للتسجيل</p>
             <a href="https://takwin.dz/" target="_blank" class="btn btn-blue">رابط التسجيل</a>
         </div>
         <div class="card">
             <h4>فضاء الأولياء</h4>
-            <p>كشوف النقاط والنتائج المدرسية</p>
+            <p>النتائج المدرسية</p>
             <a href="https://educationdz.com/tharwa-education-gov-dz/" target="_blank" class="btn btn-blue">دخول</a>
         </div>
     </div>
 
-    <div class="section-title">المالية والبريد</div>
-    <div class="grid">
-        <div class="card">
-            <h4>بريد الجزائر</h4>
-            <p>ECCP وكشف الرصيد والعمليات</p>
-            <a href="https://eccp.poste.dz/auth/" target="_blank" class="btn btn-green">دخول ECCP</a>
-        </div>
-        <div class="card">
-            <h4>وكالة عدل</h4>
-            <p>متابعة سكنات عدل</p>
-            <a href="https://www.aadl.dz/" target="_blank" class="btn">موقع عدل</a>
-        </div>
-    </div>
-
     <script>
-        // تحديث التاريخ تلقائياً حسب اليوم الحالي
         const dateNow = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('update-date').innerText = "آخر تحديث لسعر السكوار: " + dateNow.toLocaleDateString('ar-DZ', options);
+        document.getElementById('update-date').innerText = "تحديث أسعار الصرف: " + dateNow.toLocaleDateString('ar-DZ', options);
 
-        // نظام مواقيت الصلاة التقريبي للجزائر
         function updatePrayers() {
             const hours = dateNow.getHours();
             let name = "الفجر", time = "04:15";
@@ -115,9 +119,7 @@
             document.getElementById('prayer-name').innerText = name;
             document.getElementById('prayer-time').innerText = time;
         }
-
         updatePrayers();
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     </script>
 </body>
 </html>
