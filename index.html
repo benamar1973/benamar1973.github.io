@@ -10,9 +10,10 @@
         :root { --dark: #1a1a1a; --bg: #f4f7f6; --green: #27ae60; --blue: #2980b9; --army: #4b5320; --orange: #f39c12; }
         body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; color: #333; padding-bottom: 50px; }
         
+        /* شريط مواقيت الصلاة والأسعار */
         .info-bar { background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; padding: 10px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 0.65rem; background: #1a1a1a; color: #eee; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
-        .prayer-grid div b { color: #f1c40f; }
+        .prayer-grid div b { color: #f1c40f; display: block; font-size: 0.8rem; }
         
         .rates { display: flex; justify-content: space-around; font-size: 0.85rem; font-weight: bold; padding: 5px 0; border-top: 1px solid #eee; }
         .update-text { color: #e74c3c; font-size: 0.7rem; font-weight: bold; margin-top: 4px; }
@@ -22,7 +23,8 @@
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; padding: 10px; max-width: 1000px; margin: 0 auto; }
         .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
         
-        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 10px; }
+        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 10px; transition: 0.2s; }
+        .btn:active { transform: scale(0.95); }
         .btn-green { background: var(--green); }
         .btn-army { background: var(--army); }
         .btn-blue { background: var(--blue); }
@@ -35,20 +37,20 @@
 <body>
 
     <div class="info-bar">
-        <div class="prayer-grid">
-            <div>الفجر <b>04:14</b></div>
-            <div>الشروق <b>05:54</b></div>
-            <div>الظهر <b>12:47</b></div>
-            <div>العصر <b>16:34</b></div>
-            <div>المغرب <b>19:35</b></div>
-            <div>العشاء <b>21:05</b></div>
+        <div class="prayer-grid" id="prayer-display">
+            <div>الفجر <b id="fajr">--:--</b></div>
+            <div>الشروق <b id="sunrise">--:--</b></div>
+            <div>الظهر <b id="dhuhr">--:--</b></div>
+            <div>العصر <b id="asr">--:--</b></div>
+            <div>المغرب <b id="maghrib">--:--</b></div>
+            <div>العشاء <b id="isha">--:--</b></div>
         </div>
         
         <div class="rates">
             <div>🏦 البنك: <span style="color:var(--green)">155.17</span></div>
             <div>💵 السكوار: <span style="color:var(--green)">282</span></div>
         </div>
-        <div id="date-display" class="update-text">تحديث البيانات: 25 أفريل 2026</div>
+        <div id="date-display" class="update-text">تحديث البيانات: جاري التحميل...</div>
     </div>
 
     <div class="section-header">مناسبات وترفيه</div>
@@ -108,9 +110,40 @@
     </div>
 
     <script>
+        // تحديث التاريخ
         const dateObj = new Date();
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('date-display').innerText = "تحديث البيانات: " + dateObj.toLocaleDateString('ar-DZ', dateOptions);
+
+        // وظيفة جلب مواقيت الصلاة عبر GPS
+        async function getPrayerTimes() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    try {
+                        const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+                        const data = await response.json();
+                        const t = data.data.timings;
+                        
+                        document.getElementById('fajr').innerText = t.Fajr;
+                        document.getElementById('sunrise').innerText = t.Sunrise;
+                        document.getElementById('dhuhr').innerText = t.Dhuhr;
+                        document.getElementById('asr').innerText = t.Asr;
+                        document.getElementById('maghrib').innerText = t.Maghrib;
+                        document.getElementById('isha').innerText = t.Isha;
+                    } catch (error) {
+                        console.log("خطأ في جلب المواقيت");
+                    }
+                });
+            }
+        }
+
+        getPrayerTimes();
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
     </script>
 </body>
 </html>
