@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الرسمي</title>
+    <title>خدماتي - الدليل الجزائري</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a1a1a">
     <style>
-        :root { --dark: #1a1a1a; --bg: #f0f2f5; --green: #27ae60; --blue: #2980b9; --army: #4b5320; }
+        :root { --dark: #1a1a1a; --bg: #f0f2f5; --green: #27ae60; --blue: #2980b9; --army: #4b5320; --orange: #e67e22; }
         body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; color: #333; padding-bottom: 50px; }
-        .header { background: var(--dark); color: white; padding: 25px 15px; }
         
-        /* شريط العملات ومواقيت الصلاة */
-        .info-bar { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; font-size: 0.8rem; }
-        .currency-row { display: flex; justify-content: space-around; margin-bottom: 5px; background: #f9f9f9; padding: 5px; border-radius: 5px; }
-        .prayer-row { display: flex; justify-content: center; gap: 15px; font-weight: bold; }
-        .update-tag { color: #e74c3c; font-size: 0.7rem; margin-top: 5px; font-weight: bold; }
+        /* شريط مواقيت الصلاة والعملات */
+        .info-bar { background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; padding: 10px 5px; }
+        .prayer-times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; font-size: 0.7rem; margin-bottom: 10px; background: #1a1a1a; color: white; padding: 8px; border-radius: 8px; }
+        .prayer-times div { border-bottom: 1px solid #333; padding: 2px; }
+        
+        .currency-row { display: flex; justify-content: space-around; font-size: 0.85rem; font-weight: bold; padding: 5px 0; border-top: 1px solid #eee; }
+        .update-tag { color: #e74c3c; font-size: 0.7rem; font-weight: bold; margin-top: 5px; }
 
         .section-title { margin: 20px 0 10px; font-size: 1.1rem; color: var(--dark); border-right: 5px solid var(--green); padding-right: 12px; text-align: right; width: 92%; margin-right: auto; margin-left: auto; font-weight: bold; }
 
@@ -26,6 +27,7 @@
         .btn-green { background: var(--green); }
         .btn-army { background: var(--army); }
         .btn-blue { background: var(--blue); }
+        .btn-orange { background: var(--orange); }
 
         h4 { margin: 0 0 5px 0; font-size: 0.9rem; }
         p { font-size: 0.7rem; color: #666; margin: 0; }
@@ -34,59 +36,65 @@
 <body>
 
     <div class="info-bar">
+        <div class="prayer-times">
+            <div>الفجر: <b>04:14</b></div>
+            <div>الشروق: <b>05:54</b></div>
+            <div>الظهر: <b>12:47</b></div>
+            <div>العصر: <b>16:34</b></div>
+            <div>المغرب: <b>19:35</b></div>
+            <div>العشاء: <b>21:05</b></div>
+        </div>
+        
         <div class="currency-row">
-            <div>🏦 البنك: <b>148.20 DA</b></div>
-            <div>💵 السكوار: <b>24.20 DA</b></div>
+            <div>🏦 البنك: <span style="color:var(--green)">148.20</span></div>
+            <div>💵 السكوار: <span style="color:var(--green)">24.20</span></div>
         </div>
-        <div class="prayer-row">
-            <div>🕌 <span id="prayer-name">الصلاة</span>: <b id="prayer-time">--:--</b></div>
-        </div>
-        <div id="update-date" class="update-tag">جاري التحديث...</div>
+        <div id="update-date" class="update-tag">تحديث: 25 أفريل 2026</div>
     </div>
 
-    <div class="header">
+    <div class="header" style="padding: 15px;">
         <h2 style="margin:0;">خـدماتـي</h2>
     </div>
 
-    <div class="section-title">وزارة الدفاع الوطني</div>
+    <div class="section-title">مناسبات وترفيه</div>
     <div class="grid">
         <div class="card">
-            <h4>تجنيد الجيش</h4>
-            <p>التسجيل في صفوف الجيش</p>
-            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">رابط التسجيل</a>
+            <h4>أضحية العيد</h4>
+            <p>المنصة الوطنية للأضاحي</p>
+            <a href="https://www.adhahi.dz/" target="_blank" class="btn btn-orange">دخول</a>
         </div>
         <div class="card">
             <h4>منصة مخيمي</h4>
             <p>متابعة طلبات التخييم</p>
-            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">منصة مخيمي</a>
+            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-orange">دخول</a>
         </div>
     </div>
 
-    <div class="section-title">السكن والتشغيل</div>
+    <div class="section-title">الدفاع والتشغيل</div>
     <div class="grid">
         <div class="card">
-            <h4>وكالة عدل</h4>
-            <p>تسجيل الدخول - عدل 3</p>
-            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn">دخول عدل</a>
+            <h4>تجنيد الجيش</h4>
+            <p>التسجيل في صفوف الجيش</p>
+            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">سجل الآن</a>
         </div>
         <div class="card">
             <h4>منحة البطالة</h4>
             <p>التسجيل الأولي للمنحة</p>
-            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn">رابط التسجيل</a>
+            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn">سجل الآن</a>
         </div>
     </div>
 
-    <div class="section-title">البريد والمالية</div>
+    <div class="section-title">البريد والسكن</div>
     <div class="grid">
         <div class="card">
             <h4>بريد الجزائر</h4>
-            <p>الولوج لحساب ECCP</p>
-            <a href="https://eccp.poste.dz/" target="_blank" class="btn btn-green">دخول ECCP</a>
+            <p>حساب ECCP الذهبية</p>
+            <a href="https://eccp.poste.dz/" target="_blank" class="btn btn-green">دخول</a>
         </div>
         <div class="card">
-            <h4>أضحية العيد</h4>
-            <p>منصة أضاحي</p>
-            <a href="https://www.adhahi.dz/" target="_blank" class="btn btn-green">منصة أضاحي</a>
+            <h4>وكالة عدل</h4>
+            <p>تسجيل الدخول عدل 3</p>
+            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn">دخول</a>
         </div>
     </div>
 
@@ -95,11 +103,11 @@
         <div class="card">
             <h4>التكوين المهني</h4>
             <p>منصة مهنتي للتسجيل</p>
-            <a href="https://takwin.dz/" target="_blank" class="btn btn-blue">رابط التسجيل</a>
+            <a href="https://takwin.dz/" target="_blank" class="btn btn-blue">سجل الآن</a>
         </div>
         <div class="card">
             <h4>فضاء الأولياء</h4>
-            <p>النتائج المدرسية</p>
+            <p>كشوف النقاط المدرسية</p>
             <a href="https://educationdz.com/tharwa-education-gov-dz/" target="_blank" class="btn btn-blue">دخول</a>
         </div>
     </div>
@@ -107,19 +115,11 @@
     <script>
         const dateNow = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('update-date').innerText = "تحديث أسعار الصرف: " + dateNow.toLocaleDateString('ar-DZ', options);
-
-        function updatePrayers() {
-            const hours = dateNow.getHours();
-            let name = "الفجر", time = "04:15";
-            if (hours >= 5 && hours < 13) { name = "الظهر"; time = "12:45"; }
-            else if (hours >= 13 && hours < 16) { name = "العصر"; time = "16:30"; }
-            else if (hours >= 16 && hours < 19) { name = "المغرب"; time = "19:15"; }
-            else if (hours >= 19 || hours < 5) { name = "العشاء"; time = "20:45"; }
-            document.getElementById('prayer-name').innerText = name;
-            document.getElementById('prayer-time').innerText = time;
+        document.getElementById('update-date').innerText = "تحديث البيانات: " + dateNow.toLocaleDateString('ar-DZ', options);
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
         }
-        updatePrayers();
     </script>
 </body>
 </html>
