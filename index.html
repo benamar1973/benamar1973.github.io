@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خدماتي - الدليل الجزائري الشامل</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --bg-color: #f4f6f9;
@@ -16,98 +14,31 @@
             --red-news: #d93025;
             --dark-blue: #2c3e50;
         }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 15px;
-            color: #333;
-        }
-
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
-
         header { text-align: center; padding: 10px 0; }
-
-        /* قسم الصرف */
-        .exchange-section {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+        
+        .exchange-section { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table { width: 100%; font-size: 14px; text-align: center; border-collapse: collapse; }
         .exchange-table th { color: #777; padding: 8px; border-bottom: 1px solid #eee; }
         .exchange-table td { padding: 10px 5px; font-weight: bold; }
         .buy { color: var(--green-btn); }
         .sell { color: var(--red-news); }
 
-        /* قسم الصلاة GPS */
-        .prayer-section {
-            background: var(--dark-blue);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .prayer-times-grid {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-            font-size: 12px;
-        }
+        .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .prayer-times-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; }
         .prayer-item { background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; min-width: 80px; }
 
-        /* التنسيقات العامة للبطاقات */
-        .section-title {
-            background: #e9ecef;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin: 20px 0 10px 0;
-            font-size: 14px;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+        .section-title { background: #e9ecef; padding: 8px 15px; border-radius: 6px; font-weight: bold; margin: 20px 0 10px 0; font-size: 14px; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-info h4 { margin: 0; font-size: 14px; }
         .card-info p { margin: 3px 0 0 0; font-size: 11px; color: #777; }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #ddd;
-            margin-top: 40px;
-        }
-        footer a {
-            text-decoration: none;
-            color: #3498db;
-            font-weight: bold;
-            margin: 0 10px;
-            font-size: 14px;
-        }
+        
+        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 40px; }
+        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -125,7 +56,7 @@
             <tr><td>الأورو (€)</td><td class="buy">240.00</td><td class="sell">242.00</td></tr>
             <tr><td>الدولار ($)</td><td class="buy">222.00</td><td class="sell">224.00</td></tr>
         </table>
-        <p style="font-size: 10px; color: #999; text-align: center; margin-top: 10px;">آخر تحديث للأسعار: 26 أفريل 2026</p>
+        <p style="font-size: 10px; color: #999; text-align: center; margin-top: 10px;">آخر تحديث: 26 أفريل 2026</p>
     </div>
 
     <div class="prayer-section">
@@ -141,12 +72,16 @@
 
     <div class="section-title">الدفاع والتشغيل</div>
     <div class="card">
-        <div class="card-info"><h4>منحة البطالة</h4><p>التسجيل الأولي ANEM</p></div>
-        <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a>
+        <div class="card-info"><h4>تجنيد الجيش (MDN)</h4><p>التسجيل في صفوف الجيش الوطني الشعبي</p></div>
+        <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
     </div>
     <div class="card">
-        <div class="card-info"><h4>طلب وتجديد العمل</h4><p>منصة وسيط أونلاين</p></div>
-        <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+        <div class="card-info"><h4>منحة البطالة</h4><p>الوكالة الوطنية للتشغيل ANEM</p></div>
+        <a href="https://minha.anem.dz/" class="btn btn-green">دخول</a>
+    </div>
+    <div class="card">
+        <div class="card-info"><h4>وسيط أونلاين</h4><p>تجديد طلبات العمل وتحميل الشهادة</p></div>
+        <a href="https://wassitonline.anem.dz/" class="btn btn-green">دخول</a>
     </div>
 
     <div class="section-title">البريد والسكن</div>
@@ -155,18 +90,18 @@
         <a href="https://eccp.poste.dz/" class="btn btn-blue">دخول</a>
     </div>
     <div class="card">
-        <div class="card-info"><h4>وكالة عدل</h4><p>منصة عدل 3</p></div>
-        <a href="https://www.aadl.dz/relogin" class="btn btn-blue">دخول</a>
+        <div class="card-info"><h4>وكالة عدل</h4><p>منصة عدل 3 - AADL</p></div>
+        <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
     </div>
 
     <div class="section-title">التعليم والتكوين</div>
     <div class="card">
-        <div class="card-info"><h4>فضاء الأولياء</h4><p>كشف النقاط والنتائج</p></div>
-        <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
+        <div class="card-info"><h4>فضاء الأولياء</h4><p>الاطلاع على نتائج الامتحانات</p></div>
+        <a href="https://awlyaa.education.dz/" class="btn btn-blue">دخول</a>
     </div>
     <div class="card">
-        <div class="card-info"><h4>التكوين المهني</h4><p>عروض التكوين والتسجيل</p></div>
-        <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
+        <div class="card-info"><h4>التكوين المهني</h4><p>منصة مهنتي للتسجيل</p></div>
+        <a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a>
     </div>
 
     <footer>
@@ -193,15 +128,14 @@
                         document.getElementById('asr').innerText = t.Asr;
                         document.getElementById('maghrib').innerText = t.Maghrib;
                         document.getElementById('isha').innerText = t.Isha;
-                        document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
+                        document.getElementById('location-status').innerText = "مواقيت الصلاة حسب موقعك الحالي:";
                         document.getElementById('times-container').style.display = 'flex';
                     })
-                    .catch(() => { document.getElementById('location-status').innerText = "خطأ في جلب البيانات."; });
-            }, () => { document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS لتحديد المواقيت."; });
+                    .catch(() => { document.getElementById('location-status').innerText = "خطأ في الاتصال."; });
+            }, () => { document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS."; });
         }
     }
     window.onload = getPrayerTimes;
 </script>
-
 </body>
 </html>
