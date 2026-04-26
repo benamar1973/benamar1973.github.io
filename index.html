@@ -3,161 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري الشامل</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>خدماتي | الدليل الشامل للمنصات الرقمية بالجزائر</title>
+    <meta name="description" content="موقع خدماتي يوفر روابط مباشرة ومحدثة للمنصات الحكومية الجزائرية: منحة البطالة، وكالة عدل 3، بريد الجزائر، وأسعار الصرف في السكوار والبنك.">
+    <meta name="keywords" content="منحة البطالة، عدل 3، بريد الجزائر، السكوار، نتائج البكالوريا، الجزائر، منصة مهنتي، أضاحي، التسجيل في الجيش">
+    <meta name="author" content="Benamar">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        :root { --dark: #1a1a1a; --bg: #f4f7f6; --green: #27ae60; --blue: #2980b9; --army: #4b5320; --orange: #f39c12; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; text-align: center; color: #333; padding-bottom: 50px; }
-        
-        .info-bar { background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; padding: 10px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 0.65rem; background: #1a1a1a; color: #eee; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
-        .prayer-grid div b { color: #f1c40f; display: block; font-size: 0.8rem; }
-        
-        /* تصميم قسم صرف العملات الجديد */
-        .currency-box { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; padding: 8px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; }
-        .currency-item { display: flex; flex-direction: column; align-items: center; }
-        .currency-title { font-weight: bold; color: var(--dark); margin-bottom: 2px; border-bottom: 1px solid #ccc; width: 100%; }
-        .price-detail { font-size: 0.65rem; color: #666; }
-        .price-val { color: var(--green); font-weight: bold; }
+        :root {
+            --primary-color: #2c3e50;
+            --accent-blue: #3498db;
+            --accent-green: #27ae60;
+            --accent-red: #e74c3c;
+            --bg-color: #f8f9fa;
+        }
 
-        .update-text { color: #e74c3c; font-size: 0.65rem; font-weight: bold; margin-top: 5px; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
 
-        .section-header { margin: 20px 15px 10px; font-size: 1.1rem; color: var(--dark); border-right: 5px solid var(--green); padding-right: 12px; text-align: right; font-weight: bold; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; padding: 10px; max-width: 1000px; margin: 0 auto; }
-        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
-        
-        .btn { display: block; background: var(--dark); color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; margin-top: 10px; transition: 0.2s; }
-        .btn:active { transform: scale(0.95); }
-        .btn-green { background: var(--green); }
-        .btn-army { background: var(--army); }
-        .btn-blue { background: var(--blue); }
-        .btn-orange { background: var(--orange); }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
 
-        h4 { margin: 0; font-size: 0.9rem; margin-bottom: 4px; }
-        p { font-size: 0.68rem; color: #777; margin: 0; line-height: 1.2; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 24px; }
+
+        /* قسم أخبار الساعة */
+        .news-section {
+            background-color: #fff;
+            border-right: 5px solid var(--accent-red);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 1s ease-in;
+        }
+
+        .news-title {
+            color: var(--accent-red);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        /* تنسيق البطاقات */
+        .category-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .category-title {
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--accent-blue);
+            font-size: 18px;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .service-item:last-child { border-bottom: none; }
+
+        .service-info b { display: block; font-size: 16px; }
+        .service-info span { font-size: 12px; color: #777; }
+
+        /* الأزرار المحسنة */
+        .btn {
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .btn-blue { background-color: var(--accent-blue); color: white; }
+        .btn-green { background-color: var(--accent-green); color: white; }
+        .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        /* قسم العملة والصلاة */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .service-item { flex-direction: column; text-align: center; gap: 10px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="info-bar">
-        <div class="prayer-grid">
-            <div>الفجر <b id="fajr">--:--</b></div>
-            <div>الشروق <b id="sunrise">--:--</b></div>
-            <div>الظهر <b id="dhuhr">--:--</b></div>
-            <div>العصر <b id="asr">--:--</b></div>
-            <div>المغرب <b id="maghrib">--:--</b></div>
-            <div>العشاء <b id="isha">--:--</b></div>
+<div class="container">
+    <header>
+        <h1>خدماتي - الدليل الجزائري الشامل</h1>
+        <p style="font-size: 14px; color: #666;">كل المنصات الرسمية في مكان واحد</p>
+    </header>
+
+    <div class="news-section">
+        <div class="news-title">🔔 أخبار الساعة:</div>
+        <div class="news-item">
+            • <b>جديد:</b> تم تحديث روابط التسجيل في منصة "أضاحي" الوطنية. <br>
+            • <b>تنبيه:</b> يرجى التأكد من تحديث بياناتكم في منصة منحة البطالة قبل نهاية الشهر.
         </div>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h4 style="margin:0; color:var(--accent-blue)">💵 أسعار الصرف (السكوار)</h4>
+            <p id="exchange-rate" style="font-weight: bold; margin: 10px 0;">الأورو: 242 دج | الدولار: 224 دج</p>
+            <span style="font-size: 10px; color: #999;">تحديث: 26 أفريل 2026</span>
+        </div>
+        <div class="info-card">
+            <h4 style="margin:0; color:var(--accent-green)">🕌 مواقيت الصلاة</h4>
+            <p id="prayer-times" style="font-size: 13px; margin: 10px 0;">الفجر: 04:15 | الظهر: 12:45 | المغرب: 19:35</p>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">💼 الدفاع والتشغيل</div>
         
-        <div class="currency-box">
-            <div class="currency-item">
-                <span class="currency-title">💵 أورو (سكوار)</span>
-                <span class="price-detail">شراء: <span class="price-val">24.00</span> | بيع: <span class="price-val">24.20</span></span>
+        <div class="service-item">
+            <div class="service-info">
+                <b>منحة البطالة</b>
+                <span>الوكالة الوطنية للتشغيل ANEM</span>
             </div>
-            <div class="currency-item">
-                <span class="currency-title">🏦 أورو (البنك)</span>
-                <span class="price-detail">شراء: <span class="price-val">148.15</span> | بيع: <span class="price-val">148.20</span></span>
+            <a href="https://minha.anem.dz/" class="btn btn-green">سجل الآن</a>
+        </div>
+
+        <div class="service-item">
+            <div class="service-info">
+                <b>تجنيد الجيش</b>
+                <span>الالتحاق بصفوف الجيش الوطني</span>
             </div>
-            <div class="currency-item">
-                <span class="currency-title">🇺🇸 دولار (سكوار)</span>
-                <span class="price-detail">شراء: <span class="price-val">22.10</span> | بيع: <span class="price-val">22.30</span></span>
+            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">دخول</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">🏠 السكن والبريد</div>
+        
+        <div class="service-item">
+            <div class="service-info">
+                <b>وكالة عدل AADL</b>
+                <span>منصة عدل 3 والطعون</span>
             </div>
-            <div class="currency-item">
-                <span class="currency-title">🏛️ دولار (البنك)</span>
-                <span class="price-detail">شراء: <span class="price-val">134.50</span> | بيع: <span class="price-val">134.55</span></span>
+            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
+        </div>
+
+        <div class="service-item">
+            <div class="service-info">
+                <b>بريد الجزائر ECCP</b>
+                <span>كشف الرصيد والخدمات المالية</span>
             </div>
-        </div>
-        <div id="date-display" class="update-text">تحديث البيانات: جاري التحميل...</div>
-    </div>
-
-    <div class="section-header">مناسبات وترفيه</div>
-    <div class="container">
-        <div class="card">
-            <h4>أضحية العيد</h4>
-            <p>تسجيل طلب الأضحية</p>
-            <a href="https://adhahi.dz/register" target="_blank" class="btn btn-orange">تسجيل</a>
-        </div>
-        <div class="card">
-            <h4>منصة مخيمي</h4>
-            <p>تسجيل الأطفال في المخيمات</p>
-            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" target="_blank" class="btn btn-orange">تسجيل</a>
+            <a href="https://eccp.poste.dz/" class="btn btn-blue">دخول</a>
         </div>
     </div>
 
-    <div class="section-header">الدفاع والتشغيل</div>
-    <div class="container">
-        <div class="card">
-            <h4>تجنيد الجيش</h4>
-            <p>الالتحاق بصفوف الجيش</p>
-            <a href="https://preinscription.mdn.dz/" target="_blank" class="btn btn-army">سجل الآن</a>
+    <div class="category-section">
+        <div class="category-title">🎓 التعليم والتكوين</div>
+        
+        <div class="service-item">
+            <div class="service-info">
+                <b>فضاء الأولياء</b>
+                <span>نتائج الأطوار التعليمية</span>
+            </div>
+            <a href="https://awlya.education.gov.dz/" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card">
-            <h4>منحة البطالة</h4>
-            <p>التسجيل الأولي ANEM</p>
-            <a href="https://minha.anem.dz/pre_inscription" target="_blank" class="btn btn-army">سجل الآن</a>
-        </div>
-        <div class="card">
-            <h4>طلب وتجديد العمل</h4>
-            <p>منصة وسيط أونلاين</p>
-            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" target="_blank" class="btn btn-army">دخول</a>
+
+        <div class="service-item">
+            <div class="service-info">
+                <b>منصة مهنتي</b>
+                <span>التسجيل في التكوين المهني</span>
+            </div>
+            <a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a>
         </div>
     </div>
 
-    <div class="section-header">البريد والسكن</div>
-    <div class="container">
-        <div class="card">
-            <h4>بريد الجزائر</h4>
-            <p>منصة ECCP الرسمية</p>
-            <a href="https://eccp.poste.dz/" target="_blank" class="btn btn-green">دخول</a>
-        </div>
-        <div class="card">
-            <h4>وكالة عدل</h4>
-            <p>تسجيل الدخول - عدل 3</p>
-            <a href="https://www.aadl.dz/relogin" target="_blank" class="btn btn-green">دخول</a>
-        </div>
-    </div>
+    <footer style="text-align: center; color: #999; font-size: 12px; padding: 20px;">
+        جميع الحقوق محفوظة &copy; خدماتي 2026 - تم التطوير بكل ❤️ للمواطن الجزائري
+    </footer>
+</div>
 
-    <div class="section-header">التعليم والتكوين</div>
-    <div class="container">
-        <div class="card">
-            <h4>التكوين المهني</h4>
-            <p>عروض التسجيل في التكوين</p>
-            <a href="https://takwin.dz/Offersinscription" target="_blank" class="btn btn-blue">تسجيل</a>
-        </div>
-        <div class="card">
-            <h4>فضاء الأولياء</h4>
-            <p>تسجيل الدخول للنتائج</p>
-            <a href="https://awlyaa.education.dz/login" target="_blank" class="btn btn-blue">دخول</a>
-        </div>
-    </div>
-
-    <script>
-        const dateObj = new Date();
-        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('date-display').innerText = "تحديث البيانات: " + dateObj.toLocaleDateString('ar-DZ', dateOptions);
-
-        async function getPrayerTimes() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    try {
-                        const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
-                        const data = await response.json();
-                        const t = data.data.timings;
-                        document.getElementById('fajr').innerText = t.Fajr;
-                        document.getElementById('sunrise').innerText = t.Sunrise;
-                        document.getElementById('dhuhr').innerText = t.Dhuhr;
-                        document.getElementById('asr').innerText = t.Asr;
-                        document.getElementById('maghrib').innerText = t.Maghrib;
-                        document.getElementById('isha').innerText = t.Isha;
-                    } catch (e) { console.log("Prayer times error"); }
-                });
-            }
-        }
-        getPrayerTimes();
-    </script>
 </body>
 </html>
