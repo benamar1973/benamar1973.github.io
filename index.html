@@ -3,95 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>خدماتي - الدليل الجزائري الشامل للخدمات الرقمية 2026</title>
-    <meta name="description" content="منصة خدماتي هي دليلك الموثوق للوصول السريع إلى منحة البطالة، تسجيلات عدل 3، فضاء الأولياء، وأسعار صرف العملات (الأورو والدولار) في الجزائر اليوم.">
-    <meta name="keywords" content="الجزائر, منحة البطالة, عدل 3, أسعار الأورو في السكوار, فضاء الأولياء, نتائج البكالوريا, التسجيل في الجيش, خدماتي">
-    <meta name="author" content="Khadamati">
-
-    <meta property="og:title" content="خدماتي - الدليل الجزائري الشامل للخدمات الرقمية">
-    <meta property="og:description" content="كل المواقع الإدارية والخدماتية الجزائرية في مكان واحد.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://benamar1973.github.io">
-
-    <link rel="stylesheet" href="style.css"> 
+    <title>خدماتي - الدليل الجزائري الشامل للخدمات الرقمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; }
+        header { text-align: center; padding: 10px 0; }
+        .exchange-section { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .exchange-table { width: 100%; font-size: 14px; text-align: center; border-collapse: collapse; }
+        .exchange-table th { color: #777; padding: 8px; border-bottom: 1px solid #eee; }
+        .buy { color: var(--green-btn); font-weight: bold; }
+        .sell { color: #d93025; font-weight: bold; }
+        .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .prayer-times-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; }
+        .prayer-item { background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; min-width: 75px; }
+        .section-title { background: #e9ecef; padding: 8px 15px; border-radius: 6px; font-weight: bold; margin: 20px 0 10px 0; font-size: 14px; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .card-info h4 { margin: 0; font-size: 15px; color: var(--dark-blue); }
+        .card-description { font-size: 12px; color: #666; line-height: 1.6; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; text-align: center; }
+        .btn-blue { background-color: var(--blue-btn); }
+        .btn-green { background-color: var(--green-btn); }
+        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 40px; }
+        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 13px; }
+    </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <h1>خدماتي</h1>
-        <p>دليل المواطن للوصول السريع إلى المنصات الرسمية الجزائرية</p>
+        <h2>خدماتي</h2>
+        <p style="font-size: 12px; color: #666;">دليل المواطن للوصول السريع إلى المنصات الرسمية</p>
     </header>
 
-    <main>
-        <section id="currency">
-            <h2>📊 أسعار صرف العملات اليوم في الجزائر</h2>
-            <p>متابعة يومية لأسعار الأورو والدولار في السوق الموازية (السكوار) والبنك.</p>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>العملة</th>
-                        <th>شراء</th>
-                        <th>بيع</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>الأورو (€)</td>
-                        <td>282.00</td>
-                        <td>280.00</td>
-                    </tr>
-                    <tr>
-                        <td>الدولار ($)</td>
-                        <td>239.00</td>
-                        <td>237.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+    <div class="exchange-section">
+        <h4 style="margin: 0 0 12px 0; text-align: center;">📊 أسعار صرف العملات اليوم</h4>
+        <table class="exchange-table">
+            <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
+            <tr><td>الأورو (€)</td><td class="buy">282.00</td><td class="sell">280.00</td></tr>
+            <tr><td>الدولار ($)</td><td class="buy">239.00</td><td class="sell">237.00</td></tr>
+        </table>
+    </div>
 
-        <section id="defense-jobs">
-            <h2>🛡️ الدفاع والتشغيل</h2>
-            
-            <article>
-                <h3>تجنيد الجيش الوطني الشعبي (MDN)</h3>
-                <p>الموقع الرسمي لوزارة الدفاع الوطني لإيداع ملفات الترشح لمختلف الرتب والأسلاك.</p>
-                <a href="https://preinscription.mdn.dz/" alt="رابط التسجيل في صفوف الجيش">سجل الآن في موقع وزارة الدفاع</a>
-            </article>
+    <div class="prayer-section">
+        <div id="location-status" style="font-size: 13px;">جاري جلب مواقيت الصلاة...</div>
+        <div class="prayer-times-grid" id="times-container" style="display:none;">
+            <div class="prayer-item">الفجر <br> <span id="fajr">--</span></div>
+            <div class="prayer-item">الظهر <br> <span id="dhuhr">--</span></div>
+            <div class="prayer-item">العصر <br> <span id="asr">--</span></div>
+            <div class="prayer-item">المغرب <br> <span id="maghrib">--</span></div>
+            <div class="prayer-item">العشاء <br> <span id="isha">--</span></div>
+        </div>
+    </div>
 
-            <article>
-                <h3>منحة البطالة (ANEM)</h3>
-                <p>المنصة المخصصة لطالبي الشغل للاستفادة من المنحة وحجز موعد المقابلة.</p>
-                <a href="https://minha.anem.dz/" alt="رابط تسجيل منحة البطالة">الدخول إلى منصة منحة البطالة</a>
-            </article>
-        </section>
+    <div class="section-title">الدفاع والتشغيل</div>
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
+            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
+        </div>
+        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح للانضمام إلى صفوف الجيش الوطني الشعبي لمختلف الفئات.</div>
+    </div>
 
-        <section id="housing-education">
-            <h2>🏠 السكن والتعليم</h2>
-            
-            <article>
-                <h3>وكالة عدل - AADL 3</h3>
-                <p>متابعة ملفات السكن بصيغة البيع بالإيجار وآخر أخبار الاكتتاب في برنامج عدل 3.</p>
-                <a href="https://www.aadl.dz/" alt="رابط وكالة عدل">الدخول إلى موقع عدل</a>
-            </article>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منحة البطالة</h4></div>
+            <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">التسجيل الأولي</a>
+        </div>
+        <div class="card-description">منصة مخصصة لطالبي الشغل الراغبين في الاستفادة من منحة البطالة، تتيح لكم حجز موعد وإجراء التسجيل الأولي.</div>
+    </div>
 
-            <article>
-                <h3>فضاء الأولياء - كشف النقاط</h3>
-                <p>النظام المعلوماتي لوزارة التربية الوطنية للاطلاع على نتائج التلاميذ وكشوف النقاط.</p>
-                <a href="https://awlyaa.education.dz/" alt="رابط فضاء الأولياء">الدخول إلى فضاء الأولياء</a>
-            </article>
-        </section>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
+            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة وسيط أونلاين تابعة للوكالة الوطنية للتشغيل تسمح للشباب بتسجيل طلبات العمل وتجديدها عن بُعد دون الحاجة للتنقل.</div>
+    </div>
 
-    </main>
+    <div class="section-title">السكن والتعليم</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>فضاء الأولياء</h4></div>
+            <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
+        </div>
+        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية الذي يسمح للأولياء بمتابعة نتائج أبنائهم وكشف النقاط إلكترونياً.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
+            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
+        </div>
+        <div class="card-description">الموقع الرسمي لوكالة تطوير السكن وتحسينه، المخصص لمتابعة ملفات سكنات البيع بالإيجار والبرامج السكنية الجديدة.</div>
+    </div>
+
+    <div class="section-title">الخدمات الموسمية والتكوين</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>التكوين المهني</h4></div>
+            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني المتاحة في مختلف الولايات والقيام بالتسجيلات الأولية للمتربصين.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>أضحية العيد</h4></div>
+            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد تحت إشراف الجهات المعنية لضمان سلامة المواطنين.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منصة مخيمي</h4></div>
+            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة رقمية تابعة لوزارة الشباب والرياضة تسمح بتسجيل الأطفال والشباب للمشاركة في المخيمات الصيفية والرحلات الجبلية.</div>
+    </div>
 
     <footer>
-        <hr>
-        <nav>
-            <a href="about.html">من نحن</a> | 
-            <a href="privacy.html">سياسة الخصوصية</a>
-        </nav>
-        <p>جميع الحقوق محفوظة © خدماتي 2026</p>
+        <a href="about.html">من نحن</a> | <a href="privacy.html">سياسة الخصوصية</a>
+        <p style="font-size: 11px; color: #999; margin-top: 10px;">جميع الحقوق محفوظة &copy; خدماتي 2026</p>
     </footer>
+</div>
 
+<script>
+    function getPrayerTimes() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                fetch(`https://api.aladhan.com/v1/timings?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&method=3`)
+                .then(res => res.json()).then(res => {
+                    const t = res.data.timings;
+                    document.getElementById('fajr').innerText = t.Fajr;
+                    document.getElementById('dhuhr').innerText = t.Dhuhr;
+                    document.getElementById('asr').innerText = t.Asr;
+                    document.getElementById('maghrib').innerText = t.Maghrib;
+                    document.getElementById('isha').innerText = t.Isha;
+                    document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
+                    document.getElementById('times-container').style.display = 'flex';
+                });
+            }, () => { document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS لتحديد المواقيت."; });
+        }
+    }
+    window.onload = getPrayerTimes;
+</script>
 </body>
 </html>
