@@ -4,225 +4,191 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>خدماتي | الدليل الشامل للمنصات الرقمية بالجزائر</title>
-    <meta name="description" content="موقع خدماتي يوفر روابط مباشرة ومحدثة للمنصات الحكومية الجزائرية: منحة البطالة، وكالة عدل 3، بريد الجزائر، وأسعار الصرف في السكوار والبنك.">
-    <meta name="keywords" content="منحة البطالة، عدل 3، بريد الجزائر، السكوار، نتائج البكالوريا، الجزائر، منصة مهنتي، أضاحي، التسجيل في الجيش">
-    <meta name="author" content="Benamar">
+    <title>خدماتي - الدليل الجزائري الشامل للمنصات الرقمية</title>
+    <meta name="description" content="دليل خدماتي: منصة تجمع روابط عدل 3، منحة البطالة، بريد الجزائر ECCP، نتائج الامتحانات، ومنصة أضاحي. كل الخدمات الإدارية الجزائرية في مكان واحد.">
+    <meta name="keywords" content="منحة البطالة، عدل 3، بريد الجزائر، السكوار، منصة أضاحي، تجنيد الجيش، فضاء الأولياء، الجزائر">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-blue: #3498db;
-            --accent-green: #27ae60;
-            --accent-red: #e74c3c;
-            --bg-color: #f8f9fa;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #1c1e21;
+            --blue-btn: #007bff;
+            --green-btn: #28a745;
+            --red-news: #d93025;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 15px;
+            color: var(--text-main);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .container { max-width: 600px; margin: 0 auto; }
 
-        header {
-            text-align: center;
-            padding: 20px 0;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        h1 { color: var(--primary-color); margin: 0; font-size: 24px; }
+        header { text-align: center; padding: 10px 0; }
 
         /* قسم أخبار الساعة */
-        .news-section {
-            background-color: #fff;
-            border-right: 5px solid var(--accent-red);
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            animation: fadeIn 1s ease-in;
-        }
-
-        .news-title {
-            color: var(--accent-red);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        /* تنسيق البطاقات */
-        .category-section {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .category-title {
-            border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 10px;
+        .news-flash {
+            background: #fff;
+            border-right: 5px solid var(--red-news);
+            padding: 12px;
             margin-bottom: 15px;
-            color: var(--accent-blue);
-            font-size: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .news-flash h4 { color: var(--red-news); margin: 0 0 5px 0; font-size: 16px; }
+        .news-flash p { margin: 0; font-size: 14px; line-height: 1.6; }
+
+        /* معلومات السكوار والصلاة */
+        .info-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .service-item {
+        /* تنسيق الأقسام */
+        .section-title {
+            background: #e4e6eb;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            font-size: 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        .service-item:last-child { border-bottom: none; }
+        .card-content h4 { margin: 0; font-size: 15px; }
+        .card-content p { margin: 5px 0 0 0; font-size: 12px; color: #65676b; }
 
-        .service-info b { display: block; font-size: 16px; }
-        .service-info span { font-size: 12px; color: #777; }
-
-        /* الأزرار المحسنة */
+        /* الأزرار الملونة */
         .btn {
-            padding: 8px 18px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 5px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-align: center;
-            min-width: 80px;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
         }
+        .btn-blue { background-color: var(--blue-btn); }
+        .btn-green { background-color: var(--green-btn); }
+        .btn:hover { opacity: 0.8; }
 
-        .btn-blue { background-color: var(--accent-blue); color: white; }
-        .btn-green { background-color: var(--accent-green); color: white; }
-        .btn:hover { opacity: 0.85; transform: translateY(-1px); }
-
-        /* قسم العملة والصلاة */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .info-card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        @media (max-width: 600px) {
-            .info-grid { grid-template-columns: 1fr; }
-            .service-item { flex-direction: column; text-align: center; gap: 10px; }
-        }
+        footer { text-align: center; font-size: 11px; color: #888; margin-top: 30px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>خدماتي - الدليل الجزائري الشامل</h1>
-        <p style="font-size: 14px; color: #666;">كل المنصات الرسمية في مكان واحد</p>
+        <h2 style="margin-bottom:5px;">خدماتي - الدليل الجزائري</h2>
     </header>
 
-    <div class="news-section">
-        <div class="news-title">🔔 أخبار الساعة:</div>
-        <div class="news-item">
-            • <b>جديد:</b> تم تحديث روابط التسجيل في منصة "أضاحي" الوطنية. <br>
-            • <b>تنبيه:</b> يرجى التأكد من تحديث بياناتكم في منصة منحة البطالة قبل نهاية الشهر.
+    <div class="news-flash">
+        <h4>🔔 جديد المنصات:</h4>
+        <p>• فتح منصة <b>"أضاحي"</b> لشراء الأضاحي إلكترونياً. <br>
+           • متابعة تسجيلات <b>"عدل 3"</b> عبر التطبيق والموقع الرسمي.</p>
+    </div>
+
+    <div class="info-bar">
+        <div class="info-box">
+            🏦 البنك: 155.17 | 💵 السكوار: 282
+        </div>
+        <div class="info-box">
+            🕌 الفجر: --:-- | المغرب: --:--
         </div>
     </div>
 
-    <div class="info-grid">
-        <div class="info-card">
-            <h4 style="margin:0; color:var(--accent-blue)">💵 أسعار الصرف (السكوار)</h4>
-            <p id="exchange-rate" style="font-weight: bold; margin: 10px 0;">الأورو: 242 دج | الدولار: 224 دج</p>
-            <span style="font-size: 10px; color: #999;">تحديث: 26 أفريل 2026</span>
+    <div class="section-title">مناسبات وترفيه</div>
+    <div class="card">
+        <div class="card-content">
+            <h4>أضحية العيد</h4>
+            <p>المنصة الوطنية للأضاحي</p>
         </div>
-        <div class="info-card">
-            <h4 style="margin:0; color:var(--accent-green)">🕌 مواقيت الصلاة</h4>
-            <p id="prayer-times" style="font-size: 13px; margin: 10px 0;">الفجر: 04:15 | الظهر: 12:45 | المغرب: 19:35</p>
+        <a href="https://adhahi.dz/" class="btn btn-blue">دخول</a>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h4>منصة مخيمي</h4>
+            <p>مخيمات الشباب والرياضة</p>
         </div>
+        <a href="https://youthcamp.mjeunesse.gov.dz/" class="btn btn-blue">دخول</a>
     </div>
 
-    <div class="category-section">
-        <div class="category-title">💼 الدفاع والتشغيل</div>
-        
-        <div class="service-item">
-            <div class="service-info">
-                <b>منحة البطالة</b>
-                <span>الوكالة الوطنية للتشغيل ANEM</span>
-            </div>
-            <a href="https://minha.anem.dz/" class="btn btn-green">سجل الآن</a>
+    <div class="section-title">الدفاع والتشغيل</div>
+    <div class="card">
+        <div class="card-content">
+            <h4>تجنيد الجيش</h4>
+            <p>الالتحاق بصفوف الجيش</p>
         </div>
-
-        <div class="service-item">
-            <div class="service-info">
-                <b>تجنيد الجيش</b>
-                <span>الالتحاق بصفوف الجيش الوطني</span>
-            </div>
-            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">دخول</a>
+        <a href="https://preinscription.mdn.dz/" class="btn btn-green">سجل الآن</a>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h4>منحة البطالة</h4>
+            <p>التسجيل الأولي ANEM</p>
         </div>
+        <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a>
     </div>
 
-    <div class="category-section">
-        <div class="category-title">🏠 السكن والبريد</div>
-        
-        <div class="service-item">
-            <div class="service-info">
-                <b>وكالة عدل AADL</b>
-                <span>منصة عدل 3 والطعون</span>
-            </div>
-            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
+    <div class="section-title">البريد والسكن</div>
+    <div class="card">
+        <div class="card-content">
+            <h4>بريد الجزائر</h4>
+            <p>منصة ECCP الرسمية</p>
         </div>
-
-        <div class="service-item">
-            <div class="service-info">
-                <b>بريد الجزائر ECCP</b>
-                <span>كشف الرصيد والخدمات المالية</span>
-            </div>
-            <a href="https://eccp.poste.dz/" class="btn btn-blue">دخول</a>
+        <a href="https://eccp.poste.dz/" class="btn btn-blue">دخول</a>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h4>وكالة عدل</h4>
+            <p>دخول - منصة عدل 3</p>
         </div>
+        <a href="https://www.aadl.dz/relogin" class="btn btn-blue">دخول</a>
     </div>
 
-    <div class="category-section">
-        <div class="category-title">🎓 التعليم والتكوين</div>
-        
-        <div class="service-item">
-            <div class="service-info">
-                <b>فضاء الأولياء</b>
-                <span>نتائج الأطوار التعليمية</span>
-            </div>
-            <a href="https://awlya.education.gov.dz/" class="btn btn-blue">دخول</a>
+    <div class="section-title">التعليم والتكوين</div>
+    <div class="card">
+        <div class="card-content">
+            <h4>التكوين المهني</h4>
+            <p>منصة "مهنتي" للتسجيل</p>
         </div>
-
-        <div class="service-item">
-            <div class="service-info">
-                <b>منصة مهنتي</b>
-                <span>التسجيل في التكوين المهني</span>
-            </div>
-            <a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a>
+        <a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <h4>فضاء الأولياء</h4>
+            <p>نتائج الأطوار التعليمية</p>
         </div>
+        <a href="https://educationdz.com/tharwa-education-gov-dz/" class="btn btn-blue">دخول</a>
     </div>
 
-    <footer style="text-align: center; color: #999; font-size: 12px; padding: 20px;">
-        جميع الحقوق محفوظة &copy; خدماتي 2026 - تم التطوير بكل ❤️ للمواطن الجزائري
+    <footer>
+        خدماتي 2026 - جميع الروابط رسمية ومباشرة
     </footer>
 </div>
 
