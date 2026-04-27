@@ -1,151 +1,83 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري الشامل</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* الحفاظ على نفس نمط التصميم الخاص بك مع إضافات بسيطة للطقس */
-        .forecast-container {
-            display: flex;
-            overflow-x: auto; /* للسماح بالتمرير الجانبي على الهاتف */
-            gap: 10px;
-            padding: 10px 0;
-            scrollbar-width: thin;
-        }
-        .forecast-item {
-            min-width: 80px;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        .forecast-item b { display: block; color: #007bff; }
-        .update-date { font-size: 12px; color: #888; display: block; margin-top: 5px; }
-    </style>
-</head>
-<body>
+<section class="service-card">
+    <h4>🌤️ توقعات الطقس للأسبوع</h4>
+    <table id="weather-table">
+        <tr id="weather-days">
+            </tr>
+        <tr id="weather-temps">
+            </tr>
+    </table>
+    <span id="location-status" class="update-date" style="font-size: 11px; color: #777;">جاري تحديد الموقع...</span>
+</section>
 
-    <header>
-        <h2>خدماتي</h2>
-        <p>دليل المواطن للوصول السريع إلى المنصات الرسمية</p>
-    </header>
+<section class="service-card">
+    <h4>📊 أسعار صرف العملات اليوم</h4>
+    <table>
+        <tr>
+            <th>العملة</th>
+            <th>شراء</th>
+            <th>بيع</th>
+        </tr>
+        <tr>
+            <td>الأورو (€)</td>
+            <td>282.00</td>
+            <td>280.00</td>
+        </tr>
+        <tr>
+            <td>الدولار ($)</td>
+            <td>239.00</td>
+        </tr>
+    </table>
+    <div style="font-size: 12px; color: #666; margin-top: 5px; text-align: center;">
+        تاريخ آخر تحيين للسكوار: 27 أفريل 2026
+    </div>
+</section>
 
-    <main class="container">
-        
-        <section class="service-card">
-            <h4>🌤️ توقعات الطقس للأسبوع</h4>
-            <div id="location-name" style="font-size: 14px; color: #555; margin-bottom: 5px;">جاري تحديد الموقع...</div>
-            <div class="forecast-container" id="weather-forecast">
-                </div>
-        </section>
+<section class="service-card">
+    <h4>🕌 مواقيت الصلاة</h4>
+    <div id="prayer-times" style="text-align: center; font-weight: bold;">
+        جاري جلب المواقيت بدقة...
+    </div>
+</section>
 
-        <section class="service-card">
-            <h4>📊 أسعار صرف العملات اليوم</h4>
-            <table>
-                <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
-                <tr><td>الأورو (€)</td><td>282.00</td><td>280.00</td></tr>
-                <tr><td>الدولار ($)</td><td>239.00</td><td>237.00</td></tr>
-            </table>
-            <span class="update-date">آخر تحديث للسكوار: 27 أفريل 2026</span>
-        </section>
+<script>
+    // كود جلب البيانات مع الحفاظ على الأداء
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            loadData(lat, lon);
+        }, () => loadData(36.75, 3.05)); // الجزائر العاصمة كافتراضي
+    } else {
+        loadData(36.75, 3.05);
+    }
 
-        <section class="service-card">
-            <h4>🕌 مواقيت الصلاة (حسب موقعك)</h4>
-            <div id="prayer-times" style="font-weight: bold; line-height: 2;">جاري جلب المواقيت...</div>
-        </section>
+    async function loadData(lat, lon) {
+        // جلب الطقس (أسبوع)
+        try {
+            const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`);
+            const wData = await wRes.json();
+            const days = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+            let daysHtml = '';
+            let tempsHtml = '';
 
-        <section class="services-grid">
-            <div class="service-card">
-                <h4>تجنيد الجيش (MDN)</h4>
-                <p>الموقع الرسمي لوزارة الدفاع الوطني لإيداع ملفات الترشح.</p>
-                <a href="https://preinscription.mdn.dz/" class="btn">سجل الآن</a>
-            </div>
-
-            <div class="service-card">
-                <h4>منحة البطالة</h4>
-                <p>منصة مخصصة لطالبي الشغل لحجز موعد والتسجيل.</p>
-                <a href="https://minha.anem.dz/pre_inscription" class="btn">التسجيل الأولي</a>
-            </div>
-
-            <div class="service-card">
-                <h4>وكالة عدل (AADL 3)</h4>
-                <p>المخصص لمتابعة ملفات سكنات البيع بالإيجار.</p>
-                <a href="https://www.aadl.dz/" class="btn">دخول</a>
-            </div>
-
-            <div class="service-card">
-                <h4>فضاء الأولياء</h4>
-                <p>نتائج الأبناء وكشف النقاط إلكترونياً.</p>
-                <a href="https://awlyaa.education.dz/login" class="btn">دخول</a>
-            </div>
-            
-            </section>
-    </main>
-
-    <footer>
-        <p><a href="about.html">من نحن</a> | <a href="privacy.html">سياسة الخصوصية</a></p>
-        <p>جميع الحقوق محفوظة © خدماتي 2026</p>
-    </footer>
-
-    <script>
-        // دالة تحديد الموقع
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                updateData(lat, lon);
-            }, () => updateData(36.75, 3.05)); // العاصمة كخيار افتراضي
-        } else {
-            updateData(36.75, 3.05);
-        }
-
-        function updateData(lat, lon) {
-            fetchWeather(lat, lon);
-            fetchPrayers(lat, lon);
-        }
-
-        // جلب طقس أسبوع كامل
-        async function fetchWeather(lat, lon) {
-            try {
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Africa/Algiers`);
-                const data = await res.json();
-                let html = '';
-                const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                
-                for (let i = 0; i < 7; i++) {
-                    const date = new Date(data.daily.time[i]);
-                    const dayName = i === 0 ? "اليوم" : days[date.getDay()];
-                    html += `
-                        <div class="forecast-item">
-                            <span>${dayName}</span>
-                            <b>${Math.round(data.daily.temperature_2m_max[i])}°</b>
-                            <small>${Math.round(data.daily.temperature_2m_min[i])}°</small>
-                        </div>
-                    `;
-                }
-                document.getElementById('weather-forecast').innerHTML = html;
-                document.getElementById('location-name').innerText = "📍 تم تحديث البيانات حسب موقعك الحالي";
-            } catch (e) {
-                document.getElementById('weather-forecast').innerText = "خطأ في تحميل الطقس";
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(wData.daily.time[i]);
+                daysHtml += `<td style="font-size:12px; border:1px solid #eee;">${days[d.getDay()]}</td>`;
+                tempsHtml += `<td style="font-weight:bold; border:1px solid #eee;">${Math.round(wData.daily.temperature_2m_max[i])}°</td>`;
             }
-        }
+            document.getElementById('weather-days').innerHTML = daysHtml;
+            document.getElementById('weather-temps').innerHTML = tempsHtml;
+            document.getElementById('location-status').innerText = "📍 البيانات محدثة حسب موقعك الحالي";
+        } catch(e) { }
 
-        // جلب مواقيت الصلاة بدقة
-        async function fetchPrayers(lat, lon) {
-            try {
-                const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
-                const data = await res.json();
-                const t = data.data.timings;
-                document.getElementById('prayer-times').innerHTML = `
-                    الفجر: ${t.Fajr} | الظهر: ${t.Dhuhr} | العصر: ${t.Asr} | المغرب: ${t.Maghrib} | العشاء: ${t.Isha}
-                `;
-            } catch (e) {
-                document.getElementById('prayer-times').innerText = "خطأ في التحميل";
-            }
-        }
-    </script>
-</body>
-</html>
+        // جلب الصلاة (دقيقة)
+        try {
+            const pRes = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
+            const pData = await pRes.json();
+            const t = pData.data.timings;
+            document.getElementById('prayer-times').innerHTML = `
+                الفجر ${t.Fajr} | الظهر ${t.Dhuhr} | العصر ${t.Asr} | المغرب ${t.Maghrib} | العشاء ${t.Isha}
+            `;
+        } catch(e) { }
+    }
+</script>
