@@ -83,7 +83,7 @@
             <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
             <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني لمختلف فئات الجيش الوطني الشعبي.</div>
+        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح.</div>
     </div>
 
     <div class="card">
@@ -94,6 +94,14 @@
         <div class="card-description">منصة مخصصة لطالبي الشغل لحجز موعد وإجراء التسجيل الأولي للمنحة.</div>
     </div>
 
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
+            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة وسيط أونلاين التابعة للوكالة الوطنية للتشغيل لتسجيل وتجديد طلبات العمل.</div>
+    </div>
+
     <div class="section-title">السكن والتعليم</div>
 
     <div class="card">
@@ -101,7 +109,7 @@
             <div class="card-info"><h4>فضاء الأولياء</h4></div>
             <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card-description">متابعة نتائج أبنائكم وكشف النقاط إلكترونياً.</div>
+        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية لمتابعة نتائج الأبناء.</div>
     </div>
 
     <div class="card">
@@ -109,7 +117,33 @@
             <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
             <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card-description">متابعة ملفات سكنات البيع بالإيجار والبرامج الجديدة.</div>
+        <div class="card-description">الموقع الرسمي لوكالة عدل لمتابعة ملفات السكن والبرامج الجديدة.</div>
+    </div>
+
+    <div class="section-title">الخدمات الموسمية والتكوين</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>التكوين المهني</h4></div>
+            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني والقيام بالتسجيلات.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>أضحية العيد</h4></div>
+            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منصة مخيمي</h4></div>
+            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">المنصة الرقمية لتسجيل الأطفال في المخيمات الصيفية والرحلات.</div>
     </div>
 
     <div class="share-container">
@@ -125,12 +159,11 @@
 </div>
 
 <script>
-    // برمجة زر المشاركة
     function shareApp() {
         if (navigator.share) {
             navigator.share({
                 title: 'خدماتي - الدليل الجزائري',
-                text: 'أنصحك بتثبيت تطبيق خدماتي، دليل شامل للخدمات الرقمية في الجزائر (أسعار العملات، الصلاة، والوظائف):',
+                text: 'أنصحك بتثبيت تطبيق خدماتي، دليل شامل للخدمات الرقمية في الجزائر:',
                 url: window.location.href
             }).catch(console.error);
         } else {
