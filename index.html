@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خدماتي - الدليل الجزائري الشامل للخدمات الرقمية</title>
-<link rel="manifest" href="manifest.json"> <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-<style>
+    <title>خدماتي - الدليل الجزائري الشامل للخدمات الرقمية</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
@@ -26,13 +27,17 @@
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; text-align: center; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
-        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 40px; }
-        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 13px; }
-        
-        /* تنسيق جدول الطقس المضاف ليتناسب مع شكل الموقع */
         .weather-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; text-align: center; }
         .weather-table td { padding: 5px 2px; border: 1px solid #f0f0f0; }
         .w-day { font-weight: bold; color: var(--blue-btn); padding-bottom: 2px; }
+        
+        /* تنسيق زر المشاركة */
+        .share-container { text-align: center; margin: 30px 0; }
+        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+        .btn-share:active { transform: scale(0.95); }
+        
+        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 20px; }
+        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -78,7 +83,7 @@
             <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
             <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح للانضمام إلى صفوف الجيش الوطني الشعبي لمختلف الفئات.</div>
+        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني لمختلف فئات الجيش الوطني الشعبي.</div>
     </div>
 
     <div class="card">
@@ -86,15 +91,7 @@
             <div class="card-info"><h4>منحة البطالة</h4></div>
             <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">التسجيل الأولي</a>
         </div>
-        <div class="card-description">منصة مخصصة لطالبي الشغل الراغبين في الاستفادة من منحة البطالة، تتيح لكم حجز موعد وإجراء التسجيل الأولي.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
-            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">منصة وسيط أونلاين تابعة للوكالة الوطنية للتشغيل تسمح للشباب بتسجيل طلبات العمل وتجديدها عن بُعد دون الحاجة للتنقل.</div>
+        <div class="card-description">منصة مخصصة لطالبي الشغل لحجز موعد وإجراء التسجيل الأولي للمنحة.</div>
     </div>
 
     <div class="section-title">السكن والتعليم</div>
@@ -104,7 +101,7 @@
             <div class="card-info"><h4>فضاء الأولياء</h4></div>
             <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية الذي يسمح للأولياء بمتابعة نتائج أبنائهم وكشف النقاط إلكترونياً.</div>
+        <div class="card-description">متابعة نتائج أبنائكم وكشف النقاط إلكترونياً.</div>
     </div>
 
     <div class="card">
@@ -112,33 +109,13 @@
             <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
             <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوكالة تطوير السكن وتحسينه، المخصص لمتابعة ملفات سكنات البيع بالإيجار والبرامج السكنية الجديدة.</div>
+        <div class="card-description">متابعة ملفات سكنات البيع بالإيجار والبرامج الجديدة.</div>
     </div>
 
-    <div class="section-title">الخدمات الموسمية والتكوين</div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>التكوين المهني</h4></div>
-            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني المتاحة في مختلف الولايات والقيام بالتسجيلات الأولية للمتربصين.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>أضحية العيد</h4></div>
-            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد تحت إشراف الجهات المعنية لضمان سلامة المواطنين.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>منصة مخيمي</h4></div>
-            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">منصة رقمية تابعة لوزارة الشباب والرياضة تسمح بتسجيل الأطفال والشباب للمشاركة في المخيمات الصيفية والرحلات الجبلية.</div>
+    <div class="share-container">
+        <button class="btn-share" onclick="shareApp()">
+            📢 شارك التطبيق مع أصدقائك
+        </button>
     </div>
 
     <footer>
@@ -148,13 +125,25 @@
 </div>
 
 <script>
+    // برمجة زر المشاركة
+    function shareApp() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'خدماتي - الدليل الجزائري',
+                text: 'أنصحك بتثبيت تطبيق خدماتي، دليل شامل للخدمات الرقمية في الجزائر (أسعار العملات، الصلاة، والوظائف):',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            alert("انسخ الرابط وشاركه: " + window.location.href);
+        }
+    }
+
     function updateLocationData() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
 
-                // جلب مواقيت الصلاة
                 fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
                 .then(res => res.json()).then(res => {
                     const t = res.data.timings;
@@ -167,7 +156,6 @@
                     document.getElementById('times-container').style.display = 'flex';
                 });
 
-                // جلب طقس الأسبوع
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
                 .then(res => res.json()).then(data => {
                     const daysLabel = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
@@ -179,9 +167,8 @@
                     }
                     document.getElementById('weather-forecast').innerHTML = rowDays + "</tr>" + rowTemps + "</tr>";
                 });
-
             }, () => { 
-                document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS لتحديث البيانات بدقة."; 
+                document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS لتحديث البيانات."; 
             });
         }
     }
