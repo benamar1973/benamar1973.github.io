@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خدماتي - الدليل الجزائري الشامل</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* تحسينات إضافية للتوافق مع الهاتف */
-        .weather-section { background: #eef6ff; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; border: 1px solid #d1e7ff; }
-        .update-date { font-size: 0.85rem; color: #666; margin-top: 5px; display: block; }
-        .service-card h4 { margin-bottom: 10px; color: #004a99; }
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* الحفاظ على نفس نمط التصميم الخاص بك مع إضافات بسيطة للطقس */
+        .forecast-container {
+            display: flex;
+            overflow-x: auto; /* للسماح بالتمرير الجانبي على الهاتف */
+            gap: 10px;
+            padding: 10px 0;
+            scrollbar-width: thin;
+        }
+        .forecast-item {
+            min-width: 80px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .forecast-item b { display: block; color: #007bff; }
+        .update-date { font-size: 12px; color: #888; display: block; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -20,47 +35,54 @@
 
     <main class="container">
         
-        <section class="weather-section" id="weather-area">
-            <div id="location-status">جاري تحديد موقعك لتحسين الدقة...</div>
-            <div id="weather-display"></div>
+        <section class="service-card">
+            <h4>🌤️ توقعات الطقس للأسبوع</h4>
+            <div id="location-name" style="font-size: 14px; color: #555; margin-bottom: 5px;">جاري تحديد الموقع...</div>
+            <div class="forecast-container" id="weather-forecast">
+                </div>
         </section>
 
         <section class="service-card">
-            <h4>📊 أسعار صرف العملات اليوم (السكوار)</h4>
+            <h4>📊 أسعار صرف العملات اليوم</h4>
             <table>
                 <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
                 <tr><td>الأورو (€)</td><td>282.00</td><td>280.00</td></tr>
                 <tr><td>الدولار ($)</td><td>239.00</td><td>237.00</td></tr>
             </table>
-            <span class="update-date">آخر تحديث للأسعار: 27 أفريل 2026</span>
+            <span class="update-date">آخر تحديث للسكوار: 27 أفريل 2026</span>
         </section>
 
         <section class="service-card">
-            <h4>🕌 مواقيت الصلاة</h4>
-            <div id="prayer-times">جاري جلب المواقيت حسب موقعك الحالي...</div>
+            <h4>🕌 مواقيت الصلاة (حسب موقعك)</h4>
+            <div id="prayer-times" style="font-weight: bold; line-height: 2;">جاري جلب المواقيت...</div>
         </section>
 
         <section class="services-grid">
             <div class="service-card">
                 <h4>تجنيد الجيش (MDN)</h4>
-                <p>الموقع الرسمي لوزارة الدفاع الوطني.</p>
+                <p>الموقع الرسمي لوزارة الدفاع الوطني لإيداع ملفات الترشح.</p>
                 <a href="https://preinscription.mdn.dz/" class="btn">سجل الآن</a>
             </div>
 
             <div class="service-card">
                 <h4>منحة البطالة</h4>
-                <p>منصة حجز موعد والتسجيل الأولي.</p>
+                <p>منصة مخصصة لطالبي الشغل لحجز موعد والتسجيل.</p>
                 <a href="https://minha.anem.dz/pre_inscription" class="btn">التسجيل الأولي</a>
             </div>
 
             <div class="service-card">
                 <h4>وكالة عدل (AADL 3)</h4>
-                <p>متابعة ملفات سكنات البيع بالإيجار.</p>
+                <p>المخصص لمتابعة ملفات سكنات البيع بالإيجار.</p>
                 <a href="https://www.aadl.dz/" class="btn">دخول</a>
+            </div>
+
+            <div class="service-card">
+                <h4>فضاء الأولياء</h4>
+                <p>نتائج الأبناء وكشف النقاط إلكترونياً.</p>
+                <a href="https://awlyaa.education.dz/login" class="btn">دخول</a>
             </div>
             
             </section>
-
     </main>
 
     <footer>
@@ -69,47 +91,49 @@
     </footer>
 
     <script>
-        // 1. تحديد موقع الهاتف وجلب الطقس والمواقيت
+        // دالة تحديد الموقع
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success, error);
+            navigator.geolocation.getCurrentPosition(pos => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                updateData(lat, lon);
+            }, () => updateData(36.75, 3.05)); // العاصمة كخيار افتراضي
         } else {
-            fallbackToDefault();
+            updateData(36.75, 3.05);
         }
 
-        async function success(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            document.getElementById('location-status').innerHTML = "📍 موقعك الحالي مفعل (النتائج دقيقة)";
-
-            // جلب الطقس
+        function updateData(lat, lon) {
             fetchWeather(lat, lon);
-            // جلب مواقيت الصلاة (بناءً على الإحداثيات)
             fetchPrayers(lat, lon);
         }
 
-        function error() {
-            document.getElementById('location-status').innerHTML = "⚠️ الموقع غير مفعل (يتم عرض توقيت العاصمة)";
-            fallbackToDefault();
-        }
-
-        function fallbackToDefault() {
-            fetchWeather(36.75, 3.05); // الجزائر العاصمة كافتراضي
-            fetchPrayers(36.75, 3.05);
-        }
-
-        // 2. دالة جلب الطقس
+        // جلب طقس أسبوع كامل
         async function fetchWeather(lat, lon) {
             try {
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Africa/Algiers`);
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Africa/Algiers`);
                 const data = await res.json();
-                const temp = Math.round(data.current_weather.temperature);
-                document.getElementById('weather-display').innerHTML = `<b>درجة الحرارة:</b> ${temp}°C | <b>الحالة:</b> مستقر`;
+                let html = '';
+                const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const dayName = i === 0 ? "اليوم" : days[date.getDay()];
+                    html += `
+                        <div class="forecast-item">
+                            <span>${dayName}</span>
+                            <b>${Math.round(data.daily.temperature_2m_max[i])}°</b>
+                            <small>${Math.round(data.daily.temperature_2m_min[i])}°</small>
+                        </div>
+                    `;
+                }
+                document.getElementById('weather-forecast').innerHTML = html;
+                document.getElementById('location-name').innerText = "📍 تم تحديث البيانات حسب موقعك الحالي";
             } catch (e) {
-                document.getElementById('weather-display').innerText = "خطأ في تحميل الطقس";
+                document.getElementById('weather-forecast').innerText = "خطأ في تحميل الطقس";
             }
         }
 
-        // 3. دالة جلب مواقيت الصلاة (تصحيح الدقة)
+        // جلب مواقيت الصلاة بدقة
         async function fetchPrayers(lat, lon) {
             try {
                 const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`);
@@ -119,7 +143,7 @@
                     الفجر: ${t.Fajr} | الظهر: ${t.Dhuhr} | العصر: ${t.Asr} | المغرب: ${t.Maghrib} | العشاء: ${t.Isha}
                 `;
             } catch (e) {
-                document.getElementById('prayer-times').innerText = "خطأ في تحميل المواقيت";
+                document.getElementById('prayer-times').innerText = "خطأ في التحميل";
             }
         }
     </script>
