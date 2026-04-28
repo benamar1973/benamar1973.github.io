@@ -9,68 +9,67 @@
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
-        
-        .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        header { text-align: center; margin-bottom: 20px; }
+        .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); font-size: 15px; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-header { display: flex; justify-content: space-between; align-items: center; }
-        
-        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 20px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #444; }
-
+        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 20px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #555; text-align: justify; }
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; border: none; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
-
-        /* تنسيق زر المشاركة كما في الصورة */
         .share-container { text-align: center; margin: 30px 0; }
-        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-share:hover { background-color: #1a252f; transform: scale(1.05); }
-
-        /* النوافذ المنبثقة */
+        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); }
         .modal-content { background: white; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; text-align: center; position: relative; }
         .close { position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #999; }
-        
-        footer { text-align: center; padding: 20px; margin-top: 30px; border-top: 1px solid #ddd; background: white; border-radius: 15px 15px 0 0; }
+        footer { text-align: center; padding: 20px; margin-top: 30px; border-top: 1px solid #ddd; background: white; }
         footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; cursor: pointer; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header style="text-align: center; margin-bottom: 20px;">
+    <header>
         <h2>خدماتي</h2>
         <p style="font-size: 12px; color: #666;">الدليل الشامل للخدمات الرقمية في الجزائر</p>
     </header>
 
-    <!-- قسم التشغيل -->
-    <div class="section-title">التشغيل ومنحة البطالة</div>
-    <div class="card">
-        <div class="card-header">
-            <h4>منحة البطالة (ANEM)</h4>
-            <a href="https://minha.anem.dz/" class="btn btn-green">سجل الآن</a>
-        </div>
-    </div>
-    <div class="seo-article">
-        تعد منحة البطالة مبادرة هامة لدعم الشباب الجزائري الباحث عن عمل لأول مرة. التسجيل متاح عبر منصة الوكالة الوطنية للتشغيل ويخضع لشروط دقيقة تضمن وصول الدعم لمستحقيه الفعليين.
-    </div>
+    <!-- الدفاع والتشغيل -->
+    <div class="section-title">الدفاع والتشغيل</div>
+    
+    <div class="card"><div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div></div>
+    <div class="seo-article">تعتبر منصة التجنيد التابعة لوزارة الدفاع الوطني البوابة الرسمية للشباب الراغب في الانضمام للجيش. تتيح المنصة تسجيل الضباط وضباط الصف والجنود إلكترونياً لضمان الشفافية.</div>
 
-    <!-- قسم السكن -->
-    <div class="section-title">السكن والتعمير</div>
-    <div class="card">
-        <div class="card-header">
-            <h4>وكالة عدل (AADL 3)</h4>
-            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
-        </div>
-    </div>
-    <div class="seo-article">
-        موقع وكالة عدل الرسمي هو البوابة الوحيدة لمتابعة ملفات السكن بصيغة البيع بالإيجار. يتيح الموقع للمكتتبين دفع الأشطر الشهرية واختيار المواقع السكنية بكل سهولة.
-    </div>
+    <div class="card"><div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/" class="btn btn-green">التسجيل الأولي</a></div></div>
+    <div class="seo-article">منحة البطالة هي دعم للشباب الباحث عن عمل لأول مرة. التسجيل يتطلب سن 19-40 سنة والتسجيل المسبق في وكالة ANEM كطالب عمل نشط.</div>
 
-    <!-- زر المشاركة (تم إرجاعه هنا) -->
+    <div class="card"><div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">نظام وسيط أونلاين يتيح للعمال والبطالين تجديد طلبات العمل كل 6 أشهر والاطلاع على عروض الشغل المتوفرة في القطاعين العام والخاص.</div>
+
+    <!-- السكن والتعليم -->
+    <div class="section-title">السكن والتعليم</div>
+
+    <div class="card"><div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/" class="btn btn-blue">دخول</a></div></div>
+    <div class="seo-article">فضاء الأولياء هو نظام معلوماتي يسمح للآباء بمتابعة نتائج أبنائهم المدرسية، كشوف النقاط، والغيابات عبر الإنترنت دون التنقل للمؤسسة التربوية.</div>
+
+    <div class="card"><div class="card-header"><h4>وكالة عدل (AADL 3)</h4><a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a></div></div>
+    <div class="seo-article">منصة سكنات عدل تتيح للمكتتبين متابعة وضعية ملفاتهم، اختيار المواقع السكنية، وتحميل أوامر الدفع الخاصة بالأشطر المالية السنوية.</div>
+
+    <!-- الخدمات الموسمية والتكوين -->
+    <div class="section-title">الخدمات الموسمية والتكوين</div>
+
+    <div class="card"><div class="card-header"><h4>التكوين المهني</h4><a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">منصة مهنتي توفر دليلاً كاملاً لتخصصات التكوين المهني المتاحة، حيث يمكن للراغبين في تعلم حرفة جديدة التسجيل إلكترونياً واختيار المركز المناسب.</div>
+
+    <div class="card"><div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">منصة أضحية تهدف لتنظيم عملية بيع الأضاحي بأسعار مدروسة مباشرة من المربين، مما يساهم في توفير اللحوم بأسعار تنافسية خلال عيد الأضحى.</div>
+
+    <div class="card"><div class="card-header"><h4>منصة مخيمي</h4><a href="https://youthcamp.mjeunesse.gov.dz/" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">منصة مخيمي مخصصة لتسجيل الأطفال في المخيمات الصيفية والرحلات، وهي تابعة لوزارة الشباب والرياضة لتنظيم العطل الصيفية لأبناء المناطق البعيدة.</div>
+
+    <!-- زر المشاركة -->
     <div class="share-container">
-        <button class="btn-share" onclick="shareApp()">
-            📢 شارك التطبيق مع أصدقائك
-        </button>
+        <button class="btn-share" onclick="shareApp()">📢 شارك التطبيق مع أصدقائك</button>
     </div>
 
     <footer>
@@ -81,54 +80,20 @@
     </footer>
 </div>
 
-<!-- نافذة اتصل بنا -->
-<div id="contactModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="toggleModal('contactModal')">&times;</span>
-        <h3>تواصل معنا</h3>
-        <p style="font-size: 14px; color: #666;">نحن نسعد باستقبال استفساراتكم</p>
-        <div style="text-align: right; margin-top: 15px; padding: 10px; background: #f9f9f9; border-radius: 10px;">
-            <p>📧 الإيميل: mustaphabenamar40@gmail.com</p>
-            <p>📱 واتساب: <a href="https://wa.me/213558284458" style="color: #25d366; text-decoration: none; font-weight: bold;">0558284458</a></p>
-        </div>
-    </div>
-</div>
-
-<!-- نافذة من نحن -->
-<div id="aboutModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="toggleModal('aboutModal')">&times;</span>
-        <h3>حول "خدماتي"</h3>
-        <p style="font-size: 14px; line-height: 1.6;">تطبيق خدماتي هو دليل رقمي يهدف لتسهيل وصول المواطن الجزائري للمنصات الحكومية الرسمية، تم تطويره بواسطة هزيل بن عمر لتقديم محتوى إرشادي موثوق.</p>
-    </div>
-</div>
+<!-- نوافذ المعلومات -->
+<div id="contactModal" class="modal"><div class="modal-content"><span class="close" onclick="toggleModal('contactModal')">&times;</span><h3>تواصل معنا</h3><p>📧 mustaphabenamar40@gmail.com</p><p>📱 0558284458</p></div></div>
+<div id="aboutModal" class="modal"><div class="modal-content"><span class="close" onclick="toggleModal('aboutModal')">&times;</span><h3>من نحن</h3><p>دليل رقمي شامل لتسهيل الوصول للمنصات الرسمية الجزائرية.</p></div></div>
 
 <script>
-    // وظيفة المشاركة
     function shareApp() {
         if (navigator.share) {
-            navigator.share({
-                title: 'تطبيق خدماتي',
-                text: 'أنصحك باستخدام تطبيق خدماتي للوصول لكل المنصات الرقمية في الجزائر:',
-                url: window.location.href
-            }).catch(console.error);
-        } else {
-            alert("انسخ الرابط وشاركه: " + window.location.href);
+            navigator.share({ title: 'خدماتي', text: 'الدليل الجزائري الشامل:', url: window.location.href });
         }
     }
-
-    // وظيفة فتح وإغلاق النوافذ
     function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.style.display = (modal.style.display === "block") ? "none" : "block";
-    }
-
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') {
-            event.target.style.display = "none";
-        }
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display === "block") ? "none" : "block";
     }
 </script>
-
 </body>
 </html>
