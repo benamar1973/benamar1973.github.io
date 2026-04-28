@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- Google tag (gtag.js) - تمت إضافته بناءً على الصورة 17774163914595267156942080351720_5f8670.jpg -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBKREYJ7X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FDBKREYJ7X');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خدماتي - الدليل الجزائري الشامل</title>
@@ -9,33 +18,24 @@
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
-        
-        /* أدوات السعر والطقس والصلاة */
         .widget-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table, .weather-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; }
         .exchange-table th { color: #777; border-bottom: 1px solid #eee; padding: 5px; }
         .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: center; }
         .prayer-grid { display: flex; justify-content: space-around; gap: 5px; margin-top: 10px; font-size: 11px; }
         .prayer-item { background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; flex: 1; }
-
-        /* الأقسام والمقالات */
         .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); }
         .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-header { display: flex; justify-content: space-between; align-items: center; }
         .card-header h4 { margin: 0; font-size: 15px; }
         .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 25px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #444; text-align: justify; }
-
-        /* الأزرار */
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; border: none; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
         .btn-share { background-color: #2c3e50; color: white; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; margin: 20px 0; }
-
-        /* النوافذ */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
         .modal-content { background: white; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; text-align: center; position: relative; }
         .close { position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #999; }
-        
         footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 30px; }
         footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; cursor: pointer; font-size: 13px; }
     </style>
@@ -45,12 +45,12 @@
 <div class="container">
     <header style="text-align: center; margin-bottom: 20px;">
         <h2>خدماتي</h2>
-        <p style="font-size: 12px; color: #666;">الدليل الجزائري الشامل للمنصات الرقمية</p>
+        <p style="font-size: 12px; color: #666;">بوابتك الشاملة للمنصات الرقمية الجزائرية</p>
     </header>
 
-    <!-- سعر الصرف -->
+    <!-- أدوات الصرف والصلاة والطقس -->
     <div class="widget-card">
-        <h4 style="margin: 0 0 10px 0; text-align: center;">📊 أسعار الصرف اليوم</h4>
+        <h4 style="margin: 0 0 10px 0; text-align: center;">📊 أسعار الصرف</h4>
         <table class="exchange-table">
             <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
             <tr><td>الأورو (€)</td><td style="color:green; font-weight:bold;">282.00</td><td style="color:red; font-weight:bold;">280.00</td></tr>
@@ -58,9 +58,8 @@
         </table>
     </div>
 
-    <!-- مواقيت الصلاة -->
     <div class="prayer-section">
-        <div id="p-status">تحديد الموقع للمواقيت...</div>
+        <div id="p-status">تحديد الموقع...</div>
         <div class="prayer-grid">
             <div class="prayer-item">الفجر<br><span id="f">--:--</span></div>
             <div class="prayer-item">الظهر<br><span id="d">--:--</span></div>
@@ -70,60 +69,29 @@
         </div>
     </div>
 
-    <!-- الطقس -->
     <div class="widget-card">
         <h4 style="margin: 0 0 10px 0; text-align: center;">🌤️ طقس الأسبوع</h4>
         <table class="weather-table" id="w-table"><tr><td>جاري التحميل...</td></tr></table>
     </div>
 
-    <!-- الروابط مع المقالات (تعديل الروابط المباشرة) -->
+    <!-- قائمة الخدمات المحدثة بالروابط المباشرة -->
     <div class="section-title">التوظيف والدفاع</div>
-    
-    <div class="card">
-        <div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">بوابة التجنيد بوزارة الدفاع الوطني هي المنصة الرقمية المخصصة لاستقبال طلبات الشباب الجزائري الراغب في الانضمام للجيش الوطني الشعبي في مختلف الرتب والمستويات.</div>
+    <div class="card"><div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div></div>
+    <div class="seo-article">بوابة التجنيد التابعة لوزارة الدفاع الوطني.</div>
 
-    <div class="card">
-        <div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">التسجيل الأولي في منحة البطالة يتم عبر المنصة المخصصة لضبط المواعيد للمقابلة. يجب توفر شروط السن (19-40) وعدم وجود أي تأمين اجتماعي أو دخل سابق للمتقدم.</div>
+    <div class="card"><div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">المنصة الرسمية للتسجيل في منحة البطالة الجزائرية.</div>
 
-    <div class="card">
-        <div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">من خلال رابط التسجيل المباشر في نظام وسيط، يمكن لطالبي الشغل إنشاء حساباتهم وتحميل سيرهم الذاتية لربطهم بفرص العمل المتاحة وتجديد وضعيتهم القانونية كطالبي شغل.</div>
+    <div class="card"><div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">تجديد طلبات العمل والاشتراك في نظام وسيط التابع للوكالة الوطنية للتشغيل.</div>
 
     <div class="section-title">السكن والتعليم</div>
+    <div class="card"><div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a></div></div>
+    <div class="seo-article">متابعة المسار الدراسي وكشوف النقاط عبر وزارة التربية الوطنية.</div>
 
-    <div class="card">
-        <div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a></div>
-    </div>
-    <div class="seo-article">يمكن للأولياء تسجيل الدخول لفضاء الأولياء لمتابعة نقاط أبنائهم، استخراج كشوف النقاط، والحصول على التنبيهات المدرسية بشكل دوري وسريع عبر حسابهم الخاص.</div>
+    <div class="card"><div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a></div></div>
+    <div class="seo-article">التسجيل لشراء أضاحي العيد من نقاط البيع المعتمدة.</div>
 
-    <div class="card">
-        <div class="card-header"><h4>وكالة عدل (AADL 3)</h4><a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a></div>
-    </div>
-    <div class="seo-article">تتابع وكالة عدل مشاريع البيع بالإيجار وتوفر للمكتتبين إمكانية دفع الأقساط الشهرية وتحميل شهادات التخصيص والمواقع السكنية المخصصة لهم.</div>
-
-    <div class="section-title">التكوين والخدمات</div>
-
-    <div class="card">
-        <div class="card-header"><h4>التكوين المهني</h4><a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">دليل التكوين المهني "مهنتي" يوفر كافة التخصصات المطلوبة في سوق الشغل، مع إتاحة التسجيل الأولي إلكترونياً لجميع المستويات الدراسية.</div>
-
-    <div class="card">
-        <div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">منصة أضحية تفتح باب التسجيل للمواطنين والموالين لتنظيم عملية البيع المباشر للأضاحي بأسعار مدروسة وبإشراف السلطات المختصة لضمان الجودة والسعر.</div>
-
-    <div class="card">
-        <div class="card-header"><h4>منصة مخيمي</h4><a href="https://youthcamp.mjeunesse.gov.dz/" class="btn btn-green">سجل الآن</a></div>
-    </div>
-    <div class="seo-article">مخيمي هي المنصة الرسمية لوزارة الشباب والرياضة لتسجيل الأطفال في المخيمات الصيفية والرحلات التربوية الترفيهية عبر مختلف ولايات الساحل الجزائري.</div>
-
-    <!-- زر المشاركة -->
     <div style="text-align: center;">
         <button class="btn-share" onclick="shareApp()">📢 شارك التطبيق مع أصدقائك</button>
     </div>
@@ -136,10 +104,10 @@
     </footer>
 </div>
 
-<!-- النوافذ -->
+<!-- النوافذ المنبثقة -->
 <div id="contactM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('contactM')">&times;</span><h3>تواصل معنا</h3><p>📧 mustaphabenamar40@gmail.com</p><p>📱 0558284458</p></div></div>
-<div id="aboutM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('aboutM')">&times;</span><h3>من نحن</h3><p>دليل رقمي يسهل الوصول للمنصات الحكومية الرسمية في الجزائر.</p></div></div>
-<div id="privacyM" class="modal"><div class="modal-content" style="text-align:right;"><h3>سياسة الخصوصية</h3><p>نحن نحترم خصوصيتك ونستخدم ملفات تعريف الارتباط لعرض إعلانات مناسبة لاهتماماتك عبر جوجل آدسينس.</p><button onclick="closeM('privacyM')">إغلاق</button></div></div>
+<div id="aboutM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('aboutM')">&times;</span><h3>من نحن</h3><p>دليل رقمي لتسهيل الوصول للمنصات الجزائرية الرسمية.</p></div></div>
+<div id="privacyM" class="modal"><div class="modal-content" style="text-align:right;"><span class="close" onclick="closeM('privacyM')">&times;</span><h3>سياسة الخصوصية</h3><p>نحن نحترم خصوصيتك ونستخدم ملفات تعريف الارتباط لتحسين تجربتك وقياس أداء الموقع عبر Google Analytics.</p></div></div>
 
 <script>
     function showM(id) { document.getElementById(id+'M').style.display = 'block'; }
@@ -155,7 +123,7 @@
                     const t = d.data.timings;
                     document.getElementById('f').innerText = t.Fajr; document.getElementById('d').innerText = t.Dhuhr;
                     document.getElementById('a').innerText = t.Asr; document.getElementById('m').innerText = t.Maghrib;
-                    document.getElementById('i').innerText = t.Isha; document.getElementById('p-status').innerText = "مواقيت الصلاة الآن:";
+                    document.getElementById('i').innerText = t.Isha; document.getElementById('p-status').innerText = "مواقيت الصلاة لموقعك:";
                 });
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
                 .then(r => r.json()).then(data => {
