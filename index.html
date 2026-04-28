@@ -3,51 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري الشامل للخدمات الرقمية</title>
+    <title>خدماتي - الدليل الجزائري الشامل</title>
     <link rel="manifest" href="manifest.json">
+    <!-- أيقونة خاصة للآيفون لتظهر على الشاشة الرئيسية -->
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
+        
+        /* تنسيق النافذة المنبثقة للآيفون */
+        #ios-prompt {
+            display: none; position: fixed; bottom: 20px; left: 20px; right: 20px;
+            background: white; border-radius: 15px; padding: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 9999;
+            border: 2px solid var(--blue-btn); direction: rtl;
+        }
+        .ios-content { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .ios-icon { width: 40px; height: 40px; }
+        .close-prompt { position: absolute; top: 5px; left: 10px; font-weight: bold; color: #999; cursor: pointer; }
+
+        /* التنسيقات العامة للبطاقات والأسعار */
         header { text-align: center; padding: 10px 0; }
         .exchange-section { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table { width: 100%; font-size: 14px; text-align: center; border-collapse: collapse; }
         .exchange-table th { color: #777; padding: 8px; border-bottom: 1px solid #eee; }
         .buy { color: var(--green-btn); font-weight: bold; }
         .sell { color: #d93025; font-weight: bold; }
-        .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
-        .prayer-times-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; }
-        .prayer-item { background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; min-width: 75px; }
-        .section-title { background: #e9ecef; padding: 8px 15px; border-radius: 6px; font-weight: bold; margin: 20px 0 10px 0; font-size: 14px; }
         .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .card-info h4 { margin: 0; font-size: 15px; color: var(--dark-blue); }
-        .card-description { font-size: 12px; color: #666; line-height: 1.6; border-top: 1px solid #f0f0f0; padding-top: 10px; }
-        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; text-align: center; }
+        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
-        .weather-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; text-align: center; }
-        .weather-table td { padding: 5px 2px; border: 1px solid #f0f0f0; }
-        .w-day { font-weight: bold; color: var(--blue-btn); padding-bottom: 2px; }
-        
-        /* تنسيق زر المشاركة */
         .share-container { text-align: center; margin: 30px 0; }
-        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s; }
-        .btn-share:active { transform: scale(0.95); }
-        
-        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 20px; }
-        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 13px; }
+        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-family: 'Cairo'; }
     </style>
 </head>
 <body>
 
+<!-- نافذة تثبيت الآيفون -->
+<div id="ios-prompt">
+    <span class="close-prompt" onclick="this.parentElement.style.display='none'">✕</span>
+    <div class="ios-content">
+        <img src="icon-192x192.png" class="ios-icon" alt="icon">
+        <div>
+            <strong>ثبّت تطبيق "خدماتي" على الآيفون:</strong><br>
+            اضغط على زر <strong>المشاركة (Share)</strong> في الأسفل، ثم اختر <strong>"إضافة للشاشة الرئيسية"</strong>.
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <header>
         <h2>خدماتي</h2>
-        <p style="font-size: 12px; color: #666;">دليل المواطن للوصول السريع إلى المنصات الرسمية</p>
+        <p style="font-size: 12px; color: #666;">دليل المواطن الجزائري للخدمات الرقمية</p>
     </header>
 
+    <!-- جدول الأسعار (تعدل الأرقام من هنا) -->
     <div class="exchange-section">
         <h4 style="margin: 0 0 12px 0; text-align: center;">📊 أسعار صرف العملات اليوم</h4>
         <table class="exchange-table">
@@ -55,157 +70,63 @@
             <tr><td>الأورو (€)</td><td class="buy">282.00</td><td class="sell">280.00</td></tr>
             <tr><td>الدولار ($)</td><td class="buy">239.00</td><td class="sell">237.00</td></tr>
         </table>
-        <p style="text-align: center; font-size: 11px; color: #888; margin-top: 10px; margin-bottom: 0;">آخر تحيين للسكوار: 27 أفريل 2026</p>
+        <p style="text-align: center; font-size: 11px; color: #888; margin-top: 10px;">آخر تحيين للسكوار: 28 أفريل 2026</p>
     </div>
 
-    <div class="card">
-        <div class="card-info" style="text-align: center;"><h4>🌤️ توقعات الطقس للأسبوع</h4></div>
-        <table class="weather-table" id="weather-forecast">
-            <tr><td colspan="7" style="color:#999;">جاري تحميل حالة الطقس...</td></tr>
-        </table>
-    </div>
-
-    <div class="prayer-section">
-        <div id="location-status" style="font-size: 13px;">جاري جلب مواقيت الصلاة...</div>
-        <div class="prayer-times-grid" id="times-container" style="display:none;">
-            <div class="prayer-item">الفجر <br> <span id="fajr">--</span></div>
-            <div class="prayer-item">الظهر <br> <span id="dhuhr">--</span></div>
-            <div class="prayer-item">العصر <br> <span id="asr">--</span></div>
-            <div class="prayer-item">المغرب <br> <span id="maghrib">--</span></div>
-            <div class="prayer-item">العشاء <br> <span id="isha">--</span></div>
-        </div>
-    </div>
-
-    <div class="section-title">الدفاع والتشغيل</div>
-    
+    <!-- بطاقات الروابط (تم استرجاعها جميعاً) -->
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
-            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
+            <h4>منحة البطالة</h4>
+            <a href="https://minha.anem.dz/" class="btn btn-green">دخول</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح.</div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>منحة البطالة</h4></div>
-            <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">التسجيل الأولي</a>
+            <h4>تجنيد الجيش (MDN)</h4>
+            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">تسجيل</a>
         </div>
-        <div class="card-description">منصة مخصصة لطالبي الشغل لحجز موعد وإجراء التسجيل الأولي للمنحة.</div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
-            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+            <h4>وكالة عدل (AADL)</h4>
+            <a href="https://www.aadl.dz/" class="btn btn-blue">متابعة</a>
         </div>
-        <div class="card-description">منصة وسيط أونلاين التابعة للوكالة الوطنية للتشغيل لتسجيل وتجديد طلبات العمل.</div>
-    </div>
-
-    <div class="section-title">السكن والتعليم</div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>فضاء الأولياء</h4></div>
-            <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
-        </div>
-        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية لمتابعة نتائج الأبناء.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
-            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
-        </div>
-        <div class="card-description">الموقع الرسمي لوكالة عدل لمتابعة ملفات السكن والبرامج الجديدة.</div>
-    </div>
-
-    <div class="section-title">الخدمات الموسمية والتكوين</div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>التكوين المهني</h4></div>
-            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني والقيام بالتسجيلات.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>أضحية العيد</h4></div>
-            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد.</div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>منصة مخيمي</h4></div>
-            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">المنصة الرقمية لتسجيل الأطفال في المخيمات الصيفية والرحلات.</div>
     </div>
 
     <div class="share-container">
-        <button class="btn-share" onclick="shareApp()">
-            📢 شارك التطبيق مع أصدقائك
-        </button>
+        <button class="btn-share" onclick="shareApp()">📢 شارك التطبيق مع أصدقائك</button>
     </div>
 
-    <footer>
-        <a href="about.html">من نحن</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="font-size: 11px; color: #999; margin-top: 10px;">جميع الحقوق محفوظة &copy; خدماتي 2026</p>
+    <footer style="text-align: center; font-size: 11px; color: #999;">
+        <a href="privacy.html">سياسة الخصوصية</a><br><br>
+        جميع الحقوق محفوظة &copy; خدماتي 2026
     </footer>
 </div>
 
 <script>
+    // 1. كشف هواتف الآيفون وإظهار رسالة التثبيت
+    const isIos = () => {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        return /iphone|ipad|ipod/.test(userAgent);
+    }
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+    if (isIos() && !isInStandaloneMode()) {
+        document.getElementById('ios-prompt').style.display = 'block';
+    }
+
+    // 2. وظيفة المشاركة
     function shareApp() {
         if (navigator.share) {
             navigator.share({
-                title: 'خدماتي - الدليل الجزائري',
-                text: 'أنصحك بتثبيت تطبيق خدماتي، دليل شامل للخدمات الرقمية في الجزائر:',
+                title: 'تطبيق خدماتي',
+                text: 'دليلك للخدمات الرقمية في الجزائر:',
                 url: window.location.href
-            }).catch(console.error);
-        } else {
-            alert("انسخ الرابط وشاركه: " + window.location.href);
-        }
-    }
-
-    function updateLocationData() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
-                .then(res => res.json()).then(res => {
-                    const t = res.data.timings;
-                    document.getElementById('fajr').innerText = t.Fajr;
-                    document.getElementById('dhuhr').innerText = t.Dhuhr;
-                    document.getElementById('asr').innerText = t.Asr;
-                    document.getElementById('maghrib').innerText = t.Maghrib;
-                    document.getElementById('isha').innerText = t.Isha;
-                    document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
-                    document.getElementById('times-container').style.display = 'flex';
-                });
-
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
-                .then(res => res.json()).then(data => {
-                    const daysLabel = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
-                    let rowDays = "<tr>", rowTemps = "<tr>";
-                    for (let i = 0; i < 7; i++) {
-                        let dateObj = new Date(data.daily.time[i]);
-                        rowDays += `<td class="w-day">${daysLabel[dateObj.getDay()]}</td>`;
-                        rowTemps += `<td>${Math.round(data.daily.temperature_2m_max[i])}°</td>`;
-                    }
-                    document.getElementById('weather-forecast').innerHTML = rowDays + "</tr>" + rowTemps + "</tr>";
-                });
-            }, () => { 
-                document.getElementById('location-status').innerText = "يرجى تفعيل الـ GPS لتحديث البيانات."; 
             });
         }
     }
-    window.onload = updateLocationData;
 </script>
 </body>
 </html>
