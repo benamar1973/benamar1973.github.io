@@ -10,119 +10,105 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; line-height: 1.6; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
         
-        /* التنبيهات والنوافذ */
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); }
-        .modal-content { background-color: white; margin: 15% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 450px; text-align: center; position: relative; animation: slideIn 0.3s; }
-        @keyframes slideIn { from {transform: translateY(-30px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+        /* النوافذ والطقس */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .info-card { background: white; padding: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
+        .prayer-time { font-size: 11px; color: var(--blue-btn); font-weight: bold; }
+
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); }
+        .modal-content { background: white; margin: 15% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 450px; text-align: center; position: relative; }
         .close { position: absolute; left: 15px; top: 10px; font-size: 28px; cursor: pointer; color: #999; }
-        
-        /* الهيدر والعملات */
-        header { text-align: center; padding: 15px 0; border-bottom: 2px solid #eee; margin-bottom: 20px; }
-        .exchange-section { background: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        header { text-align: center; padding: 10px 0; border-bottom: 2px solid #ddd; margin-bottom: 15px; }
+        .exchange-section { background: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table { width: 100%; text-align: center; border-collapse: collapse; }
         .buy { color: var(--green-btn); font-weight: bold; }
         .sell { color: #d93025; font-weight: bold; }
 
-        /* البطاقات */
-        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; }
-        .card h4 { margin: 0; font-size: 15px; color: var(--dark-blue); }
-        .btn { padding: 8px 15px; border-radius: 8px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; transition: opacity 0.2s; }
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 8px 15px; border-radius: 8px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
-        .btn:active { opacity: 0.8; }
 
-        .contact-link { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; margin: 10px 0; background: #f8f9fa; border-radius: 10px; text-decoration: none; color: var(--dark-blue); font-weight: bold; }
-        footer { text-align: center; padding: 25px; font-size: 13px; color: #777; margin-top: 20px; border-top: 1px solid #ddd; }
+        footer { text-align: center; padding: 20px; font-size: 13px; color: #777; border-top: 1px solid #ddd; margin-top: 20px; }
         footer a { color: var(--blue-btn); text-decoration: none; font-weight: bold; cursor: pointer; margin: 0 5px; }
     </style>
 </head>
 <body>
 
-<!-- نافذة من نحن -->
-<div id="aboutModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('aboutModal')">&times;</span>
-        <h3>حول تطبيق خدماتي</h3>
-        <p style="text-align: justify; font-size: 14px; color: #555;">
-            <strong>خدماتي</strong> هو دليل رقمي شامل، يهدف إلى تسهيل وصول المواطنين الجزائريين إلى المنصات الرسمية والخدمات الإلكترونية في مكان واحد، مع تحديثات يومية لأسعار الصرف.
-        </p>
-    </div>
-</div>
-
-<!-- نافذة اتصل بنا -->
-<div id="contactModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('contactModal')">&times;</span>
-        <h3>تواصل معنا</h3>
-        <a href="mailto:mustaphabenamar40@gmail.com" class="contact-link">📧 البريد الإلكتروني</a>
-        <a href="https://wa.me/213558284458" class="contact-link" style="color: #25D366; border: 1px solid #25D366;">💬 واتساب (0558284458)</a>
-        <p style="font-size: 12px; margin-top: 20px; color: #999;">اسم المطور: هزيل بن عمر</p>
-    </div>
-</div>
-
 <div class="container">
     <header>
-        <h1 style="margin:0; color:var(--dark-blue);">خدماتي</h1>
-        <p style="font-size: 13px; color: #666;">بوابتك للخدمات الرقمية الجزائرية</p>
+        <h1 style="margin:0;">خدماتي</h1>
+        <p style="font-size: 12px; color:#666;">بوابتك الرقمية للخدمات الجزائرية</p>
     </header>
+
+    <!-- قسم الطقس والصلاة (تلقائي) -->
+    <div class="info-grid">
+        <div class="info-card" id="weather-box">
+            <h5 style="margin:0;">⛅ الطقس</h5>
+            <p id="temp" style="font-size: 18px; margin:5px 0; font-weight:bold;">...</p>
+            <span id="city" style="font-size: 10px; color:#888;">جاري التحديد...</span>
+        </div>
+        <div class="info-card">
+            <h5 style="margin:0;">🕋 الصلاة القادمة</h5>
+            <p id="next-prayer" style="font-size: 18px; margin:5px 0; font-weight:bold; color:var(--green-btn);">...</p>
+            <span id="prayer-city" style="font-size: 10px; color:#888;">الجزائر</span>
+        </div>
+    </div>
 
     <!-- أسعار العملات -->
     <div class="exchange-section">
-        <h4 style="text-align: center; margin-bottom: 10px;">📊 أسعار السكوار اليوم</h4>
+        <h4 style="margin:0 0 10px 0; text-align:center;">📊 أسعار السكوار</h4>
         <table class="exchange-table">
             <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
             <tr><td>الأورو (€)</td><td class="buy">282.00</td><td class="sell">280.00</td></tr>
             <tr><td>الدولار ($)</td><td class="buy">239.00</td><td class="sell">237.00</td></tr>
         </table>
-        <p style="text-align: center; font-size: 10px; color: #999; margin-top: 10px;">آخر تحديث: 28 أفريل 2026</p>
     </div>
 
-    <!-- قائمة جميع الروابط -->
-    <div class="card">
-        <h4>منحة البطالة</h4>
-        <a href="https://minha.anem.dz/" class="btn btn-green">فتح الموقع</a>
-    </div>
-
-    <div class="card">
-        <h4>تجنيد الجيش (MDN)</h4>
-        <a href="https://preinscription.mdn.dz/" class="btn btn-blue">تسجيل</a>
-    </div>
-
-    <div class="card">
-        <h4>وكالة عدل (AADL)</h4>
-        <a href="https://www.aadl.dz/" class="btn btn-blue">متابعة</a>
-    </div>
-
-    <div class="card">
-        <h4>نتائج البكالوريا (BAC)</h4>
-        <a href="https://bac.onec.dz/" class="btn btn-green">النتائج</a>
-    </div>
-
-    <div class="card">
-        <h4>فواتير سونلغاز</h4>
-        <a href="https://www.sonelgaz.dz/" class="btn btn-blue">دفع</a>
-    </div>
-
-    <div class="card">
-        <h4>بريد الجزائر (E-CCP)</h4>
-        <a href="https://eccp.poste.dz/" class="btn btn-blue">كشف الحساب</a>
-    </div>
+    <!-- الروابط -->
+    <div class="card"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/" class="btn btn-green">فتح</a></div>
+    <div class="card"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">فتح</a></div>
+    <div class="card"><h4>وكالة عدل (AADL)</h4><a href="https://www.aadl.dz/" class="btn btn-blue">فتح</a></div>
+    <div class="card"><h4>بريد الجزائر (E-CCP)</h4><a href="https://eccp.poste.dz/" class="btn btn-blue">فتح</a></div>
+    <div class="card"><h4>فواتير سونلغاز</h4><a href="https://www.sonelgaz.dz/" class="btn btn-green">فتح</a></div>
+    <div class="card"><h4>نتائج البكالوريا (BAC)</h4><a href="https://bac.onec.dz/" class="btn btn-green">فتح</a></div>
 
     <footer>
         <a onclick="openModal('aboutModal')">من نحن</a> | 
         <a onclick="openModal('contactModal')">اتصل بنا</a> | 
-        <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="margin-top: 15px;">جميع الحقوق محفوظة &copy; خدماتي 2026</p>
+        <a href="privacy.html">الخصوصية</a>
+        <p style="margin-top:10px;">جميع الحقوق محفوظة &copy; هزيل بن عمر 2026</p>
     </footer>
 </div>
+
+<!-- النوافذ -->
+<div id="aboutModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('aboutModal')">&times;</span><h3>حول خدماتي</h3><p>دليل رقمي جزائري شامل للمواطن.</p></div></div>
+<div id="contactModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('contactModal')">&times;</span><h3>تواصل معنا</h3><p>Email: mustaphabenamar40@gmail.com</p><p>WhatsApp: 0558284458</p><p style="font-size:12px;">المطور: هزيل بن عمر</p></div></div>
 
 <script>
     function openModal(id) { document.getElementById(id).style.display = "block"; }
     function closeModal(id) { document.getElementById(id).style.display = "none"; }
-    window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
+
+    // جلب الطقس (الجزائر كمثال افتراضي)
+    async function getInfo() {
+        try {
+            // طقس افتراضي للجزائر
+            const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.75&longitude=3.04&current_weather=true');
+            const weatherData = await weatherRes.json();
+            document.getElementById('temp').innerText = Math.round(weatherData.current_weather.temperature) + "°C";
+            document.getElementById('city').innerText = "الجزائر العاصمة";
+
+            // صلاة افتراضية
+            const prayerRes = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Algiers&country=Algeria&method=3');
+            const prayerData = await prayerRes.json();
+            document.getElementById('next-prayer').innerText = "الظهر " + prayerData.data.timings.Dhuhr;
+        } catch (e) { console.log("Error loading data"); }
+    }
+    getInfo();
 </script>
 </body>
 </html>
