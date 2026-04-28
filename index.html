@@ -25,11 +25,9 @@
         .card-info h4 { margin: 0; font-size: 15px; color: var(--dark-blue); }
         .card-description { font-size: 12px; color: #666; line-height: 1.6; border-top: 1px solid #f0f0f0; padding-top: 10px; }
         
-        /* تنسيق المقالات الإضافية لجوجل */
-        .seo-article { background: #fff; padding: 15px; border-radius: 10px; margin-top: 20px; border-right: 4px solid var(--blue-btn); }
-        .seo-article h3 { font-size: 16px; color: var(--dark-blue); margin-top: 0; }
-        .seo-article p { font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 0; }
-
+        /* فقرات تحسين محرك البحث لجوجل أدسنس */
+        .seo-content { font-size: 13px; color: #555; line-height: 1.8; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-right: 4px solid var(--blue-btn); }
+        
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; text-align: center; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
@@ -50,7 +48,7 @@
         <p style="font-size: 12px; color: #666;">دليل المواطن للوصول السريع إلى المنصات الرسمية</p>
     </header>
 
-    <!-- قسم الصرف والطقس والصلاة (كما هو في كودك) -->
+    <!-- أسعار العملات -->
     <div class="exchange-section">
         <h4 style="margin: 0 0 12px 0; text-align: center;">📊 أسعار صرف العملات اليوم</h4>
         <table class="exchange-table">
@@ -61,6 +59,7 @@
         <p style="text-align: center; font-size: 11px; color: #888; margin-top: 10px; margin-bottom: 0;">آخر تحيين للسكوار: 28 أفريل 2026</p>
     </div>
 
+    <!-- الطقس -->
     <div class="card">
         <div class="card-info" style="text-align: center;"><h4>🌤️ توقعات الطقس للأسبوع</h4></div>
         <table class="weather-table" id="weather-forecast">
@@ -68,6 +67,7 @@
         </table>
     </div>
 
+    <!-- الصلاة -->
     <div class="prayer-section">
         <div id="location-status" style="font-size: 13px;">جاري جلب مواقيت الصلاة...</div>
         <div class="prayer-times-grid" id="times-container" style="display:none;">
@@ -79,34 +79,82 @@
         </div>
     </div>
 
-    <!-- الأقسام الأصلية الخاصة بك -->
     <div class="section-title">الدفاع والتشغيل</div>
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
+            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
+        </div>
+        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح.</div>
+    </div>
+
     <div class="card">
         <div class="card-header">
             <div class="card-info"><h4>منحة البطالة</h4></div>
-            <a href="https://minha.anem.dz/" class="btn btn-green">سجل الآن</a>
+            <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">التسجيل الأولي</a>
         </div>
         <div class="card-description">منصة مخصصة لطالبي الشغل لحجز موعد وإجراء التسجيل الأولي للمنحة.</div>
     </div>
 
-    <!-- المقال الإضافي لجوجل (تحت الكارد) -->
-    <div class="seo-article">
-        <h3>كيفية الاستفادة من منحة البطالة في الجزائر</h3>
-        <p>للتسجيل في منحة البطالة، يجب على الشاب الجزائري الذي يتراوح عمره بين 19 و40 سنة التوجه إلى موقع ANEM. تهدف هذه المنحة لدعم طالبي الشغل لأول مرة وتوفير تغطية اجتماعية لهم حتى الحصول على وظيفة قارة.</p>
+    <div class="seo-content">
+        <strong>نصيحة:</strong> للاستفادة من منحة البطالة في الجزائر، يجب أن يتراوح عمر المتقدم بين 19 و40 سنة. التسجيل يكون عبر المنصة الرقمية للوكالة الوطنية للتشغيل (ANEM).
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
+            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة وسيط أونلاين التابعة للوكالة الوطنية للتشغيل لتسجيل وتجديد طلبات العمل.</div>
     </div>
 
     <div class="section-title">السكن والتعليم</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>فضاء الأولياء</h4></div>
+            <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
+        </div>
+        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية لمتابعة نتائج الأبناء.</div>
+    </div>
+
     <div class="card">
         <div class="card-header">
             <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
             <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
         </div>
-        <div class="card-description">الموقع الرسمي لمتابعة ملفات السكن واختيار المواقع.</div>
+        <div class="card-description">الموقع الرسمي لوكالة عدل لمتابعة ملفات السكن والبرامج الجديدة.</div>
     </div>
 
-    <div class="seo-article">
-        <h3>دليل الاكتتاب في سكنات عدل 3</h3>
-        <p>يعتبر برنامج عدل 3 من أهم البرامج السكنية في الجزائر. يتطلب التسجيل المتابعة الدورية للموقع الرسمي للوكالة الوطنية لتحسين السكن وتطويره، حيث يتم دفع الأشطر المالية واختيار المواقع إلكترونياً بالكامل.</p>
+    <div class="seo-content">
+        <strong>تنبيه:</strong> متابعة ملفات سكنات عدل 3 تتطلب الرقم السري الخاص بالمكتتب. يمكنكم عبر الموقع الرسمي اختيار المواقع السكنية ودفع الأشطر المالية إلكترونياً.
+    </div>
+
+    <div class="section-title">الخدمات الموسمية والتكوين</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>التكوين المهني</h4></div>
+            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني والقيام بالتسجيلات.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>أضحية العيد</h4></div>
+            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد.</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منصة مخيمي</h4></div>
+            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
+        </div>
+        <div class="card-description">المنصة الرقمية لتسجيل الأطفال في المخيمات الصيفية والرحلات.</div>
     </div>
 
     <div class="share-container">
@@ -115,18 +163,50 @@
 
     <footer>
         <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="font-size: 11px; color: #999; margin-top: 10px;">جميع الحقوق محفوظة &copy; هزيل بن عمر 2026</p>
+        <p style="font-size: 11px; color: #999; margin-top: 10px;">جميع الحقوق محفوظة &copy; خدماتي 2026 - هزيل بن عمر</p>
     </footer>
 </div>
 
 <script>
-    // نفس كود الجافاسكريبت الخاص بك لجلب الطقس والصلاة والمشاركة
     function shareApp() {
         if (navigator.share) {
-            navigator.share({ title: 'خدماتي', text: 'دليل الخدمات في الجزائر', url: window.location.href });
+            navigator.share({ title: 'خدماتي', text: 'دليل الخدمات الرقمية في الجزائر', url: window.location.href });
         }
     }
-    // ... باقي وظائف الموقع (الطقس والصلاة) تعمل تلقائياً هنا
+
+    function updateLocationData() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                // جلب الصلاة
+                fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
+                .then(res => res.json()).then(res => {
+                    const t = res.data.timings;
+                    document.getElementById('fajr').innerText = t.Fajr;
+                    document.getElementById('dhuhr').innerText = t.Dhuhr;
+                    document.getElementById('asr').innerText = t.Asr;
+                    document.getElementById('maghrib').innerText = t.Maghrib;
+                    document.getElementById('isha').innerText = t.Isha;
+                    document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
+                    document.getElementById('times-container').style.display = 'flex';
+                });
+                // جلب الطقس
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
+                .then(res => res.json()).then(data => {
+                    const daysLabel = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+                    let rowDays = "<tr>", rowTemps = "<tr>";
+                    for (let i = 0; i < 7; i++) {
+                        let dateObj = new Date(data.daily.time[i]);
+                        rowDays += `<td class="w-day">${daysLabel[dateObj.getDay()]}</td>`;
+                        rowTemps += `<td>${Math.round(data.daily.temperature_2m_max[i])}°</td>`;
+                    }
+                    document.getElementById('weather-forecast').innerHTML = rowDays + "</tr>" + rowTemps + "</tr>";
+                });
+            });
+        }
+    }
+    window.onload = updateLocationData;
 </script>
 </body>
 </html>
