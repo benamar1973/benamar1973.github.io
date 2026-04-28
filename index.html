@@ -11,32 +11,39 @@
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
         header { text-align: center; padding: 10px 0; }
+        
+        /* الأقسام الإخبارية */
         .exchange-section { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table { width: 100%; font-size: 14px; text-align: center; border-collapse: collapse; }
         .exchange-table th { color: #777; padding: 8px; border-bottom: 1px solid #eee; }
         .buy { color: var(--green-btn); font-weight: bold; }
         .sell { color: #d93025; font-weight: bold; }
+        
         .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
         .prayer-times-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; }
         .prayer-item { background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; min-width: 75px; }
-        .section-title { background: #e9ecef; padding: 8px 15px; border-radius: 6px; font-weight: bold; margin: 20px 0 10px 0; font-size: 14px; }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; font-size: 15px; color: var(--dark-blue); border-right: 5px solid var(--blue-btn); }
+        
+        /* الكروت والمقالات */
+        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .card-info h4 { margin: 0; font-size: 15px; color: var(--dark-blue); }
         .card-description { font-size: 12px; color: #666; line-height: 1.6; border-top: 1px solid #f0f0f0; padding-top: 10px; }
         
-        /* فقرات تحسين محرك البحث لجوجل أدسنس */
-        .seo-content { font-size: 13px; color: #555; line-height: 1.8; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-right: 4px solid var(--blue-btn); }
-        
-        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; text-align: center; }
+        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-top: -10px; margin-bottom: 20px; border-top: 1px dashed #eee; }
+        .seo-article p { font-size: 13px; color: #444; line-height: 1.8; text-align: justify; margin: 0; }
+        .seo-article strong { color: var(--blue-btn); }
+
+        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
+        
         .weather-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; text-align: center; }
         .weather-table td { padding: 5px 2px; border: 1px solid #f0f0f0; }
-        .w-day { font-weight: bold; color: var(--blue-btn); padding-bottom: 2px; }
-        .share-container { text-align: center; margin: 30px 0; }
-        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
-        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 20px; }
+        .w-day { font-weight: bold; color: var(--blue-btn); }
+
+        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 30px; background: white; }
         footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; font-size: 13px; }
     </style>
 </head>
@@ -44,32 +51,30 @@
 
 <div class="container">
     <header>
-        <h2>خدماتي</h2>
-        <p style="font-size: 12px; color: #666;">دليل المواطن للوصول السريع إلى المنصات الرسمية</p>
+        <h1>خدماتي</h1>
+        <p>دليلك الشامل للمنصات الرقمية الجزائرية</p>
     </header>
 
-    <!-- أسعار العملات -->
+    <!-- أسعار الصرف -->
     <div class="exchange-section">
-        <h4 style="margin: 0 0 12px 0; text-align: center;">📊 أسعار صرف العملات اليوم</h4>
+        <h4 style="text-align: center; margin-top: 0;">📊 أسعار الصرف في السوق السوداء (Square)</h4>
         <table class="exchange-table">
             <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
             <tr><td>الأورو (€)</td><td class="buy">282.00</td><td class="sell">280.00</td></tr>
             <tr><td>الدولار ($)</td><td class="buy">239.00</td><td class="sell">237.00</td></tr>
         </table>
-        <p style="text-align: center; font-size: 11px; color: #888; margin-top: 10px; margin-bottom: 0;">آخر تحيين للسكوار: 28 أفريل 2026</p>
     </div>
 
-    <!-- الطقس -->
+    <!-- الطقس والصلاة -->
     <div class="card">
-        <div class="card-info" style="text-align: center;"><h4>🌤️ توقعات الطقس للأسبوع</h4></div>
+        <h4 style="text-align: center; margin: 0;">🌤️ حالة الطقس للأسبوع</h4>
         <table class="weather-table" id="weather-forecast">
-            <tr><td colspan="7" style="color:#999;">جاري تحميل حالة الطقس...</td></tr>
+            <tr><td colspan="7">جاري التحميل...</td></tr>
         </table>
     </div>
 
-    <!-- الصلاة -->
     <div class="prayer-section">
-        <div id="location-status" style="font-size: 13px;">جاري جلب مواقيت الصلاة...</div>
+        <div id="location-status">جاري جلب المواقيت...</div>
         <div class="prayer-times-grid" id="times-container" style="display:none;">
             <div class="prayer-item">الفجر <br> <span id="fajr">--</span></div>
             <div class="prayer-item">الظهر <br> <span id="dhuhr">--</span></div>
@@ -79,110 +84,115 @@
         </div>
     </div>
 
-    <div class="section-title">الدفاع والتشغيل</div>
-    
+    <!-- قسم الدفاع والتشغيل -->
+    <div class="section-title">الأمن والتشغيل</div>
+
     <div class="card">
         <div class="card-header">
             <div class="card-info"><h4>تجنيد الجيش (MDN)</h4></div>
-            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a>
+            <a href="https://preinscription.mdn.dz/" class="btn btn-blue">رابط التسجيل</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوزارة الدفاع الوطني المخصص لإيداع ملفات الترشح.</div>
+    </div>
+    <div class="seo-article">
+        <p><strong>حول التجنيد:</strong> توفر وزارة الدفاع الوطني الجزائرية منصة رقمية متطورة لتسهيل انضمام الشباب إلى صفوف الجيش الوطني الشعبي. تتيح هذه المنصة للراغبين في الالتحاق بصفوف الضباط، ضباط الصف، والجنود المتعاقدين إيداع ملفاتهم إلكترونياً، مما يضمن الشفافية والسرعة في معالجة الطلبات وفق المعايير المطلوبة لكل تخصص عسكري.</p>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>منحة البطالة</h4></div>
-            <a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">التسجيل الأولي</a>
+            <div class="card-info"><h4>منحة البطالة (ANEM)</h4></div>
+            <a href="https://minha.anem.dz/" class="btn btn-green">التسجيل في المنحة</a>
         </div>
-        <div class="card-description">منصة مخصصة لطالبي الشغل لحجز موعد وإجراء التسجيل الأولي للمنحة.</div>
     </div>
-
-    <div class="seo-content">
-        <strong>نصيحة:</strong> للاستفادة من منحة البطالة في الجزائر، يجب أن يتراوح عمر المتقدم بين 19 و40 سنة. التسجيل يكون عبر المنصة الرقمية للوكالة الوطنية للتشغيل (ANEM).
+    <div class="seo-article">
+        <p><strong>تفاصيل المنحة:</strong> تهدف منحة البطالة إلى مرافقة الشباب البطال طالبي الشغل لأول مرة. التسجيل عبر منصة "منحة" يتطلب استيفاء شروط محددة، أبرزها أن يكون السن بين 19 و40 سنة، وأن يكون المسجل مسجلاً مسبقاً لدى مصالح الوكالة الوطنية للتشغيل. تضمن المنصة حجز موعد للمقابلة وتدقيق الوثائق اللازمة لضمان الاستفادة الدائمة.</p>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>طلب وتجديد العمل (وسيط)</h4></div>
-            <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a>
+            <div class="card-info"><h4>نظام وسيط (Wassit)</h4></div>
+            <a href="https://wassitonline.anem.dz/" class="btn btn-green">تجديد الطلب</a>
         </div>
-        <div class="card-description">منصة وسيط أونلاين التابعة للوكالة الوطنية للتشغيل لتسجيل وتجديد طلبات العمل.</div>
+    </div>
+    <div class="seo-article">
+        <p><strong>خدمة وسيط:</strong> يعتبر نظام "وسيط أونلاين" الأداة الأساسية للربط بين طالبي العمل وأرباب العمل في الجزائر. تتيح المنصة للمستخدمين إمكانية إنشاء سيرة ذاتية رقمية، والاطلاع على عروض العمل المتوفرة في ولاياتهم، بالإضافة إلى ضرورة تجديد بطاقة طلب العمل كل ستة أشهر إلكترونياً لتفادي إلغاء التسجيل.</p>
     </div>
 
-    <div class="section-title">السكن والتعليم</div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>فضاء الأولياء</h4></div>
-            <a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a>
-        </div>
-        <div class="card-description">النظام المعلوماتي لقطاع التربية الوطنية لمتابعة نتائج الأبناء.</div>
-    </div>
+    <!-- قسم السكن والتربية -->
+    <div class="section-title">السكن والتربية الوطنية</div>
 
     <div class="card">
         <div class="card-header">
             <div class="card-info"><h4>وكالة عدل (AADL 3)</h4></div>
-            <a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a>
+            <a href="https://www.aadl.dz/" class="btn btn-blue">متابعة الملف</a>
         </div>
-        <div class="card-description">الموقع الرسمي لوكالة عدل لمتابعة ملفات السكن والبرامج الجديدة.</div>
     </div>
-
-    <div class="seo-content">
-        <strong>تنبيه:</strong> متابعة ملفات سكنات عدل 3 تتطلب الرقم السري الخاص بالمكتتب. يمكنكم عبر الموقع الرسمي اختيار المواقع السكنية ودفع الأشطر المالية إلكترونياً.
-    </div>
-
-    <div class="section-title">الخدمات الموسمية والتكوين</div>
-
-    <div class="card">
-        <div class="card-header">
-            <div class="card-info"><h4>التكوين المهني</h4></div>
-            <a href="https://takwin.dz/Offersinscription" class="btn btn-green">سجل الآن</a>
-        </div>
-        <div class="card-description">منصة مهنتي للتعرف على تخصصات التكوين المهني والقيام بالتسجيلات.</div>
+    <div class="seo-article">
+        <p><strong>سكنات عدل:</strong> يشكل برنامج سكنات البيع بالإيجار "عدل" الركيزة الأساسية لقطاع السكن في الجزائر. من خلال الموقع الرسمي، يمكن للمكتتبين متابعة وضعية ملفاتهم، دفع الأشطر المالية عبر البطاقة الذهبية، واختيار مواقع السكنات. تلتزم الوكالة بتحديث المنصة دورياً لتسهيل الإجراءات الإدارية وتقليل التنقل للمقرات.</p>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <div class="card-info"><h4>أضحية العيد</h4></div>
-            <a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a>
+            <div class="card-info"><h4>فضاء الأولياء</h4></div>
+            <a href="https://awlyaa.education.dz/" class="btn btn-blue">كشف النقاط</a>
         </div>
-        <div class="card-description">المنصة الوطنية المخصصة لتنظيم عمليات بيع وتوزيع أضاحي العيد.</div>
+    </div>
+    <div class="seo-article">
+        <p><strong>المنصة التربوية:</strong> يتيح نظام المعلومات لوزارة التربية الوطنية للأولياء مراقبة المسار الدراسي لأبنائهم عن بعد. عبر "فضاء الأولياء"، يمكن الحصول على كشوف نقاط الفصل، الاطلاع على جدول التوقيت، والتواصل مع الإدارة التعليمية، مما يعزز دور العائلة في متابعة التحصيل العلمي وضمان نجاح التلاميذ.</p>
+    </div>
+
+    <!-- قسم التكوين والمواسم -->
+    <div class="section-title">التكوين والخدمات الموسمية</div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منصة مهنتي (التكوين)</h4></div>
+            <a href="https://takwin.dz/" class="btn btn-green">عروض التكوين</a>
+        </div>
+    </div>
+    <div class="seo-article">
+        <p><strong>التكوين المهني:</strong> منصة "مهنتي" هي البوابة الرسمية للراغبين في اكتساب مهارات حرفية وتقنية. توفر المنصة دليلاً شاملاً للتخصصات المتاحة عبر مراكز التكوين المهني في كافة الولايات، مع إمكانية التسجيل الأولي واختيار نمط التكوين (حضوري أو عن طريق التمهين) بما يتوافق مع متطلبات سوق الشغل الحالية.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-info"><h4>منصة أضحية (Adhahi)</h4></div>
+            <a href="https://adhahi.dz/" class="btn btn-green">شراء أضحية</a>
+        </div>
+    </div>
+    <div class="seo-article">
+        <p><strong>خدمة الأضحية:</strong> تسعى المنصة الوطنية للأضاحي إلى تنظيم عملية بيع الكباش بأسعار مدروسة مباشرة من المربين إلى المستهلك. تهدف هذه المبادرة الرقمية إلى القضاء على المضاربة وتسهيل وصول المواطن إلى نقاط البيع المعتمدة، مع ضمان الرقابة البيطرية والصحية للأضاحي المعروضة.</p>
     </div>
 
     <div class="card">
         <div class="card-header">
             <div class="card-info"><h4>منصة مخيمي</h4></div>
-            <a href="https://youthcamp.mjeunesse.gov.dz/child/register" class="btn btn-green">سجل الآن</a>
+            <a href="https://youthcamp.mjeunesse.gov.dz/" class="btn btn-green">تسجيل الأطفال</a>
         </div>
-        <div class="card-description">المنصة الرقمية لتسجيل الأطفال في المخيمات الصيفية والرحلات.</div>
     </div>
-
-    <div class="share-container">
-        <button class="btn-share" onclick="shareApp()">📢 شارك التطبيق مع أصدقائك</button>
+    <div class="seo-article">
+        <p><strong>المخيمات الصيفية:</strong> تشرف وزارة الشباب والرياضة على منصة "مخيمي" لتنظيم العطل الصيفية لأطفال الجنوب والهضاب العليا. تتيح المنصة للأولياء تسجيل أبنائهم في المخيمات الساحلية، مع توفير كافة التفاصيل حول برنامج الرحلات، التأمين، والإشراف التربوي لضمان عطلة آمنة ومفيدة للناشئة.</p>
     </div>
 
     <footer>
-        <a href="about.html">من نحن</a> | <a href="contact.html">اتصل بنا</a> | <a href="privacy.html">سياسة الخصوصية</a>
-        <p style="font-size: 11px; color: #999; margin-top: 10px;">جميع الحقوق محفوظة &copy; خدماتي 2026 - هزيل بن عمر</p>
+        <div style="margin-bottom: 15px;">
+            <a href="about.html">من نحن</a> | 
+            <a href="contact.html">اتصل بنا</a> | 
+            <a href="privacy.html">سياسة الخصوصية</a>
+        </div>
+        <p style="font-size: 11px; color: #999;">تطبيق خدماتي - جميع الحقوق محفوظة © هزيل بن عمر 2026</p>
     </footer>
 </div>
 
 <script>
-    function shareApp() {
-        if (navigator.share) {
-            navigator.share({ title: 'خدماتي', text: 'دليل الخدمات الرقمية في الجزائر', url: window.location.href });
-        }
-    }
-
-    function updateLocationData() {
+    // كود جلب الطقس ومواقيت الصلاة آلياً
+    function initData() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                // جلب الصلاة
+            navigator.geolocation.getCurrentPosition(p => {
+                const lat = p.coords.latitude, lon = p.coords.longitude;
+                // الصلاة
                 fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
-                .then(res => res.json()).then(res => {
-                    const t = res.data.timings;
+                .then(r => r.json()).then(d => {
+                    const t = d.data.timings;
                     document.getElementById('fajr').innerText = t.Fajr;
                     document.getElementById('dhuhr').innerText = t.Dhuhr;
                     document.getElementById('asr').innerText = t.Asr;
@@ -191,22 +201,23 @@
                     document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
                     document.getElementById('times-container').style.display = 'flex';
                 });
-                // جلب الطقس
+                // الطقس
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
-                .then(res => res.json()).then(data => {
-                    const daysLabel = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
-                    let rowDays = "<tr>", rowTemps = "<tr>";
+                .then(r => r.json()).then(data => {
+                    const days = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+                    let h1 = "<tr>", h2 = "<tr>";
                     for (let i = 0; i < 7; i++) {
-                        let dateObj = new Date(data.daily.time[i]);
-                        rowDays += `<td class="w-day">${daysLabel[dateObj.getDay()]}</td>`;
-                        rowTemps += `<td>${Math.round(data.daily.temperature_2m_max[i])}°</td>`;
+                        let d = new Date(data.daily.time[i]);
+                        h1 += `<td class="w-day">${days[d.getDay()]}</td>`;
+                        h2 += `<td>${Math.round(data.daily.temperature_2m_max[i])}°</td>`;
                     }
-                    document.getElementById('weather-forecast').innerHTML = rowDays + "</tr>" + rowTemps + "</tr>";
+                    document.getElementById('weather-forecast').innerHTML = h1 + "</tr>" + h2 + "</tr>";
                 });
             });
         }
     }
-    window.onload = updateLocationData;
+    window.onload = initData;
 </script>
+
 </body>
 </html>
