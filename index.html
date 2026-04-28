@@ -10,20 +10,42 @@
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
         header { text-align: center; margin-bottom: 20px; }
-        .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); font-size: 15px; }
+        
+        /* أسعار الصرف */
+        .exchange-section { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .exchange-table { width: 100%; font-size: 14px; text-align: center; border-collapse: collapse; }
+        .exchange-table th { color: #777; padding: 8px; border-bottom: 1px solid #eee; }
+        .buy { color: var(--green-btn); font-weight: bold; }
+        .sell { color: #d93025; font-weight: bold; }
+
+        /* الصلاة والطقس */
+        .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: center; }
+        .prayer-times-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; }
+        .prayer-item { background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; min-width: 75px; }
+        .weather-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; text-align: center; background: white; border-radius: 10px; }
+        .weather-table td { padding: 8px 2px; border: 1px solid #f0f0f0; }
+        .w-day { font-weight: bold; color: var(--blue-btn); }
+
+        /* الكروت والمقالات */
+        .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); }
         .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .card-header { display: flex; justify-content: space-between; align-items: center; }
-        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 20px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #555; text-align: justify; }
+        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 25px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #444; text-align: justify; }
+
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; border: none; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
+
         .share-container { text-align: center; margin: 30px 0; }
-        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); }
+        .btn-share { background-color: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+
+        /* المودال */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
         .modal-content { background: white; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; text-align: center; position: relative; }
-        .close { position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #999; }
-        footer { text-align: center; padding: 20px; margin-top: 30px; border-top: 1px solid #ddd; background: white; }
-        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; cursor: pointer; font-size: 13px; }
+        .close { position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; }
+        
+        footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 30px; }
+        footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -31,41 +53,69 @@
 <div class="container">
     <header>
         <h2>خدماتي</h2>
-        <p style="font-size: 12px; color: #666;">الدليل الشامل للخدمات الرقمية في الجزائر</p>
+        <p style="font-size: 12px; color: #666;">الدليل الجزائري الشامل للخدمات الرقمية</p>
     </header>
 
-    <!-- الدفاع والتشغيل -->
+    <!-- 1. سعر الصرف -->
+    <div class="exchange-section">
+        <h4 style="text-align: center; margin-top: 0;">📊 أسعار الصرف اليوم (سكوار)</h4>
+        <table class="exchange-table">
+            <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
+            <tr><td>الأورو (€)</td><td class="buy">282.00</td><td class="sell">280.00</td></tr>
+            <tr><td>الدولار ($)</td><td class="buy">239.00</td><td class="sell">237.00</td></tr>
+        </table>
+    </div>
+
+    <!-- 2. مواقيت الصلاة -->
+    <div class="prayer-section">
+        <div id="location-status">جاري جلب المواقيت...</div>
+        <div class="prayer-times-grid" id="times-container" style="display:none;">
+            <div class="prayer-item">الفجر <br> <span id="fajr">--</span></div>
+            <div class="prayer-item">الظهر <br> <span id="dhuhr">--</span></div>
+            <div class="prayer-item">العصر <br> <span id="asr">--</span></div>
+            <div class="prayer-item">المغرب <br> <span id="maghrib">--</span></div>
+            <div class="prayer-item">العشاء <br> <span id="isha">--</span></div>
+        </div>
+    </div>
+
+    <!-- 3. الأحوال الجوية -->
+    <div class="card" style="padding: 10px;">
+        <h4 style="text-align: center; margin: 5px;">🌤️ حالة الطقس للأسبوع</h4>
+        <table class="weather-table" id="weather-forecast">
+            <tr><td colspan="7">جاري التحميل...</td></tr>
+        </table>
+    </div>
+
+    <!-- الروابط والمقالات الطويلة -->
     <div class="section-title">الدفاع والتشغيل</div>
     
     <div class="card"><div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div></div>
-    <div class="seo-article">تعتبر منصة التجنيد التابعة لوزارة الدفاع الوطني البوابة الرسمية للشباب الراغب في الانضمام للجيش. تتيح المنصة تسجيل الضباط وضباط الصف والجنود إلكترونياً لضمان الشفافية.</div>
+    <div class="seo-article">تعتبر منصة التجنيد التابعة لوزارة الدفاع الوطني البوابة الرسمية والوحيدة للشباب الراغب في الانضمام للجيش الوطني الشعبي. تتيح هذه المنصة للراغبين تسجيل أنفسهم في مختلف الرتب من ضباط، ضباط صف، وجنود متعاقدين، مما يضمن الشفافية والسرعة في المعالجة.</div>
 
     <div class="card"><div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/" class="btn btn-green">التسجيل الأولي</a></div></div>
-    <div class="seo-article">منحة البطالة هي دعم للشباب الباحث عن عمل لأول مرة. التسجيل يتطلب سن 19-40 سنة والتسجيل المسبق في وكالة ANEM كطالب عمل نشط.</div>
+    <div class="seo-article">منحة البطالة هي خطوة هامة لمرافقة الشباب طالبي الشغل لأول مرة في الجزائر. يشترط للاستفادة منها أن يكون السن بين 19 و40 سنة، وأن يكون طالب العمل مسجلاً لدى مصالح الوكالة الوطنية للتشغيل (ANEM) بصفة منتظمة ولا يملك أي دخل خاص.</div>
 
-    <div class="card"><div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">نظام وسيط أونلاين يتيح للعمال والبطالين تجديد طلبات العمل كل 6 أشهر والاطلاع على عروض الشغل المتوفرة في القطاعين العام والخاص.</div>
+    <div class="card"><div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/" class="btn btn-green">دخول</a></div></div>
+    <div class="seo-article">نظام وسيط أونلاين يوفر لك إمكانية تجديد طلب العمل الخاص بك كل 6 أشهر دون الحاجة للتنقل للوكالة. كما يتيح لك الاطلاع على عروض العمل المتوفرة وتحديث مهاراتك وسيرتك الذاتية لزيادة فرصك في التوظيف.</div>
 
-    <!-- السكن والتعليم -->
     <div class="section-title">السكن والتعليم</div>
 
     <div class="card"><div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/" class="btn btn-blue">دخول</a></div></div>
-    <div class="seo-article">فضاء الأولياء هو نظام معلوماتي يسمح للآباء بمتابعة نتائج أبنائهم المدرسية، كشوف النقاط، والغيابات عبر الإنترنت دون التنقل للمؤسسة التربوية.</div>
+    <div class="seo-article">فضاء الأولياء هو المنصة الرسمية لوزارة التربية الوطنية، والتي تمكن الأولياء من متابعة المسار الدراسي لأبنائهم، حيث يمكنهم الاطلاع على كشوف النقاط الفصلية، جدول التوقيت، وحساب المعدلات بشكل رقمي وسريع.</div>
 
     <div class="card"><div class="card-header"><h4>وكالة عدل (AADL 3)</h4><a href="https://www.aadl.dz/" class="btn btn-blue">دخول</a></div></div>
-    <div class="seo-article">منصة سكنات عدل تتيح للمكتتبين متابعة وضعية ملفاتهم، اختيار المواقع السكنية، وتحميل أوامر الدفع الخاصة بالأشطر المالية السنوية.</div>
+    <div class="seo-article">من خلال الموقع الرسمي لوكالة عدل، يمكن للمكتتبين متابعة كافة تفاصيل ملفاتهم السكنية. يتيح الموقع اختيار مواقع السكنات، تحميل أوامر الدفع الخاصة بالأشطر المالية، والاطلاع على آخر أخبار البرامج السكنية الجديدة.</div>
 
-    <!-- الخدمات الموسمية والتكوين -->
-    <div class="section-title">الخدمات الموسمية والتكوين</div>
+    <div class="section-title">التكوين والخدمات الموسمية</div>
 
     <div class="card"><div class="card-header"><h4>التكوين المهني</h4><a href="https://takwin.dz/" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">منصة مهنتي توفر دليلاً كاملاً لتخصصات التكوين المهني المتاحة، حيث يمكن للراغبين في تعلم حرفة جديدة التسجيل إلكترونياً واختيار المركز المناسب.</div>
+    <div class="seo-article">منصة مهنتي تفتح لك آفاقاً واسعة لاكتساب مهارات جديدة. توفر المنصة دليلاً شاملاً لكافة التخصصات المتاحة في مراكز التكوين المهني عبر الوطن، مع إمكانية التسجيل الأولي واختيار التخصص الذي يناسب طموحاتك.</div>
 
     <div class="card"><div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">منصة أضحية تهدف لتنظيم عملية بيع الأضاحي بأسعار مدروسة مباشرة من المربين، مما يساهم في توفير اللحوم بأسعار تنافسية خلال عيد الأضحى.</div>
+    <div class="seo-article">تهدف منصة أضحية إلى تسهيل عملية اقتناء أضاحي العيد بأسعار تنافسية ومدروسة، من خلال الربط المباشر بين الموال والمستهلك، مما يضمن جودة الأضاحي وتوفرها في نقاط البيع المعتمدة من قبل الدولة.</div>
 
     <div class="card"><div class="card-header"><h4>منصة مخيمي</h4><a href="https://youthcamp.mjeunesse.gov.dz/" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">منصة مخيمي مخصصة لتسجيل الأطفال في المخيمات الصيفية والرحلات، وهي تابعة لوزارة الشباب والرياضة لتنظيم العطل الصيفية لأبناء المناطق البعيدة.</div>
+    <div class="seo-article">منصة مخيمي مخصصة لتنظيم الرحلات والمخيمات الصيفية للأطفال. تتيح للأولياء تسجيل أبنائهم في برامج العطل الصيفية الساحلية، وهي تهدف لتوفير أجواء ترفيهية وتربوية آمنة لأطفالنا من مختلف ولايات الوطن.</div>
 
     <!-- زر المشاركة -->
     <div class="share-container">
@@ -80,20 +130,44 @@
     </footer>
 </div>
 
-<!-- نوافذ المعلومات -->
+<!-- المودال -->
 <div id="contactModal" class="modal"><div class="modal-content"><span class="close" onclick="toggleModal('contactModal')">&times;</span><h3>تواصل معنا</h3><p>📧 mustaphabenamar40@gmail.com</p><p>📱 0558284458</p></div></div>
-<div id="aboutModal" class="modal"><div class="modal-content"><span class="close" onclick="toggleModal('aboutModal')">&times;</span><h3>من نحن</h3><p>دليل رقمي شامل لتسهيل الوصول للمنصات الرسمية الجزائرية.</p></div></div>
+<div id="aboutModal" class="modal"><div class="modal-content"><span class="close" onclick="toggleModal('aboutModal')">&times;</span><h3>من نحن</h3><p>دليل رقمي يهدف لتسهيل وصول المواطن الجزائري للمنصات الرسمية.</p></div></div>
 
 <script>
-    function shareApp() {
-        if (navigator.share) {
-            navigator.share({ title: 'خدماتي', text: 'الدليل الجزائري الشامل:', url: window.location.href });
+    function shareApp() { if (navigator.share) { navigator.share({ title: 'خدماتي', text: 'دليلك للخدمات في الجزائر:', url: window.location.href }); } }
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === "block") ? "none" : "block"; }
+    
+    function initData() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(p => {
+                const lat = p.coords.latitude, lon = p.coords.longitude;
+                fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
+                .then(r => r.json()).then(d => {
+                    const t = d.data.timings;
+                    document.getElementById('fajr').innerText = t.Fajr;
+                    document.getElementById('dhuhr').innerText = t.Dhuhr;
+                    document.getElementById('asr').innerText = t.Asr;
+                    document.getElementById('maghrib').innerText = t.Maghrib;
+                    document.getElementById('isha').innerText = t.Isha;
+                    document.getElementById('location-status').innerText = "مواقيت الصلاة لموقعك الحالي:";
+                    document.getElementById('times-container').style.display = 'flex';
+                });
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=Africa/Algiers`)
+                .then(r => r.json()).then(data => {
+                    const days = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
+                    let h1 = "<tr>", h2 = "<tr>";
+                    for (let i = 0; i < 7; i++) {
+                        let d = new Date(data.daily.time[i]);
+                        h1 += `<td class="w-day">${days[d.getDay()]}</td>`;
+                        h2 += `<td>${Math.round(data.daily.temperature_2m_max[i])}°</td>`;
+                    }
+                    document.getElementById('weather-forecast').innerHTML = h1 + "</tr>" + h2 + "</tr>";
+                });
+            });
         }
     }
-    function toggleModal(id) {
-        const m = document.getElementById(id);
-        m.style.display = (m.style.display === "block") ? "none" : "block";
-    }
+    window.onload = initData;
 </script>
 </body>
 </html>
