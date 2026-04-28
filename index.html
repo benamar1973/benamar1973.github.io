@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- Google tag (gtag.js) - تمت إضافته بناءً على الصورة 17774163914595267156942080351720_5f8670.jpg -->
+    <!-- Google tag (gtag.js) - تم التثبيت بناءً على طلبك -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBKREYJ7X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -18,24 +18,31 @@
         :root { --bg-color: #f4f6f9; --card-bg: #ffffff; --blue-btn: #007bff; --green-btn: #28a745; --dark-blue: #2c3e50; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
+        
         .widget-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .exchange-table, .weather-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; }
         .exchange-table th { color: #777; border-bottom: 1px solid #eee; padding: 5px; }
+        
         .prayer-section { background: var(--dark-blue); color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: center; }
         .prayer-grid { display: flex; justify-content: space-around; gap: 5px; margin-top: 10px; font-size: 11px; }
         .prayer-item { background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; flex: 1; }
+
         .section-title { background: #e9ecef; padding: 10px 15px; border-radius: 6px; font-weight: bold; margin: 25px 0 10px 0; border-right: 5px solid var(--blue-btn); }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card { background: var(--card-bg); border-radius: 10px 10px 0 0; padding: 15px; margin-bottom: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-bottom: 1px solid #eee; }
         .card-header { display: flex; justify-content: space-between; align-items: center; }
         .card-header h4 { margin: 0; font-size: 15px; }
-        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 25px; border-top: 1px dashed #eee; font-size: 13px; line-height: 1.8; color: #444; text-align: justify; }
+        
+        .seo-article { background: #fff; padding: 15px; border-radius: 0 0 10px 10px; margin-bottom: 25px; font-size: 13px; line-height: 1.8; color: #444; text-align: justify; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
         .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; border: none; }
         .btn-blue { background-color: var(--blue-btn); }
         .btn-green { background-color: var(--green-btn); }
         .btn-share { background-color: #2c3e50; color: white; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; margin: 20px 0; }
+
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
         .modal-content { background: white; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; text-align: center; position: relative; }
         .close { position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #999; }
+        
         footer { text-align: center; padding: 20px; border-top: 1px solid #ddd; margin-top: 30px; }
         footer a { text-decoration: none; color: #3498db; font-weight: bold; margin: 0 10px; cursor: pointer; font-size: 13px; }
     </style>
@@ -45,12 +52,12 @@
 <div class="container">
     <header style="text-align: center; margin-bottom: 20px;">
         <h2>خدماتي</h2>
-        <p style="font-size: 12px; color: #666;">بوابتك الشاملة للمنصات الرقمية الجزائرية</p>
+        <p style="font-size: 12px; color: #666;">الدليل الجزائري الشامل للمنصات الرقمية 2026</p>
     </header>
 
-    <!-- أدوات الصرف والصلاة والطقس -->
+    <!-- العملة -->
     <div class="widget-card">
-        <h4 style="margin: 0 0 10px 0; text-align: center;">📊 أسعار الصرف</h4>
+        <h4 style="margin: 0 0 10px 0; text-align: center;">📊 أسعار الصرف اليوم</h4>
         <table class="exchange-table">
             <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
             <tr><td>الأورو (€)</td><td style="color:green; font-weight:bold;">282.00</td><td style="color:red; font-weight:bold;">280.00</td></tr>
@@ -58,8 +65,9 @@
         </table>
     </div>
 
+    <!-- الصلاة -->
     <div class="prayer-section">
-        <div id="p-status">تحديد الموقع...</div>
+        <div id="p-status">تحديد الموقع للمواقيت...</div>
         <div class="prayer-grid">
             <div class="prayer-item">الفجر<br><span id="f">--:--</span></div>
             <div class="prayer-item">الظهر<br><span id="d">--:--</span></div>
@@ -69,28 +77,41 @@
         </div>
     </div>
 
+    <!-- الطقس -->
     <div class="widget-card">
         <h4 style="margin: 0 0 10px 0; text-align: center;">🌤️ طقس الأسبوع</h4>
         <table class="weather-table" id="w-table"><tr><td>جاري التحميل...</td></tr></table>
     </div>
 
-    <!-- قائمة الخدمات المحدثة بالروابط المباشرة -->
+    <!-- المحتوى الرئيسي بالمقالات الطويلة والروابط المباشرة -->
     <div class="section-title">التوظيف والدفاع</div>
-    <div class="card"><div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div></div>
-    <div class="seo-article">بوابة التجنيد التابعة لوزارة الدفاع الوطني.</div>
+    
+    <div class="card">
+        <div class="card-header"><h4>تجنيد الجيش (MDN)</h4><a href="https://preinscription.mdn.dz/" class="btn btn-blue">سجل الآن</a></div>
+    </div>
+    <div class="seo-article">تعتبر بوابة التجنيد التابعة لوزارة الدفاع الوطني المنصة الرسمية الوحيدة للالتحاق بصفوف الجيش الوطني الشعبي. تتيح المنصة للشباب الجزائري من الجنسين إمكانية التسجيل الأولي للضباط، ضباط الصف، والجنود المتعاقدين. يجب على المترشح التأكد من استيفاء شروط السن والقسمات الدراسية المطلوبة قبل تحميل استمارة الترشيح للمشاركة في المسابقات الوطنية.</div>
 
-    <div class="card"><div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">المنصة الرسمية للتسجيل في منحة البطالة الجزائرية.</div>
+    <div class="card">
+        <div class="card-header"><h4>منحة البطالة</h4><a href="https://minha.anem.dz/pre_inscription" class="btn btn-green">سجل الآن</a></div>
+    </div>
+    <div class="seo-article">منصة منحة البطالة (Minha) هي مبادرة حكومية لدعم طالبي الشغل لأول مرة في الجزائر. التسجيل في هذا الرابط يتيح لك حجز موعد مقابلة مع مستشاري الوكالة الوطنية للتشغيل. يشترط في المتقدم أن يتراوح سنه بين 19 و40 سنة، وألا يكون لديه أي دخل مادي سابق أو تأمين اجتماعي نشط، مع ضرورة الالتزام بتجديد وضعية طالب الشغل بصفة دورية لضمان استمرار صرف المنحة.</div>
 
-    <div class="card"><div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">تجديد طلبات العمل والاشتراك في نظام وسيط التابع للوكالة الوطنية للتشغيل.</div>
+    <div class="card">
+        <div class="card-header"><h4>تجديد العمل (وسيط)</h4><a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn btn-green">تجديد</a></div>
+    </div>
+    <div class="seo-article">نظام وسيط (Wassit Online) هو المحرك الرقمي للوكالة الوطنية للتشغيل (ANEM). من خلال هذا الرابط المباشر، يمكن للشباب إنشاء حساب مهني، تحميل السيرة الذاتية، ومتابعة عروض العمل المتوفرة في القطاعين العام والخاص. التجديد عبر وسيط ضروري جداً للحفاظ على أولوية التوظيف وضمان قانونية ملفك في قاعدة بيانات طالبي العمل الوطنية.</div>
 
     <div class="section-title">السكن والتعليم</div>
-    <div class="card"><div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a></div></div>
-    <div class="seo-article">متابعة المسار الدراسي وكشوف النقاط عبر وزارة التربية الوطنية.</div>
 
-    <div class="card"><div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a></div></div>
-    <div class="seo-article">التسجيل لشراء أضاحي العيد من نقاط البيع المعتمدة.</div>
+    <div class="card">
+        <div class="card-header"><h4>فضاء الأولياء</h4><a href="https://awlyaa.education.dz/login" class="btn btn-blue">دخول</a></div>
+    </div>
+    <div class="seo-article">فضاء الأولياء هو المنصة الإلكترونية التابعة لوزارة التربية الوطنية، وتهدف إلى رقمنة العلاقة بين المدرسة والولي. من خلال تسجيل الدخول، يمكن للأولياء الاطلاع الفوري على نتائج أبنائهم في الفصول الدراسية الثلاثة، استخراج كشوف النقاط، والتواصل مع الإدارة. كما تتيح المنصة تسجيل التلاميذ الجدد في السنة الأولى ابتدائي والتحويلات المدرسية بشكل قانوني وسلس.</div>
+
+    <div class="card">
+        <div class="card-header"><h4>أضحية العيد</h4><a href="https://adhahi.dz/register" class="btn btn-green">سجل الآن</a></div>
+    </div>
+    <div class="seo-article">منصة أضحية (Adhahi) هي مبادرة رقمية تهدف إلى تنظيم عملية بيع الأضاحي في الجزائر بأسعار مدروسة وتنافسية. تتيح المنصة للمواطنين إمكانية الاطلاع على نقاط البيع المعتمدة من طرف الدولة، والتسجيل المسبق لضمان الحصول على أضحية صحية ومراقبة بيطرياً. تهدف هذه العملية إلى كسر الاحتكار وضمان وصول الأضحية للمواطن مباشرة من الموال بإشراف المصالح الفلاحية.</div>
 
     <div style="text-align: center;">
         <button class="btn-share" onclick="shareApp()">📢 شارك التطبيق مع أصدقائك</button>
@@ -104,10 +125,9 @@
     </footer>
 </div>
 
-<!-- النوافذ المنبثقة -->
 <div id="contactM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('contactM')">&times;</span><h3>تواصل معنا</h3><p>📧 mustaphabenamar40@gmail.com</p><p>📱 0558284458</p></div></div>
-<div id="aboutM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('aboutM')">&times;</span><h3>من نحن</h3><p>دليل رقمي لتسهيل الوصول للمنصات الجزائرية الرسمية.</p></div></div>
-<div id="privacyM" class="modal"><div class="modal-content" style="text-align:right;"><span class="close" onclick="closeM('privacyM')">&times;</span><h3>سياسة الخصوصية</h3><p>نحن نحترم خصوصيتك ونستخدم ملفات تعريف الارتباط لتحسين تجربتك وقياس أداء الموقع عبر Google Analytics.</p></div></div>
+<div id="aboutM" class="modal"><div class="modal-content"><span class="close" onclick="closeM('aboutM')">&times;</span><h3>من نحن</h3><p>دليل رقمي يسهل الوصول للمنصات الحكومية الرسمية في الجزائر.</p></div></div>
+<div id="privacyM" class="modal"><div class="modal-content" style="text-align:right;"><span class="close" onclick="closeM('privacyM')">&times;</span><h3>سياسة الخصوصية</h3><p>نحن نحترم خصوصيتك ونستخدم ملفات تعريف الارتباط لتحسين تجربتك وقياس الأداء عبر Google Analytics.</p></div></div>
 
 <script>
     function showM(id) { document.getElementById(id+'M').style.display = 'block'; }
