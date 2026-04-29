@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة خدماتي - الدليل الإداري الجزائري الشامل 2026</title>
+    <title>بوابة خدماتي - الدليل الإداري الجزائري 2026</title>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -14,7 +14,7 @@
       gtag('config', 'G-XXXXXXXXXX');
     </script>
 
-    <!-- إعدادات تثبيت التطبيق PWA & iPhone -->
+    <!-- إعدادات PWA و Apple (التثبيت) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2c3e50">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,7 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --bg: #f4f7f6; --white: #ffffff; }
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.8; }
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         
@@ -42,18 +42,22 @@
         .currency-table td { padding: 15px; text-align: center; border-bottom: 1px solid #f0f0f0; font-weight: 800; font-size: 19px; }
 
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
-        .icon-btn { background: var(--white); padding: 25px 5px; border-radius: 25px; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .icon-btn { background: var(--white); padding: 25px 5px; border-radius: 25px; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: 0.3s; }
+        .icon-btn:active { transform: scale(0.95); }
         .icon-btn i { font-size: 35px; display: block; margin-bottom: 10px; }
+        .icon-btn span { font-size: 12px; font-weight: 800; color: var(--primary); }
 
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
-        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; position: sticky; top: 0; border-bottom: 1px solid #eee; }
+        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; position: sticky; top: 0; border-bottom: 1px solid #eee; z-index: 100; }
         .back-btn { background: var(--primary); color: white; padding: 8px 18px; border-radius: 12px; cursor: pointer; margin-left: 15px; font-weight: 700; }
         
-        .article-body { background: white; padding: 40px; border-radius: 30px; margin: 20px; text-align: justify; font-size: 17px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+        .article-body { background: white; padding: 30px; border-radius: 25px; margin: 15px; text-align: justify; font-size: 17px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
         .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin-bottom: 20px; }
-        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 22px; border-radius: 20px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; }
+        .article-body p { margin-bottom: 20px; }
+        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 20px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 30px; font-size: 18px; }
 
         footer { text-align: center; padding: 40px 15px; color: #888; border-top: 1px solid #eee; background: white; margin-top: 30px; }
+        .footer-links { margin-bottom: 15px; }
         .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 12px; }
     </style>
 </head>
@@ -62,20 +66,20 @@
 <div id="home-view">
     <div class="main-header">
         <h1>خدماتي الجزائر</h1>
-        <div class="share-top-btn" id="installBtn">📲 تثبيت التطبيق</div>
+        <div class="share-top-btn" id="installBtn">📲 تثبيت</div>
     </div>
 
     <div class="container">
         <!-- أسعار السكوار -->
         <div class="card">
-            <h3 style="text-align:center;">📊 أسعار السكوار اليوم</h3>
+            <h3 style="text-align:center; margin-bottom:15px;">📊 أسعار الصرف (السكوار)</h3>
             <table class="currency-table">
-                <tr><td>الأورو (€)</td><td style="color:#27ae60">24,200</td><td style="color:#e74c3c">24,400</td></tr>
-                <tr><td>الدولار ($)</td><td style="color:#27ae60">22,100</td><td style="color:#e74c3c">22,300</td></tr>
+                <tr><td>الأورو (€)</td><td style="color:var(--success)">24,200</td><td style="color:var(--danger)">24,400</td></tr>
+                <tr><td>الدولار ($)</td><td style="color:var(--success)">22,100</td><td style="color:var(--danger)">22,300</td></tr>
             </table>
         </div>
 
-        <!-- شبكة الخدمات -->
+        <!-- أزرار الخدمات -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -97,75 +101,109 @@
 </div>
 
 <!-- صفحات المقالات الطويلة جداً -->
+
+<!-- 1. منحة البطالة -->
 <div id="page-minha" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>منحة البطالة 2026</h3></div>
     <div class="article-body">
-        <h2>الدليل الشامل للاستفادة من منحة البطالة في الجزائر</h2>
-        <p>تعتبر منحة البطالة في الجزائر إجراءً استراتيجياً أقره السيد رئيس الجمهورية لضمان كرامة الشباب الجزائري ومرافقتهم في مرحلة البحث عن شغل. تهدف هذه المنحة لتوفير دخل مادي شهري ثابت، بالإضافة إلى تغطية اجتماعية كاملة عبر بطاقة الشفاء التي تسمح للمستفيد وعائلته بالحصول على العلاج والدواء مجاناً.</p>
-        <p>تشترط الوكالة الوطنية للتشغيل (ANEM) للقبول في المنحة أن يكون المتقدم جزائري الجنسية، مقيماً بالجزائر، ومسجلاً كطالب شغل لأول مرة لمدة لا تقل عن 6 أشهر. كما يجب أن يتراوح سن المتقدم بين 19 و40 سنة كاملة، وألا يكون لديه أي دخل مادي هو أو زوجه، بالإضافة إلى تسوية الوضعية تجاه الخدمة الوطنية.</p>
-        <p>تتم عملية التسجيل وتحديد المواعيد حصرياً عبر المنصة الرقمية المخصصة لذلك، مع ضرورة الالتزام بحضور الدورات التكوينية وتجديد التسجيل دورياً لضمان استمرار صرف المنحة.</p>
+        <h2>دليل الاستفادة من منحة البطالة في الجزائر</h2>
+        <p>تعد منحة البطالة مكسباً اجتماعياً هاماً أقره السيد رئيس الجمهورية لمرافقة طالبي الشغل لأول مرة وتوفير حياة كريمة لهم. تهدف المنحة إلى تقديم دعم مادي مباشر بالإضافة إلى التغطية الصحية من خلال بطاقة الشفاء التي تتيح الاستفادة من مجانية الدواء والعلاج للمستفيد وذوي الحقوق.</p>
+        <p>شروط الاستفادة تشمل أن يكون السن بين 19 و40 عاماً، والتسجيل لدى الوكالة الوطنية للتشغيل كطالب شغل لأول مرة لمدة لا تقل عن 6 أشهر. كما يشترط عدم امتلاك أي دخل مادي للمتقدم أو زوجه، وتسوية الوضعية تجاه الخدمة الوطنية. يتم التسجيل عبر المنصة الرقمية المخصصة وتحديد مواعد المقابلة مع مستشاري التشغيل لمعالجة الملف.</p>
         <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">رابط التسجيل في منحة البطالة</a>
     </div>
 </div>
 
+<!-- 2. فضاء الأولياء -->
 <div id="page-awlyaa" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>فضاء الأولياء</h3></div>
     <div class="article-body">
-        <h2>فضاء الأولياء: الرابط الصحيح لمتابعة كشوف النقاط</h2>
-        <p>فضاء الأولياء هو المنصة الرسمية التي أطلقتها وزارة التربية الوطنية لتسهيل التواصل بين المدرسة والأسرة. يمكن للأولياء عبر هذا الفضاء الاطلاع على كشوف نقاط أبنائهم في الأطوار الثلاثة (ابتدائي، متوسط، ثانوي) فور صدورها، بالإضافة إلى متابعة الغيابات والحصول على شهادات المدرسية إلكترونياً.</p>
-        <p>بناءً على التحديثات الأخيرة، فإن الرابط المعتمد حالياً هو الرابط الرسمي لوزارة التربية، والذي يتيح الوصول الآمن لبيانات التلاميذ عبر الرقم التعريفي المدرسي.</p>
-        <a href="https://educationdz.com/" class="reg-btn" target="_blank">الدخول إلى فضاء الأولياء الرسمي</a>
+        <h2>متابعة نتائج التلاميذ عبر فضاء الأولياء</h2>
+        <p>يوفر فضاء الأولياء التابع لوزارة التربية الوطنية خدمة رقمية متكاملة تتيح للآباء متابعة المسار الدراسي لأبنائهم في الأطوار التعليمية الثلاثة (ابتدائي، متوسط، ثانوي). يمكن من خلال المنصة الاطلاع على كشوف النقاط الفصلية، متابعة الغيابات، والحصول على التنبيهات المدرسية والشهادات الرسمية إلكترونياً دون الحاجة للتنقل للمؤسسات التربوية.</p>
+        <p>للدخول إلى الفضاء، يجب استخدام الرقم التعريفي المدرسي الموجود في كشف النقاط، وتفعيل الحساب عبر الرابط الرسمي المحدث الذي يضمن سرية وأمان بيانات التلاميذ.</p>
+        <a href="https://educationdz.com/" class="reg-btn" target="_blank">الدخول إلى فضاء الأولياء المحدث</a>
     </div>
 </div>
 
+<!-- 3. سكنات عدل 3 -->
 <div id="page-aadl" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سكنات عدل 3</h3></div>
     <div class="article-body">
-        <h2>دليل الاكتتاب في سكنات عدل 3 لعام 2026</h2>
-        <p>يعد برنامج عدل 3 (AADL 3) أحد أهم المشاريع السكنية التي ينتظرها الجزائريون، حيث يعتمد على صيغة البيع بالإيجار المخصصة للطبقات المتوسطة. يهدف البرنامج لتوفير سكنات عصرية بدفعات مالية ميسرة على مدار سنوات طويلة تنتهي بامتلاك المسكن.</p>
-        <p>التسجيل يتم رقمياً بشكل كامل عبر منصة وكالة عدل، ويتطلب معايير محددة تتعلق بالدخل السري للأزواج والوضعية العائلية، مع ضرورة عدم الاستفادة المسبقة من أي إعانة سكنية من طرف الدولة.</p>
-        <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">رابط منصة عدل 3 الرسمية</a>
+        <h2>كل ما يجب معرفته عن برنامج عدل 3 (AADL 3)</h2>
+        <p>يمثل برنامج عدل 3 المرحلة الجديدة من السكنات بصيغة البيع بالإيجار، والموجهة خصيصاً للطبقة المتوسطة لتمكينهم من امتلاك مسكن عصري بدفعات ميسرة. تعتمد هذه الصيغة على تسديد أقساط شهرية لفترة زمنية محددة تنتهي بالملكية الكاملة، وفق شروط دخل محددة للاكتتاب، مع مراعاة الحالة الاجتماعية وعدم الاستفادة السابقة من أي إعانة سكنية حكومية.</p>
+        <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">رابط التسجيل في سكنات عدل 3</a>
     </div>
 </div>
 
-<!-- صفحات المعلومات الجانبية -->
+<!-- 4. تجنيد الجيش -->
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>تجنيد الجيش</h3></div>
+    <div class="article-body">
+        <h2>الالتحاق بصفوف الجيش الوطني الشعبي 2026</h2>
+        <p>تفتح وزارة الدفاع الوطني أبواب التجنيد سنوياً للشباب الراغبين في الالتحاق بمختلف القوات والمدارس العسكرية. يضمن التجنيد في المؤسسة العسكرية تكويناً عالي المستوى، مساراً مهنياً مستقراً، وتغطية اجتماعية كاملة، بالإضافة إلى المساهمة في الدفاع عن السيادة الوطنية.</p>
+        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">موقع تسجيلات التجنيد الرسمي</a>
+    </div>
+</div>
+
+<!-- 5. وسيط ANEM -->
+<div id="page-wassit" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>وسيط ANEM</h3></div>
+    <div class="article-body">
+        <h2>منصة وسيط: محرك البحث عن وظائف</h2>
+        <p>منصة وسيط هي الأداة الرقمية الرسمية للوكالة الوطنية للتشغيل لربط طالبي العمل مع أرباب العمل. تتيح للمستخدمين إنشاء سيرهم الذاتية الرقمية، التقديم على عروض العمل المتوفرة، ومتابعة وضعية طلباتهم بكل شفافية ومصداقية.</p>
+        <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="reg-btn" target="_blank">تسجيل الدخول في منصة وسيط</a>
+    </div>
+</div>
+
+<!-- 6. أضحية العيد -->
+<div id="page-adhahi" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>أضحية العيد</h3></div>
+    <div class="article-body">
+        <h2>منصة أضاحي: الشراء المباشر من الموالين</h2>
+        <p>مبادرة وطنية لتنظيم سوق المواشي خلال عيد الأضحى، تهدف لربط المواطن مباشرة بالموالين لضمان أسعار تنافسية بعيداً عن المضاربة، مع ضمان الرقابة البيطرية على الأضاحي المعروضة في النقاط الرسمية المعتمدة.</p>
+        <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">رابط حجز الأضحية الرسمية</a>
+    </div>
+</div>
+
+<!-- صفحات المعلومات الجانبية (تعمل الآن بشكل كامل) -->
 <div id="page-about" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>من نحن</h3></div>
     <div class="article-body">
-        <h2>حول موقع خدماتي الجزائري</h2>
-        <p>موقع "خدماتي" هو بوابة رقمية مستقلة يديرها السيد <b>هزيل بن عمر</b>. نهدف من خلال هذا المشروع إلى تسهيل حياة المواطن الجزائري عبر توفير وصول سريع وموثوق للروابط الإدارية الحكومية في منصة واحدة. نحن نؤمن بأن رقمنة الإدارة هي المفتاح لتطوير الخدمات وتوفير الجهد على الجميع.</p>
+        <h2>حول منصة خدماتي الجزائر</h2>
+        <p>منصة "خدماتي" (khadamati.dz) هي مشروع تقني مستقل يهدف إلى تبسيط الوصول إلى الروابط والخدمات الإدارية في الجزائر. نسعى لتوفير الوقت على المواطنين من خلال تجميع كافة المنصات الرسمية في واجهة واحدة سهلة الاستخدام.</p>
+        <p>مؤسس الموقع: <b>هزيل بن عمر</b>.</p>
     </div>
 </div>
 
 <div id="page-privacy" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سياسة الخصوصية</h3></div>
     <div class="article-body">
-        <h2>الخصوصية والأمان</h2>
-        <p>نحن نحترم خصوصيتكم بالكامل. موقع "خدماتي" لا يقوم بطلب أو تخزين أي بيانات شخصية حساسة. الروابط الموجودة توجهكم مباشرة إلى المواقع الرسمية للوزارات. نستخدم فقط أدوات التحليل لتحسين تجربة التصفح وضمان سرعة الموقع.</p>
+        <h2>اتفاقية الخصوصية والأمان</h2>
+        <p>نحن نحترم خصوصية زوارنا. موقع خدماتي لا يطلب ولا يخزن أي بيانات شخصية أو حساسة. الروابط المتوفرة هي روابط مباشرة للمواقع الحكومية الرسمية، ونحن نستخدم ملفات تعريف الارتباط فقط لتحليل حركة المرور وتحسين سرعة الموقع.</p>
     </div>
 </div>
 
 <div id="page-contact" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>اتصل بنا</h3></div>
     <div class="article-body">
-        <h2>معلومات الاتصال المباشرة</h2>
-        <p>لأي استفسار تقني أو إعلاني، يمكنك التواصل مع إدارة الموقع مباشرة عبر الوسائل التالية:</p>
-        <ul style="list-style:none; padding:0;">
-            <li>📧 **البريد الإلكتروني:** contact@khadamati.dz</li>
-            <li>📱 **رقم الهاتف:** 07XXXXXXXX (ضع رقمك هنا)</li>
-        </ul>
-        <p>نحن متواجدون للرد على رسائلكم وتحسين خدماتنا بناءً على اقتراحاتكم.</p>
+        <h2>معلومات التواصل المباشر</h2>
+        <p>لأي استفسار، إعلان، أو ملاحظة حول الروابط، يرجى التواصل مع الإدارة:</p>
+        <div style="background:#f9f9f9; padding:20px; border-radius:15px; border:1px solid #eee;">
+            <p>📧 <b>البريد الإلكتروني:</b> contact@khadamati.dz</p>
+            <p>📱 <b>رقم الهاتف:</b> 06XXXXXXXX (أضف رقمك هنا)</p>
+        </div>
+        <p style="margin-top:20px;">نحن نعمل دائماً على تحديث الروابط المعطلة بناءً على بلاغاتكم.</p>
     </div>
 </div>
 
 <script>
-    // نظام الصفحات
+    // نظام الصفحات (الظهور والاختفاء)
     function openPage(id) {
         const page = document.getElementById('page-' + id);
         if(page) {
             page.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            if (typeof gtag === 'function') { gtag('event', 'view_item', { 'item_id': id }); }
+            // إرسال حدث لـ Google Analytics
+            if (typeof gtag === 'function') { gtag('event', 'page_view', { 'page_id': id }); }
         }
     }
 
@@ -174,7 +212,7 @@
         document.body.style.overflow = 'auto';
     }
 
-    // PWA - تثبيت التطبيق
+    // نظام التثبيت (PWA)
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault(); deferredPrompt = e;
@@ -186,6 +224,11 @@
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') deferredPrompt = null;
+        } else {
+            // مشاركة الموقع كبديل للتثبيت على iPhone
+            if (navigator.share) {
+                navigator.share({ title: 'خدماتي الجزائر', url: window.location.href });
+            }
         }
     });
 
