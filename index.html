@@ -10,6 +10,7 @@
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.8; }
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         
+        /* الهيدر وزر النشر الأبيض */
         .main-header { 
             background: var(--primary); 
             color: white; 
@@ -31,6 +32,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
+        /* الجداول والبيانات */
         .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .currency-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; border-bottom: 2px solid var(--accent); }
@@ -38,6 +40,7 @@
         .buy { color: var(--success); } .sell { color: var(--danger); }
         .update-tag { text-align: center; font-size: 12px; color: #999; margin-top: 15px; background: #f9f9f9; padding: 8px; border-radius: 10px; }
 
+        /* الصلاة والطقس */
         .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
         .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
         .prayer-item span { display: block; font-size: 11px; color: #888; }
@@ -46,11 +49,13 @@
         .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; }
         .weather-day { min-width: 90px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
 
+        /* الأيقونات */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
         .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
         .icon-btn i { font-size: 30px; display: block; margin-bottom: 8px; }
         .icon-btn span { font-size: 11px; font-weight: 800; color: var(--primary); }
 
+        /* الصفحات والمقالات الطويلة جداً */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
         .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
         .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; }
@@ -60,6 +65,7 @@
         .article-body p { margin-bottom: 20px; }
         .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 20px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 30px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); }
 
+        /* تذييل الصفحة */
         footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
         .footer-links { margin-bottom: 10px; }
         .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
@@ -74,7 +80,7 @@
     </div>
 
     <div class="container">
-        <!-- أسعار السكوار -->
+        <!-- أسعار السكوار والتحيين -->
         <div class="card">
             <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السوق السوداء</h3>
             <table class="currency-table">
@@ -85,9 +91,9 @@
             <div class="update-tag">تحيين أسعار السكوار: <span id="sync-time"></span></div>
         </div>
 
-        <!-- مواقيت الصلاة (تعتمد كلياً على الموقع) -->
+        <!-- مواقيت الصلاة -->
         <div class="card">
-            <h3 id="prayer-title" style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
+            <h3 style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
             <div class="prayer-grid" id="prayer-list">
                 <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
                 <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
@@ -95,10 +101,9 @@
                 <div class="prayer-item"><span>المغرب</span><b id="maghrib">--:--</b></div>
                 <div class="prayer-item"><span>العشاء</span><b id="isha">--:--</b></div>
             </div>
-            <p id="location-error" style="color:red; font-size:11px; text-align:center; margin-top:10px; display:none;">يرجى تفعيل GPS لعرض المواقيت</p>
         </div>
 
-        <!-- حالة الطقس -->
+        <!-- حالة الطقس المفصلة -->
         <div class="card">
             <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ حالة الطقس للأيام القادمة</h3>
             <div class="weather-scroll" id="weather-scroll"></div>
@@ -125,7 +130,110 @@
     </div>
 </div>
 
-<!-- (نهاية الأقسام والصفحات تظل كما هي) -->
+<!-- الصفحات بمقالات طويلة جداً -->
+
+<div id="page-minha" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>منحة البطالة 2026</h3></div>
+    <div class="article-body">
+        <h2>الدليل الشامل للتسجيل في منحة البطالة بالجزائر</h2>
+        <p>تعد منحة البطالة خطوة هامة أقرتها الدولة الجزائرية لمرافقة الشباب طالبي الشغل لأول مرة، حيث توفر لهم حماية اجتماعية ودخلاً شهرياً ثابتاً يساعدهم في حياتهم اليومية حتى إيجاد منصب شغل دائم. تهدف هذه المنحة إلى الحفاظ على كرامة الشباب وإدماجهم التدريجي في الدورة الاقتصادية.</p>
+        <h3>شروط الاستفادة القانونية:</h3>
+        <p>لكي يتمكن المترشح من الاستفادة من المنحة، يجب أن تتوفر فيه حزمة من الشروط الصارمة، أهمها أن يتراوح العمر ما بين 19 و40 سنة كاملة عند تاريخ التسجيل. كما يشترط أن يكون مسجلاً لدى مصالح الوكالة الوطنية للتشغيل (ANEM) كطالب شغل لأول مرة لمدة لا تقل عن ستة أشهر متتالية دون انقطاع.</p>
+        <h3>الالتزامات المهنية للمستفيد:</h3>
+        <p>لا تقتصر المنحة على الجانب المادي فقط، بل يلتزم المستفيد بمتابعة الدورات التكوينية التي تقترحها الوكالة، والحضور الإلزامي للمواعيد المحددة. أي غياب غير مبرر عن استدعاءات الوكالة أو رفض عرضي عمل مطابقين للتخصص قد يؤدي إلى الإقصاء النهائي من المنحة.</p>
+        <p>بالإضافة إلى ذلك، يجب ألا يمتلك المتقدم أو زوجه أي دخل مهما كانت طبيعته، كما يجب أن يكون المتقدم قد سوى وضعيته تجاه الخدمة الوطنية أو حصل على إعفاء قانوني منها.</p>
+        <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">التوجه لمنصة التسجيل الأولي في المنحة</a>
+    </div>
+</div>
+
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>تجنيد الجيش 2026</h3></div>
+    <div class="article-body">
+        <h2>دليل الالتحاق بصفوف الجيش الوطني الشعبي الجزائري</h2>
+        <p>يفتح الجيش الوطني الشعبي سنوياً أبوابه للشباب الجزائري الراغب في الالتحاق بمختلف الأسلحة والقوات (البرية، البحرية، الجوية، وقوات الدفاع عن الإقليم). التجنيد في المؤسسة العسكرية يضمن مساراً مهنياً متميزاً وتكويناً بمواصفات عالمية، بالإضافة إلى ضمان مستقبل مستقر وشريف في خدمة الوطن والذود عن سيادته.</p>
+        <h3>الرتب والمستويات المطلوبة:</h3>
+        <p>ينقسم التجنيد إلى ثلاث فئات رئيسية: فئة الضباط العاملين وهي مخصصة للحاصلين على شهادة البكالوريا الجدد بمعدلات محددة، حيث يتابعون تكويناً عسكرياً وجامعياً في الأكاديمية العسكرية بشرشال أو المدارس العليا المتخصصة. فئة ضباط الصف، وهي مخصصة للذين يثبتون مستوى الثالثة ثانوي أو حائزي البكالوريا الذين لم يسعفهم الحظ في الالتحاق بفئة الضباط. وأخيراً فئة رجال الصف (الرتباء) الموجهة للمستويات التعليمية المتوسطة والثانوية.</p>
+        <h3>معايير القبول والملف الورقي:</h3>
+        <p>يخضع المترشحون لسلسلة من الاختبارات الطبية المعمقة، الاختبارات النفسية، والبدنية. يجب أن يتمتع المترشح بالجنسية الجزائرية وبلياقة بدنية تامة، كما يجب أن يكون عازباً طيلة فترة التكوين العسكري الأساسي.</p>
+        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">زيارة منصة وزارة الدفاع للتسجيل</a>
+    </div>
+</div>
+
+<div id="page-awlyaa" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>فضاء الأولياء</h3></div>
+    <div class="article-body">
+        <h2>النظام المعلوماتي لقطاع التربية الوطنية: فضاء الأولياء</h2>
+        <p>يعد فضاء الأولياء حجر الزاوية في رقمنة قطاع التربية الوطنية في الجزائر. تهدف هذه المنصة الرقمية إلى مد جسور التواصل المستمر بين المؤسسة التربوية والأسرة، مما يتيح للأولياء متابعة دقيقة ومباشرة للمسار الدراسي لأبنائهم في الأطوار التعليمية الثلاثة (ابتدائي، متوسط، ثانوي).</p>
+        <h3>الخدمات التي توفرها المنصة الرقمية:</h3>
+        <p>تسمح المنصة للأولياء بالاطلاع الفوري على نتائج الاختبارات الفصلية وسحب كشوف النقاط مباشرة من المنزل دون الحاجة للتنقل. كما توفر المنصة ميزة مراقبة غيابات التلاميذ وسلوكهم داخل الحرم المدرسي، والاطلاع على جداول التوقيت والبرامج الدراسية. بالإضافة إلى ذلك، يتم من خلال هذا الفضاء تسجيل التلاميذ في الامتحانات الرسمية (بكالوريا، بيام) وكذا عمليات التوجيه المدرسي والتحويلات بين المؤسسات.</p>
+        <p>للتسجيل، يحتاج الولي إلى الحصول على رقم التعريف المدرسي الخاص بكل ابن، والذي يتواجد عادة في كشوف النقاط أو يطلب من إدارة المؤسسة، ثم اتباع خطوات إنشاء الحساب وتفعيله عبر مديرية التربية.</p>
+        <a href="https://awlyaa.education.dz/login" class="reg-btn" target="_blank">دخول فضاء الأولياء الرسمي</a>
+    </div>
+</div>
+
+<div id="page-aadl" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سكنات عدل 3</h3></div>
+    <div class="article-body">
+        <h2>برنامج عدل 3: مستقبل السكن بالبيع بالإيجار في الجزائر</h2>
+        <p>برنامج "عدل 3" هو الصيغة السكنية الأكثر انتظاراً من طرف الطبقة المتوسطة في الجزائر، حيث تتيح الحصول على مسكن لائق بصيغة البيع بالإيجار مع تسهيلات كبيرة في الدفع تصل إلى 25 سنة. تعتمد هذه الصيغة على تسديد قيمة السكن عبر أشطر متباعدة، تليها أقساط شهرية ميسرة تغطي تكاليف الإيجار والخدمات.</p>
+        <h3>الشروط المالية والاجتماعية للاكتتاب:</h3>
+        <p>يشترط في المكتتب أن يتراوح مجموع دخله الشهري (مع زوجته) بين 24 ألف دينار و120 ألف دينار جزائري. كما يجب ألا يكون قد استفاد سابقاً من أي قطعة أرض أو سكن ملكية تامة أو دعم مالي من طرف الدولة في إطار السكن. يتم التسجيل عبر المنصة الرقمية باستخدام رقم التعريف الوطني ورقم الضمان الاجتماعي لضمان الشفافية والعدالة في توزيع السكنات.</p>
+        <p>تلتزم وكالة عدل بتوفير أحياء سكنية مجهزة بكافة المرافق الضرورية من مدارس، مراكز صحية، ومساحات خضراء، لضمان إطار معيشي كريم للمواطنين المسجلين في هذا البرنامج الوطني الطموح.</p>
+        <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">رابط التسجيل والدخول لمنصة عدل 3</a>
+    </div>
+</div>
+
+<div id="page-wassit" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>وسيط ANEM</h3></div>
+    <div class="article-body">
+        <h2>منصة وسيط أونلاين: جسر التواصل بين طالبي العمل والشركات</h2>
+        <p>تعتبر منصة "وسيط" التابعة للوكالة الوطنية للتشغيل الأداة الرقمية الأولى في الجزائر لتسيير عروض وطلبات العمل. تهدف المنصة إلى إضفاء الشفافية المطلقة على عملية التوظيف من خلال معالجة آلية للطلبات بناءً على الكفاءات والخبرات المطلوبة من قبل أصحاب العمل في القطاعين العام والخاص.</p>
+        <h3>كيفية تعظيم فرص التوظيف عبر المنصة:</h3>
+        <p>يجب على طالب العمل إنشاء حساب شخصي دقيق يتضمن معلوماته الشخصية، مؤهلاته العلمية، والخبرات المهنية المكتسبة. تتيح المنصة إمكانية تحميل السيرة الذاتية واختيار الولايات أو التخصصات التي يرغب العمل فيها. كما توفر ميزة التنبيهات الفورية عند توفر عرض عمل يتوافق مع ملف المستخدم.</p>
+        <p>من الضروري جداً تحيين الملف الشخصي بانتظام، والتأكد من تمديد التسجيل كل ستة أشهر لتفادي شطب الطلب من القائمة النشطة، وهو أمر ضرورة أيضاً للحفاظ على حق الاستفادة من منحة البطالة.</p>
+        <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="reg-btn" target="_blank">رابط تسجيل طلب عمل جديد في وسيط</a>
+    </div>
+</div>
+
+<div id="page-adhahi" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>أضحية العيد 2026</h3></div>
+    <div class="article-body">
+        <h2>منصة أضاحي: تنظيم سوق المواشي في الجزائر</h2>
+        <p>أطلقت الدولة الجزائرية منصة "أضاحي" الرقمية بهدف تنظيم عملية بيع أضاحي العيد ومحاربة المضاربة التي تشهدها الأسواق في هذه المناسبة الدينية العظيمة. تسعى المنصة إلى الربط المباشر بين الموال (المربي) والمستهلك النهائي، مما يساهم في خفض الأسعار وضمان سلامة الأضاحي من الناحية الصحية والبيطرية.</p>
+        <h3>إجراءات الحجز والرقابة الصحية:</h3>
+        <p>توفر المنصة قائمة بنقاط البيع المرخصة والمعتمدة عبر كامل التراب الوطني، حيث تخضع جميع المواشي المعروضة لرقابة بياطرة مختصين تابعين لوزارة الفلاحة. يمكن للمواطن تصفح أنواع الأضاحي المتاحة، أسعارها التقريبية، ومواقع المزارع أو المستودعات المخصصة للبيع. هذه المبادرة تساهم أيضاً في الحد من انتشار نقاط البيع العشوائية داخل المدن الكبرى، مما يحافظ على نظافة المحيط والصحة العامة.</p>
+        <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">حجز أضحية العيد عبر المنصة الرسمية</a>
+    </div>
+</div>
+
+<!-- الصفحات الجانبية -->
+<div id="page-about" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>من نحن</h3></div>
+    <div class="article-body">
+        <h2>حول موقع خدماتي الجزائري</h2>
+        <p>موقع "خدماتي" هو بوابة رقمية جزائرية مستقلة أسسها المطور <b>هزيل بن عمر</b>. تهدف المنصة إلى تجميع كافة الروابط الإدارية الرسمية والخدمات الرقمية التي تهم المواطن الجزائري في مكان واحد وبشكل مبسط وسهل الوصول. نحن نسعى لتقديم المعلومة الصحيحة والمحدثة لدعم جهود الدولة في الرقمنة وتقريب الإدارة من المواطن.</p>
+    </div>
+</div>
+
+<div id="page-privacy" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سياسة الخصوصية</h3></div>
+    <div class="article-body">
+        <h2>التزامنا بخصوصية المستخدم</h2>
+        <p>نحن في "خدماتي" نولي أهمية قصوى لخصوصية زوارنا. نؤكد أن الموقع لا يقوم بجمع أي بيانات شخصية أو سرية تتعلق بالمستخدمين. الروابط المتوفرة في المنصة هي روابط تؤدي مباشرة إلى المواقع الرسمية الحكومية، حيث تتم كافة العمليات الحساسة في بيئات مؤمنة تماماً تابعة لتلك الهيئات. نحن لا نتحمل مسؤولية أي بيانات يتم إدخالها خارج هذه الروابط الرسمية المذكورة.</p>
+    </div>
+</div>
+
+<div id="page-contact" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>اتصل بنا</h3></div>
+    <div class="article-body" style="text-align:center;">
+        <h2>تواصل مع إدارة الموقع</h2>
+        <p>يسعدنا دائماً تلقي ملاحظاتكم لتطوير الخدمة:</p>
+        <div style="background:#f9f9f9; padding:25px; border-radius:20px; border:1px solid #ddd; margin:20px 0;">
+            <p>📧 البريد الإلكتروني: <b>Mustaphabenamar40@gmail.com</b></p>
+            <p>📱 للتواصل عبر فايبر: <b>0558284458</b></p>
+        </div>
+    </div>
+</div>
 
 <script>
     function openPage(id) {
@@ -151,38 +259,25 @@
     });
     document.getElementById('weather-scroll').innerHTML = weatherHTML;
 
-    // --- جلب المواقيت بناءً على الموقع فقط ---
-    function fetchPrayerTimesByLocation() {
+    // --- تعديل مواقيت الصلاة حسب الموقع فقط ---
+    function getPrayerTimes() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    
-                    fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
-                        .then(res => res.json())
-                        .then(data => {
-                            const t = data.data.timings;
-                            document.getElementById('fajr').innerText = t.Fajr;
-                            document.getElementById('dhuhr').innerText = t.Dhuhr;
-                            document.getElementById('asr').innerText = t.Asr;
-                            document.getElementById('maghrib').innerText = t.Maghrib;
-                            document.getElementById('isha').innerText = t.Isha;
-                            document.getElementById('location-error').style.display = 'none';
-                        });
-                },
-                (error) => {
-                    // في حال الرفض، يظهر خطأ ولا يتم جلب توقيت العاصمة
-                    document.getElementById('location-error').style.display = 'block';
-                }
-            );
-        } else {
-            document.getElementById('location-error').innerText = "متصفحك لا يدعم تحديد الموقع";
-            document.getElementById('location-error').style.display = 'block';
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
+                .then(r => r.json()).then(res => {
+                    const t = res.data.timings;
+                    document.getElementById('fajr').innerText = t.Fajr;
+                    document.getElementById('dhuhr').innerText = t.Dhuhr;
+                    document.getElementById('asr').innerText = t.Asr;
+                    document.getElementById('maghrib').innerText = t.Maghrib;
+                    document.getElementById('isha').innerText = t.Isha;
+                });
+            });
         }
     }
-
-    fetchPrayerTimesByLocation();
+    getPrayerTimes();
 </script>
 
 </body>
