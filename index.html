@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- Google Analytics - تم الحفاظ عليه لضمان تتبع الزوار كما في الصورة 1777417454616448031711778483039_ddd6a1.jpg -->
+    <!-- Google Analytics - G-FDBKREYJ7X -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FDBKREYJ7X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,286 +11,297 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الشامل للخدمات الرقمية بالجزائر</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>خدماتي - بوابة الخدمات الرقمية الجزائرية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --bg: #f4f7f6; --white: #ffffff; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; }
-        .header { background: var(--primary); color: var(--white); padding: 25px 15px; text-align: center; }
-        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
-        
-        /* أسعار السكوار المعدلة */
-        .currency-card { background: var(--white); border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .currency-table { width: 100%; border-collapse: collapse; text-align: center; margin-top: 10px; }
-        .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; color: #666; }
-        .currency-table td { padding: 12px 5px; border-bottom: 1px solid #eee; font-weight: bold; }
-        .price-buy { color: var(--success); }
-        .price-sell { color: #e74c3c; }
-        .update-tag { display: block; text-align: center; font-size: 11px; color: #999; margin-top: 10px; }
+        :root {
+            --primary: #1a252f;
+            --accent: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --bg: #f0f2f5;
+            --white: #ffffff;
+        }
 
-        /* الصلاة والطقس */
-        .info-box { background: var(--white); border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; text-align: center; font-size: 12px; }
-        .prayer-item { background: var(--primary); color: white; padding: 10px 2px; border-radius: 8px; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        .weather-row { display: grid; grid-template-columns: 1fr 1.5fr 1fr; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
 
-        /* شبكة الأيقونات */
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .icon-card { background: var(--white); padding: 20px 5px; border-radius: 15px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; }
-        .icon-card i { font-size: 35px; display: block; margin-bottom: 10px; }
-        .icon-card span { font-size: 12px; font-weight: bold; color: var(--primary); }
+        /* الهيدر الرئيسي */
+        .main-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
 
-        /* الصفحات الفرعية */
-        .page { display: none; background: var(--white); min-height: 100vh; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box; }
-        .active-page { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .btn-back { background: #eee; padding: 10px 20px; border-radius: 25px; display: inline-block; margin-bottom: 20px; cursor: pointer; font-weight: bold; }
-        .article-body { line-height: 1.8; color: #444; }
-        .article-body h3 { color: var(--primary); border-right: 4px solid var(--accent); padding-right: 10px; margin-top: 25px; }
-        .details-box { background: #f9f9f9; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #eee; }
-        
-        .btn-register { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; margin-top: 30px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 15px; }
 
-        footer { text-align: center; padding: 40px; color: #888; font-size: 13px; border-top: 1px solid #eee; margin-top: 20px; }
-        .footer-links span { cursor: pointer; color: var(--accent); margin: 0 10px; font-weight: bold; }
+        /* أسعار السكوار - شراء وبيع */
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .currency-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .currency-table th { padding: 12px; background: #f8f9fa; color: #666; font-size: 14px; }
+        .currency-table td { padding: 15px 10px; border-bottom: 1px solid #eee; text-align: center; font-weight: 700; }
+        .buy { color: var(--success); }
+        .sell { color: var(--danger); }
+
+        /* الطقس والصلاة */
+        .live-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mini-card { background: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        /* شبكة الخدمات (الأيقونات) */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .service-item {
+            background: var(--white);
+            padding: 20px 10px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .service-item:active { transform: scale(0.95); background: #fafafa; }
+        .service-item i { font-size: 40px; display: block; margin-bottom: 10px; }
+        .service-item span { font-weight: 700; font-size: 13px; color: var(--primary); }
+
+        /* الصفحات المنفصلة */
+        .full-page {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; min-height: 100vh;
+            background: var(--bg);
+            z-index: 9999;
+            padding-bottom: 50px;
+        }
+
+        .page-header {
+            background: var(--white);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky; top: 0;
+        }
+
+        .back-btn {
+            background: #eee;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        .content-area { padding: 20px; max-width: 800px; margin: 0 auto; }
+        .article-title { color: var(--primary); border-right: 5px solid var(--accent); padding-right: 15px; }
+        .rich-text { background: var(--white); padding: 25px; border-radius: 15px; line-height: 1.9; font-size: 16px; }
+
+        /* أزرار التسجيل */
+        .reg-button {
+            display: block;
+            background: var(--success);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        footer { text-align: center; padding: 40px; color: #888; font-size: 14px; }
+        .footer-nav { margin-bottom: 15px; }
+        .footer-nav span { margin: 0 10px; color: var(--accent); cursor: pointer; font-weight: 600; }
     </style>
 </head>
 <body>
 
-<div id="main-view">
-    <div class="header">
-        <h1 style="margin:0; font-size:24px;">خدماتي</h1>
-        <p style="margin:5px 0 0 0; font-size:14px;">بوابتك الرقمية الموثوقة - الجزائر 2026</p>
+<div id="home-view">
+    <div class="main-header">
+        <h1 style="margin:0;">خدماتي</h1>
+        <p style="margin:5px 0 0 0; opacity: 0.8;">الدليل الجزائري الشامل للخدمات 2026</p>
     </div>
 
     <div class="container">
-        <!-- أسعار السكوار بيع وشراء -->
-        <div class="currency-card">
-            <h4 style="margin:0; text-align:center;">📊 أسعار الصرف في السكوار اليوم</h4>
+        <!-- أسعار العملات -->
+        <div class="card">
+            <h3 style="margin-top:0; text-align:center;">📊 أسعار السكوار (تحديث اليوم)</h3>
             <table class="currency-table">
-                <thead>
-                    <tr>
-                        <th>العملة</th>
-                        <th>شراء</th>
-                        <th>بيع</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>🇪🇺 الأورو (EUR)</td>
-                        <td class="price-buy">24,200 دج</td>
-                        <td class="price-sell">24,400 دج</td>
-                    </tr>
-                    <tr>
-                        <td>🇺🇸 الدولار (USD)</td>
-                        <td class="price-buy">22,100 دج</td>
-                        <td class="price-sell">22,300 دج</td>
-                    </tr>
-                    <tr>
-                        <td>🇬🇧 الجنيه (GBP)</td>
-                        <td class="price-buy">28,400 دج</td>
-                        <td class="price-sell">28,600 دج</td>
-                    </tr>
-                </tbody>
+                <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
+                <tr><td>الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
+                <tr><td>الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
+                <tr><td>الجنيه (£)</td><td class="buy">28,400</td><td class="sell">28,600</td></tr>
             </table>
-            <span class="update-tag">تم التحديث بتاريخ: <span id="update-date"></span></span>
-        </div>
-
-        <!-- الصلاة بدقة GPS -->
-        <div class="info-box" style="background: #f1f4f9;">
-            <div id="p-status" style="font-size:11px; text-align:center; margin-bottom:8px;">جاري جلب المواقيت لموقعك...</div>
-            <div class="prayer-grid">
-                <div class="prayer-item">الفجر<br><span id="f">--:--</span></div>
-                <div class="prayer-item">الظهر<br><span id="d">--:--</span></div>
-                <div class="prayer-item">العصر<br><span id="a">--:--</span></div>
-                <div class="prayer-item">المغرب<br><span id="m">--:--</span></div>
-                <div class="prayer-item">العشاء<br><span id="i">--:--</span></div>
+            <div style="text-align:center; font-size:11px; color:#999; margin-top:10px;">
+                آخر تحديث: <span id="current-date"></span>
             </div>
         </div>
 
-        <!-- الطقس المفصل -->
-        <div class="info-box">
-            <h4 style="margin:0 0 10px 0;">🌤️ حالة الطقس لـ 7 أيام</h4>
-            <div id="weather-content">جاري جلب البيانات...</div>
+        <!-- الصلاة والطقس -->
+        <div class="live-info-grid">
+            <div class="mini-card" style="background: var(--primary); color: white;">
+                <h4 style="margin:0 0 10px 0; font-size:14px;">🕋 الصلاة</h4>
+                <div id="prayer-times" style="font-size:11px; line-height:1.5;">جاري التحديد...</div>
+            </div>
+            <div class="mini-card">
+                <h4 style="margin:0 0 10px 0; font-size:14px;">🌤️ الطقس</h4>
+                <div id="weather-status" style="font-size:11px;">جاري الجلب...</div>
+            </div>
         </div>
 
-        <!-- شبكة الخدمات -->
+        <!-- أيقونات الخدمات -->
         <div class="services-grid">
-            <div class="icon-card" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
-            <div class="icon-card" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
-            <div class="icon-card" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
-            <div class="icon-card" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
-            <div class="icon-card" onclick="openPage('aadl')"><i>🏢</i><span>عدل 3 (AADL)</span></div>
-            <div class="icon-card" onclick="shareApp()"><i>📢</i><span>نشر التطبيق</span></div>
+            <div class="service-item" onclick="togglePage('minha', true)"><i>💰</i><span>منحة البطالة</span></div>
+            <div class="service-item" onclick="togglePage('army', true)"><i>🎖️</i><span>تجنيد الجيش</span></div>
+            <div class="service-item" onclick="togglePage('aadl', true)"><i>🏢</i><span>عدل 3</span></div>
+            <div class="service-item" onclick="togglePage('wassit', true)"><i>💼</i><span>وسيط ANEM</span></div>
+            <div class="service-item" onclick="togglePage('awlyaa', true)"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
+            <div class="service-item" onclick="togglePage('about', true)"><i>ℹ️</i><span>من نحن</span></div>
         </div>
 
         <footer>
-            <div class="footer-links">
-                <span onclick="openPage('about')">من نحن</span> | 
-                <span onclick="openPage('privacy')">الخصوصية</span> | 
-                <span onclick="openPage('contact')">اتصل بنا</span>
+            <div class="footer-nav">
+                <span onclick="togglePage('privacy', true)">الخصوصية</span> | 
+                <span onclick="togglePage('contact', true)">اتصل بنا</span>
             </div>
             <p>© 2026 هزيل بن عمر - جميع الحقوق محفوظة</p>
         </footer>
     </div>
 </div>
 
-<!-- صفحات المحتوى التفصيلي (المقالات الطويلة) -->
+<!-- صفحات المقالات الطويلة -->
 
-<!-- صفحة منحة البطالة -->
-<div id="page-minha" class="page">
-    <div class="btn-back" onclick="closePage()">← العودة للرئيسية</div>
-    <h2>دليل التسجيل في منحة البطالة 2026</h2>
-    <div class="article-body">
-        <p>تعتبر منحة البطالة في الجزائر خطوة هامة لدعم الشباب الباحث عن شغل لأول مرة. أطلقت هذه المنحة بقرار رئاسي لضمان كرامة العاطلين عن العمل وتوفير تغطية اجتماعية لهم.</p>
-        
-        <h3>شروط الاستفادة القانونية</h3>
-        <div class="details-box">
+<div id="page-minha" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="togglePage('minha', false)">← عودة</div><h3>منحة البطالة</h3></div>
+    <div class="content-area">
+        <div class="rich-text">
+            <h2 class="article-title">دليل التسجيل في منحة البطالة 2026</h2>
+            <p>منحة البطالة هي دعم مالي أقره رئيس الجمهورية للشباب الباحث عن شغل، لضمان الحد الأدنى من الكرامة والتغطية الصحية.</p>
+            <h3>أولاً: شروط الاستفادة</h3>
             <ul>
-                <li>يجب أن يتراوح سن المتقدم بين 19 و 40 سنة (لا يتعدى 41 سنة يوم التسجيل).</li>
-                <li>التسجيل المسبق لدى الوكالة الوطنية للتشغيل (ANEM) كطالب شغل لأول مرة منذ 6 أشهر على الأقل.</li>
-                <li>عدم امتلاك أي دخل مادي مهما كان نوعه، وعدم وجود أي سجل تجاري أو نشاط فلاحي.</li>
-                <li>الوضعية القانونية تجاه الخدمة الوطنية (أداء، إعفاء، أو تأجيل ساري).</li>
-                <li>بالنسبة للمتزوجين، يجب ألا يكون للزوج(ة) أي دخل مادي أو تأمين اجتماعي نشط.</li>
+                <li>أن يكون سن المتقدم بين 19 و 40 سنة.</li>
+                <li>أن يكون مسجلاً لدى الوكالة الوطنية للتشغيل كطالب شغل لأول مرة لمدة لا تقل عن 6 أشهر.</li>
+                <li>ألا يكون للمتقدم أو الزوج أي دخل مادي أو نشاط تجاري.</li>
+                <li>تبيان الوضعية تجاه الخدمة الوطنية (أداء، إعفاء، تأجيل).</li>
             </ul>
+            <h3>ثانياً: الوثائق المطلوبة</h3>
+            <p>عند الحصول على موعد المقابلة، يجب إحضار: صك بريدي مشطوب، نسخة من بطاقة التعريف، وشهادة الالتزام المستخرجة من الموقع.</p>
+            <a href="https://minha.anem.dz/" class="reg-button" target="_blank">اضغط هنا للتسجيل في المنحة</a>
         </div>
-
-        <h3>الملف الإداري المطلوب</h3>
-        <p>بعد التسجيل الناجح وحجز موعد، يجب تحضير الملف التالي للذهاب للوكالة:</p>
-        <ol>
-            <li>صك بريدي مشطوب (Chèque barré).</li>
-            <li>نسخة من بطاقة التعريف الوطنية البيومترية.</li>
-            <li>وثيقة الالتزام المستخرجة من المنصة الرقمية موقعة.</li>
-            <li>شهادة تثبت الوضعية إزاء الخدمة الوطنية.</li>
-        </ol>
     </div>
-    <a href="https://minha.anem.dz/" class="btn-register" target="_blank">التسجيل في منصة منحة</a>
 </div>
 
-<!-- صفحة الجيش -->
-<div id="page-army" class="page">
-    <div class="btn-back" onclick="closePage()">← عودة</div>
-    <h2>تجنيد الجيش الوطني الشعبي: الشروط والملف</h2>
-    <div class="article-body">
-        <p>تفتح وزارة الدفاع الوطني سنوياً أبواب الالتحاق بصفوف الجيش الوطني الشعبي للشباب الطموحين لخدمة الوطن في مختلف الرتب والأسلحة.</p>
-        
-        <h3>شروط الالتحاق العامة</h3>
-        <div class="details-box">
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="togglePage('army', false)">← عودة</div><h3>تجنيد الجيش</h3></div>
+    <div class="content-area">
+        <div class="rich-text">
+            <h2 class="article-title">تجنيد الجيش الوطني الشعبي</h2>
+            <p>تفتح وزارة الدفاع الوطني أبوابها للشباب الراغبين في الانضمام إلى صفوف القوات المسلحة بمختلف الرتب (ضباط، ضباط صف، جنود متعاقدين).</p>
+            <h3>شروط الالتحاق</h3>
             <ul>
-                <li>الجنسية الجزائرية الأصلية واللياقة البدنية التامة.</li>
-                <li>السن للمترشحين المباشرين (ضباط): من 18 إلى 21 سنة عند تاريخ 31 ديسمبر.</li>
-                <li>المعدل الدراسي في البكالوريا (يحدد سنوياً حسب كل مدرسة وعادة لا يقل عن 12/20).</li>
-                <li>النجاح في اختبارات الفحص الطبي والنفسي والبدني المعمقة.</li>
+                <li>الجنسية الجزائرية الأصلية واللياقة البدنية الجيدة.</li>
+                <li>السن بين 18 و 21 سنة للمترشحين المباشرين.</li>
+                <li>الحصول على شهادة البكالوريا بمعدل يحدد سنوياً حسب كل تخصص.</li>
             </ul>
+            <h3>الملف الأولي</h3>
+            <p>يتم عبر منصة التسجيل المسبق لوزارة الدفاع، ويتضمن معلومات الهوية والمسار الدراسي.</p>
+            <a href="https://preinscription.mdn.dz/" class="reg-button" target="_blank">دخول بوابة التجنيد الرسمية</a>
         </div>
-
-        <h3>الوثائق المطلوبة للتسجيل الأولي</h3>
-        <p>يتم التسجيل إلكترونياً أولاً عبر البوابة، وعند الاستدعاء يطلب الملف الورقي:</p>
-        <ul>
-            <li>استمارة المعلومات المحملة من الموقع.</li>
-            <li>نسخة من شهادة البكالوريا أو الشهادة المدرسية للرتب الأخرى.</li>
-            <li>4 صور شمسية حديثة بخلفية بيضاء.</li>
-            <li>شهادة ميلاد رقم 12 الأصلية.</li>
-        </ul>
-    </div>
-    <a href="https://preinscription.mdn.dz/" class="btn-register" target="_blank">رابط بوابة التجنيد</a>
-</div>
-
-<!-- صفحة من نحن -->
-<div id="page-about" class="page">
-    <div class="btn-back" onclick="closePage()">← عودة</div>
-    <h2>من نحن</h2>
-    <div class="article-body">
-        <p>تطبيق "خدماتي" هو منصة مستقلة تهدف إلى تسهيل الوصول للمعلومات الرسمية والخدمات الرقمية في الجزائر. نحن لا نمثل جهة حكومية ولكننا نجمع المعلومات من المصادر الرسمية (وزارات، وكالات وطنية) ونقدمها للمواطن في قالب سهل وبسيط.</p>
-        <p>هدفنا هو تقليص الفجوة الرقمية ومساعدة الشباب في معرفة حقوقهم وطرق التسجيل في مختلف المنح والمسابقات الوطنية.</p>
     </div>
 </div>
 
-<!-- صفحة اتصل بنا -->
-<div id="page-contact" class="page">
-    <div class="btn-back" onclick="closePage()">← عودة</div>
-    <h2>اتصل بنا</h2>
-    <div class="article-body">
-        <p>يسعدنا دائماً استقبال استفساراتكم واقتراحاتكم لتطوير التطبيق.</p>
-        <div class="details-box">
-            <p>📧 البريد الإلكتروني: contact@khidmati-dz.com</p>
-            <p>📍 المقر: الجزائر العاصمة.</p>
+<!-- صفحة من نحن واتصل بنا -->
+<div id="page-about" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="togglePage('about', false)">← عودة</div><h3>عن المنصة</h3></div>
+    <div class="content-area">
+        <div class="rich-text">
+            <h2>من نحن</h2>
+            <p>تطبيق "خدماتي" هو واجهة رقمية تهدف لتبسيط الإجراءات الإدارية للمواطن الجزائري. نحن نقوم بجمع الروابط الرسمية والشروط القانونية من الجريدة الرسمية والمواقع الوزارية لنضعها بين يديك في مكان واحد.</p>
+            <p>نحن منصة مستقلة تماماً ولا نمثل أي جهة حكومية، ولكننا نحرص على دقة المعلومة.</p>
         </div>
-        <p>يمكنكم أيضاً متابعتنا عبر صفحتنا الرسمية على فيسبوك للحصول على آخر تحديثات منحة البطالة وسكنات عدل.</p>
     </div>
 </div>
 
 <script>
-    // التحكم في الصفحات
-    function openPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-        document.getElementById('page-' + id).classList.add('active-page');
-        window.scrollTo(0,0);
+    // نظام التنقل بين الصفحات
+    function togglePage(id, show) {
+        const page = document.getElementById('page-' + id);
+        if(show) {
+            page.style.display = 'block';
+            document.getElementById('home-view').style.display = 'none';
+            window.scrollTo(0,0);
+        } else {
+            page.style.display = 'none';
+            document.getElementById('home-view').style.display = 'block';
+        }
     }
-    function closePage() {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-    }
 
-    // التاريخ الحالي
-    document.getElementById('update-date').innerText = new Date().toLocaleDateString('ar-DZ', {year: 'numeric', month: 'long', day: 'numeric'});
+    // التاريخ
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('ar-DZ');
 
-    // قاموس حالات الطقس
-    const weatherCodes = {
-        0: "صافي ☀️", 1: "صافي غالباً 🌤️", 2: "غائم جزئياً ⛅", 3: "غائم ☁️",
-        45: "ضباب 🌫️", 51: "رذاذ خفيف 🌦️", 61: "أمطار خفيفة 🌧️", 95: "رعد ⚡"
-    };
-
-    // جلب البيانات بناءً على GPS
-    function loadLiveTools() {
+    // المواقع والطقس
+    window.onload = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(p => {
                 const lat = p.coords.latitude, lon = p.coords.longitude;
                 
                 // الصلاة
                 fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
-                .then(r => r.json()).then(data => {
-                    const t = data.data.timings;
-                    document.getElementById('f').innerText = t.Fajr;
-                    document.getElementById('d').innerText = t.Dhuhr;
-                    document.getElementById('a').innerText = t.Asr;
-                    document.getElementById('m').innerText = t.Maghrib;
-                    document.getElementById('i').innerText = t.Isha;
-                    document.getElementById('p-status').innerText = "✅ المواقيت دقيقة لموقعك الحالي";
+                .then(r => r.json()).then(d => {
+                    const t = d.data.timings;
+                    document.getElementById('prayer-times').innerHTML = `
+                        الفجر: ${t.Fajr} | الظهر: ${t.Dhuhr}<br>
+                        العصر: ${t.Asr} | المغرب: ${t.Maghrib}<br>
+                        العشاء: ${t.Isha}
+                    `;
                 });
 
                 // الطقس
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max&timezone=Africa/Algiers`)
                 .then(r => r.json()).then(data => {
-                    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                    let html = "";
-                    for(let i=0; i<7; i++){
-                        let d = new Date(data.daily.time[i]);
-                        let status = weatherCodes[data.daily.weathercode[i]] || "مستقر";
-                        html += `<div class="weather-row">
-                            <span>${days[d.getDay()]}</span>
-                            <span>${status}</span>
-                            <span style="font-weight:bold; color:var(--accent);">${Math.round(data.daily.temperature_2m_max[i])}°</span>
-                        </div>`;
-                    }
-                    document.getElementById('weather-content').innerHTML = html;
+                    const code = data.daily.weathercode[0];
+                    const temp = Math.round(data.daily.temperature_2m_max[0]);
+                    document.getElementById('weather-status').innerHTML = `الحالة: مستقرة <br> الحرارة: ${temp}° مئوية`;
                 });
-            }, () => {
-                document.getElementById('p-status').innerText = "⚠️ يرجى تفعيل الموقع لمواقيت دقيقة";
-            }, {enableHighAccuracy: true});
+            });
         }
-    }
-
-    window.onload = loadLiveTools;
-
-    function shareApp() {
-        if(navigator.share) {
-            navigator.share({title:'خدماتي الجزائر', text:'دليل منحة البطالة والسكوار والطقس', url: window.location.href});
-        }
-    }
+    };
 </script>
 
 </body>
-</html>
+                </html>
