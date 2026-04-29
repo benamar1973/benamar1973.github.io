@@ -3,126 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة خدماتي الجزائر - khadamati.dz</title>
+    <title>بوابة خدماتي الجزائر</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #1a5f7a; --accent: #159895; --bg: #f8fafc; --text: #1e293b; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); margin: 0; color: var(--text); line-height: 1.8; }
         
+        /* شريط التحديث وزر النشر */
         .top-nav { background: #ffcc00; color: #000; padding: 12px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; font-weight: 900; }
-        .publish-btn { background: #000; color: #fff; padding: 8px 18px; border: none; border-radius: 10px; cursor: pointer; font-family: 'Cairo'; font-weight: 700; transition: 0.3s; }
+        .publish-btn { background: #000; color: #fff; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; font-family: 'Cairo'; font-weight: 800; transition: 0.3s; }
         .publish-btn:hover { background: #333; transform: scale(1.05); }
 
-        .header { background: var(--primary); color: white; text-align: center; padding: 50px 20px; border-radius: 0 0 60px 60px; }
-        .container { max-width: 1000px; margin: -40px auto 40px; padding: 0 20px; }
+        .header { background: var(--primary); color: white; text-align: center; padding: 60px 20px; border-radius: 0 0 60px 60px; }
+        .container { max-width: 1100px; margin: -50px auto 40px; padding: 0 20px; }
 
-        .weather-week { background: white; border-radius: 25px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .weather-day { text-align: center; padding: 10px; border-left: 1px solid #f0f0f0; }
-        .weather-day:first-child { border: none; }
+        /* الطقس للأسبوع كاملاً */
+        .weather-grid { background: white; border-radius: 25px; padding: 25px; margin-bottom: 25px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow-x: auto; }
+        .weather-day { text-align: center; min-width: 80px; padding: 10px; border-left: 1px solid #f0f0f0; }
+        .weather-day:last-child { border: none; }
 
-        .prayer-times { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
-        .prayer-box { background: var(--primary); color: white; padding: 15px 5px; border-radius: 15px; text-align: center; font-size: 14px; }
+        /* مواقيت الصلاة (سيتم تحديثها برمجياً) */
+        .prayer-container { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
+        .prayer-box { background: var(--primary); color: white; padding: 15px; border-radius: 15px; text-align: center; font-size: 14px; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 20px; }
-        .btn { background: white; border: 2px solid #e2e8f0; padding: 30px 10px; border-radius: 25px; text-align: center; cursor: pointer; transition: 0.4s; font-weight: 800; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: inherit; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .btn { background: white; border: 2px solid #e2e8f0; padding: 30px 10px; border-radius: 25px; text-align: center; cursor: pointer; transition: 0.4s; font-weight: 800; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .btn:hover { border-color: var(--accent); transform: translateY(-8px); background: #f0fdfa; }
 
-        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 30px; box-sizing: border-box; }
-        .article { max-width: 850px; margin: 0 auto; }
-        .article h2 { color: var(--primary); border-right: 10px solid var(--accent); padding-right: 20px; }
-        
-        .footer { text-align: center; padding: 50px; background: #fff; border-top: 2px solid #f1f5f9; margin-top: 50px; }
-        .f-links span { color: var(--accent); cursor: pointer; font-weight: 800; margin: 0 10px; }
+        /* الصفحات والمقالات الطويلة جداً */
+        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
+        .article { max-width: 900px; margin: 0 auto; text-align: justify; }
+        .article h2 { color: var(--primary); border-right: 12px solid var(--accent); padding-right: 20px; margin-bottom: 30px; font-size: 32px; }
+        .article p { font-size: 19px; color: #334155; margin-bottom: 30px; line-height: 2.2; }
+
+        /* الفوتر في سطر واحد */
+        .footer { text-align: center; padding: 40px; background: #fff; border-top: 2px solid #f1f5f9; margin-top: 50px; }
+        .footer-line { font-weight: 800; color: var(--accent); font-size: 17px; }
+        .footer-line span { cursor: pointer; margin: 0 15px; }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <span>📅 الأربعاء 29 أفريل 2026</span>
-    <button class="publish-btn" onclick="publishApp()">🚀 نشر التطبيق</button>
+    <span>📅 تحديث السكوار: 29 أفريل 2026</span>
+    <button class="publish-btn" onclick="publishNow()">🚀 نشر التطبيق</button>
 </div>
 
 <div class="header">
     <h1>بوابة خدماتي الجزائر</h1>
-    <p>كل الروابط الإدارية والمالية الرسمية في مكان واحد</p>
+    <p>البوابة الموثوقة للخدمات الإدارية والمالية</p>
 </div>
 
 <div class="container">
-    <!-- الطقس المفصل ليشمل الخميس والجمعة -->
-    <div class="weather-week">
-        <div class="weather-day"><b>الأربعاء</b><br>☀️ 29°C</div>
-        <div class="weather-day" style="background: #fff9db;"><b>الخميس</b><br>🌤️ 27°C</div>
-        <div class="weather-day" style="background: #fff9db;"><b>الجمعة</b><br>🌧️ 22°C</div>
-        <div class="weather-day"><b>السبت</b><br>☀️ 28°C</div>
-        <div class="weather-day"><b>الأحد</b><br>🌤️ 26°C</div>
+    <!-- طقس الأسبوع كاملاً -->
+    <div class="weather-grid">
+        <div class="weather-day"><b>الأربعاء</b><br>☀️ 29°</div>
+        <div class="weather-day"><b>الخميس</b><br>🌤️ 27°</div>
+        <div class="weather-day"><b>الجمعة</b><br>🌧️ 22°</div>
+        <div class="weather-day"><b>السبت</b><br>☀️ 28°</div>
+        <div class="weather-day"><b>الأحد</b><br>🌤️ 26°</div>
+        <div class="weather-day"><b>الاثنين</b><br>☁️ 24°</div>
+        <div class="weather-day"><b>الثلاثاء</b><br>☀️ 30°</div>
     </div>
 
-    <!-- مواقيت الصلوات الخمس -->
-    <div class="prayer-times">
-        <div class="prayer-box"><b>الفجر</b><br>04:12</div>
-        <div class="prayer-box"><b>الظهر</b><br>12:48</div>
-        <div class="prayer-box"><b>العصر</b><br>16:35</div>
-        <div class="prayer-box"><b>المغرب</b><br>19:38</div>
-        <div class="prayer-box"><b>العشاء</b><br>21:05</div>
+    <!-- مواقيت الصلاة (تتغير حسب موقع الهاتف) -->
+    <div class="prayer-container" id="prayer-list">
+        <div class="prayer-box"><b>الفجر</b><br><span id="fajr">--:--</span></div>
+        <div class="prayer-box"><b>الظهر</b><br><span id="dhuhr">--:--</span></div>
+        <div class="prayer-box"><b>العصر</b><br><span id="asr">--:--</span></div>
+        <div class="prayer-box"><b>المغرب</b><br><span id="maghrib">--:--</span></div>
+        <div class="prayer-box"><b>العشاء</b><br><span id="isha">--:--</span></div>
     </div>
 
     <div class="grid">
         <a href="https://minha.anem.dz/pre_inscription" class="btn" target="_blank">💰 منحة البطالة</a>
         <a href="https://preinscription.mdn.dz/" class="btn" target="_blank">🎖️ تجنيد الجيش</a>
         <a href="https://awlyaa.education.dz/login" class="btn" target="_blank">👨‍👩‍👧 فضاء الأولياء</a>
-        <a href="https://www.aadl.dz/relogin" class="btn" target="_blank">🏢 عدل 3</a>
+        <a href="https://www.aadl.dz/relogin" class="btn" target="_blank">🏢 سكنات عدل 3</a>
         <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="btn" target="_blank">💼 وسيط ANEM</a>
         <a href="https://adhahi.dz/register/" class="btn" target="_blank">🐑 أضحية العيد</a>
     </div>
 </div>
 
-<!-- صفحة سياسة الخصوصية -->
-<div id="privacy" class="full-page">
-    <button onclick="hide()" style="cursor:pointer; padding:10px;">← عودة</button>
+<!-- مقال طويل جداً (منحة البطالة) -->
+<div id="page-minha" class="full-page">
+    <button onclick="hide()" style="padding:10px 25px; cursor:pointer; background:var(--primary); color:white; border:none; border-radius:10px;">إغلاق المقال</button>
     <div class="article">
-        <h2>سياسة الخصوصية - بوابة خدماتي</h2>
-        <p>نحن في موقع khadamati.dz نحترم خصوصيتكم تماماً. الموقع لا يقوم بجمع أي بيانات شخصية حساسة عن الزوار بشكل تلقائي. البيانات التي يتم إدخالها في روابط التسجيل الحكومية تتم عبر المواقع الرسمية للوزارات ولا نملك أي وصول إليها.</p>
-        <p>هدفنا الوحيد هو توفير الروابط الصحيحة والمحدثة لتسهيل الإجراءات الإدارية للمواطن الجزائري.</p>
+        <h2>الدليل الكامل والاستراتيجي لمنحة البطالة في الجزائر 2026</h2>
+        <p>تعتبر منحة البطالة في الجزائر مكسباً اجتماعياً وتاريخياً أقره السيد رئيس الجمهورية بهدف صون كرامة الشباب الجزائري وتوفير حد أدنى من الدخل الكريم لطالبي الشغل لأول مرة. إن هذه المنحة ليست مجرد دعم مالي بسيط، بل هي منظومة متكاملة تشمل التغطية الصحية الشاملة للمستفيد وذوي حقوقه عبر بطاقة الشفاء، مما يوفر أماناً صحياً ضرورياً خلال فترة البحث عن منصب شغل مستقر.</p>
+        <p><b>شروط الاستفادة القانونية:</b> لضمان وصول الدعم لمستحقيه، وضعت الوكالة الوطنية للتشغيل معايير دقيقة؛ حيث يجب أن يكون السن بين 19 و40 عاماً، وأن يكون المتقدم مسجلاً لدى مصالح "ANEM" كطالب شغل لأول مرة لمدة لا تقل عن ستة أشهر متواصلة. كما يمنع القانون استفادة أي شخص يملك دخلاً مادياً هو أو زوجه، سواء كان في القطاع العام أو الخاص، وذلك تكريساً لمبدأ العدالة الاجتماعية.</p>
+        <p><b>التدابير التقنية والتكوين:</b> تلتزم الدولة عبر هذا البرنامج بتوجيه المستفيدين نحو دورات تكوينية تخصصية لرفع مهاراتهم، حيث يتم استدعاء المترشحين دورياً عبر المنصة الرقمية "Minha" لتحديث بياناتهم وضمان جهوزيتهم للالتحاق بمناصب العمل التي تتوفر في السوق الوطنية.</p>
     </div>
 </div>
 
-<!-- صفحة من نحن -->
-<div id="about" class="full-page">
-    <button onclick="hide()" style="cursor:pointer; padding:10px;">← عودة</button>
-    <div class="article">
-        <h2>من نحن</h2>
-        <p>موقع "خدماتي" هو مبادرة رقمية من تطوير السيد <b>هزيل بن عمر</b>. نسعى لنكون الدليل الأول للمواطن للوصول إلى الخدمات الرقمية في الجزائر بكل سهولة وأمان.</p>
-    </div>
-</div>
-
-<!-- صفحة اتصل بنا -->
-<div id="contact" class="full-page">
-    <button onclick="hide()" style="cursor:pointer; padding:10px;">← عودة</button>
-    <div class="article">
-        <h2>اتصل بنا</h2>
-        <p>لأي استفسار أو بلاغ عن رابط لا يعمل، يرجى التواصل معنا:</p>
-        <p>📧 الإيميل: <b>mustaphabenamar40@gmail.com</b></p>
-        <p>📱 الهاتف: <b>0558284458</b></p>
-    </div>
-</div>
+<!-- المقالات الأخرى يتم فتحها بنفس الطريقة لضمان الطول والكثافة -->
 
 <footer class="footer">
-    <div class="f-links">
+    <div class="footer-line">
         <span onclick="show('about')">من نحن</span> | 
         <span onclick="show('privacy')">سياسة الخصوصية</span> | 
         <span onclick="show('contact')">اتصل بنا</span>
     </div>
-    <p>© 2026 هزيل بن عمر - khadamati.dz</p>
+    <p>© 2026 هزيل بن عمر - جميع الحقوق محفوظة</p>
 </footer>
 
 <script>
-    function show(id) { document.getElementById(id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
+    function show(id) { document.getElementById('page-' + id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
     function hide() { document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none'); document.body.style.overflow = 'auto'; }
-    
-    // تفعيل زر النشر
-    function publishApp() {
-        alert("بدء عملية توليد نسخة التطبيق (PWA) لموقع khadamati.dz...");
-        // منطق النشر البرمجي يوضع هنا
+
+    // زر النشر
+    function publishNow() {
+        alert("بدء عملية نشر التطبيق لموقع khadamati.dz...");
+        // منطق النشر التقني يوضع هنا
+    }
+
+    // جلب مواقيت الصلاة حسب موقع المستخدم الفعلي
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=3`)
+                .then(res => res.json())
+                .then(data => {
+                    const t = data.data.timings;
+                    document.getElementById('fajr').innerText = t.Fajr;
+                    document.getElementById('dhuhr').innerText = t.Dhuhr;
+                    document.getElementById('asr').innerText = t.Asr;
+                    document.getElementById('maghrib').innerText = t.Maghrib;
+                    document.getElementById('isha').innerText = t.Isha;
+                });
+        });
     }
 </script>
 
