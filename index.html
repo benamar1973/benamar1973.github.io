@@ -10,7 +10,6 @@
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         
-        /* الهيدر وزر النشر الأبيض */
         .main-header { 
             background: var(--primary); 
             color: white; 
@@ -32,7 +31,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* الجداول والبيانات */
         .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .currency-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; border-bottom: 2px solid var(--accent); }
@@ -40,23 +38,19 @@
         .buy { color: var(--success); } .sell { color: var(--danger); }
         .update-tag { text-align: center; font-size: 12px; color: #999; margin-top: 15px; background: #f9f9f9; padding: 8px; border-radius: 10px; }
 
-        /* الصلاة والطقس */
-        .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .prayer-item { background: #f8f9fa; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
-        .prayer-item span { display: block; font-size: 12px; color: #888; }
-        .prayer-item b { font-size: 16px; color: var(--primary); }
+        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
+        .prayer-item span { display: block; font-size: 11px; color: #888; }
+        .prayer-item b { font-size: 14px; color: var(--primary); }
         
         .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; }
         .weather-day { min-width: 90px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
-        .weather-day b { display: block; color: var(--accent); font-size: 18px; }
 
-        /* الأيقونات */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
         .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
         .icon-btn i { font-size: 30px; display: block; margin-bottom: 8px; }
-        .icon-btn span { font-size: 12px; font-weight: 800; color: var(--primary); }
+        .icon-btn span { font-size: 11px; font-weight: 800; color: var(--primary); }
 
-        /* الصفحات والمقالات الطويلة */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
         .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
         .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; }
@@ -64,10 +58,9 @@
         .article-body h2 { color: var(--primary); border-right: 5px solid var(--accent); padding-right: 12px; margin-bottom: 20px; }
         .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 25px; }
 
-        /* الفوتر في سطر واحد */
         footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
         .footer-links { margin-bottom: 10px; }
-        .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
+        .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -79,20 +72,18 @@
     </div>
 
     <div class="container">
-        <!-- أسعار السكوار والتحيين -->
         <div class="card">
-            <h3 style="margin:0; text-align:center;">📊 أسعار الصرف اليوم</h3>
+            <h3 style="margin:0; text-align:center;">📊 أسعار السكوار اليوم</h3>
             <table class="currency-table">
                 <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
                 <tr><td>الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
                 <tr><td>الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
             </table>
-            <div class="update-tag">آخر تحيين للأسعار: <span id="sync-time"></span></div>
+            <div class="update-tag">تحيين أسعار السكوار: <span id="sync-time"></span></div>
         </div>
 
-        <!-- مواقيت الصلاة -->
         <div class="card">
-            <h3 style="margin:0 0 15px 0;">🕋 مواقيت الصلاة (الجزائر)</h3>
+            <h3 style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة</h3>
             <div class="prayer-grid" id="prayer-list">
                 <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
                 <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
@@ -102,15 +93,11 @@
             </div>
         </div>
 
-        <!-- حالة الطقس للأسبوع -->
         <div class="card">
-            <h3 style="margin:0 0 10px 0;">☁️ حالة الطقس للأسبوع</h3>
-            <div class="weather-scroll" id="weather-scroll">
-                <!-- جاري تحميل أيام الأسبوع برمجياً -->
-            </div>
+            <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ طقس الأسبوع</h3>
+            <div class="weather-scroll" id="weather-scroll"></div>
         </div>
 
-        <!-- الأيقونات الرئيسية -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -126,40 +113,75 @@
                 <span onclick="openPage('privacy')">الخصوصية</span> | 
                 <span onclick="openPage('contact')">اتصل بنا</span>
             </div>
-            <p>© 2026 هزيل بن عمر</p>
+            <p>© 2026 هزيل بن عمر - جميع الحقوق محفوظة</p>
         </footer>
     </div>
 </div>
 
-<!-- صفحات المقالات الطويلة جداً -->
+<!-- صفحات المقالات الطويلة -->
 
-<div id="page-adhahi" class="full-page">
-    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>أضحية العيد 2026</h3></div>
-    <div class="article-body">
-        <h2>دليل اقتناء أضحية العيد عبر منصة "أضاحي"</h2>
-        <p>أطلقت الشركة الجزائرية للحوم الحمراء منصة "أضاحي" الرقمية لتسهيل عملية اقتناء أضاحي العيد مباشرة من المربين والموالين بأسعار مدروسة وتنافسية، وذلك بهدف كسر احتكار السماسرة وضمان وصول الأضحية للمواطن بجودة عالية وتحت رقابة بيطرية صارمة.</p>
-        <h3>مميزات المنصة والبيع المباشر:</h3>
-        <ul>
-            <li>ضمان السلامة الصحية للأغنام تحت إشراف أطباء بياطرة مختصين.</li>
-            <li>توفير نقاط بيع منظمة عبر مختلف ولايات الوطن.</li>
-            <li>أسعار ثابتة ومحددة تعتمد على وزن وعمر الأضحية.</li>
-            <li>إمكانية الدفع الإلكتروني أو الحجز الأولي عبر المنصة.</li>
-        </ul>
-        <h3>كيفية التسجيل والحجز:</h3>
-        <p>يجب على المواطن الدخول للمنصة واختيار الولاية التابع لها، ثم تصفح أنواع الأضاحي المتاحة (كباش، نعاج) مع الاطلاع على الصور والأسعار التقريبية. بعد اختيار الأضحية، يتم التوجه لنقطة البيع المختارة لاستكمال الإجراءات.</p>
-        <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">رابط تسجيل وحجز الأضحية</a>
-    </div>
-</div>
-
-<!-- باقي الصفحات (منحة، عدل، إلخ) تظل بنفس محتواها الطويل جداً -->
 <div id="page-minha" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>منحة البطالة</h3></div>
     <div class="article-body">
-        <h2>تفاصيل منحة البطالة 2026</h2>
-        <p>تستمر الوكالة الوطنية للتشغيل في تقديم منحة البطالة للشباب طالبي الشغل لأول مرة. المنحة تشمل مبلغاً مالياً شهرياً وتأميناً صحياً شاملاً عبر بطاقة الشفاء.</p>
-        <h3>الشروط الكاملة:</h3>
-        <p>يجب أن يكون السن بين 19 و 40 سنة، وأن يكون التسجيل في منصة وسيط نشطاً لمدة 6 أشهر على الأقل. كما يجب ألا يمتلك المتقدم أو زوجه أي دخل مهما كان نوعه.</p>
-        <a href="https://minha.anem.dz/" class="reg-btn" target="_blank">رابط منصة المنحة</a>
+        <h2>دليل التسجيل في منحة البطالة 2026</h2>
+        <p>تعتبر منحة البطالة في الجزائر إجراءً اجتماعياً لدعم طالبي الشغل لأول مرة. تهدف المنحة لتوفير دخل مادي شهري يضمن الكرامة للشباب الجزائري، مع توفير تغطية صحية عبر بطاقة الشفاء.</p>
+        <h3>شروط الاستفادة:</h3>
+        <ul>
+            <li>السن ما بين 19 و 40 سنة.</li>
+            <li>التسجيل في الوكالة الوطنية للتشغيل (ANEM) كطالب شغل لأول مرة لمدة 6 أشهر.</li>
+            <li>عدم وجود أي دخل مادي للمتقدم أو لزوجه.</li>
+            <li>تسوية الوضعية تجاه الخدمة الوطنية.</li>
+        </ul>
+        <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">التسجيل في منحة البطالة</a>
+    </div>
+</div>
+
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>تجنيد الجيش</h3></div>
+    <div class="article-body">
+        <h2>الالتحاق بصفوف الجيش الوطني الشعبي</h2>
+        <p>تفتح وزارة الدفاع الوطني باب التجنيد للشباب الراغبين في الانضمام لمختلف القوات. يتم التسجيل حصراً عبر المنصة الرقمية الرسمية لضمان الشفافية.</p>
+        <h3>المستويات المطلوبة:</h3>
+        <p>تتنوع الرتب بين الضباط (للحاصلين على البكالوريا)، ضباط الصف، ورجال الصف وفقاً للمستوى التعليمي.</p>
+        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">رابط موقع التجنيد الرسمي</a>
+    </div>
+</div>
+
+<div id="page-awlyaa" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>فضاء الأولياء</h3></div>
+    <div class="article-body">
+        <h2>فضاء الأولياء لنتائج التلاميذ</h2>
+        <p>منصة رقمية تابعة لوزارة التربية الوطنية تتيح للأولياء متابعة المسار الدراسي لأبنائهم. يمكن من خلالها سحب كشوف النقاط الفصلية والاطلاع على الغيابات.</p>
+        <a href="https://awlyaa.education.dz/login" class="reg-btn" target="_blank">دخول فضاء الأولياء الرسمي</a>
+    </div>
+</div>
+
+<div id="page-aadl" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سكنات عدل 3</h3></div>
+    <div class="article-body">
+        <h2>برنامج سكنات عدل 3 (AADL 3)</h2>
+        <p>برنامج البيع بالإيجار الموجه للطبقة المتوسطة. يتيح امتلاك سكن عبر دفع أقساط شهرية ميسرة على المدى الطويل.</p>
+        <h3>شروط الاكتتاب:</h3>
+        <p>يجب ألا يتجاوز دخل الزوجين الحدود القانونية، وألا يكون المتقدم قد استفاد سابقاً من أي دعم سكني من الدولة.</p>
+        <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">رابط تسجيلات عدل 3</a>
+    </div>
+</div>
+
+<div id="page-wassit" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>وسيط ANEM</h3></div>
+    <div class="article-body">
+        <h2>منصة وسيط للبحث عن عمل</h2>
+        <p>هي المنصة الرقمية الرسمية للوكالة الوطنية للتشغيل. تتيح لطالبي الشغل تسجيل سيرهم الذاتية والتقديم على عروض العمل المتوفرة في سوق الشغل الجزائري.</p>
+        <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="reg-btn" target="_blank">تسجيل طلب عمل في وسيط</a>
+    </div>
+</div>
+
+<div id="page-adhahi" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>أضحية العيد</h3></div>
+    <div class="article-body">
+        <h2>منصة أضاحي الجزائر 2026</h2>
+        <p>مبادرة وطنية لتنظيم بيع أضاحي العيد مباشرة من الموال إلى المواطن لضمان أسعار معقولة ورقابة بيطرية كاملة. المنصة توفر خيارات متنوعة من الأغنام بأسعار مدروسة.</p>
+        <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">حجز أضحية العيد</a>
     </div>
 </div>
 
@@ -170,7 +192,7 @@
 
 <div id="page-privacy" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>الخصوصية</h3></div>
-    <div class="article-body"><h2>سياسة الخصوصية</h2><p>نحن لا نجمع بيانات المستخدمين، هدفنا تقريب الإدارة من المواطن فقط.</p></div>
+    <div class="article-body"><h2>سياسة الخصوصية</h2><p>نحن نحترم خصوصيتك ولا نجمع أي بيانات شخصية، هدفنا هو تسهيل الوصول للروابط الرسمية فقط.</p></div>
 </div>
 
 <div id="page-contact" class="full-page">
@@ -192,22 +214,19 @@
     }
     function shareApp() {
         if(navigator.share) {
-            navigator.share({title: 'تطبيق خدماتي', text: 'دليلك الإداري في الجزائر', url: window.location.href});
+            navigator.share({title: 'تطبيق خدماتي الجزائر', text: 'دليلك الإداري الرقمي', url: window.location.href});
         }
     }
 
-    // تفعيل الوقت والطقس والصلاة
     document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
 
-    // محاكاة بيانات الطقس للأسبوع
     const days = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
     let weatherHTML = '';
     days.forEach(day => {
-        weatherHTML += `<div class="weather-day"><span>${day}</span><b>${Math.floor(Math.random() * 10) + 20}°</b><span>صافي</span></div>`;
+        weatherHTML += `<div class="weather-day"><span>${day}</span><b>${Math.floor(Math.random() * 8) + 18}°C</b><span>صافي</span></div>`;
     });
     document.getElementById('weather-scroll').innerHTML = weatherHTML;
 
-    // جلب مواقيت الصلاة (مثال تقريبي للجزائر العاصمة)
     fetch('https://api.aladhan.com/v1/timingsByCity?city=Algiers&country=Algeria&method=3')
     .then(r => r.json()).then(res => {
         const t = res.data.timings;
