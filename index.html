@@ -25,7 +25,6 @@
         /* البطاقات الرئيسية */
         .card { background: var(--white); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         
-        /* العملات شراء وبيع */
         .currency-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; }
         .currency-table td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-weight: bold; }
@@ -46,11 +45,11 @@
         /* نظام الصفحات الكاملة */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; overflow-y: auto; }
         .page-content { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .page-header { background: var(--white); padding: 15px 20px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); sticky; top: 0; }
+        .page-header { background: var(--white); padding: 15px 20px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10000; }
         .back-btn { background: #eee; padding: 8px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-left: 20px; }
         
         /* تنسيق المقالات */
-        .article-card { background: var(--white); padding: 30px; border-radius: 20px; line-height: 2; font-size: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .article-card { background: var(--white); padding: 30px; border-radius: 20px; line-height: 2; font-size: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 50px; }
         .article-card h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin-bottom: 25px; }
         .article-card h3 { color: var(--accent); margin-top: 30px; }
         .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 20px; border-radius: 15px; text-decoration: none; font-weight: 800; font-size: 18px; margin-top: 40px; box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3); }
@@ -120,17 +119,31 @@
     <div class="page-content">
         <div class="article-card">
             <h2>دليل الاستفادة من منحة البطالة 2026</h2>
-            <p>تعتبر منحة البطالة من أهم المكاسب الاجتماعية للشباب الجزائري، وتهدف لمرافقة طالبي الشغل لأول مرة وتوفير تغطية صحية ودعم مالي ثابت.</p>
-            <h3>شروط التسجيل والقبول</h3>
+            <p>تعد منحة البطالة خطوة هامة لمرافقة الشباب طالبي الشغل. تم تخصيص هذه المنحة بأمر من رئيس الجمهورية لضمان كرامة الشاب الجزائري في مرحلة بحثه عن عمل.</p>
+            <h3>شروط القبول الأساسية:</h3>
             <ul>
-                <li>أن يتراوح السن ما بين 19 و 40 سنة (لا يتجاوز 41 سنة).</li>
-                <li>التسجيل كطالب شغل لأول مرة لدى الوكالة الوطنية للتشغيل لمدة لا تقل عن 6 أشهر.</li>
-                <li>عدم امتلاك أي دخل مادي للمتقدم أو للزوج(ة).</li>
-                <li>تبيان الوضعية إزاء الخدمة الوطنية (أداء، إعفاء، أو تأجيل).</li>
+                <li>السن بين 19 و 40 سنة.</li>
+                <li>الجنسية الجزائرية والإقامة الدائمة بالجزائر.</li>
+                <li>التسجيل المسبق لدى وكالة ANEM كطالب شغل لأول مرة.</li>
+                <li>عدم وجود أي نشاط مأجور أو دخل خاص للمترشح.</li>
             </ul>
-            <h3>الملف الإداري المطلوب</h3>
-            <p>يتكون الملف من: صك بريدي مشطوب، نسخة من بطاقة التعريف، شهادة الالتزام، ووثيقة الموعد المستخرجة من المنصة.</p>
-            <a href="https://minha.anem.dz/" class="reg-btn" target="_blank">انقر هنا للتسجيل في منحة البطالة</a>
+            <a href="https://minha.anem.dz/" class="reg-btn" target="_blank">رابط التسجيل في منحة البطالة</a>
+        </div>
+    </div>
+</div>
+
+<!-- صفحة تجنيد الجيش -->
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>تجنيد الجيش</h3></div>
+    <div class="page-content">
+        <div class="article-card">
+            <h2>دليل الانضمام لصفوف الجيش الوطني الشعبي</h2>
+            <p>تفتح وزارة الدفاع الوطني سنوياً أبواب التجنيد للشباب الجزائري (ذكور وإناث) الراغبين في الانخراط في مختلف القوات والمدارس العسكرية.</p>
+            <h3>فئات التجنيد:</h3>
+            <p>1. الضباط: للحائزين على شهادة البكالوريا بمعدلات محددة.<br>2. ضباط الصف: للحائزين على مستوى الثالثة ثانوي أو شهادة البكالوريا.<br>3. رجال الصف: للمستويات المتوسطة والابتدائية.</p>
+            <h3>المنصة الرقمية:</h3>
+            <p>يتم التسجيل الأولي حصراً عبر الموقع الرسمي لوزارة الدفاع لضمان الشفافية وتسهيل دراسة الملفات.</p>
+            <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">رابط موقع تجنيد الجيش (MDN)</a>
         </div>
     </div>
 </div>
@@ -140,13 +153,11 @@
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>فضاء الأولياء</h3></div>
     <div class="page-content">
         <div class="article-card">
-            <h2>شرح فضاء الأولياء (Tharwa)</h2>
-            <p>منصة رقمية أطلقتها وزارة التربية الوطنية لتمكين الأولياء من متابعة المسار الدراسي لأبنائهم عن بعد وبشكل فوري.</p>
-            <h3>الخدمات المتاحة</h3>
-            <p>يمكنكم من خلال الموقع الاطلاع على كشوف النقاط الفصلية، معرفة غيابات التلاميذ، والتسجيل في خدمة الرسائل القصيرة للحصول على النتائج فور صدورها.</p>
-            <h3>كيفية التسجيل</h3>
-            <p>يتطلب التسجيل معلومات ولي الأمر (رقم التعريف الوطني) ومعلومات التلميذ الموجودة في الشهادة المدرسية (رقم التلميذ).</p>
-            <a href="https://awlyaa.education.dz/" class="reg-btn" target="_blank">الدخول لموقع فضاء الأولياء</a>
+            <h2>الرقمنة في قطاع التربية: فضاء الأولياء</h2>
+            <p>منصة "ثروة" هي الواجهة الرسمية لوزارة التربية الوطنية، تهدف لتقريب الإدارة من الولي وتسهيل متابعة النتائج المدرسية.</p>
+            <h3>مميزات الموقع:</h3>
+            <p>- استخراج كشوف النقاط الفصيلة.<br>- متابعة غيابات وسلوك التلاميذ.<br>- التسجيل في خدمة الرسائل النصية القصيرة *626#.</p>
+            <a href="https://awlyaa.education.dz/" class="reg-btn" target="_blank">دخول فضاء الأولياء Tharwa</a>
         </div>
     </div>
 </div>
@@ -156,13 +167,11 @@
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سكنات عدل 3</h3></div>
     <div class="page-content">
         <div class="article-card">
-            <h2>كل ما يخص برنامج عدل 3 (AADL)</h2>
-            <p>يعد برنامج عدل 3 أكبر مشروع سكني في الجزائر، مخصص لذوي الدخل المتوسط بنظام البيع بالإيجار.</p>
-            <h3>شروط الاكتتاب</h3>
-            <p>يجب أن يكون دخل الزوجين مجتمعاً بين 24,000 دج و 120,000 دج، مع عدم امتلاك أي عقار ذو طابع سكني أو قطعة أرض صالحة للبناء.</p>
-            <h3>طريقة التسجيل</h3>
-            <p>التسجيل يتم حصراً عبر المنصة الرقمية المخصصة أو التطبيق الهاتفي الذي تطلقه الوكالة عند فتح الاكتتاب.</p>
-            <a href="https://aadl3inscription2024.dz/" class="reg-btn" target="_blank">رابط تسجيلات عدل 3</a>
+            <h2>اكتتاب سكنات عدل 3 - AADL 2026</h2>
+            <p>يعتبر برنامج عدل 3 الحل السكني الأبرز للطبقة المتوسطة، حيث يعتمد على صيغة البيع بالإيجار مع دفع أقساط مريحة.</p>
+            <h3>خطوات التسجيل:</h3>
+            <p>التسجيل يكون رقمياً 100% عبر الموقع الرسمي أو التطبيق المخصص، ويتم استخدام رقم التعريف الوطني ورقم الضمان الاجتماعي للتحقق من الأهلية.</p>
+            <a href="https://aadl3inscription2024.dz/" class="reg-btn" target="_blank">رابط منصة عدل 3 الرسمي</a>
         </div>
     </div>
 </div>
@@ -172,11 +181,49 @@
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>وسيط ANEM</h3></div>
     <div class="page-content">
         <div class="article-card">
-            <h2>التسجيل وتجديد الطلب في وسيط</h2>
-            <p>منصة وسيط (Wassit Online) هي الأداة الرسمية للوكالة الوطنية للتشغيل لإدارة طلبات وعروض الشغل في الجزائر.</p>
-            <h3>لماذا وسيط؟</h3>
-            <p>تسمح لك المنصة بإنشاء سيرة ذاتية رقمية، وتجديد طلب العمل كل 6 أشهر دون التنقل للوكالة، وهو شرط أساسي للحفاظ على منحة البطالة.</p>
-            <a href="https://wassitonline.anem.dz/" class="reg-btn" target="_blank">دخول منصة وسيط أونلاين</a>
+            <h2>منصة وسيط أونلاين - الوكالة الوطنية للتشغيل</h2>
+            <p>وسيط هي منصة متطورة تربط بين طالب الشغل وعروض العمل المتوفرة في سوق الشغل الوطني بصفة آلية.</p>
+            <h3>أهمية تجديد الطلب:</h3>
+            <p>يجب على كل مسجل في وكالة التشغيل تجديد طلبه كل 6 أشهر عبر المنصة لضمان بقائه في الحالة "نشط" وعدم سقوط حقه في منحة البطالة.</p>
+            <a href="https://wassitonline.anem.dz/" class="reg-btn" target="_blank">دخول موقع وسيط أونلاين</a>
+        </div>
+    </div>
+</div>
+
+<!-- صفحة من نحن -->
+<div id="page-about" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>من نحن</h3></div>
+    <div class="page-content">
+        <div class="article-card">
+            <h2>حول موقع خدماتي</h2>
+            <p>موقع خدماتي هو دليل رقمي جزائري مستقل، نسعى من خلاله لتبسيط الوصول إلى المعلومات والمنصات الحكومية الرسمية التي تهم المواطن الجزائري.</p>
+            <p>نحن لا نمثل أي جهة رسمية، بل نقوم بجمع وتصنيف الروابط والشروحات لم مساعدة الشباب والأولياء في إتمام إجراءاتهم الرقمية بسهولة.</p>
+            <p>مؤسس الموقع: هزيل بن عمر.</p>
+        </div>
+    </div>
+</div>
+
+<!-- صفحة الخصوصية -->
+<div id="page-privacy" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سياسة الخصوصية</h3></div>
+    <div class="page-content">
+        <div class="article-card">
+            <h2>سياسة الخصوصية</h2>
+            <p>نحن في موقع خدماتي نحترم خصوصيتكم تماماً. الموقع لا يقوم بجمع أي بيانات شخصية حساسة مثل أرقام التعريف أو الحسابات البريدية.</p>
+            <p>نستخدم ملفات تعريف الارتباط البسيطة لتحسين تجربة المستخدم وتحليل الزيارات عبر Google Analytics. عند ضغطكم على روابط المواقع الرسمية، فإنكم تخضعون لسياسة الخصوصية الخاصة بتلك المواقع.</p>
+        </div>
+    </div>
+</div>
+
+<!-- صفحة اتصل بنا -->
+<div id="page-contact" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>اتصل بنا</h3></div>
+    <div class="page-content">
+        <div class="article-card" style="text-align:center;">
+            <h2>يسعدنا تواصلكم معنا</h2>
+            <p>إذا كان لديك أي استفسار أو اقتراح لتطوير الموقع، يمكنك مراسلتنا عبر البريد الإلكتروني الرسمي:</p>
+            <h3 style="background:#f8f9fa; padding:15px; border-radius:10px;">contact@khadamati-dz.com</h3>
+            <p>أو متابعتنا عبر صفحات التواصل الاجتماعي.</p>
         </div>
     </div>
 </div>
@@ -197,7 +244,6 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(p => {
                 const lat = p.coords.latitude, lon = p.coords.longitude;
-                // الصلاة
                 fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
                 .then(r => r.json()).then(data => {
                     const t = data.data.timings;
@@ -207,12 +253,11 @@
                         <div class="prayer-line"><span>المغرب</span><b>${t.Maghrib}</b></div>
                     `;
                 });
-                // الطقس
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
                 .then(r => r.json()).then(data => {
                     document.getElementById('weather-box').innerHTML = `
                         <div style="font-size:20px; font-weight:bold;">${Math.round(data.current_weather.temperature)}°C</div>
-                        <div style="font-size:12px; color:#666;">الجو: مستقر حالياً</div>
+                        <div style="font-size:12px; color:#666;">الجو: مستقر</div>
                     `;
                 });
             });
@@ -227,4 +272,4 @@
 </script>
 
 </body>
-    </html>
+</html>
