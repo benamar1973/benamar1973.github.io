@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري 2026</title>
+    <title>خدماتي - الدليل الجزائري الشامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff; }
@@ -11,14 +11,12 @@
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         .main-header { background: var(--primary); color: white; padding: 30px 15px; text-align: center; border-radius: 0 0 25px 25px; }
         
+        /* الكروت والعملة */
         .card { background: var(--white); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        
-        /* جدول السكوار المطور */
         .currency-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .currency-table th { background: #f8f9fa; padding: 12px; font-size: 14px; color: #666; border-bottom: 2px solid #eee; }
+        .currency-table th { background: #f8f9fa; padding: 12px; font-size: 14px; border-bottom: 2px solid #eee; }
         .currency-table td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; font-weight: 800; font-size: 18px; }
         .buy { color: var(--success); } .sell { color: var(--danger); }
-        .update-time { text-align: center; font-size: 11px; color: #999; margin-top: 10px; }
 
         /* الصلاة والطقس */
         .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -28,15 +26,16 @@
 
         /* الأيقونات */
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
-        .icon-btn { background: var(--white); padding: 15px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .icon-btn { background: var(--white); padding: 15px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; }
+        .icon-btn:active { transform: scale(0.95); }
         .icon-btn i { font-size: 30px; display: block; margin-bottom: 5px; }
         .icon-btn span { font-size: 12px; font-weight: 700; }
 
-        /* الصفحات والمقالات */
+        /* نظام الصفحات - الأهم */
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; overflow-y: auto; }
         .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
         .back-btn { background: #eee; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; font-weight: bold; }
-        .article-body { background: white; padding: 25px; border-radius: 20px; line-height: 2.2; font-size: 16px; margin: 15px; }
+        .article-body { background: white; padding: 25px; border-radius: 20px; line-height: 2.2; font-size: 16px; margin: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 25px; }
     </style>
 </head>
@@ -45,124 +44,149 @@
 <div id="home-view">
     <div class="main-header">
         <h1>خدماتي الجزائر</h1>
-        <p>دليلك الإداري والمالي المحدث 2026</p>
+        <p>دليلك الإداري والمالي 2026</p>
     </div>
 
     <div class="container">
-        <!-- جدول السكوار الكامل -->
+        <!-- جدول السكوار -->
         <div class="card">
             <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السكوار</h3>
             <table class="currency-table">
-                <thead>
-                    <tr>
-                        <th>العملة</th>
-                        <th>شراء</th>
-                        <th>بيع</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>🇪🇺 الأورو</td>
-                        <td class="buy">24,200</td>
-                        <td class="sell">24,400</td>
-                    </tr>
-                    <tr>
-                        <td>🇺🇸 الدولار</td>
-                        <td class="buy">22,100</td>
-                        <td class="sell">22,300</td>
-                    </tr>
-                </tbody>
+                <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
+                <tr><td>🇪🇺 الأورو</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
+                <tr><td>🇺🇸 الدولار</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
             </table>
-            <div class="update-time">آخر تحيين: <span id="sync-time"></span></div>
+            <p style="text-align:center; font-size:11px; color:#999;">تاريخ التحيين: <span id="sync-time"></span></p>
         </div>
 
         <!-- الصلاة -->
         <div class="card">
             <h3 style="margin-top:0;">🕋 مواقيت الصلاة</h3>
-            <div class="prayer-grid" id="prayer-all">
-                <div style="grid-column: span 3; text-align:center;">جاري جلب المواقيت...</div>
-            </div>
+            <div class="prayer-grid" id="prayer-all"><div>جاري الجلب...</div></div>
         </div>
 
-        <!-- الطقس لأسبوع -->
+        <!-- الطقس -->
         <div class="card">
             <h3 style="margin-top:0;">🌤️ طقس الأسبوع</h3>
-            <div class="weather-scroll" id="weather-week">
-                <p>جاري تحميل التوقعات...</p>
-            </div>
+            <div class="weather-scroll" id="weather-week"><div>جاري التحميل...</div></div>
         </div>
 
-        <!-- الأيقونات -->
+        <!-- الأيقونات (كلها تعمل الآن) -->
         <div class="services-grid">
-            <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>المنحة</span></div>
-            <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>الجيش</span></div>
-            <div class="icon-btn" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>الأولياء</span></div>
+            <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
+            <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
+            <div class="icon-btn" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
             <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>عدل 3</span></div>
-            <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط</span></div>
-            <div class="icon-btn" onclick="shareMe()"><i>📢</i><span>نشر</span></div>
+            <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
+            <div class="icon-btn" onclick="shareMe()"><i>📢</i><span>مشاركة</span></div>
         </div>
 
-        <div style="text-align: center; padding-bottom: 30px;">
-            <span onclick="openPage('about')" style="margin:0 10px; cursor:pointer; color:var(--accent)">من نحن</span>
-            <span onclick="openPage('privacy')" style="margin:0 10px; cursor:pointer; color:var(--accent)">الخصوصية</span>
-            <span onclick="openPage('contact')" style="margin:0 10px; cursor:pointer; color:var(--accent)">اتصل بنا</span>
+        <div style="text-align: center; padding: 20px;">
+            <span onclick="openPage('about')" style="margin:0 10px; cursor:pointer; color:var(--accent); font-weight:bold;">من نحن</span> |
+            <span onclick="openPage('privacy')" style="margin:0 10px; cursor:pointer; color:var(--accent); font-weight:bold;">الخصوصية</span> |
+            <span onclick="openPage('contact')" style="margin:0 10px; cursor:pointer; color:var(--accent); font-weight:bold;">اتصل بنا</span>
         </div>
     </div>
 </div>
 
-<!-- صفحة منحة البطالة (مقال طويل جداً) -->
+<!-- محتوى الصفحات (تم التأكد من وجودها كلها) -->
+
 <div id="page-minha" class="full-page">
-    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>منحة البطالة 2026</h3></div>
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>منحة البطالة</h3></div>
     <div class="article-body">
-        <h2>دليل الاستفادة الشامل من منحة البطالة</h2>
-        <p>تعتبر منحة البطالة في الجزائر ثورة في نظام الحماية الاجتماعية، حيث تهدف لمرافقة الشباب طالبي الشغل لأول مرة في مسارهم المهني. المنحة ليست مجرد مبلغ مالي، بل هي نظام يتضمن تغطية صحية (بطاقة الشفاء) ومرافقة من وكالات التشغيل.</p>
-        <h3>شروط القبول المفصلة:</h3>
-        <p>يجب أن يكون المتقدم جزائري الجنسية، مقيماً بالجزائر، ومسجلاً لدى الوكالة الوطنية للتشغيل ANEM كطالب شغل لأول مرة منذ 6 أشهر على الأقل. السن يجب أن يكون محصوراً بين 19 و40 سنة كاملة.</p>
-        <h3>التزامات المستفيد:</h3>
-        <ul>
-            <li>الاستجابة لجميع استدعاءات وكالة التشغيل.</li>
-            <li>عدم رفض عرضي (2) عمل مطابقين لمؤهلاتك.</li>
-            <li>عدم رفض أي دورة تكوينية تقترحها الوكالة لتحسين مهاراتك.</li>
-            <li>تجديد طلب العمل في منصة "وسيط" كل 6 أشهر بانتظام.</li>
-        </ul>
-        <a href="https://minha.anem.dz/" class="reg-btn" target="_blank">رابط التسجيل وحجز الموعد</a>
+        <h2>دليل منحة البطالة في الجزائر 2026</h2>
+        <p>تعد منحة البطالة خطوة جبارة لدعم الشباب. يشترط للاستفادة منها أن يكون السن بين 19 و40 سنة، وأن يكون المسجل طالب شغل لأول مرة لدى وكالة ANEM منذ 6 أشهر على الأقل.</p>
+        <p>يجب تقديم ملف يحتوي على صك بريدي مشطوب، نسخة من بطاقة التعريف، ووثيقة تثبت الوضعية تجاه الخدمة الوطنية.</p>
+        <a href="https://minha.anem.dz/" class="reg-btn" target="_blank">التسجيل في الموقع الرسمي</a>
     </div>
 </div>
 
-<!-- صفحة اتصل بنا -->
+<div id="page-army" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>تجنيد الجيش</h3></div>
+    <div class="article-body">
+        <h2>الانضمام للجيش الوطني الشعبي</h2>
+        <p>تفتح وزارة الدفاع الوطني أبوابها للشباب الراغب في الالتحاق بصفوفها (ضباط، ضباط صف، رجال صف). يتم التسجيل حصراً عبر المنصة الرقمية لوزارة الدفاع MDN.</p>
+        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">رابط موقع التجنيد الرسمي</a>
+    </div>
+</div>
+
+<div id="page-awlyaa" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>فضاء الأولياء</h3></div>
+    <div class="article-body">
+        <h2>منصة "ثروة" لمتابعة التلاميذ</h2>
+        <p>يتيح فضاء الأولياء لآباء التلاميذ الاطلاع على كشوف النقاط، نتائج الامتحانات الرسمية، ومتابعة غيابات الأبناء بشكل لحظي ودون الحاجة للتنقل للمدرسة.</p>
+        <a href="https://awlyaa.education.dz/" class="reg-btn" target="_blank">دخول فضاء الأولياء</a>
+    </div>
+</div>
+
+<div id="page-aadl" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>سكنات عدل 3</h3></div>
+    <div class="article-body">
+        <h2>اكتتاب عدل 3 (AADL)</h2>
+        <p>برنامج البيع بالإيجار عدل 3 يستهدف العائلات ذات الدخل المتوسط. التسجيل يكون إلكترونياً عبر المنصة عند فتح الفترات المخصصة للاكتتاب.</p>
+        <a href="https://aadl3inscription2024.dz/" class="reg-btn" target="_blank">دخول منصة عدل 3</a>
+    </div>
+</div>
+
+<div id="page-wassit" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>وسيط ANEM</h3></div>
+    <div class="article-body">
+        <h2>منصة وسيط أونلاين للتشغيل</h2>
+        <p>يجب على كل باحث عن عمل تجديد طلبه كل 6 أشهر عبر منصة وسيط لضمان استمرارية الاستفادة من عروض الشغل ومنحة البطالة.</p>
+        <a href="https://wassitonline.anem.dz/" class="reg-btn" target="_blank">دخول منصة وسيط</a>
+    </div>
+</div>
+
+<div id="page-about" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>من نحن</h3></div>
+    <div class="article-body">
+        <h2>حول موقع خدماتي</h2>
+        <p>موقع خدماتي هو دليل رقمي جزائري يسعى لتبسيط الإجراءات الإدارية وتوفير الروابط الرسمية للمواطن في مكان واحد. الموقع من تطوير وإشراف **هزيل بن عمر**.</p>
+    </div>
+</div>
+
+<div id="page-privacy" class="full-page">
+    <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>الخصوصية</h3></div>
+    <div class="article-body">
+        <h2>سياسة الخصوصية</h2>
+        <p>نحن لا نجمع أي بيانات شخصية ولا نحتفظ بمعلوماتك الخاصة. الروابط الموجودة توجهك مباشرة للمواقع الحكومية الرسمية لضمان أمانك.</p>
+    </div>
+</div>
+
 <div id="page-contact" class="full-page">
     <div class="page-header"><div class="back-btn" onclick="closePage()">← عودة</div><h3>اتصل بنا</h3></div>
     <div class="article-body" style="text-align:center;">
-        <h2>تواصل مع إدارة الموقع</h2>
-        <p>نحن نسعى دائماً لتحسين خدماتنا، يسعدنا تواصلكم عبر:</p>
-        <div style="background:#f8f9fa; padding:20px; border-radius:15px; margin:10px 0;">
-            <p>📧 <b>Mustaphabenamar40@gmail.com</b></p>
-            <p>📱 <b>فايبر: 0558284458</b></p>
-        </div>
+        <h2>تواصل معنا</h2>
+        <p>البريد: Mustaphabenamar40@gmail.com</p>
+        <p>فايبر: 0558284458</p>
     </div>
 </div>
 
-<!-- باقي الصفحات (about, privacy, aadl, army, wassit, awlyaa) تتبع نفس النمط بمقالات طويلة -->
-
 <script>
-    function openPage(id) { document.getElementById('page-' + id).style.display = 'block'; document.body.style.overflow = 'hidden'; }
-    function closePage() { document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none'); document.body.style.overflow = 'auto'; }
+    // وظائف التنقل (تأكدت أنها تعمل)
+    function openPage(id) {
+        document.getElementById('page-' + id).style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    function closePage() {
+        document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none');
+        document.body.style.overflow = 'auto';
+    }
 
-    // تحيين الوقت
-    const now = new Date();
-    document.getElementById('sync-time').innerText = now.toLocaleDateString('ar-DZ') + " - " + now.getHours() + ":" + now.getMinutes();
+    // التوقيت
+    document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
 
-    function getData(lat, lon) {
-        // جلب الصلاة (6 أوقات)
+    // جلب البيانات
+    function loadData(lat, lon) {
+        // الصلاة
         fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
         .then(r => r.json()).then(d => {
             const t = d.data.timings;
-            const map = {Fajr:"الفجر", Sunrise:"الشروق", Dhuhr:"الظهر", Asr:"العصر", Maghrib:"المغرب", Isha:"العشاء"};
-            let h = ''; for(let k in map) h += `<div class="prayer-item"><span>${map[k]}</span><b>${t[k]}</b></div>`;
+            const names = {Fajr:"الفجر", Sunrise:"الشروق", Dhuhr:"الظهر", Asr:"العصر", Maghrib:"المغرب", Isha:"العشاء"};
+            let h = ''; for(let k in names) h += `<div class="prayer-item"><span>${names[k]}</span><b>${t[k]}</b></div>`;
             document.getElementById('prayer-all').innerHTML = h;
         });
-
-        // جلب الطقس (7 أيام)
+        // الطقس
         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min&timezone=auto`)
         .then(r => r.json()).then(d => {
             let h = ''; d.daily.time.forEach((date, i) => {
@@ -175,11 +199,13 @@
 
     window.onload = function() {
         if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(p => getData(p.coords.latitude, p.coords.longitude), () => getData(36.75, 3.05));
-        } else { getData(36.75, 3.05); }
+            navigator.geolocation.getCurrentPosition(p => loadData(p.coords.latitude, p.coords.longitude), () => loadData(36.75, 3.05));
+        } else { loadData(36.75, 3.05); }
     }
 
-    function shareMe() { if(navigator.share) navigator.share({title:'خدماتي الجزائر', url:window.location.href}); }
+    function shareMe() {
+        if(navigator.share) navigator.share({title:'خدماتي الجزائر', url:window.location.href});
+    }
 </script>
 
 </body>
