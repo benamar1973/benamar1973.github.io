@@ -38,7 +38,7 @@
         .weather-scroll::-webkit-scrollbar { display: none; }
         .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
         .weather-day img { width: 40px; height: 40px; }
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
         .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: all 0.2s; }
         .icon-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
         .icon-btn i { font-size: 30px; display: block; margin-bottom: 8px; }
@@ -49,6 +49,7 @@
         .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 2.2; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
         .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0 15px 0; font-size: 22px; }
         .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; margin-bottom: 10px; }
+        .article-body h4 { color: #555; font-size: 17px; margin-top: 20px; }
         .article-body ul, .article-body ol { margin: 15px 0; padding-right: 25px; }
         .article-body li { margin: 8px 0; }
         .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); transition: opacity 0.2s; }
@@ -59,8 +60,8 @@
         .error-msg { color: var(--danger); font-size: 13px; text-align: center; padding: 20px; background: #fff; border-radius: 15px; }
         .weather-loading { text-align: center; padding: 20px; color: #888; background: #f9f9f9; border-radius: 15px; }
         .prayer-note { font-size: 11px; color: #aaa; text-align: center; margin-top: 10px; }
-        @media (max-width: 500px) {
-            .services-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        @media (max-width: 600px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .icon-btn { padding: 15px 5px; }
             .article-body { padding: 20px; margin: 10px; }
             .article-body h2 { font-size: 18px; }
@@ -76,15 +77,18 @@
         <div class="share-top-btn" onclick="shareApp()">📢 نشر التطبيق</div>
     </div>
     <div class="container">
+        <!-- أسعار الصرف -->
         <div class="card">
             <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السوق السوداء</h3>
             <table class="currency-table">
                 <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
-                <tr><td>الأورو (€)</td><td class="buy">28,200</td><td class="sell">28,000</td></tr>
-                <tr><td>الدولار ($)</td><td class="buy">23,900</td><td class="sell">23,700</td></tr>
+                <tr><td>الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
+                <tr><td>الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
             </table>
             <div class="update-tag">آخر تحديث: <span id="sync-time"></span></div>
         </div>
+
+        <!-- مواقيت الصلاة -->
         <div class="card">
             <h3 style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
             <div class="prayer-grid" id="prayer-list">
@@ -96,10 +100,14 @@
             </div>
             <div class="prayer-note">🕌 يتم تحديث المواقيت تلقائياً حسب موقعك الجغرافي</div>
         </div>
+
+        <!-- الطقس -->
         <div class="card">
             <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ حالة الطقس للأيام القادمة</h3>
             <div id="weather-container"><div class="weather-loading">🌍 جاري تحميل بيانات الطقس...</div></div>
         </div>
+
+        <!-- شبكة الخدمات (7 خدمات) -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -107,7 +115,9 @@
             <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل 3</span></div>
             <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
             <div class="icon-btn" onclick="openPage('adhahi')"><i>🐑</i><span>أضحية العيد</span></div>
+            <div class="icon-btn" onclick="openPage('ai')"><i>🤖</i><span>الذكاء الاصطناعي</span></div>
         </div>
+
         <footer>
             <div class="footer-links">
                 <span onclick="openPage('about')">من نحن</span> | 
@@ -196,6 +206,57 @@
     </div>
 </div>
 
+<!-- صفحة الذكاء الاصطناعي -->
+<div id="page-ai" class="full-page">
+    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>الذكاء الاصطناعي في الجزائر</h3></div>
+    <div class="article-body">
+        <h2>🤖 الذكاء الاصطناعي في الجزائر: الواقع الحالي، التحديات، وآفاق المستقبل 2026</h2>
+        <p>يشهد العالم اليوم سباقاً محموماً في مجال الذكاء الاصطناعي، والجزائر كدولة تسعى جاهدة لمواكبة هذا التطور التكنولوجي الهائل. لكن أين تقف الجزائر حقاً في هذا المجال؟ وما هي الجهود المبذولة لبناء اقتصاد معرفي قائم على الذكاء الاصطناعي؟ هذا المقال يقدم تحليلاً منطقياً وعميقاً لواقع الذكاء الاصطناعي في الجزائر، استناداً إلى المعطيات الحالية والتوجهات المستقبلية.</p>
+        
+        <h3>📌 تعريف الذكاء الاصطناعي وأهميته الاستراتيجية للجزائر</h3>
+        <p>الذكاء الاصطناعي (AI) هو فرع من علوم الحاسوب يهدف إلى بناء أنظمة قادرة على أداء مهام كانت تتطلب ذكاءً بشرياً، مثل التعلم، اتخاذ القرارات، الترجمة، التعرف على الصور، ومعالجة اللغات الطبيعية. تكمن أهميته الاستراتيجية للجزائر في كونه المحرك الرئيسي للثورة الصناعية الرابعة، حيث يمكنه رفع الإنتاجية، تحسين جودة الخدمات، حل مشكلات معقدة في قطاعات الطاقة، الصحة، الفلاحة، والتعليم، بالإضافة إلى تنويع الاقتصاد الوطني بعيداً عن الريع المحروقي.</p>
+        
+        <h3>🏛️ الاستراتيجية الوطنية الجزائرية للذكاء الاصطناعي</h3>
+        <p>أطلقت الجزائر في عام 2020 الاستراتيجية الوطنية للذكاء الاصطناعي تحت إشراف وزارة التعليم العالي والبحث العلمي. تهدف هذه الاستراتيجية إلى جعل الجزائر بلداً رائداً في مجال الذكاء الاصطناعي بحلول عام 2030، من خلال محاور رئيسية: تطوير البحث العلمي، تكوين الكفاءات الشابة، دعم الابتكار والمشاريع الناشئة، وإنشاء منصات رقمية للبيانات الضخمة. تم إنشاء المدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI) في الجزائر العاصمة كمؤسسة رائدة لتخريج مهندسين مختصين.</p>
+        
+        <h3>🚀 تطبيقات الذكاء الاصطناعي في الجزائر</h3>
+        <h4>1. قطاع الصحة:</h4>
+        <p>تم تطوير أول نظام جزائري للذكاء الاصطناعي لتشخيص سرطان الثدي بدقة عالية. كما تستخدم بعض العيادات الخاصة أنظمة متقدمة في تحليل الأشعة الطبية.</p>
+        
+        <h4>2. قطاع الفلاحة:</h4>
+        <p>شركة جزائرية ناشئة تدعى "AgriTech DZ" طورت تطبيقاً يستخدم الذكاء الاصطناعي لتشخيص أمراض النباتات عبر كاميرا الهاتف المحمول، مما ساعد آلاف الفلاحين على تحسين محاصيلهم.</p>
+        
+        <h4>3. قطاع الطاقة (سوناطراك):</h4>
+        <p>تستخدم سوناطراك خوارزميات التعلم الآلي لتحسين عمليات التنقيب والحفر، الصيانة التنبؤية للمعدات، وتحليل البيانات الزلزالية.</p>
+        
+        <h3>⚠️ التحديات التي تواجه الذكاء الاصطناعي في الجزائر</h3>
+        <ul>
+            <li><strong>البطء في التحول الرقمي</strong>: القطاعات الحكومية لا تزال تعتمد على الورق.</li>
+            <li><strong>نقص الكفاءات</strong>: أعداد الخبراء الجزائريين محدودة، وكثير منهم يهاجر للخارج.</li>
+            <li><strong>ضعف الاستثمار الخاص</strong>: القطاع الخاص يتردد في الاستثمار في الذكاء الاصطناعي.</li>
+            <li><strong>غياب إطار قانوني واضح</strong>: لا توجد قوانين تنظم استخدام الذكاء الاصطناعي.</li>
+        </ul>
+        
+        <h3>🌟 آفاق وتوصيات مستقبلية</h3>
+        <ul>
+            <li>تسريع وتيرة التحول الرقمي في الإدارة والقطاعات الحيوية.</li>
+            <li>إطلاق برامج تكوين مكثفة وعصرية في الذكاء الاصطناعي.</li>
+            <li>تحفيز الاستثمار الخاص والأجنبي عبر إعفاءات ضريبية.</li>
+            <li>سن تشريعات لتنظيم الذكاء الاصطناعي وحماية الخصوصية.</li>
+            <li>إنشاء مجلس وطني أعلى للذكاء الاصطناعي.</li>
+        </ul>
+        
+        <h3>❓ أسئلة شائعة حول الذكاء الاصطناعي في الجزائر</h3>
+        <p><strong>س: هل الذكاء الاصطناعي سيأخذ وظائف الجزائريين؟</strong><br>ج: الذكاء الاصطناعي سيغير طبيعة الوظائف وليس بالضرورة أن يقضي عليها. الوظائف الروتينية قد تتأثر، لكن سيتم خلق وظائف جديدة في مجالات لم تكن موجودة من قبل.</p>
+        
+        <p><strong>س: ما هي أفضل الجامعات الجزائرية لدراسة الذكاء الاصطناعي؟</strong><br>ج: أبرز الجامعات هي: جامعة USTHB بالجزائر العاصمة، جامعة وهران، جامعة قسنطينة 1، والمدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI).</p>
+        
+        <p><strong>س: كيف يمكن للطالب الجزائري تعلم الذكاء الاصطناعي ذاتياً؟</strong><br>ج: هناك مصادر مجانية مثل: دورات Deep Learning على Coursera، وقناة Two Minutes Papers على YouTube، وكتاب Hands-On Machine Learning.</p>
+        
+        <a href="https://www.mesrs.dz/strategie-nationale-de-lintelligence-artificielle" class="reg-btn" target="_blank">🔗 اقرأ الاستراتيجية الوطنية للذكاء الاصطناعي</a>
+    </div>
+</div>
+
 <!-- صفحة من نحن -->
 <div id="page-about" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>من نحن</h3></div>
@@ -227,36 +288,22 @@
     </div>
 </div>
 
-<!-- صفحة شروط الخدمة (تمت إضافتها حديثاً) -->
+<!-- صفحة شروط الخدمة -->
 <div id="page-terms" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>شروط الخدمة</h3></div>
     <div class="article-body">
         <h2>شروط استخدام موقع خدماتي الجزائر</h2>
         <p>آخر تحديث: مارس 2026</p>
-        
         <h3>1. قبول الشروط</h3>
-        <p>باستخدامك لهذا الموقع، فإنك توافق على الالتزام بهذه الشروط. إذا كنت لا توافق، يرجى عدم استخدام موقعنا.</p>
-        
+        <p>باستخدامك لهذا الموقع، فإنك توافق على الالتزام بهذه الشروط.</p>
         <h3>2. المحتوى والمعلومات</h3>
-        <p>جميع المعلومات المقدمة في هذا الموقع هي لأغراض إعلامية فقط. نبذل قصارى جهدنا لضمان دقة المعلومات، لكننا لا نتحمل المسؤولية عن أي أخطاء أو تغييرات في الروابط الرسمية.</p>
-        
+        <p>جميع المعلومات لأغراض إعلامية فقط. لا نتحمل المسؤولية عن أي أخطاء.</p>
         <h3>3. الروابط الخارجية</h3>
-        <p>يحتوي موقعنا على روابط لمواقع حكومية رسمية. نحن غير مسؤولين عن محتوى أو سياسات الخصوصية لتلك المواقع.</p>
-        
+        <p>نحن غير مسؤولين عن محتوى المواقع الخارجية.</p>
         <h3>4. حقوق الملكية الفكرية</h3>
-        <p>جميع المحتويات (نصوص، صور، تصاميم) هي ملك لموقع خدماتي الجزائر ولا يجوز نسخها دون إذن.</p>
-        
-        <h3>5. المسؤولية القانونية</h3>
-        <p>لا نتحمل أي مسؤولية عن أي أضرار مباشرة أو غير مباشرة ناتجة عن استخدام هذا الموقع أو الاعتماد على معلوماته.</p>
-        
-        <h3>6. التعديلات على الشروط</h3>
-        <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سيتم إخطار المستخدمين بأي تغييرات جوهرية.</p>
-        
-        <h3>7. القانون الواجب التطبيق</h3>
-        <p>تخضع هذه الشروط لقوانين الجمهورية الجزائرية الديمقراطية الشعبية.</p>
-        
-        <h3>8. اتصل بنا</h3>
-        <p>للاستفسارات حول هذه الشروط، راسلنا على: <strong>MUSTAPHABENAMAR40@GMAIL.COM</strong></p>
+        <p>جميع المحتويات هي ملك لموقع خدماتي الجزائر.</p>
+        <h3>5. اتصل بنا</h3>
+        <p>للاستفسارات: MUSTAPHABENAMAR40@GMAIL.COM</p>
     </div>
 </div>
 
@@ -269,8 +316,6 @@
             page.style.display = 'block';
             document.body.style.overflow = 'hidden';
             if (typeof gtag !== 'undefined') gtag('event', 'open_page', { 'page_name': pageId });
-        } else {
-            console.error('الصفحة غير موجودة: page-' + pageId);
         }
     }
     
@@ -366,4 +411,4 @@
 </script>
 
 </body>
-</html>
+        </html>
