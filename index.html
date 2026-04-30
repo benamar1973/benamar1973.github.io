@@ -38,15 +38,15 @@
         .weather-scroll::-webkit-scrollbar { display: none; }
         .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
         .weather-day img { width: 40px; height: 40px; }
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
         .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: all 0.2s; }
-        .icon-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-        .icon-btn i { font-size: 30px; display: block; margin-bottom: 8px; }
-        .icon-btn span { font-size: 11px; font-weight: 800; color: var(--primary); }
+        .icon-btn:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
+        .icon-btn i { font-size: 32px; display: block; margin-bottom: 10px; }
+        .icon-btn span { font-size: 14px; font-weight: 800; color: var(--primary); }
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
         .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; font-size: 14px; }
-        .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 2.2; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
+        .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 1.8; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
         .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0 15px 0; font-size: 22px; }
         .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; margin-bottom: 10px; }
         .article-body h4 { color: #555; font-size: 17px; margin-top: 20px; }
@@ -82,8 +82,7 @@
             <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السوق السوداء</h3>
             <table class="currency-table">
                 <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
-                <tr><td>الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td>
-                <tr>
+                <tr><td>الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
                 <tr><td>الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
             </table>
             <div class="update-tag">آخر تحديث: <span id="sync-time"></span></div>
@@ -108,7 +107,7 @@
             <div id="weather-container"><div class="weather-loading">🌍 جاري تحميل بيانات الطقس...</div></div>
         </div>
 
-        <!-- شبكة الخدمات (7 خدمات) -->
+        <!-- شبكة الخدمات (جميع الروابط بالترتيب المطلوب) -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -116,7 +115,9 @@
             <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل 3</span></div>
             <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
             <div class="icon-btn" onclick="openPage('adhahi')"><i>🐑</i><span>أضحية العيد</span></div>
-            <div class="icon-btn" onclick="openPage('ai')"><i>🤖</i><span>الذكاء الإصطناعي في الجزائر</span></div>
+            <div class="icon-btn" onclick="openPage('takwin')"><i>🔧</i><span>التكوين المهني</span></div>
+            <div class="icon-btn" onclick="openPage('youthcamp')"><i>🏕️</i><span>المخيم الشبابي</span></div>
+            <div class="icon-btn" onclick="openPage('ai')"><i>🤖</i><span>الذكاء الاصطناعي</span></div>
         </div>
 
         <footer>
@@ -131,7 +132,7 @@
     </div>
 </div>
 
-<!-- ==================== الصفحات ==================== -->
+<!-- ==================== جميع الصفحات ==================== -->
 
 <!-- صفحة منحة البطالة -->
 <div id="page-minha" class="full-page">
@@ -142,7 +143,7 @@
         <h3>📋 الشروط الأساسية للاستفادة</h3>
         <ul><li>العمر بين 19 و40 سنة</li><li>التسجيل في ANEM كطالب شغل لأول مرة لمدة 6 أشهر</li><li>ألا يكون المتقدم أو زوجه يتقاضى أي دخل ثابت</li><li>تسوية الوضعية تجاه الخدمة الوطنية</li></ul>
         <h3>💶 قيمة المنحة</h3>
-        <p>تحدد قيمة المنحة بـ <strong>18.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة.</p>
+        <p>تحدد قيمة المنحة بـ <strong>13.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة.</p>
         <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">🚀 ابدأ التسجيل الآن</a>
     </div>
 </div>
@@ -207,7 +208,123 @@
     </div>
 </div>
 
-<!-- صفحة الذكاء الاصطناعي (مع رابط رسمي صحيح) -->
+<!-- صفحة التكوين المهني (تكوين) -->
+<div id="page-takwin" class="full-page">
+    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة التكوين المهني - takwin.dz</h3></div>
+    <div class="article-body">
+        <h2>🎓 منصة "تكوين" الجزائرية: دليلك الشامل للتسجيل في التكوين المهني 2026</h2>
+        <p>أطلقت وزارة التكوين والتعليم المهنيين في الجزائر منصة "تكوين" الرقمية (takwin.dz) بهدف رقمنة قطاع التكوين المهني بالكامل. تتيح هذه المنصة للشباب الجزائري فرصة التسجيل في مختلف التخصصات المهنية، متابعة التكوين عن بعد، والحصول على شهادات معتمدة تسهل عليهم الالتحاق بسوق العمل.</p>
+
+        <h3>📌 ما هي منصة تكوين (takwin.dz)؟</h3>
+        <p>منصة "تكوين" هي البوابة الرقمية الرسمية لقطاع التكوين المهني في الجزائر. تم إطلاقها في إطار استراتيجية الدولة لرقمنة الخدمات العمومية، وهي تقدم خدمات متكاملة للمترشحين والمكونين ومديري مراكز التكوين. تهدف المنصة إلى تبسيط إجراءات التسجيل، توفير التكوين عن بعد، وضمان الشفافية في توزيع المناصب التكوينية.</p>
+
+        <h3>📋 الشروط والأهلية للتسجيل</h3>
+        <ul>
+            <li>أن يكون المترشح <strong>جزائري الجنسية</strong> أو مقيم بصفة قانونية.</li>
+            <li>ألا يتجاوز عمره <strong>45 سنة</strong> (تختلف حسب التخصص، فبعض التخصصات تقبل حتى 49 سنة).</li>
+            <li>أن يكون حاصلاً على مستوى دراسي محدد حسب التخصص المختار (من الرابعة متوسط إلى شهادة جامعية).</li>
+            <li>ألا يكون قد استفاد من تكوين سابق في نفس التخصص في إطار التكوين المهني.</li>
+            <li>التسجيل يتم عبر المنصة <strong>بدون وثائق ورقية</strong> في المرحلة الأولى.</li>
+        </ul>
+
+        <h3>🔧 التخصصات المتاحة للتكوين</h3>
+        <p>تتنوع التخصصات بشكل كبير لتغطي حاجيات سوق العمل:</p>
+        <ul>
+            <li><strong>قطاع البناء والأشغال العمومية</strong>: البناء، الجص، الكهرباء، السباكة، البلاط.</li>
+            <li><strong>قطاع الميكانيك والصناعة</strong>: ميكانيك السيارات، اللحام، الخراطة، الكهرباء الصناعية.</li>
+            <li><strong>قطاع الإعلام الآلي والتكنولوجيا</strong>: الصيانة الإعلامية، الشبكات، تطوير المواقع، إدارة قواعد البيانات.</li>
+            <li><strong>قطاع السياحة والفندقة</strong>: الطبخ، الخدمات الفندقية، تنشيط سياحي.</li>
+            <li><strong>قطاع الفلاحة والصيد</strong>: تربية المواشي، تقنيات الري، الزراعة في البيوت المحمية.</li>
+            <li><strong>قطاع الصحة والتجميل</strong>: التمريض، التحاليل الطبية، التجميل، التصوير الطبي.</li>
+            <li><strong>قطاع الخدمات والتسيير</strong>: المحاسبة، التسويق، إدارة الأعمال، الأمن والسلامة.</li>
+        </ul>
+
+        <h3>📝 خطوات التسجيل خطوة بخطوة على منصة تكوين</h3>
+        <ol>
+            <li>قم بزيارة الموقع الرسمي: <strong>takwin.dz</strong>.</li>
+            <li>انقر على "تسجيل جديد" (Créer un compte).</li>
+            <li>أدخل بريدك الإلكتروني ورقم هاتفك النقال (سيتلقى رمز تأكيد).</li>
+            <li>أكمل بياناتك الشخصية (الاسم، تاريخ الميلاد، رقم التعريف الوطني NIF).</li>
+            <li>اختر مستوى التأهيل الدراسي (سنوات التعليم، الشهادات المتحصل عليها).</li>
+            <li>اختر ولاية إقامتك، ثم اختر مركز التكوين الأقرب.</li>
+            <li>استعرض قائمة التخصصات المتاحة وتابع <strong>قائمة الانتظار</strong> لكل تخصص.</li>
+            <li>اختر التخصص (أو 3 تخصصات مفضلة في رتبة أولوية).</li>
+            <li>ارفع الملفات المطلوبة (الصورة الشمسية، شهادة الميلاد، نظرة على الشهادات).</li>
+            <li>احصل على رقم التسجيل وقم بطباعة وصل التسجيل (أو احفظه PDF).</li>
+        </ol>
+
+        <h3>❓ أسئلة شائعة حول منصة تكوين</h3>
+        <p><strong>س: ما هي المدة التي تستغرقها معالجة الطلب؟</strong><br>ج: بين 15 و45 يوم عمل من تاريخ إغلاق التسجيلات. ستتلقى إشعاراً عبر بريدك الإلكتروني أو رسالة نصية قصيرة بقبولك أو رفضك.</p>
+        <p><strong>س: هل يمكن تغيير التخصص بعد التسجيل؟</strong><br>ج: نعم، يمكنك تقديم طلب تحويل عبر المنصة خلال الأسبوعين الأولين من بداية التكوين، مع ذكر الأسباب.</p>
+        <p><strong>س: هل التكوين المهني مجاني؟</strong><br>ج: نعم، التكوين في المراكز العمومية مجاني بالكامل، حتى المواد والكتب التطبيقية توفرها الوزارة.</p>
+
+        <a href="https://takwin.dz" class="reg-btn" target="_blank">🔗 التسجيل الآن في منصة التكوين المهني "تكوين"</a>
+    </div>
+</div>
+
+<!-- صفحة منصة المخيم الشبابي -->
+<div id="page-youthcamp" class="full-page">
+    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة المخيم الشبابي - Youth Camp</h3></div>
+    <div class="article-body">
+        <h2>🏕️ منصة المخيم الشبابي الجزائرية: دليلك للتسجيل في المخيمات الصيفية الدولية 2026</h2>
+        <p>منصة "المخيم الشبابي" (Youth Camp) هي بوابة رقمية أطلقتها وزارة الشباب والرياضة الجزائرية لتنظيم مشاركة الشباب الجزائري في المخيمات التكوينية والتبادل الشبابي على المستويين الوطني والدولي. تهدف هذه المنصة إلى إضفاء الشفافية على اختيار المشاركين وتوسيع قاعدة المستفيدين من هذه البرامج المتميزة.</p>
+
+        <h3>📌 تعريف منصة المخيم الشبابي</h3>
+        <p>تعتبر منصة <strong>youthcamp.mjeunesse.gov.dz</strong> الأداة الرسمية الوحيدة للتسجيل في جميع المخيمات التي تنظمها أو ترعاها الحكومة الجزائرية للشباب. تشمل هذه المخيمات التكوين في القيادة، الفنون، العلوم، الرياضات البيئية، المخيمات الكشفية، والتبادل الثقافي مع دول البحر الأبيض المتوسط وإفريقيا ودول العالم.</p>
+
+        <h3>🎯 أهداف المخيمات الشبابية</h3>
+        <ul>
+            <li>تشجير روح المواطنة والانتماء الوطني لدى الشباب.</li>
+            <li>تطوير المهارات القيادية والتواصلية من خلال الأنشطة الجماعية.</li>
+            <li>الترويج للسياحة الداخلية عبر اكتشاف المناطق الطبيعية والتاريخية للجزائر.</li>
+            <li>تعزيز التبادل الثقافي والحوار بين شباب الجزائر وشباب العالم.</li>
+        </ul>
+
+        <h3>📋 شروط المشاركة في المخيمات الشبابية</h3>
+        <ul>
+            <li>أن يكون المترشح <strong>جزائري الجنسية</strong> أو مقيم بصفة قانونية.</li>
+            <li>أن يتراوح عمره بين <strong>15 و35 سنة</strong> (تختلف حسب نوع المخيم وموضوعه).</li>
+            <li>أن يكون <strong>مسجلاً على منصة "الشباب"</strong> (mjeunesse.gov.dz) أو في مؤسسة شبابية.</li>
+            <li>أن تتوفر فيه شروط الصحة والسلامة العامة (فحص طبي أو شهادة طبية تثبت اللياقة).</li>
+            <li>أن يوقع على ميثاق الالتزام بقوانين ومعايير المخيم والنظام الداخلي للوزارة.</li>
+        </ul>
+
+        <h3>🗓️ أنواع المخيمات الشبابية (مواسم 2026)</h3>
+        <p>تنظم وزارة الشباب والرياضة عدة أصناف من المخيمات طوال السنة:</p>
+        <ul>
+            <li><strong>المخيمات الصيفية الوطنية (جويلية وأوت)</strong>: في شواطئ الغرب، جبال الأوراس، وسهوب الجنوب، لمدة 10-15 يوماً.</li>
+            <li><strong>مخيمات التكوين في القيادة (مارس، سبتمبر، ديسمبر)</strong>: موجهة لرؤساء الجمعيات والنوادي الشبابية والقادة الكشفيين.</li>
+            <li><strong>المخيمات الدولية للأرشيف والتراث</strong>: تنظم بالاشتراك مع منظمة الأمم المتحدة للتربية والعلم والثقافة (يونسكو) وبرنامج المتوسط للتبادل الشبابي.</li>
+            <li><strong>مخيمات الرياضات الجبلية والبيئية</strong>: في منطقة القبائل، جرجرة، الطاسيلي، تتضمن تسلق الجبال، غوص، وحماية المحيط.</li>
+            <li><strong>مخيمات الابتكار والريادة الشبابية</strong>: بالشراكة مع incubateurs de start-ups، تدوم 5 أيام إلى أسبوعين يتعلم فيها المشاركون أساسيات ريادة الأعمال.</li>
+        </ul>
+
+        <h3>📝 خطوات التسجيل في منصة المخيم الشبابي</h3>
+        <ol>
+            <li>قم بزيارة <strong>youthcamp.mjeunesse.gov.dz</strong>.</li>
+            <li>انقر على "إنشاء حساب" (Inscription / Sign up).</li>
+            <li>أدخل بريدك الإلكتروني ورقم هاتفك النقال. قم بتأكيد الحساب عبر رمز يصل إلى بريدك.</li>
+            <li>أكمل بيانات ملفك الشخصي بدقة: الاسم الكامل، تاريخ الميلاد، الوضعية المهنية، الهوايات، المهارات.</li>
+            <li>ارفع صورة شخصية حديثة (للاستخدام في بطاقة التعريف الخاصة بالمخيم).</li>
+            <li>استعرض أجندة المخيمات المتاحة، اختر المخيم الذي يناسب اهتماماتك وتواريخك.</li>
+            <li>اقرأ وصف المخيم، الرزنامة، وشروط المشاركة بدقة، ثم اضغط على "تقديم طلب الترشح".</li>
+            <li>انتظر الرد بقبولك إلى مرحلة المقابلة (قد تُجرى عن بعد عبر Zoom) أو القبول النهائي.</li>
+        </ol>
+
+        <h3>✨ امتيازات المشاركة في المخيم الشبابي</h3>
+        <ul>
+            <li><strong>الإقامة والإطعام مجانيان</strong> بالكامل: فندق، مركز متخصص، أو مخيم مجهز على أعلى مستوى.</li>
+            <li><strong>شهادة مشاركة رسمية</strong> موقعة من وزارة الشباب والرياضة، معتمدة دولياً لتعزيز السيرة الذاتية الأكاديمية والمهنية.</li>
+            <li><strong>النقل مضمون</strong> من نقطة التجمع إلى موقع المخيم (حافلات مجهزة، مرافقة مؤمنة).</li>
+            <li><strong>تأمين صحي شامل</strong> طيلة أيام المخيم ضد الأمراض والحوادث.</li>
+            <li><strong>هدايا وملابس رياضية وقرطاسية</strong> تحمل شعار المخيم والجهة المنظمة.</li>
+        </ul>
+
+        <a href="https://youthcamp.mjeunesse.gov.dz" class="reg-btn" target="_blank">🔗 سجل الآن في المخيم الشبابي 2026</a>
+    </div>
+</div>
+
+<!-- صفحة الذكاء الاصطناعي (الأخيرة) -->
 <div id="page-ai" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>الذكاء الاصطناعي في الجزائر</h3></div>
     <div class="article-body">
@@ -244,7 +361,6 @@
             <li>إطلاق برامج تكوين مكثفة وعصرية في الذكاء الاصطناعي.</li>
             <li>تحفيز الاستثمار الخاص والأجنبي عبر إعفاءات ضريبية.</li>
             <li>سن تشريعات لتنظيم الذكاء الاصطناعي وحماية الخصوصية.</li>
-            <li>إنشاء مجلس وطني أعلى للذكاء الاصطناعي.</li>
         </ul>
         
         <h3>❓ أسئلة شائعة حول الذكاء الاصطناعي في الجزائر</h3>
@@ -254,7 +370,6 @@
         
         <p><strong>س: كيف يمكن للطالب الجزائري تعلم الذكاء الاصطناعي ذاتياً؟</strong><br>ج: هناك مصادر مجانية مثل: دورات Deep Learning على Coursera، وقناة Two Minutes Papers على YouTube، وكتاب Hands-On Machine Learning.</p>
         
-        <!-- الرابط الرسمي المعدل إلى المدرسة الوطنية للذكاء الاصطناعي -->
         <a href="https://ensia.edu.dz" class="reg-btn" target="_blank">🎓 اكتشف تكوينات الذكاء الاصطناعي في ENSIA (المدرسة الوطنية للذكاء الاصطناعي)</a>
     </div>
 </div>
@@ -304,8 +419,7 @@
         <p>نحن غير مسؤولين عن محتوى المواقع الخارجية.</p>
         <h3>4. حقوق الملكية الفكرية</h3>
         <p>جميع المحتويات هي ملك لموقع خدماتي الجزائر.</p>
-        <h3>5. اتصل بنا</h3>
-        <p>للاستفسارات: MUSTAPHABENAMAR40@GMAIL.COM</p>
+        <a href="MUSTAPHABENAMAR40@GMAIL.COM" class="reg-btn">اتصل بنا للاستفسارات</a>
     </div>
 </div>
 
@@ -318,6 +432,8 @@
             page.style.display = 'block';
             document.body.style.overflow = 'hidden';
             if (typeof gtag !== 'undefined') gtag('event', 'open_page', { 'page_name': pageId });
+        } else {
+            console.error('الصفحة غير موجودة: page-' + pageId);
         }
     }
     
@@ -413,4 +529,4 @@
 </script>
 
 </body>
-                                                                                                    </html>
+</html>
