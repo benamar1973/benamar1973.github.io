@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خدماتي - الدليل الجزائري الشامل 2026</title>
+    <meta name="description" content="دليلك الشامل للخدمات الإدارية والرقمية في الجزائر: منحة البطالة، تجنيد الجيش، فضاء الأولياء، سكنات عدل 3، وأكثر">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Google Analytics (تم الربط بالكود الخاص بك) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JN7B1JDSSB"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -17,6 +18,7 @@
     
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff; }
+        * { box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.8; }
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         
@@ -70,22 +72,30 @@
 
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
         .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; }
+        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; font-size: 14px; }
         .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 2.2; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
-        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0; font-size: 20px; }
-        .article-body h3 { color: var(--accent); font-size: 18px; margin-top: 30px; }
-        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 20px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 30px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); }
+        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0 15px 0; font-size: 22px; }
+        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; margin-bottom: 10px; }
+        .article-body h4 { color: #555; font-size: 17px; margin-top: 20px; }
+        .article-body ul, .article-body ol { margin: 15px 0; padding-right: 25px; }
+        .article-body li { margin: 8px 0; }
+        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); transition: opacity 0.2s; }
+        .reg-btn:hover { opacity: 0.9; }
 
         footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
         .footer-links { margin-bottom: 10px; }
         .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
-        .error-msg { color: var(--danger); font-size: 12px; text-align: center; padding: 10px; }
-        .weather-loading { text-align: center; padding: 20px; color: #888; }
+        .error-msg { color: var(--danger); font-size: 13px; text-align: center; padding: 20px; background: #fff; border-radius: 15px; }
+        .weather-loading, .weather-info { text-align: center; padding: 20px; color: #888; background: #f9f9f9; border-radius: 15px; }
+        .weather-note { font-size: 12px; color: #aaa; margin-top: 10px; }
+        .prayer-note { font-size: 11px; color: #aaa; text-align: center; margin-top: 10px; }
         
         @media (max-width: 500px) {
             .services-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .icon-btn { padding: 15px 5px; }
             .article-body { padding: 20px; margin: 10px; }
+            .article-body h2 { font-size: 18px; }
+            .article-body h3 { font-size: 16px; }
         }
     </style>
 </head>
@@ -119,12 +129,14 @@
                 <div class="prayer-item"><span>المغرب</span><b id="maghrib">--:--</b></div>
                 <div class="prayer-item"><span>العشاء</span><b id="isha">--:--</b></div>
             </div>
+            <div class="prayer-note">🕌 يتم تحديث المواقيت تلقائياً حسب موقعك الجغرافي</div>
         </div>
 
         <!-- الطقس -->
         <div class="card">
             <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ حالة الطقس للأيام القادمة</h3>
             <div id="weather-container"><div class="weather-loading">🌍 جاري تحميل بيانات الطقس...</div></div>
+            <div class="weather-note">📌 ملاحظة: للحصول على بيانات طقس دقيقة، يرجى تفعيل موقعك والحصول على مفتاح API مجاني من OpenWeatherMap</div>
         </div>
 
         <!-- الخدمات -->
@@ -143,233 +155,189 @@
                 <span onclick="openPage('privacy')">سياسة الخصوصية</span> | 
                 <span onclick="openPage('contact')">اتصل بنا</span>
             </div>
-            <p>© 2026 - بوابتكم للخدمات الرقمية</p>
+            <p>© 2026 - خدماتي الجزائر - بوابتكم للخدمات الرقمية</p>
         </footer>
     </div>
 </div>
 
-<!-- الصفحات الداخلية -->
+<!-- ==================== صفحة منحة البطالة ==================== -->
 <div id="page-minha" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منحة البطالة 2026</h3></div>
     <div class="article-body">
-        <h2>الدليل الشامل للتسجيل في منحة البطالة بالجزائر</h2>
-        <p>تعد منحة البطالة خطوة هامة أقرتها الدولة الجزائرية لمرافقة الشباب طالبي الشغل لأول مرة، حيث توفر لهم حماية اجتماعية ودخلاً شهرياً ثابتاً يساعدهم في حياتهم اليومية حتى إيجاد منصب شغل دائم. تهدف هذه المنحة إلى الحفاظ على كرامة الشباب وإدماجهم التدريجي في الدورة الاقتصادية.</p>
-        <h3>شروط الاستفادة القانونية:</h3>
-        <p>لكي يتمكن المترشح من الاستفادة من المنحة، يجب أن تتوفر فيه حزمة من الشروط الصارمة، أهمها أن يتراوح العمر ما بين 19 و40 سنة كاملة عند تاريخ التسجيل. كما يشترط أن يكون مسجلاً لدى مصالح الوكالة الوطنية للتشغيل (ANEM) كطالب شغل لأول مرة لمدة لا تقل عن ستة أشهر متتالية دون انقطاع.</p>
-        <h3>الالتزامات المهنية للمستفيد:</h3>
-        <p>لا تقتصر المنحة على الجانب المادي فقط، بل يلتزم المستفيد بمتابعة الدورات التكوينية التي تقترحها الوكالة، والحضور الإلزامي للمواعيد المحددة. أي غياب غير مبرر عن استدعاءات الوكالة أو رفض عرضي عمل مطابقين للتخصص قد يؤدي إلى الإقصاء النهائي من المنحة.</p>
-        <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">التوجه لمنصة التسجيل الأولي في المنحة</a>
+        <h2>📌 دليل شامل للتسجيل في منحة البطالة بالجزائر 2026</h2>
+        <p>تُعد منحة البطالة من أهم الآليات الاجتماعية التي أقرتها الدولة الجزائرية لدعم الشباب الباحث عن عمل لأول مرة. تهدف هذه المنحة إلى توفير دخل شهري ثابت يساعد طالبي العمل على تغطية احتياجاتهم الأساسية أثناء فترة البحث عن منصب شغل لائق، كما تساهم في الحفاظ على كرامتهم وتحفيزهم للاندماج في سوق العمل.</p>
+        
+        <h3>📋 الشروط الأساسية للاستفادة من المنحة</h3>
+        <p>لكي تتمكن من التقدم بطلب الحصول على منحة البطالة، يجب أن تستوفي مجموعة من الشروط التي حددتها الوكالة الوطنية للتشغيل (ANEM). هذه الشروط جاءت لضمان وصول الدعم إلى مستحقيه الحقيقيين:</p>
+        <ul>
+            <li>أن يتراوح عمر المتقدم بين <strong>19 و40 سنة</strong> (كاملة عند تاريخ التسجيل).</li>
+            <li>أن يكون مسجلاً لدى ANEM كـ <strong>طالب شغل لأول مرة</strong> لمدة لا تقل عن 6 أشهر متواصلة.</li>
+            <li>أن يكون المتقدم <strong>عاطلاً عن العمل</strong> ولا يزاول أي نشاط مهني أو تجاري.</li>
+            <li>ألا يكون المتقدم أو زوجه يتقاضى أي دخل ثابت (راتب تقاعد، منحة أخرى، أو راتب عمل).</li>
+            <li>أن تكون له <strong>الإقامة العادية في الجزائر</strong> بصفة مستمرة.</li>
+            <li>أن يكون قد سوى وضعيته تجاه <strong>الخدمة الوطنية</strong> (أدى الخدمة، مؤجل، أو معفي قانونياً).</li>
+            <li>ألا يكون مسجلاً في أي نظام وطني للضمان الاجتماعي كأجير أو كمستفيد من تعويض البطالة.</li>
+        </ul>
+        
+        <h3>💶 قيمة المنحة الشهرية ومواعيد الصرف</h3>
+        <p>تختلف قيمة منحة البطالة حسب رزنامة الحكومة، وقد تم تحديدها بمبلغ <strong>13.000 دينار جزائري</strong> شهرياً للفئات المعنية. يتم صرف المنحة عبر الوكالة الوطنية للتشغيل بعد التحقق من استمرار توفر الشروط. تصرف المنحة لمدة سنة قابلة للتجديد مرة واحدة بشرط متابعة التكوينات التي تقدمها الوكالة.</p>
+        
+        <h3>📝 خطوات التسجيل خطوة بخطوة</h3>
+        <p>عملية التسجيل في منحة البطالة أصبحت رقمية بالكامل عبر منصة ANEM الإلكترونية:</p>
+        <ol>
+            <li>قم بزيارة الموقع الرسمي للوكالة الوطنية للتشغيل <strong>ANEM</strong>.</li>
+            <li>سجل كـ <strong>طالب شغل جديد</strong> (أول مرة) باستخدام رقم التعريف الوطني (NIF).</li>
+            <li>أكمل بياناتك الشخصية والمهنية بدقة (العنوان، المؤهلات، رقم الهاتف، البريد الإلكتروني).</li>
+            <li>اختر فئة <strong>"طلب منحة البطالة"</strong> من القائمة الرئيسية.</li>
+            <li>ارفع الملفات المطلوبة بصيغة PDF أو صورة واضحة.</li>
+            <li>احصل على إيصال التسجيل، ويمكنك متابعة طلبك عبر حسابك في المنصة.</li>
+        </ol>
+        
+        <h3>📎 الملفات المطلوبة للتسجيل</h3>
+        <ul>
+            <li>نسخة من بطاقة التعريف الوطنية (Recto/Verso).</li>
+            <li>شهادة الميلاد رقم 12 (أصلية أو نسخة مطابقة للأصل).</li>
+            <li>شهادة الإقامة (لا تتجاوز 3 أشهر).</li>
+            <li>شهادة التأجيل أو الإعفاء من الخدمة الوطنية (للذكور).</li>
+            <li>شهادة عدم العمل أو كشف النقاط من الصندوق الوطني للضمان الاجتماعي.</li>
+            <li>عقد التسجيل في الوكالة الوطنية للتشغيل (شهادة ANEM).</li>
+        </ul>
+        
+        <h3>⚠️ الحالات المؤدية إلى إيقاف المنحة</h3>
+        <p>يتم إيقاف صرف منحة البطالة فوراً في الحالات التالية:</p>
+        <ul>
+            <li>الحصول على عمل ثابت في القطاع العام أو الخاص.</li>
+            <li>رفض عرض عمل مطابق للتخصص دون مبرر قانوني.</li>
+            <li>التغيب عن الدورات التكوينية الإجبارية مرتين متتاليتين.</li>
+            <li>تزوير المعلومات أو المستندات المقدمة للوكالة.</li>
+            <li>السفر والإقامة خارج الجزائر لأكثر من 3 أشهر متصلة.</li>
+        </ul>
+        
+        <h3>❓ أسئلة شائعة حول منحة البطالة</h3>
+        <p><strong>س: هل يمكن التسجيل في المنحة وأنا طالب جامعي؟</strong><br>ج: لا، تشترط المنحة أن يكون المتقدم غير مسجل في أي مؤسسة تعليمية أو تكوينية رسمية (باستثناء التكوينات التي تقدمها الوكالة).</p>
+        <p><strong>س: هل تؤثر المنحة على وضعيتي الضريبية؟</strong><br>ج: لا، قيمة المنحة غير خاضعة للضريبة ولا تؤثر على السجل الضريبي للمستفيد.</p>
+        <p><strong>س: هل يمكن لخريجي الجامعات التقديم؟</strong><br>ج: نعم، بشرط ألا يكونوا قد عملوا سابقاً في إطار عقد عمل منظم، وأن يكونوا مسجلين كطالبي شغل لأول مرة.</p>
+        <p><strong>س: كم تستغرق معالجة الطلب؟</strong><br>ج: تتراوح مدة المعالجة بين 30 و60 يوماً من تاريخ إيداع الملف كاملاً.</p>
+        
+        <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">🚀 ابدأ التسجيل الآن في منحة البطالة</a>
     </div>
 </div>
 
+<!-- ==================== صفحة تجنيد الجيش ==================== -->
 <div id="page-army" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>تجنيد الجيش 2026</h3></div>
     <div class="article-body">
-        <h2>دليل الالتحاق بصفوف الجيش الوطني الشعبي الجزائري</h2>
-        <p>يفتح الجيش الوطني الشعبي سنوياً أبوابه للشباب الجزائري الراغب في الالتحاق بمختلف الأسلحة والقوات (البرية، البحرية، الجوية، وقوات الدفاع عن الإقليم). التجنيد في المؤسسة العسكرية يضمن مساراً مهنياً متميزاً وتكويناً بمواصفات عالمية.</p>
-        <h3>الرتب والمستويات المطلوبة:</h3>
-        <p>ينقسم التجنيد إلى ثلاث فئات رئيسية: فئة الضباط العاملين للحاصلين على البكالوريا، فئة ضباط الصف للذين يثبتون مستوى الثالثة ثانوي، وفئة رجال الصف للمستويات التعليمية المتوسطة.</p>
-        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">زيارة منصة وزارة الدفاع للتسجيل</a>
+        <h2>🎖️ الدليل الكامل للالتحاق بصفوف الجيش الوطني الشعبي الجزائري 2026</h2>
+        <p>يفتح الجيش الوطني الشعبي (ANP) أبوابه سنوياً أمام آلاف الشباب الجزائري الراغبين في خوض تجربة عسكرية مهنية. يتميز المسار العسكري بتوفير تكوين عالي الجودة، استقرار مهني، رواتب مجزية، وأهم من ذلك شرف الدفاع عن الوطن. في هذا الدليل، ستجد كل ما تحتاج معرفته عن شروط الالتحاق، الرتب، الاختبارات، والملف المطلوب.</p>
+        
+        <h3>📌 التخصصات والرتب العسكرية المطلوبة</h3>
+        <p>ينقسم الالتحاق بالجيش إلى ثلاث فئات رئيسية حسب المستوى التعليمي والرغبة المهنية:</p>
+        <ul>
+            <li><strong>فئة الضباط العاملين</strong>: للحاصلين على شهادة البكالوريا (شعبة علمي أو تقني) بمعدل لا يقل عن 12/20، أو شهادة مهندس/ماستر في تخصصات مطلوبة (إعلام آلي، إلكترونيك، طيران، اتصالات).</li>
+            <li><strong>فئة ضباط الصف</strong>: للمترشحين الحاصلين على مستوى السنة الثالثة ثانوي أو شهادة البكالوريا بمعدل أقل من 12/20. مدة التكوين تتراوح بين 12 و24 شهراً.</li>
+            <li><strong>فئة رجال الصف (الرتباء والجنود المتخصصين)</strong>: للمستويات التعليمية من السنة الثانية متوسط إلى الثانية ثانوي. يخضعون لتكوين مهني متخصص في مختلف الأسلحة.</li>
+        </ul>
+        
+        <h3>📋 شروط القبول الأساسية</h3>
+        <ul>
+            <li>أن يكون المترشح <strong>جزائري الجنسية</strong> عن الأب والأم.</li>
+            <li>ألا يقل عمره عن <strong>18 سنة</strong> ولا يتجاوز <strong>25 سنة</strong> (تختلف حسب الفئة والرتبة).</li>
+            <li>أن يكون <strong>عازباً</strong> طيلة فترة التكوين العسكري الأساسي.</li>
+            <li>أن يكون <strong>حسن السيرة والأخلاق</strong> وغير محكوم عليه بموجب جنحة أو جناية.</li>
+            <li>أن يتمتع بـ <strong>اللياقة البدنية والطبية</strong> اللازمة للخدمة في السلاح المختار.</li>
+            <li>أن يجتاز بنجاح اختبارات القبول (بدنية، نفسية، طبية، وشفوية).</li>
+        </ul>
+        
+        <h3>🏃 اختبارات القبول</h3>
+        <p>يقوم المرشحون لصفوف الجيش بسلسلة من الاختبارات التنافسية في مراكز التجنيد التابعة لوزارة الدفاع الوطني. تشمل هذه الاختبارات:</p>
+        <ul>
+            <li><strong>الاختبار البدني</strong>: جري (سرعة وتحمل)، تمارين سباحة أو عدو، شد الحديد، ثني الجذع.</li>
+            <li><strong>الاختبار الطبي</strong>: فحص عام، نظر، سمع، وزن، طول (الطول المطلوب يختلف حسب السلاح).</li>
+            <li><strong>الاختبار النفسي والتقني</strong>: اختبار IQ، اختبار شخصية، وقدرات على العمل الجماعي تحت الضغط.</li>
+            <li><strong>المقابلة الشخصية</strong>: لتقييم الدافع، الالتزام، والانضباط.</li>
+        </ul>
+        
+        <h3>📎 الملفات المطلوبة للتسجيل</h3>
+        <ul>
+            <li>طلب خطي موجه إلى مدير التجنيد بالوزارة.</li>
+            <li>نسخة مصادق عليها من شهادة الميلاد رقم 12.</li>
+            <li>نسخة من بطاقة التعريف الوطنية (سارية المفعول).</li>
+            <li>شهادة السوابق العدلية رقم 3 (تسلم من محكمة محل السكن).</li>
+            <li>شهادة طبية تثبت اللياقة البدنية للخدمة العسكرية.</li>
+            <li>شهادة التأجيل أو الإعفاء من الخدمة الوطنية (للذكور، إن وجدت).</li>
+            <li>كشوف النقاط الأصلية والنسخ المصادق عليها من المؤهلات العلمية.</li>
+            <li>ظرفان بريديان مختومان مع عنوان المترشح.</li>
+        </ul>
+        
+        <h3>💰 الميزات والتعويضات العسكرية</h3>
+        <p>يتمتع العسكريون المحترفون بمجموعة من الامتيازات:</p>
+        <ul>
+            <li>راتب شهري يبدأ من <strong>30.000 دج</strong> للجنود ويمكن أن يتجاوز <strong>120.000 دج</strong> للضباط.</li>
+            <li>التمتع بالتأمين الصحي والخدمات الاجتماعية.</li>
+            <li>إمكانية الترقية في الرتب بناءً على الأقدمية والكفاءة.</li>
+            <li>التقاعد المبكر بعد 25 سنة خدمة (أو 15 سنة في بعض الأسلحة).</li>
+            <li>السكن الوظيفي أو مساعدة على السكن بعد عدة سنوات خدمة.</li>
+        </ul>
+        
+        <h3>❓ أسئلة شائعة عن التجنيد</h3>
+        <p><strong>س: هل يمكن للمرأة التقدم للجيش الوطني الشعبي؟</strong><br>ج: نعم، تفتح بعض المدارس والكليات العسكرية أبوابها للمترشحات في تخصصات الطب، الصيدلة، الإعلام الآلي، واللغات.</p>
+        <p><strong>س: هل التجنيد إلزامي أم تطوعي؟</strong><br>ج: الالتحاق بالجيش كضابط أو ضابط صف هو تطوعي. لكن الخدمة الوطنية واجب على الذكور (باستثناء الإعفاءات).</p>
+        <p><strong>س: متى تفتح التسجيلات؟</strong><br>ج: تعلن وزارة الدفاع الوطني عن فتح التسجيلات عادة في شهري سبتمبر ويناير من كل سنة. تابع الموقع الرسمي بانتظام.</p>
+        
+        <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">🔗 سجل الآن في منصة التجنيد للجيش الوطني الشعبي</a>
     </div>
 </div>
 
+<!-- ==================== صفحة فضاء الأولياء ==================== -->
 <div id="page-awlyaa" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>فضاء الأولياء</h3></div>
     <div class="article-body">
-        <h2>النظام المعلوماتي لقطاع التربية الوطنية: فضاء الأولياء</h2>
-        <p>يعد فضاء الأولياء حجر الزاوية في رقمنة قطاع التربية الوطنية في الجزائر. تهدف هذه المنصة الرقمية إلى مد جسور التواصل المستمر بين المؤسسة التربوية والأسرة.</p>
-        <h3>الخدمات التي توفرها المنصة الرقمية:</h3>
-        <p>تسمح المنصة للأولياء بالاطلاع الفوري على نتائج الاختبارات الفصلية وسحب كشوف النقاط مباشرة من المنزل، ومتابعة الغيابات والسلوك، والتسجيل في الامتحانات الرسمية.</p>
-        <a href="https://awlyaa.education.dz/login" class="reg-btn" target="_blank">دخول فضاء الأولياء الرسمي</a>
+        <h2>📚 دليل فضاء الأولياء: تابع مسار أبنائك الدراسي إلكترونياً</h2>
+        <p>يعد فضاء الأولياء منصة رقمية حيوية أطلقتها وزارة التربية الوطنية الجزائرية بهدف رقمنة التواصل بين المؤسسات التربوية وأولياء التلاميذ. تتيح هذه المنصة متابعة دقيقة وشاملة للمسار الدراسي للأبناء في جميع الأطوار التعليمية (ابتدائي، متوسط، ثانوي) دون الحاجة للتنقل إلى المؤسسة التربوية.</p>
+        
+        <h3>✨ أبرز الخدمات التي يوفرها فضاء الأولياء</h3>
+        <ul>
+            <li><strong>الاطلاع على النتائج الدراسية</strong>: يمكنك سحب كشوف النقاط الخاصة بكل فصل دراسي فور اعتمادها من المؤسسة.</li>
+            <li><strong>متابعة الغيابات والسلوك</strong>: ترصد المنصة عدد أيام الغياب والتأخير، بالإضافة إلى ملاحظات السلوك المسجلة من طرف الأساتذة والإدارة.</li>
+            <li><strong>التسجيل في الامتحانات الرسمية</strong>: تسجيل التلاميذ في امتحانات شهادة التعليم المتوسط (BEM) والبكالوريا عبر المنصة.</li>
+            <li><strong>التوجيه المدرسي والمهني</strong>: تقديم رغبات التوجيه للمراحل التعليمية الحساسة (الانتقال من المتوسط إلى الثانوي، ومن الثانوي إلى الجامعة).</li>
+            <li><strong>الاطلاع على جداول الحصص والبرامج الدراسية</strong>: يمكنك معرفة مواعيد الدروس والامتحانات المحلية.</li>
+            <li><strong>الدفع الإلكتروني للحقوق المدرسية</strong>: في بعض المؤسسات التي فعّلت الخدمة، يمكن سداد الرسوم المدرسية عبر بطاقة إدخار أو CCP.</li>
+        </ul>
+        
+        <h3>📝 خطوات التسجيل والدخول إلى فضاء الأولياء</h3>
+        <p>للاستفادة من خدمات المنصة، يجب على الولي إنشاء حساب خاص به. إليك الخطوات بالتفصيل:</p>
+        <ol>
+            <li>قم بزيارة المنصة الرسمية لفضاء الأولياء على الرابط: <strong>awlyaa.education.dz</strong></li>
+            <li>اختر "إنشاء حساب جديد".</li>
+            <li>أدخل البريد الإلكتروني الخاص بك ورقم الهاتف.</li>
+            <li>سجل معلومات التلميذ: <strong>رقم التسجيل المدرسي</strong> (يوجد في كشف النقاط أو شهادة الميلاد الدراسية)، وتاريخ ميلاده، والمستوى الدراسي.</li>
+            <li>قم بتأكيد الحساب عبر الرابط الذي سيصلك على بريدك الإلكتروني.</li>
+            <li>بعد تفعيل الحساب، قم بتسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور التي اخترتها.</li>
+            <li>يمكنك الآن إضافة جميع أبنائك المسجلين في المؤسسات التربوية إلى حسابك الموحد.</li>
+        </ol>
+        
+        <h3>⚠️ ملاحظات هامة للمستخدمين</h3>
+        <ul>
+            <li>إذا كنت تواجه مشكلة في الحصول على <strong>رقم التسجيل المدرسي</strong>، يمكنك طلبه من إدارة المؤسسة التعليمية التي يدرس فيها ابنك.</li>
+            <li>تأكد من تحديث بيانات الاتصال (الهاتف والبريد الإلكتروني) لدى إدارة المؤسسة ليصلك الإشعارات التلقائية.</li>
+            <li>في حالة نسيان كلمة المرور، يمكنك استخدام خاصية "نسيت كلمة المرور" لإعادة تعيينها عبر بريدك الإلكتروني المسجل.</li>
+            <li>إذا كنت ولياً لأكثر من تلميذ، يمكنك إضافة جميع أبنائك بنفس الحساب.</li>
+        </ul>
+        
+        <h3>❓ أسئلة شائعة حول فضاء الأولياء</h3>
+        <p><strong>س: هل الخدمة مجانية بالكامل؟</strong><br>ج: نعم، فضاء الأولياء مجاني ولا توجد أي رسوم للاشتراك أو الوصول إلى بيانات الأبناء.</p>
+        <p><strong>س: هل يمكن استخدام المنصة عبر الهاتف المحمول؟</strong><br>ج: نعم، المنصة متجاوبة مع جميع الأجهزة (جوال، جهاز لوحي، كمبيوتر).</p>
+        <p><strong>س: متى يتم تحديث النتائج والغيابات؟</strong><br>ج: يتم تحديث البيانات من قبل المؤسسة التربوية مباشرة بعد كل اختبار أو رصد غياب.</p>
+        <p><strong>س: ماذا أفعل إذا وجدت خطأ في نقطة أو غياب ابني؟</strong><br>ج: يجب عليك التواصل مباشرة مع إدارة المؤسسة التعليمية لمراجعة الخطأ وتصحيحه.</p>
+        
+        <a href="https://awlyaa.education.dz/login" class="reg-btn" target="_blank">🔗 الدخول إلى فضاء الأولياء الرسمي</a>
     </div>
 </div>
 
+<!-- ==================== صفحة سكنات عدل 3 ==================== -->
 <div id="page-aadl" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سكنات عدل 3</h3></div>
     <div class="article-body">
-        <h2>برنامج عدل 3: مستقبل السكن بالبيع بالإيجار في الجزائر</h2>
-        <p>برنامج "عدل 3" هو الصيغة السكنية الأكثر انتظاراً من طرف الطبقة المتوسطة في الجزائر، حيث تتيح الحصول على مسكن لائق بصيغة البيع بالإيجار مع تسهيلات كبيرة في الدفع تصل إلى 25 سنة.</p>
-        <h3>الشروط المالية والاجتماعية للاكتتاب:</h3>
-        <p>يشترط في المكتتب أن يتراوح مجموع دخله الشهري بين 24 ألف و120 ألف دينار جزائري، وألا يكون قد استفاد سابقاً من أي سكن دعم من الدولة.</p>
-        <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">رابط التسجيل لمنصة عدل 3</a>
-    </div>
-</div>
-
-<div id="page-wassit" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>وسيط ANEM</h3></div>
-    <div class="article-body">
-        <h2>منصة وسيط أونلاين: جسر التواصل بين طالبي العمل والشركات</h2>
-        <p>تعتبر منصة "وسيط" التابعة للوكالة الوطنية للتشغيل الأداة الرقمية الأولى في الجزائر لتسيير عروض وطلبات العمل.</p>
-        <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="reg-btn" target="_blank">رابط تسجيل طلب عمل جديد في وسيط</a>
-    </div>
-</div>
-
-<div id="page-adhahi" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>أضحية العيد 2026</h3></div>
-    <div class="article-body">
-        <h2>منصة أضاحي: تنظيم سوق المواشي في الجزائر</h2>
-        <p>أطلقت الدولة الجزائرية منصة "أضاحي" الرقمية بهدف تنظيم عملية بيع أضاحي العيد ومحاربة المضاربة.</p>
-        <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">حجز أضحية العيد عبر المنصة الرسمية</a>
-    </div>
-</div>
-
-<div id="page-about" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>من نحن</h3></div>
-    <div class="article-body">
-        <h2>حول موقع خدماتي الجزائري</h2>
-        <p>موقع "خدماتي" هو بوابة رقمية جزائرية مستقلة تهدف إلى تجميع الروابط الإدارية الرسمية والخدمات الرقمية التي تهم المواطن الجزائري في مكان واحد وبشكل مبسط.</p>
-    </div>
-</div>
-
-<div id="page-privacy" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سياسة الخصوصية</h3></div>
-    <div class="article-body">
-        <h2>التزامنا بخصوصية المستخدم</h2>
-        <p>نحن في "خدماتي" نولي أهمية قصوى لخصوصية زوارنا. نؤكد أن الموقع لا يقوم بجمع أي بيانات شخصية أو سرية. الروابط المتوفرة تؤدي مباشرة إلى المواقع الرسمية الحكومية.</p>
-    </div>
-</div>
-
-<div id="page-contact" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>اتصل بنا</h3></div>
-    <div class="article-body" style="text-align:center;">
-        <h2>تواصل مع إدارة الموقع</h2>
-        <div style="background:#f9f9f9; padding:25px; border-radius:20px; margin:20px 0;">
-            <p>📧 البريد الإلكتروني: <b>support@khadmati.dz</b></p>
-        </div>
-    </div>
-</div>
-
-<script>
-    // إعدادات OpenWeatherMap (سجل مجاناً على https://openweathermap.org/api)
-    // هذا مفتاح تجريبي، سجل واحصل على مفتاحك الخاص للاستخدام المستمر
-    const WEATHER_API_KEY = 'YOUR_OPENWEATHER_API_KEY';
-    
-    function openPage(id) {
-        gtag('event', 'open_page', { 'page_name': id });
-        document.getElementById('page-' + id).style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closePage() {
-        document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none');
-        document.body.style.overflow = 'auto';
-    }
-    
-    function shareApp() {
-        gtag('event', 'share_clicked');
-        if(navigator.share) {
-            navigator.share({title: 'خدماتي الجزائر', text: 'دليلك الإداري والمالي الشامل', url: window.location.href});
-        } else {
-            alert('لمشاركة الموقع، يمكنك نسخ الرابط: ' + window.location.href);
-        }
-    }
-    
-    // وقت التحديث
-    document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
-    
-    // مواقيت الصلاة
-    function getPrayerTimes() {
-        if (!navigator.geolocation) {
-            document.querySelectorAll('#prayer-list b').forEach(el => el.innerText = 'غير متاح');
-            return;
-        }
-        
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
-                    .then(r => r.json())
-                    .then(res => {
-                        const t = res.data.timings;
-                        document.getElementById('fajr').innerText = t.Fajr;
-                        document.getElementById('dhuhr').innerText = t.Dhuhr;
-                        document.getElementById('asr').innerText = t.Asr;
-                        document.getElementById('maghrib').innerText = t.Maghrib;
-                        document.getElementById('isha').innerText = t.Isha;
-                        gtag('event', 'prayer_times_loaded');
-                    })
-                    .catch(() => {
-                        document.querySelectorAll('#prayer-list b').forEach(el => el.innerText = 'خطأ');
-                    });
-            },
-            error => {
-                document.querySelectorAll('#prayer-list b').forEach(el => el.innerText = '--:--');
-            }
-        );
-    }
-    
-    // الطقس
-    function getWeatherData() {
-        if (!navigator.geolocation) {
-            document.getElementById('weather-container').innerHTML = '<div class="error-msg">❌ لا يمكن تحديد موقعك</div>';
-            return;
-        }
-        
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ar&appid=${WEATHER_API_KEY}`;
-                
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) throw new Error('API key error');
-                        return response.json();
-                    })
-                    .then(data => {
-                        displayWeather(data);
-                        gtag('event', 'weather_loaded');
-                    })
-                    .catch(error => {
-                        let errorMsg = '⚠️ لا يمكن تحميل بيانات الطقس حالياً';
-                        if (error.message.includes('API key')) errorMsg = '🔑 مفتاح API غير صالح. سجل مجاناً على OpenWeatherMap للحصول على مفتاح.';
-                        document.getElementById('weather-container').innerHTML = `<div class="error-msg">${errorMsg}</div>`;
-                    });
-            },
-            error => {
-                document.getElementById('weather-container').innerHTML = '<div class="error-msg">📍 يرجى تفعيل خدمات الموقع لتحديد موقعك</div>';
-            }
-        );
-    }
-    
-    function displayWeather(data) {
-        const dailyForecasts = {};
-        data.list.forEach(forecast => {
-            const date = forecast.dt_txt.split(' ')[0];
-            if (!dailyForecasts[date] && forecast.dt_txt.includes('12:00')) {
-                dailyForecasts[date] = forecast;
-            }
-        });
-        
-        const daysList = Object.values(dailyForecasts).slice(0, 5);
-        const weekDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-        
-        let weatherHTML = '<div class="weather-scroll">';
-        daysList.forEach(forecast => {
-            const date = new Date(forecast.dt * 1000);
-            const dayName = weekDays[date.getDay()];
-            const temp = Math.round(forecast.main.temp);
-            const description = forecast.weather[0].description;
-            const icon = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`;
-            
-            weatherHTML += `
-                <div class="weather-day">
-                    <span>${dayName}</span>
-                    <img src="${icon}" alt="${description}">
-                    <b>${temp}°C</b>
-                    <span style="font-size:11px;">${description}</span>
-                </div>
-            `;
-        });
-        weatherHTML += '</div>';
-        document.getElementById('weather-container').innerHTML = weatherHTML;
-    }
-    
-    // تشغيل الدوال
-    getPrayerTimes();
-    getWeatherData();
-</script>
-
-</body>
-</html>
+        <h2>🏢 برنامج عدل 3: دليل شامل للحصول على سكن بالبيع بالإيجار</h2>
+        <p>برنامج "عدل 3" هو أحدث صيحة سكنية في الجزائر، حيث يهدف إلى توفير سكنات لائقة للطبقة المتوسطة بنظام البيع بالإيجار (أقساط شهرية ميسرة تمتد حتى 25 سنة). يعتبر هذا البرنامج بديلاً ميسوراً عن شراء سكن جاهز بكامل المبلغ
