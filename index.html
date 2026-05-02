@@ -1,76 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري الشامل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; line-height: 1.8; }
-        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
-        .main-header { background: var(--primary); color: white; padding: 30px 20px; border-radius: 0 0 30px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .header-title h1 { margin: 0; font-size: 22px; font-weight: 800; }
-        .share-top-btn { background: var(--white); color: var(--primary); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: 800; }
-        .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
-        .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1px solid #f0f0f0; }
-        .icon-btn:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
-        .icon-btn i { font-size: 32px; display: block; margin-bottom: 10px; }
-        .icon-btn span { font-size: 14px; font-weight: 800; color: var(--primary); }
-        .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
-        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
-        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; }
-        .article-body { background: white; padding: 35px; border-radius: 25px; margin: 15px; color: #444; text-align: justify; }
-        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; font-size: 22px; }
-        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; }
-        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; }
-        footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
-        .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; }
-        .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; }
-        .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
-        @media (max-width: 600px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
-    </style>
-</head>
-<body>
-
-<div id="home-view">
-    <div class="main-header">
-        <div class="header-title"><h1>خدماتي الجزائر</h1></div>
-        <div class="share-top-btn" onclick="shareApp()">📢 نشر التطبيق</div>
-    </div>
-    <div class="container">
-        <!-- أسعار الصرف -->
-        <div class="card"><h3>📊 أسعار الصرف</h3><div>🇪🇺 أورو: شراء 24,200 / بيع 24,400<br>🇺🇸 دولار: شراء 22,100 / بيع 22,300<br>آخر تحديث: <span id="sync-time"></span></div></div>
-        
-        <!-- مواقيت الصلاة -->
-        <div class="card"><h3>🕋 مواقيت الصلاة</h3><div class="prayer-grid" id="prayer-list"><div class="prayer-item">الفجر <b id="fajr">--:--</b></div><div class="prayer-item">الظهر <b id="dhuhr">--:--</b></div><div class="prayer-item">العصر <b id="asr">--:--</b></div><div class="prayer-item">المغرب <b id="maghrib">--:--</b></div><div class="prayer-item">العشاء <b id="isha">--:--</b></div></div></div>
-
-        <!-- شبكة الخدمات (جميع الأزرار) -->
-        <div class="services-grid">
-            <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
-            <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
-            <div class="icon-btn" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
-            <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل</span></div>
-            <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
-            <div class="icon-btn" onclick="openPage('adhahi')"><i>🐑</i><span>أضحية العيد</span></div>
-            <div class="icon-btn" onclick="openPage('takwin')"><i>🔧</i><span>التكوين المهني</span></div>
-            <div class="icon-btn" onclick="openPage('youthcamp')"><i>🏕️</i><span>المخيم الشبابي</span></div>
-            <div class="icon-btn" onclick="openPage('ai')"><i>🤖</i><span>الذكاء الاصطناعي</span></div>
-            <div class="icon-btn" onclick="openPage('digital')"><i>💻</i><span>التحول الرقمي</span></div>
-            <div class="icon-btn" onclick="openPage('ecommerce')"><i>🛒</i><span>التجارة الإلكترونية</span></div>
-            <div class="icon-btn" onclick="openPage('eccp')"><i>💳</i><span>الدفع الإلكتروني</span></div>
-        </div>
-
-        <footer><div class="footer-links"><span onclick="openPage('about')">من نحن</span> | <span onclick="openPage('privacy')">سياسة الخصوصية</span> | <span onclick="openPage('contact')">اتصل بنا</span> | <span onclick="openPage('terms')">شروط الخدمة</span></div><p>© 2026 - خدماتي الجزائر</p></footer>
-    </div>
-</div>
-<!-- ==================== المحتوى الطويل لجميع الصفحات ==================== -->
-
-<!-- صفحة منحة البطالة (طويلة) -->
+<!-- ==================== صفحة منحة البطالة (طويلة) ==================== -->
 <div id="page-minha" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منحة البطالة 2026</h3></div>
     <div class="article-body">
@@ -79,18 +7,19 @@
         
         <h3>📋 الشروط الأساسية للاستفادة من المنحة</h3>
         <ul><li>أن يتراوح عمر المتقدم بين <strong>19 و40 سنة</strong>.</li>
-        <li>أن يكون مسجلاً لدى ANEM كـ <strong>طالب شغل لأول مرة</strong> لمدة لا تقل عن 6 أشهر.</li>
-        <li>ألا يكون المتقدم أو زوجه يتقاضى أي دخل ثابت.</li>
-        <li>تسوية الوضعية تجاه <strong>الخدمة الوطنية</strong>.</li></ul>
+        <li>أن يكون مسجلاً لدى ANEM كـ <strong>طالب شغل لأول مرة</strong> لمدة لا تقل عن 6 أشهر متواصلة.</li>
+        <li>ألا يكون المتقدم أو زوجه يتقاضى أي دخل ثابت (راتب تقاعد، منحة أخرى، أو راتب عمل).</li>
+        <li>تسوية الوضعية تجاه <strong>الخدمة الوطنية</strong>.</li>
+        <li>ألا يكون مسجلاً في أي نظام وطني للضمان الاجتماعي كأجير أو كمستفيد من تعويض البطالة.</li></ul>
         
-        <h3>💶 قيمة المنحة ومواعيد الصرف</h3>
-        <p>تحدد قيمة المنحة بـ <strong>18.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة.</p>
+        <h3>💶 قيمة المنحة الشهرية ومواعيد الصرف</h3>
+        <p>تحدد قيمة المنحة بـ <strong>13.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة بشرط متابعة التكوينات التي تقدمها الوكالة.</p>
         
         <h3>📝 خطوات التسجيل خطوة بخطوة</h3>
         <ol><li>زيارة الموقع الرسمي للوكالة الوطنية للتشغيل <strong>ANEM</strong>.</li>
-        <li>التسجيل كـ <strong>طالب شغل جديد</strong> باستخدام رقم التعريف الوطني.</li>
-        <li>اختيار فئة <strong>"طلب منحة البطالة"</strong>.</li>
-        <li>رفع الملفات المطلوبة بصيغة PDF.</li>
+        <li>التسجيل كـ <strong>طالب شغل جديد</strong> باستخدام رقم التعريف الوطني (NIF).</li>
+        <li>اختيار فئة <strong>"طلب منحة البطالة"</strong> من القائمة الرئيسية.</li>
+        <li>رفع الملفات المطلوبة بصيغة PDF أو صورة واضحة.</li>
         <li>احصل على إيصال التسجيل وتابع طلبك عبر حسابك في المنصة.</li></ol>
         
         <h3>📎 الملفات المطلوبة للتسجيل</h3>
@@ -98,26 +27,25 @@
         <li>شهادة الميلاد رقم 12.</li>
         <li>شهادة الإقامة (لا تتجاوز 3 أشهر).</li>
         <li>شهادة التأجيل أو الإعفاء من الخدمة الوطنية (للذكور).</li>
-        <li>شهادة عدم العمل من الصندوق الوطني للضمان الاجتماعي.</li>
+        <li>شهادة عدم العمل أو كشف النقاط من الصندوق الوطني للضمان الاجتماعي.</li>
         <li>عقد التسجيل في الوكالة الوطنية للتشغيل (شهادة ANEM).</li></ul>
         
         <h3>⚠️ الحالات المؤدية إلى إيقاف المنحة</h3>
         <ul><li>الحصول على عمل ثابت.</li>
-        <li>رفض عرض عمل مطابق للتخصص دون مبرر.</li>
+        <li>رفض عرض عمل مطابق للتخصص دون مبرر قانوني.</li>
         <li>التغيب عن الدورات التكوينية الإجبارية مرتين متتاليتين.</li>
-        <li>تزوير المعلومات أو المستندات المقدمة.</li>
+        <li>تزوير المعلومات أو المستندات المقدمة للوكالة.</li>
         <li>السفر والإقامة خارج الجزائر لأكثر من 3 أشهر متصلة.</li></ul>
         
         <h3>❓ أسئلة شائعة حول منحة البطالة</h3>
         <p><strong>س: هل يمكن التسجيل في المنحة وأنا طالب جامعي؟</strong><br>ج: لا، يشترط أن يكون المتقدم غير مسجل في أي مؤسسة تعليمية (باستثناء التكوينات التي تقدمها الوكالة).</p>
-        <p><strong>س: هل تؤثر المنحة على وضعيتي الضريبية؟</strong><br>ج: لا، قيمة المنحة غير خاضعة للضريبة ولا تؤثر على السجل الضريبي للمستفيد.</p>
         <p><strong>س: كم تستغرق معالجة الطلب؟</strong><br>ج: تتراوح مدة المعالجة بين 30 و60 يوماً من تاريخ إيداع الملف كاملاً.</p>
         
         <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">🚀 ابدأ التسجيل الآن</a>
     </div>
 </div>
 
-<!-- صفحة تجنيد الجيش (طويلة) -->
+<!-- ==================== صفحة تجنيد الجيش (طويلة) ==================== -->
 <div id="page-army" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>تجنيد الجيش 2026</h3></div>
     <div class="article-body">
@@ -125,7 +53,7 @@
         <p>يفتح الجيش الوطني الشعبي (ANP) أبوابه سنوياً أمام آلاف الشباب الجزائري الراغبين في خوض تجربة عسكرية مهنية. يتميز المسار العسكري بتوفير تكوين عالي الجودة، استقرار مهني، رواتب مجزية، وأهم من ذلك شرف الدفاع عن الوطن.</p>
         
         <h3>📌 التخصصات والرتب المطلوبة</h3>
-        <ul><li><strong>فئة الضباط العاملين</strong>: بكالوريا بمعدل 12/20 فما فوق، أو شهادة مهندس/ماستر في تخصصات مطلوبة.</li>
+        <ul><li><strong>فئة الضباط العاملين</strong>: بكالوريا بمعدل 12/20 فما فوق، أو شهادة مهندس/ماستر في تخصصات مطلوبة (إعلام آلي، إلكترونيك، طيران، اتصالات).</li>
         <li><strong>فئة ضباط الصف</strong>: سنة ثالثة ثانوي أو بكالوريا بمعدل أقل من 12/20.</li>
         <li><strong>فئة رجال الصف</strong>: من الثانية متوسط إلى الثانية ثانوي.</li></ul>
         
@@ -138,7 +66,7 @@
         <li>اجتياز اختبارات القبول بنجاح.</li></ul>
         
         <h3>🏃 اختبارات القبول</h3>
-        <ul><li><strong>الاختبار البدني</strong>: جري، سباحة، شد الحديد، ثني الجذع.</li>
+        <ul><li><strong>الاختبار البدني</strong>: جري (سرعة وتحمل)، سباحة، شد الحديد، ثني الجذع.</li>
         <li><strong>الاختبار الطبي</strong>: فحص عام، نظر، سمع، وزن، طول.</li>
         <li><strong>الاختبار النفسي والتقني</strong>: اختبار IQ وشخصية.</li>
         <li><strong>المقابلة الشخصية</strong>: لتقييم الدافع والالتزام.</li></ul>
@@ -157,7 +85,7 @@
     </div>
 </div>
 
-<!-- صفحة فضاء الأولياء (طويلة) -->
+<!-- ==================== صفحة فضاء الأولياء (طويلة) ==================== -->
 <div id="page-awlyaa" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>فضاء الأولياء</h3></div>
     <div class="article-body">
@@ -188,7 +116,7 @@
     </div>
 </div>
 
-<!-- صفحة عدل 3 (طويلة) -->
+<!-- ==================== صفحة سكنات عدل 3 (طويلة) ==================== -->
 <div id="page-aadl" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سكنات عدل 3</h3></div>
     <div class="article-body">
@@ -217,7 +145,7 @@
     </div>
 </div>
 
-<!-- صفحة وسيط ANEM (طويلة) -->
+<!-- ==================== صفحة وسيط ANEM (طويلة) ==================== -->
 <div id="page-wassit" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>وسيط ANEM</h3></div>
     <div class="article-body">
@@ -249,7 +177,7 @@
     </div>
 </div>
 
-<!-- صفحة أضحية العيد (طويلة) -->
+<!-- ==================== صفحة أضحية العيد (طويلة) ==================== -->
 <div id="page-adhahi" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>أضحية العيد 2026</h3></div>
     <div class="article-body">
@@ -260,12 +188,16 @@
         <ol><li>زيارة الموقع الرسمي: adhahi.dz.</li>
         <li>تسجيل جديد بالبريد الإلكتروني ورقم الهاتف.</li>
         <li>اختيار الولاية ونقطة البيع المعتمدة الأقرب.</li>
+        <li>معاينة الأضاحي المتاحة (صور، معلومات عن السن والوزن والنوع).</li>
+        <li>اختيار الأضحية المناسبة وإضافتها إلى سلة المشتريات.</li>
         <li>اختيار طريقة الدفع: إلكتروني (بطاقة إداهبية أو بنكية) أو عند الاستلام.</li>
         <li>الحصول على إيصال إلكتروني (QR Code) لاستلام الأضحية.</li></ol>
         
         <h3>💰 الأسعار المقترحة لأضاحي 2026</h3>
-        <ul><li><strong>الخروف</strong> (25-35 كلغ): بين 48.000 و50.000 دج.</li>
-        
+        <ul><li><strong>الماعز</strong> (25-35 كلغ): بين 30.000 و45.000 دج.</li>
+        <li><strong>الضأن البرقي</strong> (35-50 كلغ): بين 45.000 و80.000 دج.</li>
+        <li><strong>البقر</strong> (100-150 كلغ): بين 80.000 و150.000 دج.</li>
+        <li><strong>الإبل</strong> (في الجنوب): بين 120.000 و250.000 دج.</li></ul>
         
         <h3>🏥 الصحة والرقابة البيطرية</h3>
         <p>تخضع جميع الأضاحي المعروضة على المنصة لرقابة بياطرة تابعين لوزارة الفلاحة. تشمل الفحوصات الفحص السريري للتأكد من خلو الحيوان من الأمراض الظاهرية، وإصدار شهادة صحية.</p>
@@ -273,13 +205,12 @@
         <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">🔗 سجل الآن في منصة أضاحي</a>
     </div>
 </div>
-
-<!-- صفحة التكوين المهني (طويلة) -->
+<!-- ==================== صفحة التكوين المهني (طويلة) ==================== -->
 <div id="page-takwin" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة التكوين المهني - تكوين</h3></div>
     <div class="article-body">
         <h2>🎓 منصة "تكوين" الجزائرية: دليلك الشامل للتسجيل في التكوين المهني 2026</h2>
-        <p>أطلقت وزارة التكوين والتعليم المهنيين منصة "تكوين" الرقمية (takwin.dz) لرقمنة قطاع التكوين المهني بالكامل. تتيح المنصة التسجيل في التخصصات ومتابعة التكوين عن بعد، والحصول على شهادات معتمدة.</p>
+        <p>أطلقت وزارة التكوين والتعليم المهنيين منصة "تكوين" الرقمية (takwin.dz) لرقمنة قطاع التكوين المهني بالكامل. تتيح المنصة التسجيل في التخصصات ومتابعة التكوين عن بعد، والحصول على شهادات معتمدة تسهل الالتحاق بسوق العمل.</p>
         
         <h3>📋 الشروط والأهلية للتسجيل</h3>
         <ul><li>جزائري الجنسية أو مقيم قانونياً.</li>
@@ -298,7 +229,7 @@
         <li>قطاع الخدمات والتسيير.</li></ul>
         
         <h3>📝 خطوات التسجيل خطوة بخطوة</h3>
-        <ol><li>زيادة takwin.dz.</li>
+        <ol><li>زيارة takwin.dz.</li>
         <li>تسجيل جديد بالبريد الإلكتروني ورقم الهاتف.</li>
         <li>إكمال البيانات الشخصية ومستوى التأهيل الدراسي.</li>
         <li>اختيار ولاية الإقامة ومركز التكوين الأقرب.</li>
@@ -309,13 +240,12 @@
         <h3>❓ أسئلة شائعة</h3>
         <p><strong>س: ما هي المدة التي تستغرقها معالجة الطلب؟</strong><br>ج: بين 15 و45 يوم عمل من تاريخ إغلاق التسجيلات.</p>
         <p><strong>س: هل يمكن تغيير التخصص بعد التسجيل؟</strong><br>ج: نعم، يمكن تقديم طلب تحويل خلال الأسبوعين الأولين من بداية التكوين.</p>
-        <p><strong>س: هل التكوين المهني مجاني؟</strong><br>ج: نعم، في المراكز العمومية مجاني بالكامل.</p>
         
         <a href="https://takwin.dz" class="reg-btn" target="_blank">🔗 التسجيل الآن في منصة تكوين</a>
     </div>
 </div>
 
-<!-- صفحة المخيم الشبابي (طويلة محدثة) -->
+<!-- ==================== صفحة المخيم الشبابي (طويلة محدثة) ==================== -->
 <div id="page-youthcamp" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة المخيم - Moukhayem</h3></div>
     <div class="article-body">
@@ -350,7 +280,7 @@
     </div>
 </div>
 
-<!-- صفحة الذكاء الاصطناعي (طويلة) -->
+<!-- ==================== صفحة الذكاء الاصطناعي (طويلة) ==================== -->
 <div id="page-ai" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>الذكاء الاصطناعي في الجزائر</h3></div>
     <div class="article-body">
@@ -386,7 +316,7 @@
     </div>
 </div>
 
-<!-- صفحة التحول الرقمي (طويلة جداً) -->
+<!-- ==================== صفحة التحول الرقمي (طويلة جداً) ==================== -->
 <div id="page-digital" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>التحول الرقمي في الجزائر</h3></div>
     <div class="article-body">
@@ -404,35 +334,23 @@
         <li><strong>منصة "فضاء الأولياء"</strong>: متابعة النتائج والغيابات والتسجيل في الامتحانات.</li>
         <li><strong>منصة "تكوين" (Takwin)</strong>: التسجيل في التخصصات المهنية عن بعد.</li>
         <li><strong>منصة "عدل 3"</strong>: التسجيل في برنامج سكن البيع بالإيجار.</li>
-        <li><strong>التجمع الوطني لناشئة الذكاء الاصطناعي والأمن السيبراني</strong>: لخلق 20.000 مؤسسة ناشئة بحلول 2029.</li>
-        <li><strong>قاعدة بيانات وطنية للسلع والخدمات</strong>: لتغطية المنتجات والخدمات الجزائرية لتصديرها بشكل أفضل.</li></ul>
+        <li><strong>التجمع الوطني لناشئة الذكاء الاصطناعي والأمن السيبراني</strong>: لخلق 20.000 مؤسسة ناشئة بحلول 2029.</li></ul>
         
-        <h3>🎯 المؤشرات الاقتصادية والمالية للتحول الرقمي (قانون المالية 2026)</h3>
+        <h3>🎯 المؤشرات الاقتصادية والمالية (قانون المالية 2026)</h3>
         <ul><li>معدل النمو المتوقع 2026: 4.1%.</li>
         <li>معدل النمو المتوقع 2027: 4.4%.</li>
-        <li>معدل النمو المتوقع 2028: 4.5% (مع تركيز خاص على القطاعات خارج المحروقات).</li>
+        <li>معدل النمو المتوقع 2028: 4.5%.</li>
         <li>الإيرادات: 8.009 مليار دج.</li>
-        <li>النفقات: 17.636,7 مليار دج.</li>
-        <li>تمويل العجز عبر الدين الداخلي فقط.</li></ul>
+        <li>النفقات: 17.636,7 مليار دج.</li></ul>
         
-        <h3>💡 قطاع ريادة الأعمال والشركات الناشئة (أبريل 2026)</h3>
-        <ul><li>أكثر من 7.800 شركة ناشئة مسجلة، منها 2.300 تستفيد من وسوم التمييز "Start-up".</li>
-        <li>الهدف الحكومي: 20.000 شركة ناشئة بحلول 2029.</li>
-        <li>نمو المشاريع الابتكارية الجامعية من 6.000 إلى 9.000 مشروع (نسبة زيادة 50%).</li></ul>
-        
-        <h3>🌍 الجزائر عاصمة التكنولوجيا الإفريقية: قمة "Global Africa Tech 2026"</h3>
+        <h3>🌍 الجزائر عاصمة التكنولوجيا الإفريقية</h3>
         <p>احتضنت الجزائر العاصمة في مارس 2026 القمة التكنولوجية الإفريقية الكبرى بمشاركة أكثر من 5000 مشارك من 45 دولة وحوالي 50 وزيراً، لتعزيز مكانة الجزائر كمركز إقليمي للابتكار الرقمي.</p>
-        
-        <h3>❓ أسئلة شائعة حول التحول الرقمي في الجزائر</h3>
-        <p><strong>س: كيف يمكنني الحصول على هويتي الرقمية (E-Tawki3)؟</strong><br>ج: عبر مصالح Algérie Poste أو الوكالات المعتمدة.</p>
-        <p><strong>س: متى سيتم تعميم الإدارة الرقمية بالكامل؟</strong><br>ج: بدأت التحولات الجذرية في جانفي 2026، ويتوقع اكتمالها تدريجياً خلال 2026-2027.</p>
-        <p><strong>س: هل ستعوض الخدمات الرقمية الإدارة الورقية نهائياً؟</strong><br>ج: نعم، هذا هو الهدف الاستراتيجي.</p>
         
         <a href="https://www.mpt.gov.dz" class="reg-btn" target="_blank">🔗 تابع أخبار التحول الرقمي</a>
     </div>
 </div>
 
-<!-- صفحة التجارة الإلكترونية (طويلة جداً) -->
+<!-- ==================== صفحة التجارة الإلكترونية (طويلة جداً) ==================== -->
 <div id="page-ecommerce" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>التجارة الإلكترونية في الجزائر</h3></div>
     <div class="article-body">
@@ -454,13 +372,7 @@
         <li>Jumia DZ.</li>
         <li>Vite.dz.</li>
         <li>Amanz.com (إلكترونيات).</li>
-        <li>AliExpress (عالمية).</li>
-        <li>Amazon و eBay (عبر بطاقات دولية).</li></ul>
-        
-        <h3>🚚 شركات التوصيل</h3>
-        <ul><li>Algérie Poste (EMS).</li>
-        <li>شركات خاصة: Yalidine Express، DELO DZ، Tassili Delivery.</li>
-        <li>دولية: DHL، FedEx، UPS.</li></ul>
+        <li>AliExpress (عالمية).</li></ul>
         
         <h3>📈 إحصائيات مهمة (2025-2026)</h3>
         <ul><li>13 مليون مستخدم للتجارة الإلكترونية.</li>
@@ -472,20 +384,13 @@
         <ul><li>ضعف الثقة في التسوق الإلكتروني.</li>
         <li>نقص وسائل الدفع الإلكتروني السلسة.</li>
         <li>تكلفة الشحن العالية للمناطق النائية.</li>
-        <li>المنافسة غير المتكافئة مع الصفحات غير المرخصة.</li>
-        <li>ضعف ثقافة التسويق الرقمي المتقدم.</li></ul>
-        
-        <h3>🌟 الفرص والتوصيات لتعزيز التجارة الإلكترونية</h3>
-        <ul><li>تعزيز ثقافة المستهلك الرقمي.</li>
-        <li>تبسيط إجراءات إنشاء المتاجر الإلكترونية.</li>
-        <li>تطوير حلول الدفع الإلكتروني والخدمات اللوجستية.</li>
-        <li>منح إعفاءات ضريبية للشركات الناشئة في هذا المجال.</li></ul>
+        <li>المنافسة غير المتكافئة مع الصفحات غير المرخصة.</li></ul>
         
         <a href="https://www.mdip.gov.dz" class="reg-btn" target="_blank">🔗 تابع أخبار الاقتصاد الرقمي</a>
     </div>
 </div>
 
-<!-- صفحة ECCP (الدفع الإلكتروني) طويلة جداً -->
+<!-- ==================== صفحة ECCP (الدفع الإلكتروني) طويلة جداً ==================== -->
 <div id="page-eccp" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة ECCP - شهادة الدفع الإلكتروني</h3></div>
     <div class="article-body">
@@ -516,18 +421,16 @@
         <li>وزارة التعليم العالي: رسوم التسجيل في الجامعات وشهادات الماستر والدكتوراه.</li>
         <li>وزارة التربية الوطنية: رسوم BEM والبكالوريا.</li>
         <li>السكن ووكالة عدل: المشاركة الأولية ورسوم دراسة الملفات.</li>
-        <li>الوكالة الوطنية للتشغيل (ANEM): رسوم التسجيل والتجديد في منصة "وسيط".</li>
-        <li>الجمارك الجزائرية: بعض الرسوم الجمركية.</li></ul>
+        <li>الوكالة الوطنية للتشغيل (ANEM): رسوم التسجيل والتجديد في منصة "وسيط".</li></ul>
         
         <h3>📈 مميزات المنصة</h3>
         <ul><li>متاحة 24/7 طوال أيام الأسبوع.</li>
         <li>سرعة فائقة (العملية في أقل من 5 دقائق).</li>
         <li>خدمة آمنة (تشفير SSL/TLS).</li>
-        <li>إمكانية إعادة تحميل الشهادة في أي وقت.</li>
-        <li>تخزين إلكتروني للشهادات لأي مراجعة لاحقة.</li></ul>
+        <li>إمكانية إعادة تحميل الشهادة في أي وقت.</li></ul>
         
         <h3>⚠️ نصائح مهمة</h3>
-        <ul><li>إذا فشل الدفع رغم الخصم، اتصل بخدمة عملاء بريد الجزائر (1055، 3303) أو البنك فوراً، ولا تكرر الدفع.</li>
+        <ul><li>إذا فشل الدفع رغم الخصم، اتصل بخدمة عملاء بريد الجزائر (1055، 3303) فوراً، ولا تكرر الدفع.</li>
         <li>تأكد من تفعيل الدفع الإلكتروني لبطاقتك لدى وكالتك البنكية.</li>
         <li>احتفظ بنسخة من شهادة الدفع PDF لإثبات العملية.</li></ul>
         
@@ -539,46 +442,3 @@
         <a href="https://eccp.poste.dz" class="reg-btn" target="_blank">🔗 سدد رسومك الإدارية الآن عبر منصة ECCP الرسمية</a>
     </div>
 </div>
-
-<!-- ==================== الصفحات الثابتة الأخرى ==================== -->
-
-<div id="page-about" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>من نحن</h3></div><div class="article-body"><h2>حول موقع خدماتي الجزائري</h2><p>موقع "خدماتي" هو بوابة رقمية جزائرية مستقلة تهدف إلى تجميع الخدمات الإدارية والرقمية التي تهم المواطن الجزائري في مكان واحد. نقدم أدلة محدثة وروابط مباشرة لمنصات التسجيل الرسمية لتبسيط الإجراءات الإدارية.</p></div></div>
-
-<div id="page-privacy" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سياسة الخصوصية</h3></div><div class="article-body"><h2>سياسة الخصوصية والبيانات</h2><p>نحن في "خدماتي" نلتزم بحماية خصوصية زوارنا. لا نقوم بجمع أي بيانات شخصية عنك. جميع الروابط الموجودة في الموقع تؤدي إلى منصات حكومية رسمية. نستخدم Google Analytics لفهم كيفية استخدام الزوار لموقعنا، وهذه البيانات مجهولة المصدر.</p></div></div>
-
-<div id="page-contact" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>اتصل بنا</h3></div><div class="article-body" style="text-align:center;"><h2>تواصل مع إدارة الموقع</h2><div style="background:#f9f9f9; padding:25px; border-radius:20px; margin:20px 0;"><p>📧 البريد الإلكتروني: <strong>MUSTAPHABENAMAR40@GMAIL.COM</strong></p><p>📞 للتواصل عبر Viber أو WhatsApp: <strong>0558284458</strong></p></div><p>سنرد على استفساراتكم في أقرب وقت ممكن.</p></div></div>
-
-<div id="page-terms" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>شروط الخدمة</h3></div><div class="article-body"><h2>شروط استخدام موقع خدماتي الجزائر</h2><p>آخر تحديث: مارس 2026</p><h3>1. قبول الشروط</h3><p>باستخدامك لهذا الموقع، فإنك توافق على الالتزام بهذه الشروط.</p><h3>2. المحتوى والمعلومات</h3><p>جميع المعلومات لأغراض إعلامية فقط. لا نتحمل المسؤولية عن أي أخطاء أو تغييرات في الروابط الرسمية.</p><h3>3. الروابط الخارجية</h3><p>نحن غير مسؤولين عن محتوى أو سياسات الخصوصية للمواقع الخارجية.</p><h3>4. حقوق الملكية الفكرية</h3><p>جميع المحتويات (نصوص، صور، تصاميم) هي ملك لموقع خدماتي الجزائر ولا يجوز نسخها دون إذن.</p><h3>5. القانون الواجب التطبيق</h3><p>تخضع هذه الشروط لقوانين الجمهورية الجزائرية الديمقراطية الشعبية.</p></div></div>
-
-<script>
-    function openPage(pageId) {
-        let page = document.getElementById('page-' + pageId);
-        if (page) {
-            page.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        } else console.error('الصفحة غير موجودة: page-' + pageId);
-    }
-    function closePage() {
-        document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none');
-        document.body.style.overflow = 'auto';
-    }
-    function shareApp() { if(navigator.share) navigator.share({title: 'خدماتي الجزائر', url: window.location.href}); else alert('شارك الرابط: ' + window.location.href); }
-    document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
-    
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-            fetch(`https://api.aladhan.com/v1/timings?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&method=3`)
-            .then(r => r.json()).then(res => {
-                let t = res.data.timings;
-                document.getElementById('fajr').innerText = t.Fajr;
-                document.getElementById('dhuhr').innerText = t.Dhuhr;
-                document.getElementById('asr').innerText = t.Asr;
-                document.getElementById('maghrib').innerText = t.Maghrib;
-                document.getElementById('isha').innerText = t.Isha;
-            });
-        });
-    }
-</script>
-
-</body>
-</html>
