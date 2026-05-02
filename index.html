@@ -3,18 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتي - الدليل الجزائري الشامل 2026</title>
+    <title>خدماتي - الدليل الجزائري الشامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JN7B1JDSSB"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-JN7B1JDSSB');
-    </script>
-    
     <style>
         :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff; }
         * { box-sizing: border-box; }
@@ -22,55 +12,27 @@
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         .main-header { background: var(--primary); color: white; padding: 30px 20px; border-radius: 0 0 30px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .header-title h1 { margin: 0; font-size: 22px; font-weight: 800; }
-        .share-top-btn { background: var(--white); color: var(--primary); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s; }
-        .share-top-btn:hover { transform: scale(1.05); }
+        .share-top-btn { background: var(--white); color: var(--primary); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: 800; }
         .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .currency-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; border-bottom: 2px solid var(--accent); }
-        .currency-table td { padding: 15px; text-align: center; border-bottom: 1px solid #f0f0f0; font-weight: 800; font-size: 18px; }
-        .buy { color: var(--success); } .sell { color: var(--danger); }
-        .update-tag { text-align: center; font-size: 12px; color: #999; margin-top: 15px; background: #f9f9f9; padding: 8px; border-radius: 10px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
-        .prayer-item span { display: block; font-size: 11px; color: #888; }
-        .prayer-item b { font-size: 14px; color: var(--primary); }
-        .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; }
-        .weather-scroll::-webkit-scrollbar { display: none; }
-        .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
-        .weather-day img { width: 40px; height: 40px; }
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
-        .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: all 0.2s; }
+        .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1px solid #f0f0f0; }
         .icon-btn:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
         .icon-btn i { font-size: 32px; display: block; margin-bottom: 10px; }
         .icon-btn span { font-size: 14px; font-weight: 800; color: var(--primary); }
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
-        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; font-size: 14px; }
-        .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 1.8; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
-        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0 15px 0; font-size: 22px; }
-        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; margin-bottom: 10px; }
-        .article-body h4 { color: #555; font-size: 17px; margin-top: 20px; }
-        .article-body ul, .article-body ol { margin: 15px 0; padding-right: 25px; }
-        .article-body li { margin: 8px 0; }
-        .article-body table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .article-body th, .article-body td { border: 1px solid #ddd; padding: 10px; text-align: right; }
-        .article-body th { background: #f0f0f0; }
-        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); transition: opacity 0.2s; }
-        .reg-btn:hover { opacity: 0.9; }
+        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
+        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; }
+        .article-body { background: white; padding: 35px; border-radius: 25px; margin: 15px; color: #444; text-align: justify; }
+        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; font-size: 22px; }
+        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; }
+        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; }
         footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
-        .footer-links { margin-bottom: 10px; }
         .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
-        .error-msg { color: var(--danger); font-size: 13px; text-align: center; padding: 20px; background: #fff; border-radius: 15px; }
-        .weather-loading { text-align: center; padding: 20px; color: #888; background: #f9f9f9; border-radius: 15px; }
-        .prayer-note { font-size: 11px; color: #aaa; text-align: center; margin-top: 10px; }
-        @media (max-width: 600px) {
-            .services-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .icon-btn { padding: 15px 5px; }
-            .article-body { padding: 20px; margin: 10px; }
-            .article-body h2 { font-size: 18px; }
-            .article-body h3 { font-size: 16px; }
-            .article-body table { font-size: 12px; }
-        }
+        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; }
+        .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; }
+        .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
+        @media (max-width: 600px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -82,41 +44,17 @@
     </div>
     <div class="container">
         <!-- أسعار الصرف -->
-        <div class="card">
-            <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السوق السوداء</h3>
-            <table class="currency-table">
-                <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
-                <tr><td class="currency-name">الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td></tr>
-                <tr><td class="currency-name">الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td></tr>
-            </table>
-            <div class="update-tag">آخر تحديث: <span id="sync-time"></span></div>
-        </div>
-
+        <div class="card"><h3>📊 أسعار الصرف</h3><div>🇪🇺 أورو: شراء 24,200 / بيع 24,400<br>🇺🇸 دولار: شراء 22,100 / بيع 22,300<br>آخر تحديث: <span id="sync-time"></span></div></div>
+        
         <!-- مواقيت الصلاة -->
-        <div class="card">
-            <h3 style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
-            <div class="prayer-grid" id="prayer-list">
-                <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
-                <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
-                <div class="prayer-item"><span>العصر</span><b id="asr">--:--</b></div>
-                <div class="prayer-item"><span>المغرب</span><b id="maghrib">--:--</b></div>
-                <div class="prayer-item"><span>العشاء</span><b id="isha">--:--</b></div>
-            </div>
-            <div class="prayer-note">🕌 يتم تحديث المواقيت تلقائياً حسب موقعك الجغرافي</div>
-        </div>
+        <div class="card"><h3>🕋 مواقيت الصلاة</h3><div class="prayer-grid" id="prayer-list"><div class="prayer-item">الفجر <b id="fajr">--:--</b></div><div class="prayer-item">الظهر <b id="dhuhr">--:--</b></div><div class="prayer-item">العصر <b id="asr">--:--</b></div><div class="prayer-item">المغرب <b id="maghrib">--:--</b></div><div class="prayer-item">العشاء <b id="isha">--:--</b></div></div></div>
 
-        <!-- الطقس -->
-        <div class="card">
-            <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ حالة الطقس للأيام القادمة</h3>
-            <div id="weather-container"><div class="weather-loading">🌍 جاري تحميل بيانات الطقس...</div></div>
-        </div>
-
-        <!-- شبكة الخدمات -->
+        <!-- شبكة الخدمات (جميع الأزرار) -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
-            <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل 3</span></div>
+            <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل</span></div>
             <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
             <div class="icon-btn" onclick="openPage('adhahi')"><i>🐑</i><span>أضحية العيد</span></div>
             <div class="icon-btn" onclick="openPage('takwin')"><i>🔧</i><span>التكوين المهني</span></div>
@@ -124,70 +62,13 @@
             <div class="icon-btn" onclick="openPage('ai')"><i>🤖</i><span>الذكاء الاصطناعي</span></div>
             <div class="icon-btn" onclick="openPage('digital')"><i>💻</i><span>التحول الرقمي</span></div>
             <div class="icon-btn" onclick="openPage('ecommerce')"><i>🛒</i><span>التجارة الإلكترونية</span></div>
-            <div class="icon-btn" onclick="openPage('eccp')"><i>💳</i><span>الدفع الإلكتروني ECCP</span></div>
+            <div class="icon-btn" onclick="openPage('eccp')"><i>💳</i><span>الدفع الإلكتروني</span></div>
         </div>
 
-        <footer>
-            <div class="footer-links">
-                <span onclick="openPage('about')">من نحن</span> | 
-                <span onclick="openPage('privacy')">سياسة الخصوصية</span> | 
-                <span onclick="openPage('contact')">اتصل بنا</span> |
-                <span onclick="openPage('terms')">شروط الخدمة</span>
-            </div>
-            <p>© 2026 - خدماتي الجزائر - بوابتكم للخدمات الرقمية</p>
-        </footer>
+        <footer><div class="footer-links"><span onclick="openPage('about')">من نحن</span> | <span onclick="openPage('privacy')">سياسة الخصوصية</span> | <span onclick="openPage('contact')">اتصل بنا</span> | <span onclick="openPage('terms')">شروط الخدمة</span></div><p>© 2026 - خدماتي الجزائر</p></footer>
     </div>
 </div>
-
-<!-- ==================== صفحة ECCP ==================== -->
-<div id="page-eccp" class="full-page">
-    <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة ECCP - شهادة الدفع الإلكتروني</h3></div>
-    <div class="article-body">
-        <h2>📜 منصة ECCP (شهادة الدفع الإلكتروني) لبريد الجزائر: دليل شامل 2026</h2>
-        <p>تُعد منصة ECCP أو "شهادة الدفع الإلكتروني"، بوابة رقمية حيوية أطلقتها مؤسسة بريد الجزائر (Algérie Poste) بهدف رقمنة وتسريع عمليات دفع الرسوم المتعلقة بالإجراءات الإدارية. تهدف هذه المنصة إلى إنهاء تنقل المواطنين بين المصالح الإدارية ومكاتب البريد، مما يوفر الوقت والجهد ويعزز الشفافية.</p>
-        
-        <h3>📌 ما هي منصة ECCP؟</h3>
-        <p>ECCP هي اختصار لـ "Electronic Certificate of Payment". هي خدمة إلكترونية تقدمها بريد الجزائر بالشراكة مع مختلف الإدارات العمومية (كالعدالة، الدفاع، التربية الوطنية، الجامعات). تتيح هذه الخدمة للمواطنين دفع الرسوم الإدارية عبر الإنترنت، والحصول فوراً على شهادة دفع إلكترونية تُعتبر دليلاً على إتمام العملية.</p>
-        
-        <h3>🎯 أهمية الخدمة وأهدافها</h3>
-        <ul><li><strong>تبسيط الإجراءات وتقليل الازدحام</strong>: إنهاء طوابير الانتظار الطويلة أمام مكاتب البريد.</li>
-        <li><strong>توفير الوقت والجهد على المواطن</strong>: الدفع من المنزل 24 ساعة طوال أيام الأسبوع.</li>
-        <li><strong>تعزيز الشفافية وحوكمة المعاملات</strong>: رقمنة عمليات الدفع تقلل من مخاطر الأخطاء البشرية.</li></ul>
-        
-        <h3>🏛️ القطاعات والخدمات المتاحة عبر ECCP</h3>
-        <ul><li><strong>وزارة العدل</strong>: دفع رسوم شهادة السوابق العدلية (الشهادة رقم 3).</li>
-        <li><strong>وزارة الدفاع الوطني</strong>: رسوم طلبات التجنيد أو شهادات الوضعية تجاه الخدمة الوطنية.</li>
-        <li><strong>وزارة التعليم العالي</strong>: دفع رسوم التسجيل في الجامعات، شهادات الماستر، الدكتوراه.</li>
-        <li><strong>وزارة التربية الوطنية</strong>: رسوم امتحانات BEM والبكالوريا.</li>
-        <li><strong>السكن ووكالة عدل</strong>: دفع مبلغ المشاركة الأولية أو رسوم دراسة الملفات.</li></ul>
-        
-        <h3>🔗 طريقة التسديد خطوة بخطوة</h3>
-        <ol><li><strong>الحصول على إشعار الدفع</strong>: من الإدارة المعنية (محكمة، جامعة، وغيرها).</li>
-        <li><strong>الدخول إلى منصة ECCP</strong>: <a href="https://eccp.poste.dz" target="_blank">eccp.poste.dz</a>.</li>
-        <li><strong>إدخال رقم الإشعار</strong>: في الواجهة الرئيسية للمنصة.</li>
-        <li><strong>التحقق من المعلومات</strong>: تأكد من صحة المبلغ والخدمة المطلوبة.</li>
-        <li><strong>اختيار وسيلة الدفع</strong>: بطاقة إداهبية، Visa، أو Mastercard.</li>
-        <li><strong>إتمام الدفع</strong>: عبر بوابة SATIM الآمنة.</li>
-        <li><strong>تحميل الشهادة</strong>: احصل على شهادة الدفع الإلكترونية بصيغة PDF.</li></ol>
-        
-        <h3>💳 وسائل الدفع المقبولة</h3>
-        <ul><li>بطاقة إداهبية (Edahabia) - الأكثر انتشاراً.</li>
-        <li>بطاقات CIB الصادرة عن البنوك الجزائرية.</li>
-        <li>بطاقات GOLD و CLASSIC لبعض البنوك الخاصة.</li></ul>
-        
-        <h3>❓ أسئلة شائعة</h3>
-        <p><strong>س: هل يتطلب التسجيل في المنصة إنشاء حساب؟</strong><br>ج: لا، المنصة لا تطلب إنشاء حساب. كل ما تحتاجه هو "رقم الإشعار" من الإدارة المعنية.</p>
-        <p><strong>س: ماذا لو فقدت شهادة الدفع؟</strong><br>ج: يمكنك العودة إلى المنصة وإدخال نفس رقم الإشعار لتحميل الشهادة مجدداً.</p>
-        <p><strong>س: كم تبلغ رسوم الخدمة الإضافية؟</strong><br>ج: لا تفرض المنصة رسوماً إضافية، لكن بعض البنوك قد تطبق عمولة صغيرة.</p>
-        
-        <a href="https://eccp.poste.dz" class="reg-btn" target="_blank">🔗 سدد رسومك الإدارية الآن عبر منصة ECCP الرسمية</a>
-    </div>
-</div>
-
-<!-- ==================== بقية الصفحات ==================== -->
-
-<!-- صفحة منحة البطالة -->
-<!-- ==================== المقالات الطويلة الكاملة لجميع الخدمات ==================== -->
+<!-- ==================== المحتوى الطويل لجميع الصفحات ==================== -->
 
 <!-- صفحة منحة البطالة (طويلة) -->
 <div id="page-minha" class="full-page">
@@ -209,22 +90,28 @@
         <ol><li>زيارة الموقع الرسمي للوكالة الوطنية للتشغيل <strong>ANEM</strong>.</li>
         <li>التسجيل كـ <strong>طالب شغل جديد</strong> باستخدام رقم التعريف الوطني.</li>
         <li>اختيار فئة <strong>"طلب منحة البطالة"</strong>.</li>
-        <li>رفع الملفات المطلوبة بصيغة PDF.</li></ol>
+        <li>رفع الملفات المطلوبة بصيغة PDF.</li>
+        <li>احصل على إيصال التسجيل وتابع طلبك عبر حسابك في المنصة.</li></ol>
         
-        <h3>📎 الملفات المطلوبة</h3>
+        <h3>📎 الملفات المطلوبة للتسجيل</h3>
         <ul><li>نسخة من بطاقة التعريف الوطنية.</li>
         <li>شهادة الميلاد رقم 12.</li>
         <li>شهادة الإقامة (لا تتجاوز 3 أشهر).</li>
-        <li>شهادة التأجيل أو الإعفاء من الخدمة الوطنية (للذكور).</li></ul>
+        <li>شهادة التأجيل أو الإعفاء من الخدمة الوطنية (للذكور).</li>
+        <li>شهادة عدم العمل من الصندوق الوطني للضمان الاجتماعي.</li>
+        <li>عقد التسجيل في الوكالة الوطنية للتشغيل (شهادة ANEM).</li></ul>
         
         <h3>⚠️ الحالات المؤدية إلى إيقاف المنحة</h3>
         <ul><li>الحصول على عمل ثابت.</li>
         <li>رفض عرض عمل مطابق للتخصص دون مبرر.</li>
-        <li>التغيب عن الدورات التكوينية الإجبارية.</li></ul>
+        <li>التغيب عن الدورات التكوينية الإجبارية مرتين متتاليتين.</li>
+        <li>تزوير المعلومات أو المستندات المقدمة.</li>
+        <li>السفر والإقامة خارج الجزائر لأكثر من 3 أشهر متصلة.</li></ul>
         
-        <h3>❓ أسئلة شائعة</h3>
-        <p><strong>س: هل يمكن التسجيل في المنحة وأنا طالب جامعي؟</strong><br>ج: لا، يشترط أن يكون المتقدم غير مسجل في أي مؤسسة تعليمية.</p>
-        <p><strong>س: كم تستغرق معالجة الطلب؟</strong><br>ج: تتراوح مدة المعالجة بين 30 و60 يوماً.</p>
+        <h3>❓ أسئلة شائعة حول منحة البطالة</h3>
+        <p><strong>س: هل يمكن التسجيل في المنحة وأنا طالب جامعي؟</strong><br>ج: لا، يشترط أن يكون المتقدم غير مسجل في أي مؤسسة تعليمية (باستثناء التكوينات التي تقدمها الوكالة).</p>
+        <p><strong>س: هل تؤثر المنحة على وضعيتي الضريبية؟</strong><br>ج: لا، قيمة المنحة غير خاضعة للضريبة ولا تؤثر على السجل الضريبي للمستفيد.</p>
+        <p><strong>س: كم تستغرق معالجة الطلب؟</strong><br>ج: تتراوح مدة المعالجة بين 30 و60 يوماً من تاريخ إيداع الملف كاملاً.</p>
         
         <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">🚀 ابدأ التسجيل الآن</a>
     </div>
@@ -238,27 +125,33 @@
         <p>يفتح الجيش الوطني الشعبي (ANP) أبوابه سنوياً أمام آلاف الشباب الجزائري الراغبين في خوض تجربة عسكرية مهنية. يتميز المسار العسكري بتوفير تكوين عالي الجودة، استقرار مهني، رواتب مجزية، وأهم من ذلك شرف الدفاع عن الوطن.</p>
         
         <h3>📌 التخصصات والرتب المطلوبة</h3>
-        <ul><li><strong>فئة الضباط العاملين</strong>: بكالوريا بمعدل 12/20 فما فوق.</li>
-        <li><strong>فئة ضباط الصف</strong>: سنة ثالثة ثانوي أو بكالوريا بمعدل أقل.</li>
+        <ul><li><strong>فئة الضباط العاملين</strong>: بكالوريا بمعدل 12/20 فما فوق، أو شهادة مهندس/ماستر في تخصصات مطلوبة.</li>
+        <li><strong>فئة ضباط الصف</strong>: سنة ثالثة ثانوي أو بكالوريا بمعدل أقل من 12/20.</li>
         <li><strong>فئة رجال الصف</strong>: من الثانية متوسط إلى الثانية ثانوي.</li></ul>
         
         <h3>📋 شروط القبول الأساسية</h3>
-        <ul><li>الجنسية الجزائرية.</li>
+        <ul><li>الجنسية الجزائرية عن الأب والأم.</li>
         <li>العمر بين 18 و25 سنة.</li>
         <li>عازب طيلة فترة التكوين العسكري الأساسي.</li>
-        <li>اللياقة البدنية والطبية.</li>
-        <li>اجتياز اختبارات القبول.</li></ul>
+        <li>حسن السيرة والأخلاق وغير محكوم عليه.</li>
+        <li>اللياقة البدنية والطبية اللازمة.</li>
+        <li>اجتياز اختبارات القبول بنجاح.</li></ul>
         
         <h3>🏃 اختبارات القبول</h3>
-        <ul><li><strong>الاختبار البدني</strong>: جري، سباحة، شد الحديد.</li>
-        <li><strong>الاختبار الطبي</strong>: فحص عام، نظر، سمع.</li>
+        <ul><li><strong>الاختبار البدني</strong>: جري، سباحة، شد الحديد، ثني الجذع.</li>
+        <li><strong>الاختبار الطبي</strong>: فحص عام، نظر، سمع، وزن، طول.</li>
         <li><strong>الاختبار النفسي والتقني</strong>: اختبار IQ وشخصية.</li>
-        <li><strong>المقابلة الشخصية</strong>.</li></ul>
+        <li><strong>المقابلة الشخصية</strong>: لتقييم الدافع والالتزام.</li></ul>
         
-        <h3>💰 الميزات والتعويضات</h3>
+        <h3>💰 الميزات والتعويضات العسكرية</h3>
         <ul><li>راتب شهري يبدأ من 30.000 دج للجنود حتى 120.000 دج للضباط.</li>
         <li>تأمين صحي وخدمات اجتماعية.</li>
+        <li>إمكانية الترقية في الرتب.</li>
         <li>تقاعد مبكر بعد 25 سنة خدمة.</li></ul>
+        
+        <h3>❓ أسئلة شائعة</h3>
+        <p><strong>س: هل يمكن للمرأة التقدم للجيش الوطني الشعبي؟</strong><br>ج: نعم، تفتح بعض المدارس والكليات العسكرية أبوابها للمترشحات في تخصصات الطب، الصيدلة، الإعلام الآلي، واللغات.</p>
+        <p><strong>س: متى تفتح التسجيلات؟</strong><br>ج: تعلن وزارة الدفاع الوطني عن فتح التسجيلات عادة في شهري سبتمبر ويناير من كل سنة.</p>
         
         <a href="https://preinscription.mdn.dz/" class="reg-btn" target="_blank">🔗 سجل الآن في منصة التجنيد</a>
     </div>
@@ -269,21 +162,27 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>فضاء الأولياء</h3></div>
     <div class="article-body">
         <h2>📚 نظام فضاء الأولياء: تابع مسار أبنائك الدراسي إلكترونياً</h2>
-        <p>يعد فضاء الأولياء منصة رقمية حيوية أطلقتها وزارة التربية الوطنية الجزائرية بهدف رقمنة التواصل بين المؤسسات التربوية وأولياء التلاميذ. تتيح المنصة متابعة دقيقة للمسار الدراسي للأبناء في جميع الأطوار التعليمية.</p>
+        <p>يعد فضاء الأولياء منصة رقمية حيوية أطلقتها وزارة التربية الوطنية الجزائرية بهدف رقمنة التواصل بين المؤسسات التربوية وأولياء التلاميذ. تتيح المنصة متابعة دقيقة للمسار الدراسي للأبناء في جميع الأطوار التعليمية (ابتدائي، متوسط، ثانوي).</p>
         
-        <h3>✨ أبرز الخدمات</h3>
-        <ul><li>الاطلاع على النتائج وكشوف النقاط.</li>
-        <li>متابعة الغيابات والسلوك.</li>
+        <h3>✨ أبرز الخدمات التي يوفرها فضاء الأولياء</h3>
+        <ul><li>الاطلاع على النتائج وكشوف النقاط فور اعتمادها.</li>
+        <li>متابعة الغيابات والسلوك المسجلة من الأساتذة والإدارة.</li>
         <li>التسجيل في الامتحانات الرسمية (BEM، بكالوريا).</li>
         <li>تقديم رغبات التوجيه المدرسي والمهني.</li>
-        <li>الاطلاع على جداول الحصص.</li></ul>
+        <li>الاطلاع على جداول الحصص والبرامج الدراسية.</li>
+        <li>الدفع الإلكتروني للحقوق المدرسية في بعض المؤسسات.</li></ul>
         
-        <h3>📝 خطوات التسجيل والدخول</h3>
+        <h3>📝 خطوات التسجيل والدخول إلى فضاء الأولياء</h3>
         <ol><li>زيارة المنصة: awlyaa.education.dz.</li>
         <li>اختيار "إنشاء حساب جديد".</li>
         <li>إدخال البريد الإلكتروني ورقم الهاتف.</li>
-        <li>إدخال رقم التسجيل المدرسي للتلميذ.</li>
-        <li>تأكيد الحساب عبر البريد الإلكتروني.</li></ol>
+        <li>إدخال رقم التسجيل المدرسي للتلميذ (من كشف النقاط أو شهادة الميلاد الدراسية).</li>
+        <li>تأكيد الحساب عبر الرابط المرسل إلى بريدك.</li>
+        <li>تسجيل الدخول وإضافة جميع أبنائك المسجلين في المؤسسات التربوية.</li></ol>
+        
+        <h3>❓ أسئلة شائعة</h3>
+        <p><strong>س: هل الخدمة مجانية بالكامل؟</strong><br>ج: نعم، فضاء الأولياء مجاني ولا توجد أي رسوم للاشتراك.</p>
+        <p><strong>س: هل يمكن استخدام المنصة عبر الهاتف المحمول؟</strong><br>ج: نعم، المنصة متجاوبة مع جميع الأجهزة (جوال، جهاز لوحي، كمبيوتر).</p>
         
         <a href="https://awlyaa.education.dz/login" class="reg-btn" target="_blank">🔗 الدخول إلى فضاء الأولياء</a>
     </div>
@@ -296,16 +195,23 @@
         <h2>🏢 برنامج عدل 3: دليل شامل للحصول على سكن بالبيع بالإيجار</h2>
         <p>برنامج "عدل 3" هو أحدث صيحة سكنية في الجزائر، يهدف إلى توفير سكنات لائقة للطبقة المتوسطة بنظام البيع بالإيجار (أقساط شهرية ميسرة تمتد حتى 25 سنة).</p>
         
-        <h3>📋 الشروط المالية والاجتماعية</h3>
+        <h3>📋 الشروط المالية والاجتماعية للاكتتاب</h3>
         <ul><li>الدخل الشهري بين 24.000 و120.000 دج.</li>
-        <li>ألا يكون قد استفاد سابقاً من أي سكن دعم من الدولة.</li>
-        <li>التسجيل عبر المنصة الرقمية باستخدام رقم التعريف الوطني.</li></ul>
+        <li>ألا يكون قد استفاد سابقاً من أي سكن دعم من الدولة (عدل، LPP، أو السكن الريفي).</li>
+        <li>ألا يقل عمره عن 21 سنة ولا يتجاوز 60 سنة.</li>
+        <li>التسجيل عبر المنصة الرقمية باستخدام رقم التعريف الوطني NIF ورقم الضمان الاجتماعي.</li></ul>
         
-        <h3>📝 خطوات التسجيل</h3>
-        <ol><li>إنشاء حساب في منصة عدل.</li>
-        <li>تعبئة البيانات الشخصية والمهنية.</li>
-        <li>اختيار الولاية والمشروع العقاري.</li>
-        <li>دفع مبلغ المشاركة الأولية.</li></ol>
+        <h3>📝 خطوات التسجيل خطوة بخطوة</h3>
+        <ol><li>زيارة المنصة الرسمية لوكالة عدل: aadl.dz.</li>
+        <li>إنشاء حساب جديد بالبريد الإلكتروني ورقم الهاتف.</li>
+        <li>إدخال البيانات الشخصية والمالية والمهنية.</li>
+        <li>اختيار الولاية والمشروع العقاري المطلوب.</li>
+        <li>دفع مبلغ المشاركة الأولية (حوالي 15.000 دج).</li>
+        <li>الاحتفاظ برقم التسجيل وصل الإيداع.</li></ol>
+        
+        <h3>❓ أسئلة شائعة</h3>
+        <p><strong>س: هل يمكن إدراج أكثر من ملف لعائلة واحدة؟</strong><br>ج: لا، العائلة الواحدة يحق لها ملف واحد فقط.</p>
+        <p><strong>س: متى تعلن نتائج عدل 3؟</strong><br>ج: بعد إغلاق التسجيلات (عادة مارس أو أوت)، تعلن النتائج بعد 6 إلى 9 أشهر من إيداع الملف.</p>
         
         <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">🔗 التسجيل في عدل 3</a>
     </div>
@@ -320,16 +226,24 @@
         
         <h3>✨ الخدمات المتاحة</h3>
         <ul><li>إنشاء حساب شخصي بالمؤهلات والخبرات.</li>
-        <li>تحميل السيرة الذاتية (CV).</li>
-        <li>البحث عن عروض عمل حسب التخصص والولاية.</li>
-        <li>تلقي إشعارات عند وجود عرض مناسب.</li></ul>
+        <li>تحميل السيرة الذاتية (CV) بصيغة PDF.</li>
+        <li>البحث عن عروض عمل حسب التخصص والولاية ونوع العقد.</li>
+        <li>تلقي إشعارات فورية عند توفر عرض مناسب.</li>
+        <li>إجراء اختبارات قصيرة لتقييم مستوى المرشحين في بعض التخصصات.</li></ul>
         
         <h3>📝 خطوات التسجيل</h3>
         <ol><li>زيارة wassitonline.anem.dz.</li>
         <li>اختيار "إنشاء حساب طالب عمل".</li>
-        <li>تعبئة البيانات الشخصية والمؤهلات.</li>
-        <li>تحميل السيرة الذاتية.</li>
-        <li>اختيار رغبات العمل.</li></ol>
+        <li>إدخال رقم الهاتف والبريد الإلكتروني.</li>
+        <li>تعبئة البيانات الشخصية والمؤهلات العلمية والخبرات المهنية.</li>
+        <li>اختيار التخصصات ونوع العمل والولايات المفضلة.</li>
+        <li>تحميل السيرة الذاتية وصورة شخصية حديثة.</li>
+        <li>تأكيد الحساب والبدء في التصفح والتقديم.</li></ol>
+        
+        <h3>⚠️ ملاحظات هامة</h3>
+        <ul><li>يجب تجديد التسجيل كل 6 أشهر، وإلا سيتم شطب الطلب تلقائياً.</li>
+        <li>أي اختلاف بين معطيات المنصة والواقع قد يؤدي إلى رفض الملف.</li>
+        <li>الرد إجباري على استدعاءات أصحاب العمل.</li></ul>
         
         <a href="https://wassitonline.anem.dz/Account/RegisterApplicant" class="reg-btn" target="_blank">🔗 التسجيل الآن في وسيط</a>
     </div>
@@ -340,18 +254,25 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>أضحية العيد 2026</h3></div>
     <div class="article-body">
         <h2>🐑 منصة أضاحي: دليلك الكامل لشراء أضحية العيد 2026 عبر الإنترنت</h2>
-        <p>أطلقت الجزائر منصة "أضاحي" الرقمية (adhahi.dz) لتنظيم سوق المواشي ومحاربة المضاربة، وربط المربي بالمستهلك مباشرة.</p>
+        <p>أطلقت الجزائر منصة "أضاحي" الرقمية (adhahi.dz) في إطار استراتيجية الدولة لرقمنة الخدمات العمومية ومحاربة المضاربة في أسواق المواشي. تهدف المنصة إلى الربط المباشر بين المربي والمستهلك، مما يخفض الأسعار ويضمن سلامة الأضاحي.</p>
         
-        <h3>📋 طريقة التسجيل في المنصة</h3>
-        <ol><li>زيارة adhahi.dz.</li>
+        <h3>📋 طريقة التسجيل في المنصة (خطوة بخطوة)</h3>
+        <ol><li>زيارة الموقع الرسمي: adhahi.dz.</li>
         <li>تسجيل جديد بالبريد الإلكتروني ورقم الهاتف.</li>
-        <li>اختيار الولاية ونقطة البيع المعتمدة.</li>
-        <li>معاينة الأضاحي المتاحة (صور، أوزان، أسعار).</li>
-        <li>اختيار الأضحية وإتمام الدفع (بطاقة إداهبية، عند الاستلام).</li>
-        <li>استلام الأضحية مع شهادة صحية.</li></ol>
+        <li>اختيار الولاية ونقطة البيع المعتمدة الأقرب.</li>
+        <li>معاينة الأضاحي المتاحة (صور، معلومات عن السن والوزن والنوع).</li>
+        <li>اختيار الأضحية المناسبة وإضافتها إلى سلة المشتريات.</li>
+        <li>اختيار طريقة الدفع: إلكتروني (بطاقة إداهبية أو بنكية) أو عند الاستلام.</li>
+        <li>الحصول على إيصال إلكتروني (QR Code) لاستلام الأضحية.</li></ol>
+        
+        <h3>💰 الأسعار المقترحة لأضاحي 2026</h3>
+        <ul><li><strong>الماعز</strong> (25-35 كلغ): بين 30.000 و45.000 دج.</li>
+        <li><strong>الضأن البرقي</strong> (35-50 كلغ): بين 45.000 و80.000 دج.</li>
+        <li><strong>البقر</strong> (100-150 كلغ): بين 80.000 و150.000 دج.</li>
+        <li><strong>الإبل</strong> (في الجنوب): بين 120.000 و250.000 دج.</li></ul>
         
         <h3>🏥 الصحة والرقابة البيطرية</h3>
-        <p>تخضع جميع الأضاحي المعروضة لرقابة بياطرة تابعين لوزارة الفلاحة، مع فحص سريري للتأكد من خلوها من الأمراض.</p>
+        <p>تخضع جميع الأضاحي المعروضة على المنصة لرقابة بياطرة تابعين لوزارة الفلاحة. تشمل الفحوصات الفحص السريري للتأكد من خلو الحيوان من الأمراض الظاهرية، وإصدار شهادة صحية.</p>
         
         <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">🔗 سجل الآن في منصة أضاحي</a>
     </div>
@@ -362,29 +283,37 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة التكوين المهني - تكوين</h3></div>
     <div class="article-body">
         <h2>🎓 منصة "تكوين" الجزائرية: دليلك الشامل للتسجيل في التكوين المهني 2026</h2>
-        <p>أطلقت وزارة التكوين والتعليم المهنيين منصة "تكوين" الرقمية (takwin.dz) لرقمنة قطاع التكوين المهني، وتتيح التسجيل في التخصصات ومتابعة التكوين عن بعد.</p>
+        <p>أطلقت وزارة التكوين والتعليم المهنيين منصة "تكوين" الرقمية (takwin.dz) لرقمنة قطاع التكوين المهني بالكامل. تتيح المنصة التسجيل في التخصصات ومتابعة التكوين عن بعد، والحصول على شهادات معتمدة.</p>
         
-        <h3>📋 الشروط والأهلية</h3>
+        <h3>📋 الشروط والأهلية للتسجيل</h3>
         <ul><li>جزائري الجنسية أو مقيم قانونياً.</li>
-        <li>ألا يتجاوز 45 سنة (تختلف حسب التخصص).</li>
+        <li>ألا يتجاوز 45 سنة (تختلف حسب التخصص، بعضها تقبل حتى 49 سنة).</li>
         <li>المستوى الدراسي المناسب للتخصص (من رابعة متوسط إلى جامعي).</li>
-        <li>لم يستفد من تكوين سابق في نفس التخصص.</li></ul>
+        <li>لم يستفد من تكوين سابق في نفس التخصص.</li>
+        <li>التسجيل عبر المنصة بدون وثائق ورقية في المرحلة الأولى.</li></ul>
         
-        <h3>🔧 التخصصات المتاحة</h3>
-        <ul><li>البناء والأشغال العمومية.</li>
-        <li>الميكانيك والصناعة.</li>
-        <li>الإعلام الآلي والتكنولوجيا.</li>
-        <li>السياحة والفندقة.</li>
-        <li>الفلاحة والصيد.</li>
-        <li>الصحة والتجميل.</li>
-        <li>الخدمات والتسيير.</li></ul>
+        <h3>🔧 التخصصات المتاحة للتكوين</h3>
+        <ul><li>قطاع البناء والأشغال العمومية.</li>
+        <li>قطاع الميكانيك والصناعة.</li>
+        <li>قطاع الإعلام الآلي والتكنولوجيا.</li>
+        <li>قطاع السياحة والفندقة.</li>
+        <li>قطاع الفلاحة والصيد.</li>
+        <li>قطاع الصحة والتجميل.</li>
+        <li>قطاع الخدمات والتسيير.</li></ul>
         
-        <h3>📝 خطوات التسجيل</h3>
-        <ol><li>زيارة takwin.dz.</li>
-        <li>تسجيل جديد وملء البيانات.</li>
-        <li>اختيار المركز والتخصص.</li>
-        <li>متابعة قائمة الانتظار.</li>
-        <li>رفع الملفات المطلوبة.</li></ol>
+        <h3>📝 خطوات التسجيل خطوة بخطوة</h3>
+        <ol><li>زيادة takwin.dz.</li>
+        <li>تسجيل جديد بالبريد الإلكتروني ورقم الهاتف.</li>
+        <li>إكمال البيانات الشخصية ومستوى التأهيل الدراسي.</li>
+        <li>اختيار ولاية الإقامة ومركز التكوين الأقرب.</li>
+        <li>اختيار التخصص (أو 3 تخصصات مفضلة في رتبة أولوية).</li>
+        <li>رفع الملفات المطلوبة (صورة، شهادة الميلاد، نظارة على الشهادات).</li>
+        <li>الحصول على رقم التسجيل وطباعة وصل التسجيل.</li></ol>
+        
+        <h3>❓ أسئلة شائعة</h3>
+        <p><strong>س: ما هي المدة التي تستغرقها معالجة الطلب؟</strong><br>ج: بين 15 و45 يوم عمل من تاريخ إغلاق التسجيلات.</p>
+        <p><strong>س: هل يمكن تغيير التخصص بعد التسجيل؟</strong><br>ج: نعم، يمكن تقديم طلب تحويل خلال الأسبوعين الأولين من بداية التكوين.</p>
+        <p><strong>س: هل التكوين المهني مجاني؟</strong><br>ج: نعم، في المراكز العمومية مجاني بالكامل.</p>
         
         <a href="https://takwin.dz" class="reg-btn" target="_blank">🔗 التسجيل الآن في منصة تكوين</a>
     </div>
@@ -395,19 +324,31 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة المخيم - Moukhayem</h3></div>
     <div class="article-body">
         <h2>🏕️ منصة المخيم (Moukhayem): دليل التسجيل في المخيمات الصيفية 2026</h2>
-        <p>أطلقت وزارة الشباب والرياضة منصة "المخيم" الرقمية (youthcamp.mjeunesse.gov.dz) لتنظيم تسجيل الأطفال واليافعين (6-17 سنة) في المخيمات الصيفية.</p>
+        <p>أطلقت وزارة الشباب والرياضة منصة "المخيم" الرقمية (youthcamp.mjeunesse.gov.dz) لتنظيم تسجيل الأطفال واليافعين (6-17 سنة) في المخيمات الصيفية المقامة عبر مختلف ولايات الوطن. تهدف المنصة إلى الشفافية والمساواة في الاختيار.</p>
         
-        <h3>📋 شروط المشاركة</h3>
+        <h3>📋 شروط المشاركة (حسب المعطيات الرسمية)</h3>
         <ul><li>جزائري الجنسية.</li>
-        <li>مقيد في إحدى الولايات المعنية.</li>
-        <li>العمر 6-17 سنة حسب فئة المخيم.</li>
-        <li>اللياقة الصحية اللازمة.</li></ul>
+        <li>مقيد في إحدى الولايات المعنية ببرنامج المخيمات الصيفية لموسم 2026.</li>
+        <li>العمر مناسب للفئة المستهدفة (عادة 6-17 سنة).</li>
+        <li>اللياقة الصحية اللازمة للمشاركة في الأنشطة.</li></ul>
         
-        <h3>📝 المراحل الإجرائية</h3>
-        <ol><li>التسجيل عبر المنصة.</li>
-        <li>دراسة الرغبات واختيار المقبولين حسب الحصص.</li>
-        <li>الإعلان عن القائمة.</li>
-        <li>استكمال ملف المشاركة في مديرية الشباب والرياضة.</li></ol>
+        <h3>📝 المراحل الإجرائية للتسجيل</h3>
+        <ol><li><strong>التسجيل عبر المنصة:</strong> التسجيل الأولي عبر youthcamp.mjeunesse.gov.dz.</li>
+        <li><strong>دراسة الرغبات واختيار المقبولين:</strong> حسب الحصص الممنوحة للولايات وأولويات القبول.</li>
+        <li><strong>الإعلان عن القائمة:</strong> عبر المنصة أو مديريات الشباب والرياضة.</li>
+        <li><strong>استكمال ملف المشاركة:</strong> على مستوى مديريات الشباب والرياضة للولايات المعنية.</li></ol>
+        
+        <h3>📄 الوثائق المطلوبة لاستكمال الملف</h3>
+        <ul><li>نسخة من بطاقة التعريف الوطنية للطفل (أو شهادة الميلاد رقم 12).</li>
+        <li>نسخة من بطاقة التعريف الوطنية لولي الأمر.</li>
+        <li>شهادة طبية تثبت اللياقة البدنية.</li>
+        <li>شهادة الإقامة (لا تتجاوز 3 أشهر).</li>
+        <li>صورتان شمسيتان حديثتان للطفل.</li>
+        <li>رخصة المشاركة موقعة من ولي الأمر (من مديرية الشباب والرياضة).</li></ul>
+        
+        <h3>❓ أسئلة شائعة</h3>
+        <p><strong>س: هل التسجيل عبر المنصة يضمن القبول نهائياً؟</strong><br>ج: لا، التسجيل هو ترشح أولي. القبول النهائي تخضع لدراسة الملفات من قبل مديريات الشباب والرياضة حسب الحصص المتاحة.</p>
+        <p><strong>س: هل المخيمات مدفوعة الأجر أم مجانية؟</strong><br>ج: مجانية بالكامل (إقامة، إطعام، إشراف، أنشطة).</p>
         
         <a href="https://youthcamp.mjeunesse.gov.dz" class="reg-btn" target="_blank">🔗 سجل طفلك الآن في المخيمات الصيفية</a>
     </div>
@@ -418,32 +359,32 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>الذكاء الاصطناعي في الجزائر</h3></div>
     <div class="article-body">
         <h2>🤖 الذكاء الاصطناعي في الجزائر: الواقع الحالي، التحديات، وآفاق المستقبل 2026</h2>
-        <p>الجزائر تسعى لمواكبة التطور في الذكاء الاصطناعي (AI) ضمن استراتيجيتها الوطنية 2020-2030.</p>
+        <p>يشهد العالم سباقاً محموماً في الذكاء الاصطناعي، والجزائر تسعى لمواكبة هذا التطور. أين تقف الجزائر حقاً؟ وما هي الجهود المبذولة لبناء اقتصاد معرفي قائم على الذكاء الاصطناعي؟ هذا المقال يقدم تحليلاً عميقاً.</p>
         
-        <h3>🏛️ الاستراتيجية الوطنية</h3>
-        <p>أطلقت وزارة التعليم العالي الاستراتيجية الوطنية للذكاء الاصطناعي عام 2020، بهدف إنشاء مدارس متخصصة ومخابر بحثية. المدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI) في الجزائر العاصمة هي أبرز ثمار هذه الاستراتيجية.</p>
+        <h3>🏛️ الاستراتيجية الوطنية الجزائرية للذكاء الاصطناعي</h3>
+        <p>أطلقت الجزائر في 2020 الاستراتيجية الوطنية للذكاء الاصطناعي تحت إشراف وزارة التعليم العالي والبحث العلمي، بهدف جعل الجزائر رائدة في هذا المجال بحلول 2030. تم إنشاء المدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI) في الجزائر العاصمة، ومخابر بحثية في جامعات وهران، قسنطينة، وسطيف، وعنابة.</p>
         
-        <h3>🚀 تطبيقات الذكاء الاصطناعي</h3>
-        <ul><li><strong>الصحة</strong>: تشخيص سرطان الثدي، تحليل الأشعة.</li>
-        <li><strong>الفلاحة</strong>: تشخيص أمراض النباتات عبر الهاتف (شركة AgriTech DZ).</li>
-        <li><strong>الطاقة</strong>: تحسين التنقيب والصيانة في سوناطراك.</li>
-        <li><strong>المالية</strong>: كشف الاحتيال المصرفي وتحليل الائتمان في البنوك.</li></ul>
+        <h3>🚀 تطبيقات الذكاء الاصطناعي في الجزائر</h3>
+        <ul><li><strong>الصحة</strong>: تشخيص سرطان الثدي (جامعة هواري بومدين)، تحليل الأشعة الطبية.</li>
+        <li><strong>الفلاحة</strong>: تطبيق "AgriTech DZ" لتشخيص أمراض النباتات عبر الهاتف.</li>
+        <li><strong>الطاقة</strong>: سوناطراك وسونلغاز تستخدمان AI في التنقيب، الصيانة التنبؤية، وتحليل الاستهلاك.</li>
+        <li><strong>المالية</strong>: كشف الاحتيال المصرفي، وتحليل مخاطر الائتمان في البنوك.</li></ul>
         
-        <h3>⚠️ التحديات</h3>
-        <ul><li>البطء في التحول الرقمي الإداري.</li>
+        <h3>⚠️ التحديات التي تواجه الذكاء الاصطناعي</h3>
+        <ul><li>البطء في التحول الرقمي (الاعتماد على الورق في القطاعات الحكومية).</li>
         <li>نقص الكفاءات وهجرة العقول.</li>
         <li>ضعف الاستثمار الخاص.</li>
-        <li>غياب إطار قانوني وأخلاقي.</li></ul>
+        <li>غياب إطار قانوني وأخلاقي واضح.</li></ul>
         
-        <h3>🌟 آفاق وتوصيات</h3>
-        <ul><li>تسريع التحول الرقمي.</li>
-        <li>إطلاق برامج تكوين مكثفة.</li>
-        <li>تحفيز الاستثمار الخاص.</li>
-        <li>سن تشريعات منظمة.</li></ul>
+        <h3>🌟 آفاق وتوصيات مستقبلية</h3>
+        <ul><li>تسريع التحول الرقمي وإنشاء منصات للبيانات المفتوحة.</li>
+        <li>إطلاق برامج تكوين مكثفة وشراكات مع جامعات عالمية رائدة في AI.</li>
+        <li>تحفيز الاستثمار الخاص عبر إعفاءات ضريبية وجمركية.</li>
+        <li>سن تشريعات لتنظيم الذكاء الاصطناعي وحماية الخصوصية.</li></ul>
         
         <h3>❓ أسئلة شائعة</h3>
-        <p><strong>س: هل الذكاء الاصطناعي سيأخذ وظائف الجزائريين؟</strong><br>ج: الذكاء الاصطناعي سيغير طبيعة الوظائف، وسيخلق وظائف جديدة مثل مهندس النماذج اللغوية ومدير أخلاقيات الذكاء الاصطناعي. الوظائف الروتينية فقط هي المتوقع اندثارها.</p>
-        <p><strong>س: ما هي أفضل الجامعات الجزائرية لدراسة الذكاء الاصطناعي؟</strong><br>ج: أبرزها USTHB بالجزائر العاصمة، جامعات وهران وقسنطينة، والمدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI).</p>
+        <p><strong>س: هل الذكاء الاصطناعي سيأخذ وظائف الجزائريين؟</strong><br>ج: سيغير طبيعة الوظائف، وسيخلق وظائف جديدة (مثل مهندس النماذج اللغوية، مدير أخلاقيات AI). الوظائف الروتينية فقط هي المتوقع اندثارها.</p>
+        <p><strong>س: ما هي أفضل الجامعات الجزائرية لدراسة الذكاء الاصطناعي؟</strong><br>ج: USTHB بالجزائر العاصمة، جامعة وهران، جامعة قسنطينة 1، والمدرسة الوطنية العليا للذكاء الاصطناعي (ENSAI).</p>
         
         <a href="https://ensia.edu.dz" class="reg-btn" target="_blank">🎓 اكتشف تكوينات الذكاء الاصطناعي في ENSIA</a>
     </div>
@@ -454,29 +395,42 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>التحول الرقمي في الجزائر</h3></div>
     <div class="article-body">
         <h2>🇩🇿 التحول الرقمي في الجزائر: من الريع إلى السيادة الرقمية 2026</h2>
-        <p>تشهد الجزائر ثورة رقمية بقيادة الرئيس تبون، لبناء اقتصاد معرفي متكامل يضمن السيادة الوطنية والعدالة الاجتماعية.</p>
+        <p>تشهد الجزائر ثورة رقمية بقيادة رئيس الجمهورية عبد المجيد تبون، لبناء اقتصاد رقمي متكامل يضمن السيادة الوطنية والعدالة الاجتماعية. هذا المقال التحليلي يستعرض الاستراتيجية الوطنية والإنجازات والتحديات والآفاق المستقبلية.</p>
         
         <h3>🏛️ الركائز الاستراتيجية الكبرى</h3>
-        <ul><li><strong>مبادرة "50in5" العالمية (أبريل 2026)</strong>: لبناء بنية تحتية رقمية عامة (DPI) تشمل الهوية الرقمية (E-Tawki3)، والمدفوعات الإلكترونية، وتبادل البيانات.</li>
-        <li><strong>قانون المالية 2026</strong>: حجر الزاوية للإدارة الرقمية، مع السجل العقاري الإلكتروني وقاعدة بيانات موحدة لأصول المواطنين.</li>
-        <li><strong>منصات التعليم العالي (فبراير 2026)</strong>: إطلاق 4 منصات جامعية (AUNEI، RNF، PSY، حجز الوجبات) لتعزيز ريادة الأعمال والخدمات.</li></ul>
+        <ul><li><strong>مبادرة "50in5" العالمية (أبريل 2026)</strong>: لبناء بنية تحتية رقمية عامة (DPI) تشمل الهوية الرقمية الموثقة (E-Tawki3)، والمدفوعات الإلكترونية، وتبادل البيانات.</li>
+        <li><strong>الاستراتيجية الوطنية المالية والإدارية (قانون المالية 2026)</strong>: حجر الزاوية للإدارة الرقمية مع السجل العقاري الإلكتروني وقاعدة بيانات موحدة لأصول المواطنين.</li>
+        <li><strong>رقمنة قطاع التعليم العالي (فبراير 2026)</strong>: إطلاق 4 منصات جامعية جديدة لتطوير المؤسسات الناشئة والخدمات.</li></ul>
         
-        <h3>🚀 إنجازات ميدانية</h3>
-        <ul><li><strong>E-Tawki3</strong>: التوقيع الإلكتروني.</li>
-        <li><strong>وسيط</strong>: ربط طالبي العمل بأصحاب العمل.</li>
-        <li><strong>فضاء الأولياء</strong>: متابعة نتائج التلاميذ.</li>
-        <li><strong>عدل 3</strong>: التسجيل في السكن.</li>
-        <li><strong>تكوين</strong>: التكوين المهني عن بعد.</li>
-        <li><strong>التجمع الوطني لناشئة الذكاء الاصطناعي</strong>: لخلق 20.000 شركة ناشئة بحلول 2029.</li></ul>
+        <h3>🚀 أبرز الإنجازات الميدانية</h3>
+        <ul><li><strong>منصة "E-Tawki3"</strong>: الإطار الوطني للهوية الرقمية والتوقيع الإلكتروني.</li>
+        <li><strong>منصة "وسيط" (Wassit)</strong>: رقمنة عروض وطلبات العمل.</li>
+        <li><strong>منصة "فضاء الأولياء"</strong>: متابعة النتائج والغيابات والتسجيل في الامتحانات.</li>
+        <li><strong>منصة "تكوين" (Takwin)</strong>: التسجيل في التخصصات المهنية عن بعد.</li>
+        <li><strong>منصة "عدل 3"</strong>: التسجيل في برنامج سكن البيع بالإيجار.</li>
+        <li><strong>التجمع الوطني لناشئة الذكاء الاصطناعي والأمن السيبراني</strong>: لخلق 20.000 مؤسسة ناشئة بحلول 2029.</li>
+        <li><strong>قاعدة بيانات وطنية للسلع والخدمات</strong>: لتغطية المنتجات والخدمات الجزائرية لتصديرها بشكل أفضل.</li></ul>
         
-        <h3>📊 مؤشرات اقتصادية (PLF 2026)</h3>
-        <ul><li>نمو متوقع: 4.1% (2026)، 4.4% (2027)، 4.5% (2028).</li>
-        <li>إيرادات: 8.009 مليار دج.</li>
-        <li>نفقات: 17.636,7 مليار دج.</li>
-        <li>تمويل العجز من الدين الداخلي فقط.</li></ul>
+        <h3>🎯 المؤشرات الاقتصادية والمالية للتحول الرقمي (قانون المالية 2026)</h3>
+        <ul><li>معدل النمو المتوقع 2026: 4.1%.</li>
+        <li>معدل النمو المتوقع 2027: 4.4%.</li>
+        <li>معدل النمو المتوقع 2028: 4.5% (مع تركيز خاص على القطاعات خارج المحروقات).</li>
+        <li>الإيرادات: 8.009 مليار دج.</li>
+        <li>النفقات: 17.636,7 مليار دج.</li>
+        <li>تمويل العجز عبر الدين الداخلي فقط.</li></ul>
         
-        <h3>🌍 الجزائر عاصمة التكنولوجيا الإفريقية</h3>
-        <p>استضافت الجزائر قمة "Global Africa Tech 2026" في مارس 2026، بمشاركة 45 دولة و5000 مشارك وحوالي 50 وزيراً.</p>
+        <h3>💡 قطاع ريادة الأعمال والشركات الناشئة (أبريل 2026)</h3>
+        <ul><li>أكثر من 7.800 شركة ناشئة مسجلة، منها 2.300 تستفيد من وسوم التمييز "Start-up".</li>
+        <li>الهدف الحكومي: 20.000 شركة ناشئة بحلول 2029.</li>
+        <li>نمو المشاريع الابتكارية الجامعية من 6.000 إلى 9.000 مشروع (نسبة زيادة 50%).</li></ul>
+        
+        <h3>🌍 الجزائر عاصمة التكنولوجيا الإفريقية: قمة "Global Africa Tech 2026"</h3>
+        <p>احتضنت الجزائر العاصمة في مارس 2026 القمة التكنولوجية الإفريقية الكبرى بمشاركة أكثر من 5000 مشارك من 45 دولة وحوالي 50 وزيراً، لتعزيز مكانة الجزائر كمركز إقليمي للابتكار الرقمي.</p>
+        
+        <h3>❓ أسئلة شائعة حول التحول الرقمي في الجزائر</h3>
+        <p><strong>س: كيف يمكنني الحصول على هويتي الرقمية (E-Tawki3)؟</strong><br>ج: عبر مصالح Algérie Poste أو الوكالات المعتمدة.</p>
+        <p><strong>س: متى سيتم تعميم الإدارة الرقمية بالكامل؟</strong><br>ج: بدأت التحولات الجذرية في جانفي 2026، ويتوقع اكتمالها تدريجياً خلال 2026-2027.</p>
+        <p><strong>س: هل ستعوض الخدمات الرقمية الإدارة الورقية نهائياً؟</strong><br>ج: نعم، هذا هو الهدف الاستراتيجي.</p>
         
         <a href="https://www.mpt.gov.dz" class="reg-btn" target="_blank">🔗 تابع أخبار التحول الرقمي</a>
     </div>
@@ -487,109 +441,148 @@
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>التجارة الإلكترونية في الجزائر</h3></div>
     <div class="article-body">
         <h2>🛒 التجارة الإلكترونية في الجزائر: الواقع، التحديات، وآفاق المستقبل 2026</h2>
-        <p>تشهد التجارة الإلكترونية في الجزائر تحولاً نوعياً، مدفوعاً بتسارع التحول الرقمي وزيادة انتشار الإنترنت الذي تجاوز 29 مليون مستخدم.</p>
+        <p>تشهد التجارة الإلكترونية في الجزائر تحولاً نوعياً غير مسبوق، مدفوعاً بتسارع التحول الرقمي، وزيادة انتشار الإنترنت الذي تجاوز 29 مليون مستخدم.</p>
         
-        <h3>📌 ما هي التجارة الإلكترونية ولماذا هي مستقبل الاقتصاد؟</h3>
-        <p>هي شراء وبيع السلع والخدمات عبر الإنترنت. يتوقع نمو القطاع بنسبة 15-20% سنوياً بالجزائر.</p>
+        <h3>📋 الإطار القانوني والتنظيمي</h3>
+        <ul><li><strong>القانون 18-05</strong>: حماية المستهلك وقمع الغش.</li>
+        <li><strong>القانون 18-04</strong>: القواعد العامة للتجارة الإلكترونية.</li>
+        <li><strong>القانون 15-04</strong>: مكافحة الجرائم الإلكترونية.</li></ul>
         
-        <h3>📋 الإطار القانوني</h3>
-        <ul><li>القانون 18-05 (حماية المستهلك).</li>
-        <li>القانون 18-04 (القواعد العامة للتجارة الإلكترونية).</li>
-        <li>القانون 15-04 (مكافحة الجرائم الإلكترونية).</li></ul>
-        
-        <h3>💰 وسائل الدفع الإلكتروني</h3>
-        <ul><li>بطاقة إداهبية.</li>
-        <li>بطاقات Visa/Mastercard.</li>
+        <h3>💰 وسائل الدفع الإلكتروني المعتمدة</h3>
+        <ul><li>بطاقة إداهبية (أكثر من 18 مليون بطاقة).</li>
+        <li>بطاقات Visa/Mastercard البنكية.</li>
         <li>الدفع عند الاستلام (الأكثر شيوعاً).</li></ul>
         
-        <h3>📦 أبرز المنصات</h3>
-        <ul><li>Ouedkniss.com.</li>
+        <h3>📦 أبرز منصات التجارة الإلكترونية</h3>
+        <ul><li>Ouedkniss.com (الإعلانات المبوبة).</li>
         <li>Jumia DZ.</li>
         <li>Vite.dz.</li>
-        <li>Amanz.com.</li>
-        <li>AliExpress (عالمية).</li></ul>
+        <li>Amanz.com (إلكترونيات).</li>
+        <li>AliExpress (عالمية).</li>
+        <li>Amazon و eBay (عبر بطاقات دولية).</li></ul>
+        
+        <h3>🚚 شركات التوصيل</h3>
+        <ul><li>Algérie Poste (EMS).</li>
+        <li>شركات خاصة: Yalidine Express، DELO DZ، Tassili Delivery.</li>
+        <li>دولية: DHL، FedEx، UPS.</li></ul>
         
         <h3>📈 إحصائيات مهمة (2025-2026)</h3>
         <ul><li>13 مليون مستخدم للتجارة الإلكترونية.</li>
-        <li>القيمة السوقية المتوقعة: 1.5 مليار دولار.</li>
-        <li>أكثر المنتجات مبيعاً: الإلكترونيات (40%)، الأزياء (25%)، منتجات التجميل (15%).</li></ul>
+        <li>نمو سنوي 15-20%.</li>
+        <li>القيمة السوقية المتوقعة 2026: 1.5 مليار دولار.</li>
+        <li>المنتجات الأكثر مبيعاً: إلكترونيات (40%)، أزياء (25%)، تجميل (15%).</li></ul>
         
-        <h3>⚠️ التحديات</h3>
-        <ul><li>ضعف الثقة.</li>
-        <li>نقص وسائل الدفع السلسة.</li>
-        <li>تكلفة الشحن العالية.</li>
-        <li>المنافسة غير المتكافئة.</li></ul>
+        <h3>⚠️ التحديات الرئيسية</h3>
+        <ul><li>ضعف الثقة في التسوق الإلكتروني.</li>
+        <li>نقص وسائل الدفع الإلكتروني السلسة.</li>
+        <li>تكلفة الشحن العالية للمناطق النائية.</li>
+        <li>المنافسة غير المتكافئة مع الصفحات غير المرخصة.</li>
+        <li>ضعف ثقافة التسويق الرقمي المتقدم.</li></ul>
         
-        <h3>🌟 التوصيات</h3>
+        <h3>🌟 الفرص والتوصيات لتعزيز التجارة الإلكترونية</h3>
         <ul><li>تعزيز ثقافة المستهلك الرقمي.</li>
-        <li>تبسيط إجراءات فتح المتاجر.</li>
-        <li>تطوير حلول الدفع والخدمات اللوجستية.</li></ul>
+        <li>تبسيط إجراءات إنشاء المتاجر الإلكترونية.</li>
+        <li>تطوير حلول الدفع الإلكتروني والخدمات اللوجستية.</li>
+        <li>منح إعفاءات ضريبية للشركات الناشئة في هذا المجال.</li></ul>
         
         <a href="https://www.mdip.gov.dz" class="reg-btn" target="_blank">🔗 تابع أخبار الاقتصاد الرقمي</a>
     </div>
 </div>
 
-<!-- صفحة ECCP (طويلة جداً) -->
+<!-- صفحة ECCP (الدفع الإلكتروني) طويلة جداً -->
 <div id="page-eccp" class="full-page">
     <div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منصة ECCP - شهادة الدفع الإلكتروني</h3></div>
     <div class="article-body">
         <h2>📜 منصة ECCP (شهادة الدفع الإلكتروني) لبريد الجزائر: دليل شامل 2026</h2>
-        <p>تُعد منصة ECCP (شهادة الدفع الإلكتروني) من Algérie Poste بوابة رقمية حيوية لرقمنة دفع الرسوم الإدارية، مما ينهي تنقل المواطن بين المصالح الإدارية ومكاتب البريد.</p>
+        <p>تُعد منصة ECCP (Electronic Certificate of Payment) أو "شهادة الدفع الإلكتروني" من Algérie Poste بوابة رقمية حيوية لرقمنة وتسريع عمليات دفع الرسوم الإدارية، مما ينهي تنقل المواطن بين المصالح الإدارية ومكاتب البريد. هذه الخدمة تعزز الشفافية وتوفر الوقت والجهد.</p>
         
         <h3>📌 ما هي منصة ECCP؟</h3>
-        <p>هي خدمة إلكترونية للدفع عبر الإنترنت والحصول فوراً على شهادة إلكترونية تثبت إتمام الدفع، بالشراكة مع العدالة، الدفاع، التربية الوطنية، الجامعات، السكن، والجمارك.</p>
+        <p>هي خدمة إلكترونية للدفع عبر الإنترنت والحصول فوراً على شهادة دفع إلكترونية تثبت إتمام العملية. تتعامل مع مختلف الإدارات العمومية كالعدالة، الدفاع، التربية الوطنية، التعليم العالي، السكن، والجمارك.</p>
         
         <h3>🔗 طريقة التسديد خطوة بخطوة</h3>
-        <ol><li>الحصول على "إشعار الدفع" (رقم مرجعي) من الإدارة المعنية.</li>
-        <li>الدخول إلى منصة eccp.poste.dz.</li>
-        <li>إدخال رقم الإشعار.</li>
-        <li>التحقق من تفاصيل الفاتورة (المبلغ والخدمة).</li>
-        <li>اختيار وسيلة الدفع: إداهبية، Visa، أو Mastercard.</li>
-        <li>إتمام الدفع عبر بوابة SATIM الآمنة (ستر教 رمز التحقق OTP).</li>
-        <li>تحميل شهادة الدفع بصيغة PDF.</li>
-        <li>يمكن للإدارة ربط المنصة لاستلام الإشعار تلقائياً، وإلا يقدم المواطن الشهادة لإكمال الإجراء.</li></ol>
+        <ol><li><strong>الحصول على إشعار الدفع</strong>: من الإدارة المعنية (محكمة، جامعة، وغيرها) يتضمن رقم إشعار فريد.</li>
+        <li><strong>الدخول إلى المنصة</strong>: eccp.poste.dz.</li>
+        <li><strong>إدخال رقم الإشعار</strong>: في الواجهة الرئيسية.</li>
+        <li><strong>التحقق من المعلومات</strong>: تأكد من صحة المبلغ والخدمة المطلوبة.</li>
+        <li><strong>اختيار وسيلة الدفع</strong>: بطاقة إداهبية، Visa، أو Mastercard.</li>
+        <li><strong>إتمام الدفع</strong>: عبر بوابة SATIM الآمنة (ستصلك رسالة OTP لتأكيد العملية).</li>
+        <li><strong>تحميل الشهادة</strong>: احصل على شهادة الدفع الإلكترونية بصيغة PDF.</li></ol>
         
         <h3>💳 وسائل الدفع المقبولة</h3>
-        <ul><li>بطاقة إداهبية (Edahabia) - متوفرة في بريد الجزائر.</li>
-        <li>بطاقات CIB، GOLD، CLASSIC الصادرة عن البنوك الجزائرية.</li>
-        <li>لا تقبل المنصة الدفع النقدي أو الشيكات.</li></ul>
+        <ul><li>بطاقة إداهبية (Edahabia) من بريد الجزائر - الأكثر انتشاراً.</li>
+        <li>بطاقات CIB الصادرة عن البنوك الجزائرية.</li>
+        <li>بطاقات GOLD و CLASSIC لبعض البنوك الخاصة.</li>
+        <li>المنصة لا تقبل الدفع النقدي أو الشيكات.</li></ul>
         
         <h3>🏛️ الخدمات والقطاعات المتاحة</h3>
-        <ul><li><strong>وزارة العدل</strong>: شهادة السوابق العدلية رقم 3.</li>
-        <li><strong>وزارة الدفاع</strong>: تجنيد وشهادات.</li>
-        <li><strong>التعليم العالي</strong>: تسجيل جامعي، شهادات ماستر ودكتوراه.</li>
-        <li><strong>التربية الوطنية</strong>: رسوم BEM والبكالوريا.</li>
-        <li><strong>السكن وعدل</strong>: المشاركة الأولية ورسوم الملفات.</li>
-        <li><strong>ANEM</strong>: التسجيل في وسيط.</li>
-        <li><strong>الجمارك</strong>: بعض الرسوم الجمركية.</li></ul>
+        <ul><li>وزارة العدل: شهادة السوابق العدلية رقم 3.</li>
+        <li>وزارة الدفاع الوطني: رسوم التجنيد وشهادات الوضعية.</li>
+        <li>وزارة التعليم العالي: رسوم التسجيل في الجامعات وشهادات الماستر والدكتوراه.</li>
+        <li>وزارة التربية الوطنية: رسوم BEM والبكالوريا.</li>
+        <li>السكن ووكالة عدل: المشاركة الأولية ورسوم دراسة الملفات.</li>
+        <li>الوكالة الوطنية للتشغيل (ANEM): رسوم التسجيل والتجديد في منصة "وسيط".</li>
+        <li>الجمارك الجزائرية: بعض الرسوم الجمركية.</li></ul>
         
         <h3>📈 مميزات المنصة</h3>
-        <ul><li>متاحة 24/7.</li>
-        <li>سرعة فائقة (عملية الدفع في أقل من 5 دقائق).</li>
-        <li>شهادات دفع مؤمنة ومشفرة.</li>
-        <li>إمكانية إعادة التحميل في أي وقت.</li></ul>
+        <ul><li>متاحة 24/7 طوال أيام الأسبوع.</li>
+        <li>سرعة فائقة (العملية في أقل من 5 دقائق).</li>
+        <li>خدمة آمنة (تشفير SSL/TLS).</li>
+        <li>إمكانية إعادة تحميل الشهادة في أي وقت.</li>
+        <li>تخزين إلكتروني للشهادات لأي مراجعة لاحقة.</li></ul>
         
         <h3>⚠️ نصائح مهمة</h3>
-        <ul><li>إذا فشل الدفع رغم الخصم، اتصل بخدمة عملاء بريد الجزائر (1055، 3303) ولا تكرر الدفع.</li>
-        <li>تأكد من تفعيل الدفع الإلكتروني لبطاقتك لدى الوكالة البنكية.</li>
+        <ul><li>إذا فشل الدفع رغم الخصم، اتصل بخدمة عملاء بريد الجزائر (1055، 3303) أو البنك فوراً، ولا تكرر الدفع.</li>
+        <li>تأكد من تفعيل الدفع الإلكتروني لبطاقتك لدى وكالتك البنكية.</li>
         <li>احتفظ بنسخة من شهادة الدفع PDF لإثبات العملية.</li></ul>
         
         <h3>❓ أسئلة شائعة</h3>
-        <p><strong>س: هل يتطلب التسجيل في المنصة إنشاء حساب؟</strong><br>ج: لا، فقط رقم الإشعار المقدم من الإدارة.</p>
+        <p><strong>س: هل يتطلب التسجيل في المنصة إنشاء حساب؟</strong><br>ج: لا، فقط رقم الإشعار المقدم من الإدارة المعنية.</p>
         <p><strong>س: ماذا لو فقدت شهادة الدفع؟</strong><br>ج: يمكنك إدخال رقم الإشعار مرة أخرى في المنصة وتحميل الشهادة مجدداً.</p>
         <p><strong>س: هل هناك رسوم إضافية؟</strong><br>ج: المنصة لا تفرض رسوماً، لكن قد تطبق البنوك عمولة صغيرة.</p>
-        <p><strong>س: هل يمكن لأي شخص الدفع عن طريق ECCP؟</strong><br>ج: نعم، أي مواطن له بطاقة بنكية مفعلة للدفع الإلكتروني ورقم إشعار صادر عن إدارة معنية.</p>
         
         <a href="https://eccp.poste.dz" class="reg-btn" target="_blank">🔗 سدد رسومك الإدارية الآن عبر منصة ECCP الرسمية</a>
     </div>
 </div>
 
-<!-- ==================== الصفحات الثابتة الأخرى (من نحن، سياسة الخصوصية، اتصل بنا، شروط الخدمة) ==================== -->
+<!-- ==================== الصفحات الثابتة الأخرى ==================== -->
 
-<div id="page-about" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>من نحن</h3></div><div class="article-body"><h2>حول موقع خدماتي الجزائري</h2><p>موقع "خدماتي" هو بوابة دليل خدمات الجزائر الرقمية.</p></div></div>
+<div id="page-about" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>من نحن</h3></div><div class="article-body"><h2>حول موقع خدماتي الجزائري</h2><p>موقع "خدماتي" هو بوابة رقمية جزائرية مستقلة تهدف إلى تجميع الخدمات الإدارية والرقمية التي تهم المواطن الجزائري في مكان واحد. نقدم أدلة محدثة وروابط مباشرة لمنصات التسجيل الرسمية لتبسيط الإجراءات الإدارية.</p></div></div>
 
-<div id="page-privacy" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سياسة الخصوصية</h3></div><div class="article-body"><h2>سياسة الخصوصية</h2><p>نحن نلتزم بحماية خصوصية زوارنا. لا نقوم بجمع بيانات شخصية.</p></div></div>
+<div id="page-privacy" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>سياسة الخصوصية</h3></div><div class="article-body"><h2>سياسة الخصوصية والبيانات</h2><p>نحن في "خدماتي" نلتزم بحماية خصوصية زوارنا. لا نقوم بجمع أي بيانات شخصية عنك. جميع الروابط الموجودة في الموقع تؤدي إلى منصات حكومية رسمية. نستخدم Google Analytics لفهم كيفية استخدام الزوار لموقعنا، وهذه البيانات مجهولة المصدر.</p></div></div>
 
-<div id="page-contact" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>اتصل بنا</h3></div><div class="article-body" style="text-align:center;"><h2>تواصل معنا</h2><div style="background:#f9f9f9; padding:25px; border-radius:20px;"><p>📧 MUSTAPHABENAMAR40@GMAIL.COM</p><p>📞 0558284458</p></div></div></div>
+<div id="page-contact" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>اتصل بنا</h3></div><div class="article-body" style="text-align:center;"><h2>تواصل مع إدارة الموقع</h2><div style="background:#f9f9f9; padding:25px; border-radius:20px; margin:20px 0;"><p>📧 البريد الإلكتروني: <strong>MUSTAPHABENAMAR40@GMAIL.COM</strong></p><p>📞 للتواصل عبر Viber أو WhatsApp: <strong>0558284458</strong></p></div><p>سنرد على استفساراتكم في أقرب وقت ممكن.</p></div></div>
 
-<div id="page-terms" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>شروط الخدمة</h3></div><div class="article-body"><h2>شروط استخدام خدماتي الجزائر</h2><p>باستخدام الموقع، أنت توافق على الشروط.</p></div></div>
+<div id="page-terms" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>شروط الخدمة</h3></div><div class="article-body"><h2>شروط استخدام موقع خدماتي الجزائر</h2><p>آخر تحديث: مارس 2026</p><h3>1. قبول الشروط</h3><p>باستخدامك لهذا الموقع، فإنك توافق على الالتزام بهذه الشروط.</p><h3>2. المحتوى والمعلومات</h3><p>جميع المعلومات لأغراض إعلامية فقط. لا نتحمل المسؤولية عن أي أخطاء أو تغييرات في الروابط الرسمية.</p><h3>3. الروابط الخارجية</h3><p>نحن غير مسؤولين عن محتوى أو سياسات الخصوصية للمواقع الخارجية.</p><h3>4. حقوق الملكية الفكرية</h3><p>جميع المحتويات (نصوص، صور، تصاميم) هي ملك لموقع خدماتي الجزائر ولا يجوز نسخها دون إذن.</p><h3>5. القانون الواجب التطبيق</h3><p>تخضع هذه الشروط لقوانين الجمهورية الجزائرية الديمقراطية الشعبية.</p></div></div>
+
+<script>
+    function openPage(pageId) {
+        let page = document.getElementById('page-' + pageId);
+        if (page) {
+            page.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        } else console.error('الصفحة غير موجودة: page-' + pageId);
+    }
+    function closePage() {
+        document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none');
+        document.body.style.overflow = 'auto';
+    }
+    function shareApp() { if(navigator.share) navigator.share({title: 'خدماتي الجزائر', url: window.location.href}); else alert('شارك الرابط: ' + window.location.href); }
+    document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            fetch(`https://api.aladhan.com/v1/timings?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&method=3`)
+            .then(r => r.json()).then(res => {
+                let t = res.data.timings;
+                document.getElementById('fajr').innerText = t.Fajr;
+                document.getElementById('dhuhr').innerText = t.Dhuhr;
+                document.getElementById('asr').innerText = t.Asr;
+                document.getElementById('maghrib').innerText = t.Maghrib;
+                document.getElementById('isha').innerText = t.Isha;
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
