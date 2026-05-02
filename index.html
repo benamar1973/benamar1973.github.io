@@ -12,50 +12,30 @@
         .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         .main-header { background: var(--primary); color: white; padding: 30px 20px; border-radius: 0 0 30px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .header-title h1 { margin: 0; font-size: 22px; font-weight: 800; }
-        .share-top-btn { background: var(--white); color: var(--primary); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s; }
-        .share-top-btn:hover { transform: scale(1.05); }
+        .share-top-btn { background: var(--white); color: var(--primary); padding: 8px 18px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: 800; }
         .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .currency-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .currency-table th { background: #f8f9fa; padding: 10px; font-size: 13px; border-bottom: 2px solid var(--accent); }
-        .currency-table td { padding: 15px; text-align: center; border-bottom: 1px solid #f0f0f0; font-weight: 800; font-size: 18px; }
-        .buy { color: var(--success); } .sell { color: var(--danger); }
-        .update-tag { text-align: center; font-size: 12px; color: #999; margin-top: 15px; background: #f9f9f9; padding: 8px; border-radius: 10px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; border: 1px solid #eee; }
-        .prayer-item span { display: block; font-size: 11px; color: #888; }
-        .prayer-item b { font-size: 14px; color: var(--primary); }
-        .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; }
-        .weather-scroll::-webkit-scrollbar { display: none; }
-        .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; flex-shrink: 0; }
-        .weather-day img { width: 40px; height: 40px; }
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
-        .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; transition: all 0.2s; }
+        .icon-btn { background: var(--white); padding: 20px 5px; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1px solid #f0f0f0; }
         .icon-btn:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
         .icon-btn i { font-size: 32px; display: block; margin-bottom: 10px; }
         .icon-btn span { font-size: 14px; font-weight: 800; color: var(--primary); }
         .full-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999; overflow-y: auto; }
-        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; font-size: 14px; }
-        .article-body { background: white; padding: 35px; border-radius: 25px; line-height: 1.8; font-size: 16px; margin: 15px; color: #444; text-align: justify; }
-        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; margin: 25px 0 15px 0; font-size: 22px; }
-        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; margin-bottom: 10px; }
-        .article-body ul, .article-body ol { margin: 15px 0; padding-right: 25px; }
-        .article-body li { margin: 8px 0; }
-        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); transition: opacity 0.2s; }
-        .reg-btn:hover { opacity: 0.9; }
+        .page-header { background: var(--white); padding: 15px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; }
+        .back-btn { background: var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; margin-left: 15px; border: none; font-family: inherit; }
+        .article-body { background: white; padding: 35px; border-radius: 25px; margin: 15px; color: #444; text-align: justify; }
+        .article-body h2 { color: var(--primary); border-right: 6px solid var(--accent); padding-right: 15px; font-size: 22px; }
+        .article-body h3 { color: var(--accent); font-size: 19px; margin-top: 30px; }
+        .reg-btn { display: block; background: var(--success); color: white; text-align: center; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: 800; margin-top: 35px; font-size: 18px; }
         footer { text-align: center; padding: 30px 15px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
-        .footer-links { margin-bottom: 10px; }
         .footer-links span { color: var(--accent); cursor: pointer; font-weight: 700; margin: 0 10px; }
-        .error-msg { color: var(--danger); font-size: 13px; text-align: center; padding: 20px; background: #fff; border-radius: 15px; }
-        .weather-loading { text-align: center; padding: 20px; color: #888; background: #f9f9f9; border-radius: 15px; }
-        .prayer-note { font-size: 11px; color: #aaa; text-align: center; margin-top: 10px; }
-        @media (max-width: 600px) {
-            .services-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .icon-btn { padding: 15px 5px; }
-            .article-body { padding: 20px; margin: 10px; }
-            .article-body h2 { font-size: 18px; }
-            .article-body h3 { font-size: 16px; }
-        }
+        .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .prayer-item { background: #f8f9fa; padding: 10px 5px; border-radius: 12px; text-align: center; }
+        .weather-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; }
+        .weather-day { min-width: 100px; background: #fff; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
+        .weather-day img { width: 40px; height: 40px; }
+        .error-msg { color: var(--danger); font-size: 13px; text-align: center; padding: 20px; }
+        .weather-loading { text-align: center; padding: 20px; color: #888; }
+        @media (max-width: 600px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -66,44 +46,34 @@
         <div class="share-top-btn" onclick="shareApp()">📢 نشر التطبيق</div>
     </div>
     <div class="container">
-        <!-- أسعار الصرف -->
         <div class="card">
-            <h3 style="margin:0; text-align:center;">📊 أسعار الصرف في السوق السوداء</h3>
-            <table class="currency-table">
-                <tr><th>العملة</th><th>شراء</th><th>بيع</th></tr>
-                <tr><td class="currency-name">الأورو (€)</td><td class="buy">24,200</td><td class="sell">24,400</td>
-                </tr>
-                <tr><td class="currency-name">الدولار ($)</td><td class="buy">22,100</td><td class="sell">22,300</td>
-                </tr>
-            </table>
-            <div class="update-tag">آخر تحديث: <span id="sync-time"></span></div>
+            <h3>📊 أسعار الصرف في السوق السوداء</h3>
+            <div>🇪🇺 أورو: شراء 24,500 / بيع 24,700</div>
+            <div>🇺🇸 دولار: شراء 22,300 / بيع 22,500</div>
+            <div class="update-tag" style="font-size:12px; color:#999; margin-top:10px;">آخر تحديث: <span id="sync-time"></span></div>
         </div>
 
-        <!-- مواقيت الصلاة -->
         <div class="card">
-            <h3 style="margin:0 0 15px 0; font-size:16px;">🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
+            <h3>🕋 مواقيت الصلاة حسب موقع الهاتف</h3>
             <div class="prayer-grid" id="prayer-list">
-                <div class="prayer-item"><span>الفجر</span><b id="fajr">--:--</b></div>
-                <div class="prayer-item"><span>الظهر</span><b id="dhuhr">--:--</b></div>
-                <div class="prayer-item"><span>العصر</span><b id="asr">--:--</b></div>
-                <div class="prayer-item"><span>المغرب</span><b id="maghrib">--:--</b></div>
-                <div class="prayer-item"><span>العشاء</span><b id="isha">--:--</b></div>
+                <div class="prayer-item">الفجر <b id="fajr">--:--</b></div>
+                <div class="prayer-item">الظهر <b id="dhuhr">--:--</b></div>
+                <div class="prayer-item">العصر <b id="asr">--:--</b></div>
+                <div class="prayer-item">المغرب <b id="maghrib">--:--</b></div>
+                <div class="prayer-item">العشاء <b id="isha">--:--</b></div>
             </div>
-            <div class="prayer-note">🕌 يتم تحديث المواقيت تلقائياً حسب موقعك الجغرافي</div>
         </div>
 
-        <!-- الطقس -->
         <div class="card">
-            <h3 style="margin:0 0 10px 0; font-size:16px;">☁️ حالة الطقس للأيام القادمة</h3>
+            <h3>☁️ حالة الطقس للأيام القادمة</h3>
             <div id="weather-container"><div class="weather-loading">🌍 جاري تحميل بيانات الطقس...</div></div>
         </div>
 
-        <!-- شبكة الخدمات -->
         <div class="services-grid">
             <div class="icon-btn" onclick="openPage('minha')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="openPage('army')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="openPage('awlyaa')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
-            <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل 3</span></div>
+            <div class="icon-btn" onclick="openPage('aadl')"><i>🏢</i><span>سكنات عدل</span></div>
             <div class="icon-btn" onclick="openPage('wassit')"><i>💼</i><span>وسيط ANEM</span></div>
             <div class="icon-btn" onclick="openPage('adhahi')"><i>🐑</i><span>أضحية العيد</span></div>
             <div class="icon-btn" onclick="openPage('takwin')"><i>🔧</i><span>التكوين المهني</span></div>
@@ -126,20 +96,20 @@
     </div>
 </div>
 
-<!-- ==================== الصفحات ==================== -->
+<!-- ==================== المقالات الطويلة ==================== -->
 
 <div id="page-minha" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>منحة البطالة 2026</h3></div><div class="article-body">
     <h2>📌 دليل شامل للتسجيل في منحة البطالة بالجزائر 2026</h2>
-    <p>تُعد منحة البطالة من أهم الآليات الاجتماعية التي أقرتها الدولة الجزائرية لدعم الشباب الباحث عن عمل لأول مرة. تهدف هذه المنحة إلى توفير دخل شهري ثابت يساعد طالبي العمل على تغطية احتياجاتهم الأساسية أثناء فترة البحث عن منصب شغل لائق.</p>
+    <p>تُعد منحة البطالة من أهم الآليات الاجتماعية التي أقرتها الدولة الجزائرية لدعم الشباب الباحث عن عمل لأول مرة. تهدف هذه المنحة إلى توفير دخل شهري ثابت يساعد طالبي العمل على تغطية احتياجاتهم الأساسية أثناء فترة البحث عن منصب شغل لائق، كما تساهم في الحفاظ على كرامتهم وتحفيزهم للاندماج في سوق العمل.</p>
     <h3>📋 الشروط الأساسية للاستفادة</h3>
     <ul><li>العمر بين 19 و40 سنة</li><li>التسجيل في ANEM كطالب شغل لأول مرة لمدة 6 أشهر</li><li>ألا يكون المتقدم أو زوجه يتقاضى أي دخل ثابت</li><li>تسوية الوضعية تجاه الخدمة الوطنية</li></ul>
     <h3>💶 قيمة المنحة</h3>
-    <p>تحدد قيمة المنحة بـ <strong>18.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة.</p>
+    <p>تحدد قيمة المنحة بـ <strong>13.000 دينار جزائري</strong> شهرياً، تصرف لمدة سنة قابلة للتجديد مرة واحدة.</p>
     <a href="https://minha.anem.dz/pre_inscription" class="reg-btn" target="_blank">🚀 ابدأ التسجيل الآن</a>
 </div></div>
 
 <div id="page-army" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>تجنيد الجيش 2026</h3></div><div class="article-body">
-    <h2>🎖️ دليل الالتحاق بالجيش الوطني الشعبي</h2>
+    <h2>🎖️ الدليل الكامل للالتحاق بالجيش الوطني الشعبي</h2>
     <p>يفتح الجيش الوطني الشعبي أبوابه سنوياً للشباب الجزائري الراغبين في خوض تجربة عسكرية مهنية. يتميز المسار العسكري بتوفير تكوين عالي الجودة، استقرار مهني، رواتب مجزية.</p>
     <h3>📌 الفئات المطلوبة</h3>
     <ul><li><strong>الضباط العاملين</strong>: بكالوريا بمعدل 12/20 فما فوق</li><li><strong>ضباط الصف</strong>: سنة ثالثة ثانوي أو بكالوريا</li><li><strong>رجال الصف</strong>: من الثانية متوسط إلى الثانية ثانوي</li></ul>
@@ -158,7 +128,7 @@
     <h2>🏢 برنامج عدل 3: سكن بالبيع بالإيجار</h2>
     <p>صيغة سكنية موجهة للطبقة المتوسطة بنظام أقساط شهرية ميسرة تمتد حتى 25 سنة. يعتبر هذا البرنامج بديلاً ميسوراً عن شراء سكن جاهز بكامل المبلغ.</p>
     <h3>📋 الشروط</h3>
-    <ul><li>الدخل الشهري بين 24.000 و120.000 دج</li><li>ألا يكون المستفيد قد حصل على سكن دعم من الدولة سابقاً</li><li>التسجيل عبر المنصة الرقمية</li></ul>
+    <ul><li>الدخل الشهري بين 24.000 و120.000 دج</li><li>ألا يكون المستفيد قد حصل على سكن دعم من الدولة سابقاً</li></ul>
     <a href="https://www.aadl.dz/relogin" class="reg-btn" target="_blank">🔗 التسجيل في عدل 3</a>
 </div></div>
 
@@ -174,7 +144,7 @@
     <h2>🐑 منصة أضاحي: شراء أضحية العيد عبر الإنترنت</h2>
     <p>منصة حكومية تهدف إلى تنظيم سوق المواشي، وربط المربين مباشرة بالمستهلكين بأسعار شفافة. توفر المنصة إمكانية الحجز المسبق واختيار الأضحية حسب الوزن والسعر.</p>
     <h3>✨ المميزات</h3>
-    <ul><li>اختيار الأضحية حسب الوزن والسعر</li><li>معاينة صور الأضحية</li><li>دفع إلكتروني آمن</li><li>توصيل إلى المنزل في بعض الولايات</li></ul>
+    <ul><li>اختيار الأضحية حسب الوزن والسعر</li><li>معاينة صور الأضحية</li><li>دفع إلكتروني آمن</li></ul>
     <a href="https://adhahi.dz/register/" class="reg-btn" target="_blank">🔗 حجز أضحية العيد</a>
 </div></div>
 
@@ -235,108 +205,44 @@
 <div id="page-terms" class="full-page"><div class="page-header"><button class="back-btn" onclick="closePage()">← عودة</button><h3>شروط الخدمة</h3></div><div class="article-body"><h2>شروط استخدام موقع خدماتي الجزائر</h2><p>باستخدامك لهذا الموقع، فإنك توافق على الالتزام بهذه الشروط. جميع المعلومات لأغراض إعلامية فقط. لا نتحمل المسؤولية عن أي أخطاء أو تغييرات في الروابط الرسمية.</p></div></div>
 
 <script>
-    const WEATHER_API_KEY = '979632c1e88b3a261b3ce2382dab19de';
-    
     function openPage(pageId) {
-        var page = document.getElementById('page-' + pageId);
+        let page = document.getElementById('page-' + pageId);
         if (page) {
             page.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            if (typeof gtag !== 'undefined') gtag('event', 'open_page', { 'page_name': pageId });
-        } else {
-            console.error('الصفحة غير موجودة: page-' + pageId);
-        }
+        } else console.error('الصفحة غير موجودة: page-' + pageId);
     }
-    
     function closePage() {
-        document.querySelectorAll('.full-page').forEach(function(p) {
-            p.style.display = 'none';
-        });
+        document.querySelectorAll('.full-page').forEach(p => p.style.display = 'none');
         document.body.style.overflow = 'auto';
     }
-    
-    function shareApp() {
-        if (typeof gtag !== 'undefined') gtag('event', 'share_clicked');
-        if (navigator.share) {
-            navigator.share({title: 'خدماتي الجزائر', text: 'دليلك الإداري والمالي', url: window.location.href});
-        } else {
-            alert('شارك الرابط: ' + window.location.href);
-        }
-    }
-    
+    function shareApp() { if(navigator.share) navigator.share({title: 'خدماتي الجزائر', url: window.location.href}); else alert('شارك الرابط: ' + window.location.href); }
     document.getElementById('sync-time').innerText = new Date().toLocaleString('ar-DZ');
     
-    function getPrayerTimes() {
-        if (!navigator.geolocation) {
-            document.querySelectorAll('#prayer-list b').forEach(function(el) { el.innerText = 'غير متاح'; });
-            return;
-        }
-        navigator.geolocation.getCurrentPosition(function(position) {
-            fetch('https://api.aladhan.com/v1/timings?latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude + '&method=3')
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-                var t = res.data.timings;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            fetch(`https://api.aladhan.com/v1/timings?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&method=3`)
+            .then(r => r.json()).then(res => {
+                let t = res.data.timings;
                 document.getElementById('fajr').innerText = t.Fajr;
                 document.getElementById('dhuhr').innerText = t.Dhuhr;
                 document.getElementById('asr').innerText = t.Asr;
                 document.getElementById('maghrib').innerText = t.Maghrib;
                 document.getElementById('isha').innerText = t.Isha;
-            })
-            .catch(function() {
-                document.querySelectorAll('#prayer-list b').forEach(function(el) { el.innerText = 'خطأ'; });
             });
-        }, function() {
-            document.querySelectorAll('#prayer-list b').forEach(function(el) { el.innerText = '--:--'; });
         });
     }
     
-    function getWeatherData() {
-        if (!navigator.geolocation) {
-            document.getElementById('weather-container').innerHTML = '<div class="error-msg">لا يمكن تحديد موقعك</div>';
-            return;
-        }
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=metric&lang=ar&appid=' + WEATHER_API_KEY)
-            .then(function(response) {
-                if (!response.ok) throw new Error('API key error');
-                return response.json();
-            })
-            .then(function(data) {
-                var dailyForecasts = {};
-                data.list.forEach(function(forecast) {
-                    var date = forecast.dt_txt.split(' ')[0];
-                    if (!dailyForecasts[date] && forecast.dt_txt.includes('12:00')) {
-                        dailyForecasts[date] = forecast;
-                    }
-                });
-                var daysList = Object.values(dailyForecasts).slice(0, 5);
-                var weekDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                var html = '<div class="weather-scroll">';
-                daysList.forEach(function(forecast) {
-                    var date = new Date(forecast.dt * 1000);
-                    html += '<div class="weather-day">' +
-                        '<span>' + weekDays[date.getDay()] + '</span>' +
-                        '<img src="https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png">' +
-                        '<b>' + Math.round(forecast.main.temp) + '°C</b>' +
-                        '<span style="font-size:11px;">' + forecast.weather[0].description + '</span>' +
-                    '</div>';
-                });
-                html += '</div>';
-                document.getElementById('weather-container').innerHTML = html;
-                if (typeof gtag !== 'undefined') gtag('event', 'weather_loaded');
-            })
-            .catch(function() {
-                document.getElementById('weather-container').innerHTML = '<div class="error-msg">⚠️ مفتاح API قيد التفعيل. سيصبح جاهزاً خلال ساعات.</div>';
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=Algiers&units=metric&lang=ar&appid=979632c1e88b3a261b3ce2382dab19de')
+        .then(r => r.json()).then(data => {
+            let html = '<div class="weather-scroll">';
+            data.list.slice(0,5).forEach(f => {
+                let d = new Date(f.dt*1000);
+                html += `<div class="weather-day"><span>${d.toLocaleDateString('ar-DZ',{weekday:'long'})}</span><img src="https://openweathermap.org/img/wn/${f.weather[0].icon}@2x.png"><b>${Math.round(f.main.temp)}°C</b><span style="font-size:11px;">${f.weather[0].description}</span></div>`;
             });
-        }, function() {
-            document.getElementById('weather-container').innerHTML = '<div class="error-msg">يرجى تفعيل خدمات الموقع لتحديد موقعك</div>';
-        });
-    }
-    
-    getPrayerTimes();
-    getWeatherData();
+            html += '</div>';
+            document.getElementById('weather-container').innerHTML = html;
+        }).catch(() => document.getElementById('weather-container').innerHTML = '<div class="error-msg">⚠️ خطأ في تحميل الطقس</div>');
 </script>
 
 </body>
