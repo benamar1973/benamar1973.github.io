@@ -11,7 +11,7 @@
         h1 { border-bottom: 3px solid #1e4620; padding-bottom: 10px; }
         a { color: #1e4620; text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
-        .green-notice { background: #1e4620; padding: 15px; border-radius: 10px; border-right: 5px solid #0f2b10; margin: 20px 0; color: white; }
+        .green-notice { background: #1e4620; padding: 15px; border-radius: 10px; border-right: 5px solid #0f2b10; margin: 20px 0; color: white; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .green-notice a { color: #ffffff; text-decoration: underline; }
         .green-notice a:hover { color: #d4edda; }
         .warning { background: #fff3cd; padding: 15px; border-radius: 10px; border-right: 5px solid #ffc107; margin: 20px 0; }
@@ -24,13 +24,13 @@
         <h1>📄 التصريح بضياع وثائق: الدليل الكامل لمنصة e-declaration.dgsn.dz</h1>
         <p>تاريخ التحديث: 10 مايو 2026</p>
 
-        <!-- الرابط في بداية المقال -->
         <div class="green-notice">
-            🔗 <strong>رابط المنصة الرسمي:</strong> <a href="https://www.dgsn.dz/e-declaration/" target="_blank">https://www.dgsn.dz/e-declaration/</a>
+            <span>🔗 <strong>رابط المنصة الرسمي:</strong></span>
+            <a href="https://www.dgsn.dz/e-declaration/" target="_blank">https://www.dgsn.dz/e-declaration/</a>
         </div>
 
         <h2>📌 ما هي خدمة التصريح بضياع الوثائق؟</h2>
-        <p>أطلقت المديرية العامة للأمن الوطني (DGSN) في الجزائر منصة إلكترونية رقمية تسمح للمواطنين بالتصريح بضياع وثائقهم الرسمية (بطاقة التعريف، جواز السفر، رخصة السياقة، شهادة التسجيل للسيارة) دون الحاجة إلى التنقل إلى مصالح الشرطة. هذه الخدمة تهدف إلى تبسيط الإجراءات، تقليل الازدحام، وتسريع عملية استخراج وثائق بدل المفقودة.</p>
+        <p>أطلقت المديرية العامة للأمن الوطني (DGSN) في الجزائر منصة إلكترونية رقمية تسمح للمواطنين بالتصريح بضياع وثائقهم الرسمية (بطاقة التعريف، جواز السفر، رخصة السياقة، شهادة التسجيل للسيارة) دون الحاجة إلى التنقل إلى مصالح الشرطة.</p>
 
         <h2>📋 الوثائق التي يمكن التصريح بضياعها</h2>
         <ul>
@@ -44,59 +44,38 @@
         <ul>
             <li>أن يكون المصرح جزائري الجنسية.</li>
             <li>أن تكون الوثيقة المفقودة قد صدرت من المصالح الجزائرية.</li>
-            <li>التصريح يتم من قبل صاحب الوثيقة نفسه أو ولي الأمر للقاصرين.</li>
+            <li>التصريح يتم من قبل صاحب الوثيقة نفسه.</li>
         </ul>
 
         <h2>🔧 خطوات التصريح خطوة بخطوة</h2>
 
-        <div class="step">
-            <strong>الخطوة 1:</strong> زيارة المنصة الرسمية
-        </div>
-
-        <div class="step">
-            <strong>الخطوة 2:</strong> اختيار "تقديم طلب جديد" (Nouvelle déclaration)
-        </div>
-
-        <div class="step">
-            <strong>الخطوة 3:</strong> تعبئة البيانات الشخصية (الاسم الكامل، رقم التعريف الوطني، تاريخ الميلاد، رقم الهاتف)
-        </div>
-
-        <div class="step">
-            <strong>الخطوة 4:</strong> تحديد الوثيقة المفقودة (نوعها، رقمها إن وجد)
-        </div>
-
-        <div class="step">
-            <strong>الخطوة 5:</strong> إدخال مكان وتاريخ الضياع التقريبي
-        </div>
-
-        <div class="step">
-            <strong>الخطوة 6:</strong> تأكيد الطلب وطباعة إيصال التصريح
-        </div>
+        <div class="step"><strong>الخطوة 1:</strong> زيارة المنصة الرسمية</div>
+        <div class="step"><strong>الخطوة 2:</strong> اختيار "تقديم طلب جديد"</div>
+        <div class="step"><strong>الخطوة 3:</strong> تعبئة البيانات الشخصية</div>
+        <div class="step"><strong>الخطوة 4:</strong> تحديد الوثيقة المفقودة</div>
+        <div class="step"><strong>الخطوة 5:</strong> إدخال مكان وتاريخ الضياع</div>
+        <div class="step"><strong>الخطوة 6:</strong> تأكيد الطلب وطباعة الإيصال</div>
 
         <div class="warning">
             <strong>⚠️ تنبيه هام:</strong><br>
-            <strong>هذه الخدمة مجانية تماماً.</strong> لا تدفع أي مبلغ لأي موقع أو شخص. الرابط الرسمي الوحيد هو <strong>dgsn.dz/e-declaration</strong>.
+            هذه الخدمة مجانية تماماً. لا تدفع أي مبلغ. الرابط الرسمي الوحيد هو <strong>dgsn.dz/e-declaration</strong>.
         </div>
 
         <h2>❓ أسئلة شائعة</h2>
 
         <h3>س: هل يمكن التصريح عن وثائق أجنبية؟</h3>
-        <p>ج: لا، المنصة مخصصة فقط للوثائق الصادرة عن المصالح الجزائرية.</p>
+        <p>ج: لا، المنصة مخصصة فقط للوثائق الجزائرية.</p>
 
-        <h3>س: ماذا أفعل إذا لم أتذكر رقم الوثيقة المفقودة؟</h3>
-        <p>ج: يمكنك ترك الخانة فارغة أو كتابة "غير متذكر".</p>
+        <h3>س: ماذا أفعل إذا نسيت رقم الوثيقة؟</h3>
+        <p>ج: يمكنك ترك الخانة فارغة.</p>
 
-        <h3>س: كم تستغرق معالجة الطلب؟</h3>
-        <p>ج: التصريح فوري، ورقم الطلب يصلح لاستخراج وثيقة بديلة فوراً.</p>
-
-        <!-- الرابط في نهاية المقال -->
         <div class="green-notice">
-            🔗 <strong>رابط المنصة الرسمي:</strong> <a href="https://www.dgsn.dz/e-declaration/" target="_blank">https://www.dgsn.dz/e-declaration/</a>
+            <span>🔗 <strong>رابط المنصة الرسمي:</strong></span>
+            <a href="https://www.dgsn.dz/e-declaration/" target="_blank">https://www.dgsn.dz/e-declaration/</a>
         </div>
 
         <footer>
-            <p>موقع "خدماتي" - دليل الجزائري الشامل للخدمات الإلكترونية والإدارية</p>
-            <p>هذا المقال لأغراض إعلامية وتعليمية فقط. يرجى مراجعة المصادر الرسمية للحصول على أحدث المعلومات.</p>
+            <p>موقع "خدماتي" - دليل الجزائري الشامل</p>
             <p>📧 للاستفسارات: mustaphabenamar40@example.com</p>
         </footer>
     </div>
