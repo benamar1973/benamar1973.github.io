@@ -2,20 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>خدماتي - الدليل الجزائري</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>خدماتي - الجزائر</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(145deg, #0f3460 0%, #16213e 100%);
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Tajawal', sans-serif;
-            padding: 16px;
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 15px;
             min-height: 100vh;
         }
 
@@ -24,186 +23,176 @@
             margin: 0 auto;
         }
 
-        /* بطاقة رئيسية شفافة */
+        /* البطاقة الرئيسية */
         .main-card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 32px;
+            background: #ffffff;
+            border-radius: 35px;
             padding: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            backdrop-filter: blur(2px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
         }
 
         /* الهيدر */
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #0f3460, #e94560);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 12px;
+            font-size: 26px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
         }
 
         .share-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
+            background: #0f3460;
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
-            width: auto;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.2s;
         }
 
         .share-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
 
-        /* شبكة الخدمات - 3 أعمدة في الهاتف */
+        /* شبكة الخدمات */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
 
         .icon-btn {
-            background: white;
-            padding: 14px 6px;
-            border-radius: 20px;
+            background: #f8f9fa;
+            padding: 12px 5px;
+            border-radius: 18px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.05);
+            transition: 0.2s;
+            border: 1px solid #e9ecef;
         }
 
         .icon-btn:active {
             transform: scale(0.96);
-            background: #f0f2f5;
+            background: #e9ecef;
         }
 
         .icon-btn i {
-            font-size: 1.8rem;
+            font-size: 28px;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .icon-btn span {
-            font-size: 0.7rem;
+            font-size: 11px;
             font-weight: 600;
-            color: #1e2a47;
-            line-height: 1.3;
+            color: #2c3e50;
         }
 
-        /* أقسام المعلومات - عرض مرن */
+        /* أقسام المعلومات */
         .widgets {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-top: 8px;
+            gap: 15px;
         }
 
         .widget {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 18px;
+            border: 1px solid #e9ecef;
         }
 
         .widget h3 {
             color: #0f3460;
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            padding-bottom: 6px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
             border-bottom: 3px solid #e94560;
             display: inline-block;
         }
 
+        /* أسعار الصرف */
         .exchange-rate p {
+            display: flex;
+            justify-content: space-between;
             margin: 10px 0;
-            font-size: 0.95rem;
-            padding: 6px 0;
-            border-bottom: 1px dashed #e0e0e0;
-            display: flex;
-            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #dee2e6;
+            font-size: 15px;
         }
 
-        /* جدول الصلاة */
-        .prayer-times div {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 1rem;
-            font-weight: 500;
+        /* مواقيت الصلاة - منظمة داخل مربع */
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
 
-        .prayer-times div:last-child {
-            border-bottom: none;
+        .prayer-item {
+            background: white;
+            padding: 12px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        .prayer-times div span:first-child {
+        .prayer-name {
+            font-size: 14px;
             color: #0f3460;
-            font-weight: 600;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .prayer-times div span:last-child {
+        .prayer-time {
+            font-size: 18px;
+            font-weight: bold;
             color: #e94560;
             font-family: monospace;
-            font-size: 1rem;
-            font-weight: bold;
         }
 
         /* الطقس */
         .weather-temp {
-            font-size: 2.2rem;
+            font-size: 38px;
             font-weight: bold;
             color: #e94560;
             text-align: center;
-            margin: 12px 0;
+            margin: 10px 0;
         }
 
         .weather-desc {
             text-align: center;
-            font-size: 1rem;
-            margin: 8px 0;
+            font-size: 16px;
             color: #2c3e50;
+            margin: 5px 0;
         }
 
         .weather-detail {
             display: flex;
             justify-content: space-around;
-            margin-top: 12px;
+            margin-top: 15px;
             padding-top: 12px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #dee2e6;
         }
 
         .loading {
             text-align: center;
             padding: 20px;
             color: #e94560;
-            font-size: 0.9rem;
         }
 
-        /* تذييل */
         footer {
             text-align: center;
             margin-top: 20px;
-            padding: 16px;
+            padding: 15px;
             color: rgba(255,255,255,0.7);
-            font-size: 0.7rem;
+            font-size: 11px;
         }
 
         footer a {
@@ -211,9 +200,22 @@
             text-decoration: none;
         }
 
-        /* تحسين اللمس */
-        button, .icon-btn {
-            touch-action: manipulation;
+        @media (max-width: 450px) {
+            .grid {
+                gap: 8px;
+            }
+            .icon-btn i {
+                font-size: 22px;
+            }
+            .icon-btn span {
+                font-size: 10px;
+            }
+            .prayer-item {
+                padding: 8px;
+            }
+            .prayer-time {
+                font-size: 15px;
+            }
         }
     </style>
 </head>
@@ -222,12 +224,10 @@
         <div class="main-card">
             <div class="header">
                 <h1>📱 خدماتي الجزائر</h1>
-                <button class="share-btn" onclick="shareApp()">
-                    📤 شارك التطبيق
-                </button>
+                <button class="share-btn" onclick="shareApp()">📤 شارك التطبيق</button>
             </div>
 
-            <!-- شبكة الخدمات - 3 أعمدة مناسبة للهاتف -->
+            <!-- أيقونات الخدمات -->
             <div class="grid">
                 <div class="icon-btn" onclick="window.open('https://www.anem.dz', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.mdn.dz', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -241,7 +241,7 @@
                 <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>💳</i><span>الدفع الإلكتروني</span></div>
             </div>
 
-            <!-- المعلومات -->
+            <!-- معلومات إضافية -->
             <div class="widgets">
                 <div class="widget exchange-rate">
                     <h3>💱 أسعار الصرف</h3>
@@ -249,7 +249,7 @@
                     <p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p>
                 </div>
 
-                <div class="widget prayer-times" id="prayerWidget">
+                <div class="widget" id="prayerWidget">
                     <h3>🕋 مواقيت الصلاة</h3>
                     <div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div>
                 </div>
@@ -261,34 +261,30 @@
             </div>
 
             <footer>
-                <p>🇩🇿 موقع "خدماتي" - روابط رسمية للخدمات الجزائرية</p>
+                <p>🇩🇿 روابط رسمية للخدمات الجزائرية</p>
                 <p><a href="mailto:mustaphabenamar40@example.com">📧 mustaphabenamar40@example.com</a></p>
             </footer>
         </div>
     </div>
 
     <script>
-        // مشاركة التطبيق
         function shareApp() {
             if (navigator.share) {
                 navigator.share({
                     title: 'خدماتي الجزائر',
-                    text: 'دليل الخدمات الرسمية',
                     url: 'https://benamar1973.github.io/'
-                }).catch(() => {});
+                });
             } else {
                 navigator.clipboard.writeText('https://benamar1973.github.io/');
-                alert('تم نسخ رابط التطبيق 📋');
+                alert('تم نسخ الرابط 📋');
             }
         }
 
-        let userLat = null;
-        let userLon = null;
+        let userLat = null, userLon = null;
 
-        // طلب موقع المستخدم
         function getUserLocation() {
             if (!navigator.geolocation) {
-                document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
+                document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم الموقع</p>';
                 document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
                 return;
             }
@@ -297,58 +293,57 @@
                 (position) => {
                     userLat = position.coords.latitude;
                     userLon = position.coords.longitude;
-                    fetchPrayerTimes(userLat, userLon);
-                    fetchWeather(userLat, userLon);
+                    fetchPrayerTimes();
+                    fetchWeather();
                 },
                 (error) => {
-                    let msg = '';
-                    if (error.code === 1) msg = '🔒 يرجى السماح بالوصول إلى الموقع';
-                    else if (error.code === 2) msg = '📡 موقع غير متاح حالياً';
-                    else msg = '❌ تعذر تحديد الموقع';
+                    let msg = '🔒 يرجى السماح بالوصول إلى الموقع';
                     document.getElementById('prayerContent').innerHTML = `<p>${msg}</p>`;
                     document.getElementById('weatherContent').innerHTML = `<p>${msg}</p>`;
                 }
             );
         }
 
-        // أوقات الصلاة (Aladhan API)
-        async function fetchPrayerTimes(lat, lon) {
+        async function fetchPrayerTimes() {
             const div = document.getElementById('prayerContent');
-            div.innerHTML = '<div class="loading">⏳ جاري جلب مواقيت الصلاة...</div>';
+            div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
             try {
                 const today = new Date();
                 const d = today.getDate();
                 const m = today.getMonth() + 1;
                 const y = today.getFullYear();
-                const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${lat}&longitude=${lon}&method=2`;
+                const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${userLat}&longitude=${userLon}&method=2`;
                 const resp = await fetch(url);
                 const data = await resp.json();
+                
                 if (data.code === 200) {
                     const t = data.data.timings;
                     div.innerHTML = `
-                        <div><span>🇩🇿 الفجر</span><span>${t.Fajr.slice(0,5)}</span></div>
-                        <div><span>☀️ الشروق</span><span>${t.Sunrise.slice(0,5)}</span></div>
-                        <div><span>🌙 الظهر</span><span>${t.Dhuhr.slice(0,5)}</span></div>
-                        <div><span>🌓 العصر</span><span>${t.Asr.slice(0,5)}</span></div>
-                        <div><span>🌅 المغرب</span><span>${t.Maghrib.slice(0,5)}</span></div>
-                        <div><span>🌙 العشاء</span><span>${t.Isha.slice(0,5)}</span></div>
+                        <div class="prayer-grid">
+                            <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                        </div>
                     `;
                 } else {
-                    div.innerHTML = '<p>⚠️ تعذر جلب أوقات الصلاة</p>';
+                    div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
                 }
             } catch(e) {
-                div.innerHTML = '<p>⚠️ خطأ في الاتصال</p>';
+                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
             }
         }
 
-        // الطقس (OpenWeatherMap)
-        async function fetchWeather(lat, lon) {
+        async function fetchWeather() {
             const div = document.getElementById('weatherContent');
-            div.innerHTML = '<div class="loading">⏳ جلب حالة الطقس...</div>';
+            div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
             try {
-                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
                 const resp = await fetch(url);
                 const data = await resp.json();
+                
                 if (data.cod === 200) {
                     div.innerHTML = `
                         <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
@@ -356,18 +351,17 @@
                         <div class="weather-desc">☁️ ${data.weather[0].description}</div>
                         <div class="weather-detail">
                             <span>💧 رطوبة ${data.main.humidity}%</span>
-                            <span>💨 رياح ${data.wind.speed} كم/س</span>
+                            <span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span>
                         </div>
                     `;
                 } else {
-                    div.innerHTML = '<p>⚠️ تعذر جلب الطقس</p>';
+                    div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
                 }
             } catch(e) {
-                div.innerHTML = '<p>⚠️ خطأ في الاتصال</p>';
+                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
             }
         }
 
-        // تشغيل
         getUserLocation();
     </script>
 </body>
