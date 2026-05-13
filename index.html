@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - الجزائر</title>
+    <title>خدماتي - الدليل الجزائري</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
         body {
             background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
             font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 15px;
+            padding: 20px;
             min-height: 100vh;
         }
 
@@ -23,7 +23,7 @@
             margin: 0 auto;
         }
 
-        /* البطاقة الرئيسية */
+        /* بطاقة رئيسية */
         .main-card {
             background: #ffffff;
             border-radius: 35px;
@@ -56,8 +56,8 @@
             transition: 0.2s;
         }
 
-        .share-btn:active {
-            transform: scale(0.95);
+        .share-btn:hover {
+            background: #e94560;
         }
 
         /* شبكة الخدمات */
@@ -78,9 +78,10 @@
             border: 1px solid #e9ecef;
         }
 
-        .icon-btn:active {
-            transform: scale(0.96);
+        .icon-btn:hover {
+            transform: translateY(-3px);
             background: #e9ecef;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .icon-btn i {
@@ -128,7 +129,7 @@
             font-size: 15px;
         }
 
-        /* مواقيت الصلاة - منظمة داخل مربع */
+        /* مواقيت الصلاة - شبكة منظمة */
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -201,6 +202,9 @@
         }
 
         @media (max-width: 450px) {
+            body {
+                padding: 15px;
+            }
             .grid {
                 gap: 8px;
             }
@@ -227,7 +231,7 @@
                 <button class="share-btn" onclick="shareApp()">📤 شارك التطبيق</button>
             </div>
 
-            <!-- أيقونات الخدمات -->
+            <!-- أيقونات الخدمات - فقط روابط مباشرة -->
             <div class="grid">
                 <div class="icon-btn" onclick="window.open('https://www.anem.dz', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.mdn.dz', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -272,11 +276,12 @@
             if (navigator.share) {
                 navigator.share({
                     title: 'خدماتي الجزائر',
+                    text: 'جميع الخدمات الجزائرية الرسمية في مكان واحد',
                     url: 'https://benamar1973.github.io/'
-                });
+                }).catch(() => {});
             } else {
                 navigator.clipboard.writeText('https://benamar1973.github.io/');
-                alert('تم نسخ الرابط 📋');
+                alert('تم نسخ رابط التطبيق 📋');
             }
         }
 
@@ -284,7 +289,7 @@
 
         function getUserLocation() {
             if (!navigator.geolocation) {
-                document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم الموقع</p>';
+                document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
                 document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
                 return;
             }
@@ -298,8 +303,8 @@
                 },
                 (error) => {
                     let msg = '🔒 يرجى السماح بالوصول إلى الموقع';
-                    document.getElementById('prayerContent').innerHTML = `<p>${msg}</p>`;
-                    document.getElementById('weatherContent').innerHTML = `<p>${msg}</p>`;
+                    document.getElementById('prayerContent').innerHTML = `<p style="text-align:center">${msg}</p>`;
+                    document.getElementById('weatherContent').innerHTML = `<p style="text-align:center">${msg}</p>`;
                 }
             );
         }
@@ -329,10 +334,10 @@
                         </div>
                     `;
                 } else {
-                    div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+                    div.innerHTML = '<p style="text-align:center">⚠️ خطأ في التحميل</p>';
                 }
             } catch(e) {
-                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+                div.innerHTML = '<p style="text-align:center">⚠️ فشل الاتصال</p>';
             }
         }
 
@@ -355,10 +360,10 @@
                         </div>
                     `;
                 } else {
-                    div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+                    div.innerHTML = '<p style="text-align:center">⚠️ خطأ في الطقس</p>';
                 }
             } catch(e) {
-                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+                div.innerHTML = '<p style="text-align:center">⚠️ فشل الاتصال</p>';
             }
         }
 
