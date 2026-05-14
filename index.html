@@ -158,6 +158,7 @@
             <div id="authSection" class="auth-section">
                 <input type="email" id="email" placeholder="البريد الإلكتروني">
                 <input type="password" id="password" placeholder="كلمة المرور">
+                <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
                 <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
                 <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
                 <div id="authStatus" class="status"></div>
@@ -174,10 +175,10 @@
                 </div>
 
                 <div class="services-grid">
-                    <div class="service-btn" onclick="alert('سيتم تفعيل الدفع قريباً')">💡 كهرباء</div>
-                    <div class="service-btn" onclick="alert('سيتم تفعيل الدفع قريباً')">💧 ماء</div>
-                    <div class="service-btn" onclick="alert('سيتم تفعيل الدفع قريباً')">📡 إنترنت</div>
-                    <div class="service-btn" onclick="alert('سيتم تفعيل الدفع قريباً')">📱 هاتف</div>
+                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الكهرباء قريباً')">💡 كهرباء</div>
+                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الماء قريباً')">💧 ماء</div>
+                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الإنترنت قريباً')">📡 إنترنت</div>
+                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الهاتف قريباً')">📱 هاتف</div>
                 </div>
             </div>
 
@@ -190,7 +191,7 @@
 
     <!-- استيراد Firebase SDK (موديول) -->
     <script type="module">
-        // 🔥 Firebase Configuration (انسخ والصق الكود الذي أخذته من Firebase)
+        // 🔥 Firebase Configuration (تم نسخه من مشروعك)
         const firebaseConfig = {
             apiKey: "AIzaSyBie4Rtm0_d5fVhKDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -215,6 +216,7 @@
         const walletSection = document.getElementById('walletSection');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
         const loginBtn = document.getElementById('loginBtn');
         const signupBtn = document.getElementById('signupBtn');
         const logoutBtn = document.getElementById('logoutBtn');
@@ -228,7 +230,7 @@
                 authSection.style.display = 'none';
                 walletSection.style.display = 'block';
                 
-                // جلب رصيد المحفظة من Firestore (أو إنشاء وثيقة جديدة إذا لم تكن موجودة)
+                // جلب رصيد المحفظة من Firestore
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
                 
@@ -236,7 +238,7 @@
                     const balance = userSnap.data().balance || 0;
                     balanceDiv.innerText = balance + " دج";
                 } else {
-                    // إنشاء محفظة جديدة للمستخدم الجديد برصيد 0
+                    // إنشاء محفظة جديدة للمستخدم الجديد (لأول مرة)
                     await setDoc(userRef, { balance: 0, email: user.email });
                     balanceDiv.innerText = "0 دج";
                 }
@@ -247,6 +249,7 @@
                 walletSection.style.display = 'none';
                 emailInput.value = '';
                 passwordInput.value = '';
+                confirmPasswordInput.value = '';
                 authStatus.innerText = "";
             }
         });
@@ -261,9 +264,14 @@
             }
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                authStatus.innerText = "تم تسجيل الدخول بنجاح";
+                authStatus.innerText = "✅ تم تسجيل الدخول بنجاح";
             } catch (error) {
-                authStatus.innerText = "خطأ: " + error.message;
+                let msg = "❌ خطأ: ";
+                if (error.code === 'auth/user-not-found') msg += "المستخدم غير موجود";
+                else if (error.code === 'auth/wrong-password') msg += "كلمة المرور غير صحيحة";
+                else if (error.code === 'auth/invalid-email') msg += "البريد الإلكتروني غير صالح";
+                else msg += error.message;
+                authStatus.innerText = msg;
             }
         });
 
@@ -271,8 +279,18 @@
         signupBtn.addEventListener('click', async () => {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
-            if (!email || !password) {
-                authStatus.innerText = "الرجاء إدخال البريد الإلكتروني وكلمة المرور";
+            const confirm = confirmPasswordInput.value.trim();
+            
+            if (!email || !password || !confirm) {
+                authStatus.innerText = "الرجاء ملء جميع الحقول";
+                return;
+            }
+            if (password !== confirm) {
+                authStatus.innerText = "كلمتا المرور غير متطابقتين";
+                return;
+            }
+            if (password.length < 6) {
+                authStatus.innerText = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
                 return;
             }
             try {
@@ -280,9 +298,15 @@
                 // إنشاء وثيقة المستخدم مع رصيد 0
                 const userRef = doc(db, "users", userCredential.user.uid);
                 await setDoc(userRef, { balance: 0, email: email });
-                authStatus.innerText = "تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.";
+                authStatus.innerText = "✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...";
+                // سيتم تسجيل الدخول تلقائياً لأن onAuthStateChanged سيتعامل معه
             } catch (error) {
-                authStatus.innerText = "خطأ: " + error.message;
+                let msg = "❌ خطأ: ";
+                if (error.code === 'auth/email-already-in-use') msg += "البريد الإلكتروني مستخدم بالفعل";
+                else if (error.code === 'auth/invalid-email') msg += "البريد الإلكتروني غير صالح";
+                else if (error.code === 'auth/weak-password') msg += "كلمة المرور ضعيفة جداً";
+                else msg += error.message;
+                authStatus.innerText = msg;
             }
         });
 
