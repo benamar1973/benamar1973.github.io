@@ -41,6 +41,7 @@
             margin-bottom: 10px;
         }
 
+        /* قسم المصادقة والمحفظة */
         .auth-section {
             margin-bottom: 20px;
             padding: 15px;
@@ -110,32 +111,127 @@
             cursor: pointer;
         }
 
-        .services-grid {
+        /* الأقسام الأصلية */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
-        .service-btn {
+        .icon-btn {
             background: #f8f9fa;
-            padding: 15px;
-            border-radius: 20px;
+            padding: 12px 5px;
+            border-radius: 18px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
             border: 1px solid #e9ecef;
         }
 
-        .service-btn:active {
+        .icon-btn:active {
             transform: scale(0.96);
         }
 
-        .status {
+        .icon-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .icon-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .widgets {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .widget {
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 18px;
+            border: 1px solid #e9ecef;
+        }
+
+        .widget h3 {
+            color: #0f3460;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e94560;
+            display: inline-block;
+        }
+
+        .exchange-rate p {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px dashed #dee2e6;
+            font-size: 15px;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .prayer-item {
+            background: white;
+            padding: 12px;
+            border-radius: 18px;
             text-align: center;
-            margin-top: 10px;
-            color: #e94560;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .prayer-name {
             font-size: 14px;
+            color: #0f3460;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .prayer-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e94560;
+            font-family: monospace;
+        }
+
+        .weather-temp {
+            font-size: 38px;
+            font-weight: bold;
+            color: #e94560;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .weather-desc {
+            text-align: center;
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 5px 0;
+        }
+
+        .weather-detail {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #e94560;
         }
 
         footer {
@@ -154,17 +250,16 @@
                 <h1>📱 خدماتي - المحفظة الإلكترونية</h1>
             </div>
 
-            <!-- قسم تسجيل الدخول / إنشاء حساب -->
+            <!-- قسم المحفظة وتسجيل الدخول -->
             <div id="authSection" class="auth-section">
                 <input type="email" id="email" placeholder="البريد الإلكتروني">
                 <input type="password" id="password" placeholder="كلمة المرور">
                 <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
                 <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
                 <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
-                <div id="authStatus" class="status"></div>
+                <div id="authStatus" class="status" style="text-align:center; margin-top:10px; color:#e94560;"></div>
             </div>
 
-            <!-- قسم المحفظة (يظهر فقط بعد تسجيل الدخول) -->
             <div id="walletSection" style="display: none;">
                 <div class="wallet-section">
                     <h3>💰 رصيد المحفظة</h3>
@@ -173,12 +268,38 @@
                     <button id="payBillBtn" class="btn-action">دفع فاتورة</button>
                     <button id="logoutBtn" class="btn-action btn-logout">تسجيل الخروج</button>
                 </div>
+            </div>
 
-                <div class="services-grid">
-                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الكهرباء قريباً')">💡 كهرباء</div>
-                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الماء قريباً')">💧 ماء</div>
-                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الإنترنت قريباً')">📡 إنترنت</div>
-                    <div class="service-btn" onclick="alert('🔜 سيتم تفعيل دفع فاتورة الهاتف قريباً')">📱 هاتف</div>
+            <!-- الروابط الأصلية (الخدمات) -->
+            <div class="grid">
+                <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
+                <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
+                <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
+                <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><i>🏢</i><span>سكنات عدل</span></div>
+                <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><i>💼</i><span>وسيط ANEM</span></div>
+                <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><i>🐑</i><span>أضحية العيد</span></div>
+                <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
+                <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
+                <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
+                <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>💳</i><span>الدفع الإلكتروني</span></div>
+            </div>
+
+            <!-- أقسام المعلومات (أسعار الصرف، مواقيت الصلاة، الطقس) -->
+            <div class="widgets">
+                <div class="widget exchange-rate">
+                    <h3>💱 أسعار الصرف</h3>
+                    <p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p>
+                    <p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p>
+                </div>
+
+                <div class="widget" id="prayerWidget">
+                    <h3>🕋 مواقيت الصلاة</h3>
+                    <div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div>
+                </div>
+
+                <div class="widget" id="weatherWidget">
+                    <h3>☁️ حالة الطقس</h3>
+                    <div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div>
                 </div>
             </div>
 
@@ -189,9 +310,9 @@
         </div>
     </div>
 
-    <!-- استيراد Firebase SDK -->
+    <!-- Firebase SDK -->
     <script type="module">
-        // 🔥 Firebase Configuration (المفتاح الجديد الذي أرسلته)
+        // 🔥 Firebase Configuration (نفس المفتاح الجديد)
         const firebaseConfig = {
             apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -201,40 +322,35 @@
             appId: "1:689071750342:web:10c232ebb79149385dabc7"
         };
 
-        // استيراد دوال Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-        // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // عناصر HTML
+        // عناصر الواجهة
         const authSection = document.getElementById('authSection');
         const walletSection = document.getElementById('walletSection');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const confirmInput = document.getElementById('confirmPassword');
         const loginBtn = document.getElementById('loginBtn');
         const signupBtn = document.getElementById('signupBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const balanceDiv = document.getElementById('balance');
         const authStatus = document.getElementById('authStatus');
 
-        // تحديث واجهة المستخدم عند تغير حالة تسجيل الدخول
+        // حالة تسجيل الدخول
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 authSection.style.display = 'none';
                 walletSection.style.display = 'block';
-                
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
-                
                 if (userSnap.exists()) {
-                    const balance = userSnap.data().balance || 0;
-                    balanceDiv.innerText = balance + " دج";
+                    balanceDiv.innerText = (userSnap.data().balance || 0) + " دج";
                 } else {
                     await setDoc(userRef, { balance: 0, email: user.email });
                     balanceDiv.innerText = "0 دج";
@@ -245,7 +361,7 @@
                 walletSection.style.display = 'none';
                 emailInput.value = '';
                 passwordInput.value = '';
-                confirmPasswordInput.value = '';
+                confirmInput.value = '';
                 authStatus.innerText = "";
             }
         });
@@ -262,21 +378,19 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 authStatus.innerText = "✅ تم تسجيل الدخول بنجاح";
             } catch (error) {
-                let msg = "❌ خطأ: ";
+                let msg = "❌ ";
                 if (error.code === 'auth/user-not-found') msg += "المستخدم غير موجود";
                 else if (error.code === 'auth/wrong-password') msg += "كلمة المرور غير صحيحة";
-                else if (error.code === 'auth/invalid-email') msg += "البريد الإلكتروني غير صالح";
                 else msg += error.message;
                 authStatus.innerText = msg;
             }
         });
 
-        // إنشاء حساب جديد
+        // إنشاء حساب
         signupBtn.addEventListener('click', async () => {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
-            const confirm = confirmPasswordInput.value.trim();
-            
+            const confirm = confirmInput.value.trim();
             if (!email || !password || !confirm) {
                 authStatus.innerText = "الرجاء ملء جميع الحقول";
                 return;
@@ -290,15 +404,12 @@
                 return;
             }
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const userRef = doc(db, "users", userCredential.user.uid);
-                await setDoc(userRef, { balance: 0, email: email });
+                const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(db, "users", userCred.user.uid), { balance: 0, email });
                 authStatus.innerText = "✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...";
             } catch (error) {
-                let msg = "❌ خطأ: ";
+                let msg = "❌ ";
                 if (error.code === 'auth/email-already-in-use') msg += "البريد الإلكتروني مستخدم بالفعل";
-                else if (error.code === 'auth/invalid-email') msg += "البريد الإلكتروني غير صالح";
-                else if (error.code === 'auth/weak-password') msg += "كلمة المرور ضعيفة جداً";
                 else msg += error.message;
                 authStatus.innerText = msg;
             }
@@ -310,12 +421,86 @@
         });
 
         // أزرار تجريبية
-        document.getElementById('rechargeBtn').addEventListener('click', () => {
-            alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay.");
-        });
-        document.getElementById('payBillBtn').addEventListener('click', () => {
-            alert("🔜 خدمة دفع الفواتير قيد التطوير.");
-        });
+        document.getElementById('rechargeBtn').addEventListener('click', () => alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay."));
+        document.getElementById('payBillBtn').addEventListener('click', () => alert("🔜 خدمة دفع الفواتير قيد التطوير."));
+
+        // === دوال الطقس وأوقات الصلاة ===
+        let userLat = null, userLon = null;
+
+        function getUserLocation() {
+            if (!navigator.geolocation) {
+                document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
+                document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLat = position.coords.latitude;
+                    userLon = position.coords.longitude;
+                    fetchPrayerTimes();
+                    fetchWeather();
+                },
+                () => {
+                    document.getElementById('prayerContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+                    document.getElementById('weatherContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+                }
+            );
+        }
+
+        async function fetchPrayerTimes() {
+            const div = document.getElementById('prayerContent');
+            div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+            try {
+                const today = new Date();
+                const url = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${userLat}&longitude=${userLon}&method=2`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.code === 200) {
+                    const t = data.data.timings;
+                    div.innerHTML = `
+                        <div class="prayer-grid">
+                            <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                            <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+                }
+            } catch(e) {
+                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+            }
+        }
+
+        async function fetchWeather() {
+            const div = document.getElementById('weatherContent');
+            div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+            try {
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.cod === 200) {
+                    div.innerHTML = `
+                        <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                        <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
+                        <div class="weather-desc">☁️ ${data.weather[0].description}</div>
+                        <div class="weather-detail">
+                            <span>💧 رطوبة ${data.main.humidity}%</span>
+                            <span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+                }
+            } catch(e) {
+                div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+            }
+        }
+
+        getUserLocation();
     </script>
 </body>
 </html>
