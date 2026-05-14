@@ -189,22 +189,22 @@
         </div>
     </div>
 
-    <!-- استيراد Firebase SDK (موديول) -->
+    <!-- استيراد Firebase SDK -->
     <script type="module">
-        // 🔥 Firebase Configuration (تم نسخه من مشروعك)
+        // 🔥 Firebase Configuration (المفتاح الجديد الذي أرسلته)
         const firebaseConfig = {
-            apiKey: "AIzaSyBie4Rtm0_d5fVhKDU30XZ_-BQnMtqCGDw",
+            apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
             projectId: "khadamati-dz-28051",
             storageBucket: "khadamati-dz-28051.firebasestorage.app",
             messagingSenderId: "689071750342",
-            appId: "1:689071750342:web:9fc6a708d681736d5dabc7"
+            appId: "1:689071750342:web:10c232ebb79149385dabc7"
         };
 
         // استيراد دوال Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
         // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
@@ -226,11 +226,9 @@
         // تحديث واجهة المستخدم عند تغير حالة تسجيل الدخول
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // المستخدم مسجل دخول
                 authSection.style.display = 'none';
                 walletSection.style.display = 'block';
                 
-                // جلب رصيد المحفظة من Firestore
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
                 
@@ -238,13 +236,11 @@
                     const balance = userSnap.data().balance || 0;
                     balanceDiv.innerText = balance + " دج";
                 } else {
-                    // إنشاء محفظة جديدة للمستخدم الجديد (لأول مرة)
                     await setDoc(userRef, { balance: 0, email: user.email });
                     balanceDiv.innerText = "0 دج";
                 }
                 authStatus.innerText = "";
             } else {
-                // غير مسجل دخول
                 authSection.style.display = 'block';
                 walletSection.style.display = 'none';
                 emailInput.value = '';
@@ -295,11 +291,9 @@
             }
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                // إنشاء وثيقة المستخدم مع رصيد 0
                 const userRef = doc(db, "users", userCredential.user.uid);
                 await setDoc(userRef, { balance: 0, email: email });
                 authStatus.innerText = "✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...";
-                // سيتم تسجيل الدخول تلقائياً لأن onAuthStateChanged سيتعامل معه
             } catch (error) {
                 let msg = "❌ خطأ: ";
                 if (error.code === 'auth/email-already-in-use') msg += "البريد الإلكتروني مستخدم بالفعل";
@@ -315,16 +309,12 @@
             await signOut(auth);
         });
 
-        // زر شحن المحفظة (سيتم ربطه لاحقاً بـ Chargily Pay)
-        const rechargeBtn = document.getElementById('rechargeBtn');
-        rechargeBtn.addEventListener('click', () => {
-            alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay.\nيمكنك الآن استخدام النظام التجريبي.");
+        // أزرار تجريبية
+        document.getElementById('rechargeBtn').addEventListener('click', () => {
+            alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay.");
         });
-
-        // زر دفع فاتورة (سيتم ربطه لاحقاً)
-        const payBillBtn = document.getElementById('payBillBtn');
-        payBillBtn.addEventListener('click', () => {
-            alert("🔜 خدمة دفع الفواتير قيد التطوير.\nشكراً لصبرك.");
+        document.getElementById('payBillBtn').addEventListener('click', () => {
+            alert("🔜 خدمة دفع الفواتير قيد التطوير.");
         });
     </script>
 </body>
