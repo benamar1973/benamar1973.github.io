@@ -234,12 +234,67 @@
             color: #e94560;
         }
 
+        /* قسم الدفع الجديد - تحت المحفظة */
+        .payment-section {
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .payment-section h3 {
+            color: #0f3460;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e94560;
+            display: inline-block;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .payment-icon {
+            background: white;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #dee2e6;
+        }
+
+        .payment-icon:active {
+            transform: scale(0.96);
+        }
+
+        .payment-icon i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .payment-icon span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
         footer {
             text-align: center;
             margin-top: 20px;
             padding: 15px;
             color: rgba(255,255,255,0.7);
             font-size: 11px;
+        }
+
+        footer a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
         }
     </style>
 </head>
@@ -265,12 +320,35 @@
                     <h3>💰 رصيد المحفظة</h3>
                     <div id="balance" class="balance">0 دج</div>
                     <button id="rechargeBtn" class="btn-action">شحن المحفظة</button>
-                    <button id="payBillBtn" class="btn-action">دفع فاتورة</button>
+                    <!-- تم حذف زر دفع الفاتورة من هنا -->
                     <button id="logoutBtn" class="btn-action btn-logout">تسجيل الخروج</button>
+                </div>
+
+                <!-- مربع الدفع الجديد تحت المحفظة -->
+                <div class="payment-section">
+                    <h3>💳 تسديد الفواتير</h3>
+                    <div class="payment-grid">
+                        <div class="payment-icon" onclick="window.open('https://www.sonelgaz.dz/', '_blank')">
+                            <i>⚡</i>
+                            <span>كهرباء SONELGAZ</span>
+                        </div>
+                        <div class="payment-icon" onclick="window.open('https://www.ade.dz/', '_blank')">
+                            <i>💧</i>
+                            <span>ماء ADE</span>
+                        </div>
+                        <div class="payment-icon" onclick="window.open('https://www.algerietelecom.dz/', '_blank')">
+                            <i>📞</i>
+                            <span>هاتف ALGERIE TELECOM</span>
+                        </div>
+                        <div class="payment-icon" onclick="alert('🔜 خدمة الفليكسي قريباً')">
+                            <i>⚡</i>
+                            <span>خدمة الفليكسي</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- الروابط الأصلية (الخدمات) -->
+            <!-- الروابط الأصلية (الخدمات) مع تغيير أيقونة الدفع الإلكتروني إلى CCP -->
             <div class="grid">
                 <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
                 <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -281,7 +359,16 @@
                 <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
                 <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
-                <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>💳</i><span>الدفع الإلكتروني</span></div>
+                <!-- تم تغيير أيقونة الدفع الإلكتروني إلى CCP مع الحفاظ على نفس الرابط -->
+                <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>الدفع بـ CCP</span></div>
+            </div>
+
+            <!-- الروابط الجديدة المطلوبة (CNAS, CASNOS, dzexams, نفطال) -->
+            <div class="grid" style="margin-top: 15px;">
+                <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة عدم الإنتساب CNAS</span></div>
+                <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة عدم الإنتساب CASNOS</span></div>
+                <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
+                <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات (نفطال)</span></div>
             </div>
 
             <!-- أقسام المعلومات (أسعار الصرف، مواقيت الصلاة، الطقس) -->
@@ -305,14 +392,14 @@
 
             <footer>
                 <p>🇩🇿 خدماتي - أول محفظة إلكترونية جزائرية للتسديد</p>
-                <p><a href="mailto:mustaphabenamar40@example.com">📧 mustaphabenamar40@example.com</a></p>
+                <p style="color: black; font-weight: bold;">📧 djadidkhadamati@gmail.com</p>
             </footer>
         </div>
     </div>
 
     <!-- Firebase SDK -->
     <script type="module">
-        // 🔥 Firebase Configuration (نفس المفتاح الجديد)
+        // 🔥 Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -420,9 +507,8 @@
             await signOut(auth);
         });
 
-        // أزرار تجريبية
+        // شحن المحفظة
         document.getElementById('rechargeBtn').addEventListener('click', () => alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay."));
-        document.getElementById('payBillBtn').addEventListener('click', () => alert("🔜 خدمة دفع الفواتير قيد التطوير."));
 
         // === دوال الطقس وأوقات الصلاة ===
         let userLat = null, userLon = null;
