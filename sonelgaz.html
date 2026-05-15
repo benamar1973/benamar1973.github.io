@@ -1,167 +1,341 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - دفع فاتورة سونلغاز</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Sonelgaz - دفع الفاتورة</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-            min-height: 100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
         }
-        .container { max-width: 500px; margin: 0 auto; }
+        body {
+            background: #f0f2f5;
+            padding: 20px;
+        }
         .card {
             background: white;
-            border-radius: 35px;
-            padding: 25px;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            border-radius: 32px;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        h1 { text-align: center; color: #1a1a2e; margin-bottom: 20px; font-size: 26px; }
-        .balance-box {
-            background: #e9ecef;
-            border-radius: 25px;
+        .solde-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .solde-box {
+            flex: 1;
+            background: #f8fafd;
+            border-radius: 24px;
             padding: 15px;
             text-align: center;
-            margin-bottom: 20px;
         }
-        .balance { font-size: 32px; font-weight: bold; color: #0f3460; margin: 10px 0; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; color: #0f3460; font-weight: bold; }
+        .solde-box h4 {
+            font-size: 14px;
+            color: #5a6e8a;
+        }
+        .solde-box .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a2c3e;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f7b4d;
+            margin-bottom: 10px;
+        }
+        .info {
+            background: #fef9e3;
+            padding: 10px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .scanner {
+            background: #eef3fc;
+            padding: 20px;
+            border-radius: 28px;
+            text-align: center;
+            margin: 15px 0;
+            cursor: pointer;
+            border: 1px solid #dce5f0;
+        }
+        .scanner:active {
+            background: #e2e9f3;
+        }
+        .scanner i {
+            font-size: 40px;
+            display: block;
+        }
         input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
+            margin: 8px 0;
             border: 1px solid #ddd;
-            border-radius: 15px;
-            font-size: 16px;
-            font-family: inherit;
+            border-radius: 40px;
+            font-size: 14px;
         }
         button {
             width: 100%;
-            padding: 14px;
-            background: #28a745;
+            background: #1f7b4d;
             color: white;
+            padding: 15px;
             border: none;
-            border-radius: 25px;
-            font-size: 18px;
+            border-radius: 40px;
+            font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-        .recharge-btn { background: #007bff; margin-bottom: 15px; }
-        .message {
-            text-align: center;
             margin-top: 15px;
-            padding: 10px;
-            border-radius: 15px;
-            font-size: 14px;
+            cursor: pointer;
         }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-        footer { text-align: center; margin-top: 20px; color: rgba(255,255,255,0.6); font-size: 12px; }
-        #receipt-content { display: none; font-family: 'Cairo', sans-serif; direction: rtl; padding: 20px; max-width: 400px; margin: auto; background: white; border-radius: 15px; }
+        .recharge-btn {
+            background: #2c5f8a;
+            margin-top: 5px;
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6b85a2;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2c3e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            z-index: 999;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="card">
-        <h1>⚡ دفع فاتورة سونلغاز</h1>
-        <div class="balance-box">
-            <span>💰 رصيد المحفظة</span>
-            <div class="balance" id="balanceDisplay">0 دج</div>
-            <button class="recharge-btn" id="rechargeBtn">➕ شحن المحفظة</button>
-        </div>
-        <div class="input-group"><label>📄 رقم العميل</label><input type="text" id="clientNumber" placeholder="أدخل رقم العميل"></div>
-        <div class="input-group"><label>📑 رقم الفاتورة</label><input type="text" id="invoiceNumber" placeholder="أدخل رقم الفاتورة"></div>
-        <div class="input-group"><label>🔢 رقم EBB</label><input type="text" id="ebbNumber" placeholder="أدخل رقم EBB"></div>
-        <div class="input-group"><label>💵 المبلغ (دج)</label><input type="number" id="amount" placeholder="المبلغ المطلوب دفعه"></div>
-        <button id="payBtn">💳 دفع الفاتورة</button>
-        <div id="message" class="message"></div>
+<div class="card">
+    <div class="solde-row">
+        <div class="solde-box"><h4>Solde</h4><div class="number" id="soldeDisplay">0 DZD</div></div>
+        <div class="solde-box"><h4>Bonus</h4><div class="number">0 DZD</div></div>
     </div>
-    <footer><p>خدماتي - دفع فواتير الكهرباء والغاز</p></footer>
-</div>
+    <div class="title">⚡ Sonelgaz - Paiement Factures</div>
+    <div class="info">
+        <span>💰 Solde DZD: <span id="soldeInfo">0</span> DZD</span>
+        <span>⚠️ Réserve min: 500 DZD</span>
+    </div>
 
-<div id="receipt-content">
-    <div style="text-align:center;">
-        <h2>📄 إيصال دفع سونلغاز</h2><hr>
-        <p><strong>📅 التاريخ:</strong> <span id="receipt-date"></span></p>
-        <p><strong>🔢 رقم العملية:</strong> <span id="receipt-transaction-id"></span></p>
-        <p><strong>👤 رقم العميل:</strong> <span id="receipt-client-number"></span></p>
-        <p><strong>📑 رقم الفاتورة:</strong> <span id="receipt-invoice-number"></span></p>
-        <p><strong>🔢 رقم EBB:</strong> <span id="receipt-ebb-number"></span></p>
-        <p><strong>💰 المبلغ المدفوع:</strong> <span id="receipt-amount"></span> دج</p>
-        <p><strong>✅ الحالة:</strong> مدفوع</p><hr>
-        <p style="font-size:12px;">شكراً لاستخدامك خدماتي</p>
+    <div class="scanner" id="scanBtn">
+        <i>📷🔳</i>
+        <strong>Scanner Data Matrix</strong><br>
+        <span>Scannez votre Data Matrix Sonelgaz</span>
+    </div>
+
+    <label>📘 Numéro Client *</label>
+    <input type="text" id="client" placeholder="Entrez votre numéro client">
+
+    <label>🧾 Numéro Facture *</label>
+    <input type="text" id="facture" placeholder="Entrez le numéro de facture">
+
+    <label>🔢 Numéro EBB *</label>
+    <input type="text" id="ebb" placeholder="Entrez le numéro EBB">
+
+    <label>💰 Montant *</label>
+    <input type="number" id="montant" placeholder="Entrez le montant">
+
+    <button id="payerBtn">💳 Payer maintenant</button>
+    <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille (test)</button>
+
+    <div class="bottom-nav">
+        <span>📱 Mobile</span> <span>📺 Idoom</span> <span>📄 Factures</span> <span>🎮 Jeux</span> <span>📦 Apps</span> <span>📜 Historique</span> <span>⚙️ Paramètres</span>
+    </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<!-- قالب الإيصال المخفي -->
+<div id="receiptContent" style="display: none; direction: rtl; padding: 20px; font-family: sans-serif;">
+    <div style="text-align: center;">
+        <h2>📄 إيصال دفع فاتورة الكهرباء</h2>
+        <hr>
+        <p><strong>📅 التاريخ:</strong> <span id="receiptDate"></span></p>
+        <p><strong>🔢 رقم العملية:</strong> <span id="receiptId"></span></p>
+        <p><strong>👤 رقم العميل:</strong> <span id="receiptClient"></span></p>
+        <p><strong>🧾 رقم الفاتورة:</strong> <span id="receiptFacture"></span></p>
+        <p><strong>🔢 رقم EBB:</strong> <span id="receiptEBB"></span></p>
+        <p><strong>💰 المبلغ المدفوع:</strong> <span id="receiptMontant"></span> DZD</p>
+        <p><strong>✅ الحالة:</strong> مدفوع</p>
+        <hr>
+        <p>شكراً لاستخدامكم خدماتي</p>
     </div>
 </div>
 
 <script>
+    // إدارة الرصيد
     let currentBalance = localStorage.getItem('walletBalance') ? parseInt(localStorage.getItem('walletBalance')) : 500;
-    function updateBalanceDisplay() {
-        document.getElementById('balanceDisplay').innerText = currentBalance + ' دج';
+    function updateBalanceUI() {
+        document.getElementById('soldeDisplay').innerText = currentBalance + ' DZD';
+        document.getElementById('soldeInfo').innerText = currentBalance;
         localStorage.setItem('walletBalance', currentBalance);
     }
+    updateBalanceUI();
+
+    // شحن الرصيد (تجريبي)
     document.getElementById('rechargeBtn').addEventListener('click', () => {
-        let amount = prompt('أدخل المبلغ الذي تريد شحنه (دج):', '500');
+        let amount = prompt('أدخل مبلغ الشحن (DZD):', '500');
         if (amount && !isNaN(amount) && parseInt(amount) > 0) {
             currentBalance += parseInt(amount);
-            updateBalanceDisplay();
-            showMessage('success', '✅ تم شحن المحفظة بنجاح!');
-        } else showMessage('error', '❌ مبلغ غير صحيح');
+            updateBalanceUI();
+            showToast('✅ تم شحن المحفظة بنجاح', false);
+        } else {
+            showToast('❌ مبلغ غير صحيح', true);
+        }
     });
-    function showMessage(type, text) {
-        const msgDiv = document.getElementById('message');
-        msgDiv.className = 'message ' + type;
-        msgDiv.innerText = text;
-        setTimeout(() => { msgDiv.className = 'message'; msgDiv.innerText = ''; }, 4000);
+
+    // وظيفة الإشعارات
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        toast.style.background = isError ? '#c53030' : '#1f7b4d';
+        setTimeout(() => toast.style.opacity = '0', 2500);
     }
-    function downloadReceiptPDF(data) {
-        document.getElementById('receipt-date').innerText = data.date;
-        document.getElementById('receipt-transaction-id').innerText = data.transactionId;
-        document.getElementById('receipt-client-number').innerText = data.clientNumber;
-        document.getElementById('receipt-invoice-number').innerText = data.invoiceNumber;
-        document.getElementById('receipt-ebb-number').innerText = data.ebbNumber;
-        document.getElementById('receipt-amount').innerText = data.amount;
-        const el = document.getElementById('receipt-content');
-        el.style.display = 'block';
-        html2pdf().set({ margin: 0.5, filename: `facture_${data.transactionId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(el).save();
-        setTimeout(() => el.style.display = 'none', 1000);
+
+    // إنشاء وتحميل PDF
+    function generatePDF(data) {
+        document.getElementById('receiptDate').innerText = data.date;
+        document.getElementById('receiptId').innerText = data.transactionId;
+        document.getElementById('receiptClient').innerText = data.client;
+        document.getElementById('receiptFacture').innerText = data.facture;
+        document.getElementById('receiptEBB').innerText = data.ebb;
+        document.getElementById('receiptMontant').innerText = data.montant;
+        const element = document.getElementById('receiptContent');
+        element.style.display = 'block';
+        const opt = {
+            margin: 0.5,
+            filename: `facture_${data.transactionId}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+        setTimeout(() => { element.style.display = 'none'; }, 1000);
     }
-    document.getElementById('payBtn').addEventListener('click', () => {
-        const client = document.getElementById('clientNumber').value.trim();
-        const inv = document.getElementById('invoiceNumber').value.trim();
-        const ebb = document.getElementById('ebbNumber').value.trim();
-        const amount = parseInt(document.getElementById('amount').value);
-        if (!client || !inv || !ebb || !amount || amount <= 0) {
-            showMessage('error', '❌ الرجاء ملء جميع الحقول بشكل صحيح');
+
+    // حدث الدفع
+    document.getElementById('payerBtn').addEventListener('click', () => {
+        const clientVal = document.getElementById('client').value.trim();
+        const factureVal = document.getElementById('facture').value.trim();
+        const ebbVal = document.getElementById('ebb').value.trim();
+        const montantVal = parseInt(document.getElementById('montant').value);
+
+        if (!clientVal || !factureVal || !ebbVal || isNaN(montantVal) || montantVal <= 0) {
+            showToast('❌ الرجاء ملء جميع الحقول بشكل صحيح', true);
             return;
         }
-        if (amount > currentBalance) {
-            showMessage('error', `❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance} دج`);
+        if (montantVal > currentBalance) {
+            showToast(`❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance} DZD`, true);
             return;
         }
-        currentBalance -= amount;
-        updateBalanceDisplay();
-        const txnId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-        downloadReceiptPDF({
-            date: new Date().toLocaleString('ar-EG'),
-            transactionId: txnId,
-            clientNumber: client,
-            invoiceNumber: inv,
-            ebbNumber: ebb,
-            amount: amount
+
+        // خصم الرصيد
+        currentBalance -= montantVal;
+        updateBalanceUI();
+
+        // إنشاء إيصال PDF
+        const transactionId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+        const now = new Date().toLocaleString('ar-EG');
+        generatePDF({
+            date: now,
+            transactionId: transactionId,
+            client: clientVal,
+            facture: factureVal,
+            ebb: ebbVal,
+            montant: montantVal
         });
-        showMessage('success', '✅ تم دفع الفاتورة بنجاح! جاري تحميل الإيصال');
-        document.getElementById('clientNumber').value = '';
-        document.getElementById('invoiceNumber').value = '';
-        document.getElementById('ebbNumber').value = '';
-        document.getElementById('amount').value = '';
+
+        showToast(`✅ تم دفع ${montantVal} DZD بنجاح! جاري تحميل الإيصال`, false);
+
+        // مسح الحقول (اختياري)
+        document.getElementById('client').value = '';
+        document.getElementById('facture').value = '';
+        document.getElementById('ebb').value = '';
+        document.getElementById('montant').value = '';
     });
-    updateBalanceDisplay();
+
+    // المسح الضوئي (نفس الكود السابق مع تحسينات)
+    const scanBtn = document.getElementById('scanBtn');
+    let scanner = null;
+
+    scanBtn.addEventListener('click', () => {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'black';
+        overlay.style.zIndex = '1000';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+
+        const readerDiv = document.createElement('div');
+        readerDiv.id = 'reader';
+        readerDiv.style.width = '90%';
+        readerDiv.style.maxWidth = '400px';
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = 'إغلاق';
+        closeBtn.style.marginTop = '15px';
+        closeBtn.style.padding = '10px';
+        closeBtn.style.background = '#dc2626';
+        closeBtn.style.color = 'white';
+        closeBtn.style.border = 'none';
+        closeBtn.style.borderRadius = '40px';
+        closeBtn.style.cursor = 'pointer';
+
+        overlay.appendChild(readerDiv);
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
+
+        const html5QrCode = new Html5Qrcode("reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+            // تجربة تنسيق البيانات: العميل|الفاتورة|EBB|المبلغ
+            const parts = decodedText.split('|');
+            if (parts.length >= 4) {
+                document.getElementById('client').value = parts[0];
+                document.getElementById('facture').value = parts[1];
+                document.getElementById('ebb').value = parts[2];
+                document.getElementById('montant').value = parts[3];
+                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
+            } else {
+                document.getElementById('client').value = decodedText;
+                showToast('تم المسح، يرجى مراجعة الحقول', false);
+            }
+            html5QrCode.stop();
+            document.body.removeChild(overlay);
+        }).catch(err => {
+            showToast('خطأ في الكاميرا: ' + err, true);
+            document.body.removeChild(overlay);
+        });
+
+        closeBtn.addEventListener('click', () => {
+            if (html5QrCode.isScanning) html5QrCode.stop();
+            document.body.removeChild(overlay);
+        });
+    });
 </script>
 </body>
 </html>
