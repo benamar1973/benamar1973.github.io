@@ -119,6 +119,13 @@
             margin-bottom: 25px;
         }
 
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
         .icon-btn {
             background: #f8f9fa;
             padding: 12px 5px;
@@ -288,13 +295,27 @@
             text-align: center;
             margin-top: 20px;
             padding: 15px;
-            color: rgba(255,255,255,0.7);
-            font-size: 11px;
+            color: #000000;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        footer p {
+            color: #000000;
         }
 
         footer a {
-            color: rgba(255,255,255,0.7);
+            color: #000000;
             text-decoration: none;
+        }
+
+        /* عنوان الخدمات الجديدة */
+        .services-title {
+            color: #0f3460;
+            font-size: 16px;
+            margin: 10px 0 10px 0;
+            padding-right: 5px;
+            border-right: 4px solid #e94560;
         }
     </style>
 </head>
@@ -320,7 +341,6 @@
                     <h3>💰 رصيد المحفظة</h3>
                     <div id="balance" class="balance">0 دج</div>
                     <button id="rechargeBtn" class="btn-action">شحن المحفظة</button>
-                    <!-- تم حذف زر دفع الفاتورة من هنا -->
                     <button id="logoutBtn" class="btn-action btn-logout">تسجيل الخروج</button>
                 </div>
 
@@ -348,7 +368,7 @@
                 </div>
             </div>
 
-            <!-- الروابط الأصلية (الخدمات) مع تغيير أيقونة الدفع الإلكتروني إلى CCP -->
+            <!-- الخدمات الأساسية -->
             <div class="grid">
                 <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
                 <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -359,16 +379,16 @@
                 <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
                 <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
-                <!-- تم تغيير أيقونة الدفع الإلكتروني إلى CCP مع الحفاظ على نفس الرابط -->
                 <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>الدفع بـ CCP</span></div>
             </div>
 
-            <!-- الروابط الجديدة المطلوبة (CNAS, CASNOS, dzexams, نفطال) -->
-            <div class="grid" style="margin-top: 15px;">
-                <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة عدم الإنتساب CNAS</span></div>
-                <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة عدم الإنتساب CASNOS</span></div>
+            <!-- الخدمات الجديدة (CNAS, CASNOS, dzexams, نفطال) -->
+            <div class="services-title">📌 خدمات إضافية</div>
+            <div class="grid-4">
+                <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة CNAS</span></div>
+                <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة CASNOS</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
-                <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات (نفطال)</span></div>
+                <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
             </div>
 
             <!-- أقسام المعلومات (أسعار الصرف، مواقيت الصلاة، الطقس) -->
@@ -392,7 +412,7 @@
 
             <footer>
                 <p>🇩🇿 خدماتي - أول محفظة إلكترونية جزائرية للتسديد</p>
-                <p style="color: black; font-weight: bold;">📧 djadidkhadamati@gmail.com</p>
+                <p>📧 djadidkhadamati@gmail.com</p>
             </footer>
         </div>
     </div>
