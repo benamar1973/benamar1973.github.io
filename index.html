@@ -41,7 +41,6 @@
             margin-bottom: 10px;
         }
 
-        /* قسم المصادقة والمحفظة */
         .auth-section {
             margin-bottom: 20px;
             padding: 15px;
@@ -111,17 +110,9 @@
             cursor: pointer;
         }
 
-        /* الأقسام الأصلية */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             margin-bottom: 25px;
         }
@@ -241,7 +232,6 @@
             color: #e94560;
         }
 
-        /* قسم الدفع الجديد - تحت المحفظة */
         .payment-section {
             background: #f8f9fa;
             border-radius: 25px;
@@ -261,7 +251,7 @@
 
         .payment-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
@@ -309,7 +299,6 @@
             text-decoration: none;
         }
 
-        /* عنوان الخدمات الجديدة */
         .services-title {
             color: #0f3460;
             font-size: 16px;
@@ -326,7 +315,6 @@
                 <h1>📱 خدماتي - المحفظة الإلكترونية</h1>
             </div>
 
-            <!-- قسم المحفظة وتسجيل الدخول -->
             <div id="authSection" class="auth-section">
                 <input type="email" id="email" placeholder="البريد الإلكتروني">
                 <input type="password" id="password" placeholder="كلمة المرور">
@@ -344,9 +332,8 @@
                     <button id="logoutBtn" class="btn-action btn-logout">تسجيل الخروج</button>
                 </div>
 
-                <!-- مربع الدفع الجديد تحت المحفظة -->
                 <div class="payment-section">
-                    <h3>💳 تسديد الفواتير</h3>
+                    <h3>💳 تسديد الفواتير والخدمات</h3>
                     <div class="payment-grid">
                         <div class="payment-icon" onclick="window.open('https://www.sonelgaz.dz/', '_blank')">
                             <i>⚡</i>
@@ -364,11 +351,22 @@
                             <i>⚡</i>
                             <span>خدمة الفليكسي</span>
                         </div>
+                        <div class="payment-icon" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')">
+                            <i>🏛️</i>
+                            <span>الصفقات العمومية</span>
+                        </div>
+                        <div class="payment-icon" onclick="window.open('https://www.idoom.dz/', '_blank')">
+                            <i>🌐</i>
+                            <span>شحن IDOOM FIBRE</span>
+                        </div>
+                        <div class="payment-icon" onclick="window.open('https://www.idoom.dz/', '_blank')">
+                            <i>📶</i>
+                            <span>شحن IDOOM 4G/LTE</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- الخدمات الأساسية -->
             <div class="grid">
                 <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
                 <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -380,11 +378,10 @@
                 <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
                 <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
                 <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>CCP</span></div>
-                <div class="icon-btn" onclick="window.open('https://imadtbn.github.io/dz_portal/sectors/emergency.html', '_blank')"><i>🚨</i><span>أرقام الطوارئ</span></div>
+                <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><i>🏛️</i><span>الصفقات العمومية</span></div>
                 <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><i>🚗</i><span>قسيمة السيارات</span></div>
             </div>
 
-            <!-- الخدمات الجديدة (CNAS, CASNOS, dzexams, نفطال) -->
             <div class="services-title">📌 خدمات إضافية</div>
             <div class="grid-4">
                 <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة CNAS</span></div>
@@ -393,7 +390,6 @@
                 <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
             </div>
 
-            <!-- أقسام المعلومات (أسعار الصرف، مواقيت الصلاة، الطقس) -->
             <div class="widgets">
                 <div class="widget exchange-rate">
                     <h3>💱 أسعار الصرف</h3>
@@ -419,9 +415,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
-        // 🔥 Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -439,7 +433,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // عناصر الواجهة
         const authSection = document.getElementById('authSection');
         const walletSection = document.getElementById('walletSection');
         const emailInput = document.getElementById('email');
@@ -451,7 +444,6 @@
         const balanceDiv = document.getElementById('balance');
         const authStatus = document.getElementById('authStatus');
 
-        // حالة تسجيل الدخول
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 authSection.style.display = 'none';
@@ -475,7 +467,6 @@
             }
         });
 
-        // تسجيل الدخول
         loginBtn.addEventListener('click', async () => {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
@@ -495,7 +486,6 @@
             }
         });
 
-        // إنشاء حساب
         signupBtn.addEventListener('click', async () => {
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
@@ -524,15 +514,12 @@
             }
         });
 
-        // تسجيل الخروج
         logoutBtn.addEventListener('click', async () => {
             await signOut(auth);
         });
 
-        // شحن المحفظة
         document.getElementById('rechargeBtn').addEventListener('click', () => alert("🔜 سيتم تفعيل شحن المحفظة قريباً عبر Chargily Pay."));
 
-        // === دوال الطقس وأوقات الصلاة ===
         let userLat = null, userLon = null;
 
         function getUserLocation() {
