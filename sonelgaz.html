@@ -50,15 +50,6 @@
             color: #1f7b4d;
             margin-bottom: 10px;
         }
-        .info {
-            background: #fef9e3;
-            padding: 10px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 13px;
-        }
         .scanner {
             background: #eef3fc;
             padding: 20px;
@@ -99,13 +90,6 @@
             background: #2c5f8a;
             margin-top: 5px;
         }
-        .bottom-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #6b85a2;
-        }
         .toast {
             position: fixed;
             bottom: 20px;
@@ -131,10 +115,6 @@
         <div class="solde-box"><h4>Bonus</h4><div class="number">0 DZD</div></div>
     </div>
     <div class="title">⚡ Sonelgaz - Paiement Factures</div>
-    <div class="info">
-        <span>💰 Solde DZD: <span id="soldeInfo">0</span> DZD</span>
-        <span>⚠️ Réserve min: 500 DZD</span>
-    </div>
 
     <div class="scanner" id="scanBtn">
         <i>📷🔳</i>
@@ -156,10 +136,6 @@
 
     <button id="payerBtn">💳 Payer maintenant</button>
     <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille (test)</button>
-
-    <div class="bottom-nav">
-        <span>📱 Mobile</span> <span>📺 Idoom</span> <span>📄 Factures</span> <span>🎮 Jeux</span> <span>📦 Apps</span> <span>📜 Historique</span> <span>⚙️ Paramètres</span>
-    </div>
 </div>
 <div id="toast" class="toast"></div>
 
@@ -185,7 +161,6 @@
     let currentBalance = localStorage.getItem('walletBalance') ? parseInt(localStorage.getItem('walletBalance')) : 500;
     function updateBalanceUI() {
         document.getElementById('soldeDisplay').innerText = currentBalance + ' DZD';
-        document.getElementById('soldeInfo').innerText = currentBalance;
         localStorage.setItem('walletBalance', currentBalance);
     }
     updateBalanceUI();
@@ -202,7 +177,6 @@
         }
     });
 
-    // وظيفة الإشعارات
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
@@ -248,11 +222,9 @@
             return;
         }
 
-        // خصم الرصيد
         currentBalance -= montantVal;
         updateBalanceUI();
 
-        // إنشاء إيصال PDF
         const transactionId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
         const now = new Date().toLocaleString('ar-EG');
         generatePDF({
@@ -266,17 +238,14 @@
 
         showToast(`✅ تم دفع ${montantVal} DZD بنجاح! جاري تحميل الإيصال`, false);
 
-        // مسح الحقول (اختياري)
         document.getElementById('client').value = '';
         document.getElementById('facture').value = '';
         document.getElementById('ebb').value = '';
         document.getElementById('montant').value = '';
     });
 
-    // المسح الضوئي (نفس الكود السابق مع تحسينات)
+    // المسح الضوئي
     const scanBtn = document.getElementById('scanBtn');
-    let scanner = null;
-
     scanBtn.addEventListener('click', () => {
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
@@ -312,7 +281,6 @@
         const html5QrCode = new Html5Qrcode("reader");
         const config = { fps: 10, qrbox: { width: 250, height: 250 } };
         html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
-            // تجربة تنسيق البيانات: العميل|الفاتورة|EBB|المبلغ
             const parts = decodedText.split('|');
             if (parts.length >= 4) {
                 document.getElementById('client').value = parts[0];
@@ -338,4 +306,4 @@
     });
 </script>
 </body>
-    </html>
+</html>
