@@ -80,13 +80,32 @@
                 <h3>💳 تسديد الفواتير والخدمات</h3>
                 <div class="payment-grid">
                     <div class="payment-icon" id="openUtilityModal"><i>🔌</i><span>فواتير الكهرباء والماء</span></div>
+                    <!-- رابط الهاتف الثابت (يمكن تغيير الرابط) -->
                     <div class="payment-icon" onclick="window.open('https://www.algerietelecom.dz/', '_blank')"><i>📞</i><span>هاتف ثابت</span></div>
                     <div class="payment-icon" onclick="alert('🔜 خدمة شحن الهاتف قريباً')"><i>📱</i><span>شحن الهاتف (فليكسي)</span></div>
                     <div class="payment-icon" onclick="window.open('https://www.idoom.dz/', '_blank')"><i>🌐</i><span>شحن الإنترنت</span></div>
                 </div>
             </div>
         </div>
-        <div class="grid"><!-- ... نفس الأيقونات السابقة (اختصاراً للطول، سأضعها كاملة في الرد النهائي لكن هنا سأكتبها مختصرة لضيق المساحة، في الكود الكامل ستكون موجودة --></div>
+        <!-- جميع الأيقونات -->
+        <div class="grid">
+            <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
+            <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
+            <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><i>🏢</i><span>سكنات عدل</span></div>
+            <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><i>💼</i><span>وسيط ANEM</span></div>
+            <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><i>🐑</i><span>أضحية العيد</span></div>
+            <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
+            <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
+            <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>CCP</span></div>
+            <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><i>🚗</i><span>قسيمة السيارات</span></div>
+            <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة CNAS</span></div>
+            <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة CASNOS</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
+            <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
+            <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><i>🏛️</i><span>الصفقات العمومية</span></div>
+        </div>
         <div class="widgets">
             <div class="widget exchange-rate"><h3>💱 أسعار الصرف</h3><p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p><p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p></div>
             <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
@@ -116,7 +135,95 @@
 <div id="toast"></div>
 
 <script>
-    // ----- إظهار/إخفاء حقل EBB حسب نوع الفاتورة -----
+    // ----- حفظ حالة تسجيل الدخول في localStorage (محاكاة) -----
+    let loggedIn = localStorage.getItem('loggedIn') === 'true';
+    let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 1000.00;
+
+    function updateBalanceUI() {
+        document.getElementById('balance').innerText = currentBalance.toFixed(2) + ' دج';
+        localStorage.setItem('walletBalance', currentBalance);
+    }
+
+    function setLoggedIn(status) {
+        loggedIn = status;
+        localStorage.setItem('loggedIn', status);
+        updateUIForUser();
+    }
+
+    function updateUIForUser() {
+        const authSection = document.getElementById('authSection');
+        const walletSection = document.getElementById('walletSection');
+        if (loggedIn) {
+            authSection.style.display = 'none';
+            walletSection.style.display = 'block';
+            updateBalanceUI();
+        } else {
+            authSection.style.display = 'block';
+            walletSection.style.display = 'none';
+            // مسح الحقول
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('authStatus').innerText = '';
+        }
+    }
+
+    // أحداث تسجيل الدخول والخروج
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        if (!email || !pass) {
+            document.getElementById('authStatus').innerText = '❌ الرجاء إدخال البريد وكلمة المرور';
+            return;
+        }
+        // أي بريد وكلمة صالحة للمحاكاة
+        setLoggedIn(true);
+        document.getElementById('authStatus').innerText = '✅ تم تسجيل الدخول بنجاح';
+    });
+
+    document.getElementById('signupBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        const conf = document.getElementById('confirmPassword').value.trim();
+        if (!email || !pass || !conf) {
+            document.getElementById('authStatus').innerText = '❌ املأ جميع الحقول';
+            return;
+        }
+        if (pass !== conf) {
+            document.getElementById('authStatus').innerText = '❌ كلمتا المرور غير متطابقتين';
+            return;
+        }
+        if (pass.length < 6) {
+            document.getElementById('authStatus').innerText = '❌ كلمة المرور 6 أحرف على الأقل';
+            return;
+        }
+        setLoggedIn(true);
+        document.getElementById('authStatus').innerText = '✅ تم إنشاء الحساب وتسجيل الدخول';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        setLoggedIn(false);
+    });
+
+    // شحن المحفظة
+    document.getElementById('rechargeBtn').addEventListener('click', () => {
+        let amount = prompt('أدخل مبلغ الشحن (دج):', '500');
+        if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+            currentBalance += parseFloat(amount);
+            updateBalanceUI();
+            showToast('✅ تم شحن المحفظة بنجاح', false);
+        } else showToast('❌ مبلغ غير صحيح', true);
+    });
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        toast.style.background = isError ? '#c53030' : '#1f7b4d';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    // ---------- وظائف دفع الفواتير (كهرباء/ماء) ----------
     const billTypeSelect = document.getElementById('billType');
     const ebbField = document.getElementById('modalEBB');
     function toggleEBBField() {
@@ -127,81 +234,11 @@
         } else {
             ebbField.style.display = 'none';
             ebbField.required = false;
-            ebbField.value = ''; // نمسح قيمته إذا كان مخفياً
+            ebbField.value = '';
         }
     }
     billTypeSelect.addEventListener('change', toggleEBBField);
-    // عند تحميل النافذة نضبط الحالة الأولية
     toggleEBBField();
-
-    // ----- باقي الكود (نفس الكود السابق تقريباً مع تعديل بسيط في التحقق عند الدفع) -----
-    function showToast(msg, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.innerText = msg;
-        toast.style.opacity = '1';
-        toast.style.background = isError ? '#c53030' : '#1f7b4d';
-        setTimeout(() => toast.style.opacity = '0', 2500);
-    }
-
-    let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 1000.00;
-    function updateBalanceUI() {
-        document.getElementById('balance').innerText = currentBalance.toFixed(2) + ' دج';
-        localStorage.setItem('walletBalance', currentBalance);
-    }
-    let loggedIn = false;
-    const authSection = document.getElementById('authSection');
-    const walletSection = document.getElementById('walletSection');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const confirmInput = document.getElementById('confirmPassword');
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const authStatus = document.getElementById('authStatus');
-
-    function updateUIForUser(logged) {
-        if (logged) {
-            authSection.style.display = 'none';
-            walletSection.style.display = 'block';
-            updateBalanceUI();
-        } else {
-            authSection.style.display = 'block';
-            walletSection.style.display = 'none';
-            emailInput.value = '';
-            passwordInput.value = '';
-            confirmInput.value = '';
-        }
-    }
-    loginBtn.addEventListener('click', () => {
-        const email = emailInput.value.trim();
-        const pass = passwordInput.value.trim();
-        if (!email || !pass) { authStatus.innerText = 'الرجاء إدخال البريد وكلمة المرور'; return; }
-        loggedIn = true;
-        authStatus.innerText = '✅ تم تسجيل الدخول بنجاح';
-        updateUIForUser(true);
-    });
-    signupBtn.addEventListener('click', () => {
-        const email = emailInput.value.trim();
-        const pass = passwordInput.value.trim();
-        const conf = confirmInput.value.trim();
-        if (!email || !pass || !conf) { authStatus.innerText = 'املأ جميع الحقول'; return; }
-        if (pass !== conf) { authStatus.innerText = 'كلمتا المرور غير متطابقتين'; return; }
-        if (pass.length < 6) { authStatus.innerText = 'كلمة المرور 6 أحرف على الأقل'; return; }
-        loggedIn = true;
-        authStatus.innerText = '✅ تم إنشاء الحساب وتسجيل الدخول';
-        updateUIForUser(true);
-    });
-    logoutBtn.addEventListener('click', () => { loggedIn = false; updateUIForUser(false); });
-    updateUIForUser(false);
-
-    document.getElementById('rechargeBtn').addEventListener('click', () => {
-        let amount = prompt('أدخل مبلغ الشحن (دج):', '500');
-        if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
-            currentBalance += parseFloat(amount);
-            updateBalanceUI();
-            showToast('✅ تم شحن المحفظة بنجاح', false);
-        } else showToast('❌ مبلغ غير صحيح', true);
-    });
 
     function generatePDF(data) {
         const receiptDiv = document.createElement('div');
@@ -272,7 +309,7 @@
         modal.style.display = 'none';
     };
 
-    // المسح الضوئي (يبقى كما هو، لكن يمكنه تعبئة EBB أو تركه حسب نوع الفاتورة)
+    // المسح الضوئي
     modalScanBtn.onclick = () => {
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
@@ -328,11 +365,71 @@
         };
     };
 
-    // ---- مواقيت الصلاة والطقس (نفس الكود السابق) ----
+    // ---------- مواقيت الصلاة والطقس (تلقائي) ----------
     let userLat = null, userLon = null;
-    function getUserLocation() { /* ... */ }  // (لن أكرر هنا للاختصار، لكن في الكود الكامل سيتم تضمينه)
-    // ... إلخ
-    // (يُستكمل بنفس دوال الصلاة والطقس من الكود السابق)
+    function getUserLocation() {
+        if (!navigator.geolocation) {
+            document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
+            document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLat = position.coords.latitude;
+                userLon = position.coords.longitude;
+                fetchPrayerTimes();
+                fetchWeather();
+            },
+            () => {
+                document.getElementById('prayerContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+                document.getElementById('weatherContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+            }
+        );
+    }
+    async function fetchPrayerTimes() {
+        const div = document.getElementById('prayerContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const today = new Date();
+            const url = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${userLat}&longitude=${userLon}&method=2`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.code === 200) {
+                const t = data.data.timings;
+                div.innerHTML = `
+                    <div class="prayer-grid">
+                        <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                    </div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    async function fetchWeather() {
+        const div = document.getElementById('weatherContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.cod === 200) {
+                div.innerHTML = `
+                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                    <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
+                    <div class="weather-desc">☁️ ${data.weather[0].description}</div>
+                    <div class="weather-detail"><span>💧 رطوبة ${data.main.humidity}%</span><span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span></div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    getUserLocation();
+
+    // أخيراً نطبق حالة الدخول المحفوظة
+    updateUIForUser();
 </script>
 </body>
     </html>
