@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - دفع فاتورة سونلغاز</title>
+    <title>سونلغاز - دفع الفاتورة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
         body { background: #f0f2f5; padding: 20px; }
@@ -40,7 +40,7 @@
     <input type="number" id="montant" step="0.01" placeholder="Entrez le montant">
 
     <button id="payerBtn">💳 Payer maintenant</button>
-    <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille</button>
+    <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille (test)</button>
 </div>
 <div id="toast" class="toast"></div>
 
@@ -59,13 +59,12 @@
 </div>
 
 <script>
-    // تعبئة البيانات تلقائياً عند تحميل الصفحة
     function autoFill() {
         document.getElementById('client').value = '0123456789';
         document.getElementById('facture').value = 'FACT-2026-123456';
         document.getElementById('ebb').value = 'EBB987654321';
         document.getElementById('montant').value = '1250.00';
-        showToast('📝 تم ملء الحقول تلقائياً ببيانات تجريبية (يمكنك تعديلها)', false);
+        showToast('📝 تم ملء الحقول تلقائياً ببيانات تجريبية', false);
     }
 
     let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 500.00;
