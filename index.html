@@ -18,4 +18,401 @@
         .auth-section button { width: 100%; padding: 12px; margin: 5px 0; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
-        .btn-logout { background: #
+        .btn-logout { background: #dc3545; color: white; }
+        .wallet-section { text-align: center; padding: 15px; background: #e9ecef; border-radius: 25px; margin-bottom: 20px; }
+        .balance { font-size: 32px; font-weight: bold; color: #0f3460; margin: 10px 0; }
+        .btn-action { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 25px; font-size: 16px; margin: 5px; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
+        .icon-btn:active { transform: scale(0.96); }
+        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; }
+        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
+        .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
+        .widget h3 { color: #0f3460; font-size: 18px; margin-bottom: 15px; border-bottom: 3px solid #e94560; display: inline-block; }
+        .exchange-rate p { display: flex; justify-content: space-between; margin: 10px 0; padding: 8px 0; border-bottom: 1px dashed #dee2e6; font-size: 15px; }
+        .prayer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .prayer-item { background: white; padding: 12px; border-radius: 18px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .prayer-name { font-size: 14px; color: #0f3460; font-weight: bold; margin-bottom: 5px; }
+        .prayer-time { font-size: 18px; font-weight: bold; color: #e94560; font-family: monospace; }
+        .weather-temp { font-size: 38px; font-weight: bold; color: #e94560; text-align: center; margin: 10px 0; }
+        .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
+        .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
+        .loading { text-align: center; padding: 20px; color: #e94560; }
+        .payment-section { background: #f8f9fa; border-radius: 25px; padding: 18px; margin-bottom: 20px; border: 1px solid #e9ecef; }
+        .payment-section h3 { color: #0f3460; font-size: 18px; border-bottom: 3px solid #e94560; display: inline-block; margin-bottom: 15px; }
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .payment-icon { background: white; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #dee2e6; }
+        .payment-icon:active { transform: scale(0.96); }
+        .payment-icon i { font-size: 28px; display: block; margin-bottom: 5px; }
+        .payment-icon span { font-size: 11px; font-weight: 600; color: #2c3e50; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
+        .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
+        .scan-btn { background: #0f3460; }
+        .close-modal { background: #dc3545; margin-top: 5px; }
+        footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
+        footer a { color: #000000; text-decoration: none; }
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-card">
+        <div class="header"><h1>📱 خدماتي - المحفظة الإلكترونية</h1></div>
+        <div id="authSection" class="auth-section">
+            <input type="email" id="email" placeholder="البريد الإلكتروني">
+            <input type="password" id="password" placeholder="كلمة المرور">
+            <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
+            <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
+            <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
+            <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
+        </div>
+        <div id="walletSection" style="display: none;">
+            <div class="wallet-section">
+                <h3>💰 رصيد المحفظة</h3>
+                <div id="balance" class="balance">0 دج</div>
+                <button id="rechargeBtn" class="btn-action">شحن المحفظة</button>
+                <button id="logoutBtn" class="btn-action btn-logout">تسجيل الخروج</button>
+            </div>
+            <div class="payment-section">
+                <h3>💳 تسديد الفواتير والخدمات</h3>
+                <div class="payment-grid">
+                    <div class="payment-icon" id="openUtilityModal"><i>🔌</i><span>فواتير الكهرباء والماء</span></div>
+                    <div class="payment-icon" onclick="window.open('https://paiement.at.dz/', '_blank')"><i>📞</i><span>الهاتف الثابت والانترنت</span></div>
+                    <div class="payment-icon" onclick="alert('🔜 خدمة شحن الهاتف قريباً')"><i>📱</i><span>شحن الهاتف (فليكسي)</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
+            <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
+            <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><i>🏢</i><span>سكنات عدل</span></div>
+            <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><i>💼</i><span>وسيط ANEM</span></div>
+            <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><i>🐑</i><span>أضحية العيد</span></div>
+            <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
+            <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
+            <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>CCP</span></div>
+            <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><i>🚗</i><span>قسيمة السيارات</span></div>
+            <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>شهادة CNAS</span></div>
+            <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة CASNOS</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
+            <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
+            <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><i>🏛️</i><span>الصفقات العمومية</span></div>
+        </div>
+        <div class="widgets">
+            <div class="widget exchange-rate"><h3>💱 أسعار الصرف</h3><p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p><p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p></div>
+            <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
+            <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
+        </div>
+        <footer><p>🇩🇿 خدماتي - أول محفظة إلكترونية جزائرية للتسديد</p><p>📧 djadidkhadamati@gmail.com</p></footer>
+    </div>
+</div>
+
+<div id="utilityModal" class="modal">
+    <div class="modal-content">
+        <h3>🔌 دفع فاتورة الكهرباء / الماء</h3>
+        <select id="billType">
+            <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
+            <option value="eau">💧 ماء (ADE)</option>
+        </select>
+        <input type="text" id="modalClient" placeholder="رقم العميل *">
+        <input type="text" id="modalInvoice" placeholder="رقم الفاتورة *">
+        <input type="text" id="modalEBB" placeholder="رقم EBB (خاص بالكهرباء)">
+        <input type="number" id="modalAmount" placeholder="المبلغ *">
+        <button id="modalScanBtn" class="scan-btn">📷 مسح الفاتورة</button>
+        <button id="modalPayBtn">💳 دفع الفاتورة</button>
+        <button id="closeModalBtn" class="close-modal">إلغاء</button>
+    </div>
+</div>
+<div id="toast"></div>
+
+<script>
+    let loggedIn = localStorage.getItem('loggedIn') === 'true';
+    let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 1000.00;
+
+    function updateBalanceUI() {
+        document.getElementById('balance').innerText = currentBalance.toFixed(2) + ' دج';
+        localStorage.setItem('walletBalance', currentBalance);
+    }
+
+    function setLoggedIn(status) {
+        loggedIn = status;
+        localStorage.setItem('loggedIn', status);
+        updateUIForUser();
+    }
+
+    function updateUIForUser() {
+        const authSection = document.getElementById('authSection');
+        const walletSection = document.getElementById('walletSection');
+        if (loggedIn) {
+            authSection.style.display = 'none';
+            walletSection.style.display = 'block';
+            updateBalanceUI();
+        } else {
+            authSection.style.display = 'block';
+            walletSection.style.display = 'none';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('authStatus').innerText = '';
+        }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        if (!email || !pass) {
+            document.getElementById('authStatus').innerText = '❌ الرجاء إدخال البريد وكلمة المرور';
+            return;
+        }
+        setLoggedIn(true);
+        document.getElementById('authStatus').innerText = '✅ تم تسجيل الدخول بنجاح';
+    });
+
+    document.getElementById('signupBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        const conf = document.getElementById('confirmPassword').value.trim();
+        if (!email || !pass || !conf) {
+            document.getElementById('authStatus').innerText = '❌ املأ جميع الحقول';
+            return;
+        }
+        if (pass !== conf) {
+            document.getElementById('authStatus').innerText = '❌ كلمتا المرور غير متطابقتين';
+            return;
+        }
+        if (pass.length < 6) {
+            document.getElementById('authStatus').innerText = '❌ كلمة المرور 6 أحرف على الأقل';
+            return;
+        }
+        setLoggedIn(true);
+        document.getElementById('authStatus').innerText = '✅ تم إنشاء الحساب وتسجيل الدخول';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => setLoggedIn(false));
+    document.getElementById('rechargeBtn').addEventListener('click', () => {
+        let amount = prompt('أدخل مبلغ الشحن (دج):', '500');
+        if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+            currentBalance += parseFloat(amount);
+            updateBalanceUI();
+            showToast('✅ تم شحن المحفظة بنجاح', false);
+        } else showToast('❌ مبلغ غير صحيح', true);
+    });
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        toast.style.background = isError ? '#c53030' : '#1f7b4d';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    const billTypeSelect = document.getElementById('billType');
+    const ebbField = document.getElementById('modalEBB');
+    function toggleEBBField() {
+        if (billTypeSelect.value === 'electricite') {
+            ebbField.style.display = 'block';
+            ebbField.required = true;
+            ebbField.placeholder = 'رقم EBB (خاص بالكهرباء) *';
+        } else {
+            ebbField.style.display = 'none';
+            ebbField.required = false;
+            ebbField.value = '';
+        }
+    }
+    billTypeSelect.addEventListener('change', toggleEBBField);
+    toggleEBBField();
+
+    function generatePDF(data) {
+        const receiptDiv = document.createElement('div');
+        receiptDiv.style.direction = 'rtl';
+        receiptDiv.style.padding = '20px';
+        receiptDiv.style.fontFamily = 'Cairo, sans-serif';
+        receiptDiv.innerHTML = `
+            <div style="text-align:center;">
+                <h2>📄 إيصال دفع فاتورة ${data.type === 'electricite' ? 'الكهرباء' : 'الماء'}</h2><hr>
+                <p><strong>📅 التاريخ:</strong> ${data.date}</p>
+                <p><strong>🔢 رقم العملية:</strong> ${data.transactionId}</p>
+                <p><strong>👤 رقم العميل:</strong> ${data.client}</p>
+                <p><strong>🧾 رقم الفاتورة:</strong> ${data.invoice}</p>
+                ${data.ebb ? `<p><strong>🔢 رقم EBB:</strong> ${data.ebb}</p>` : ''}
+                <p><strong>💰 المبلغ المدفوع:</strong> ${data.amount} دج</p>
+                <p><strong>✅ الحالة:</strong> مدفوع</p><hr>
+                <p>شكراً لاستخدامكم خدماتي</p>
+            </div>
+        `;
+        document.body.appendChild(receiptDiv);
+        html2pdf().set({ margin: 0.5, filename: `facture_${data.transactionId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(receiptDiv).save();
+        setTimeout(() => document.body.removeChild(receiptDiv), 1000);
+    }
+
+    const modal = document.getElementById('utilityModal');
+    const openModalBtn = document.getElementById('openUtilityModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalPayBtn = document.getElementById('modalPayBtn');
+    const modalScanBtn = document.getElementById('modalScanBtn');
+    const clientInput = document.getElementById('modalClient');
+    const invoiceInput = document.getElementById('modalInvoice');
+    const amountInput = document.getElementById('modalAmount');
+
+    openModalBtn.onclick = () => { modal.style.display = 'flex'; toggleEBBField(); };
+    closeModalBtn.onclick = () => { modal.style.display = 'none'; };
+
+    modalPayBtn.onclick = () => {
+        const type = billTypeSelect.value;
+        const client = clientInput.value.trim();
+        const invoice = invoiceInput.value.trim();
+        const ebb = (type === 'electricite') ? ebbField.value.trim() : '';
+        const amount = parseFloat(amountInput.value);
+        if (!client || !invoice || (type === 'electricite' && !ebb) || isNaN(amount) || amount <= 0) {
+            showToast('❌ الرجاء ملء جميع الحقول المطلوبة بشكل صحيح', true);
+            return;
+        }
+        if (amount > currentBalance) {
+            showToast(`❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance.toFixed(2)} دج`, true);
+            return;
+        }
+        currentBalance -= amount;
+        updateBalanceUI();
+        const txId = 'BILL-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+        generatePDF({
+            date: new Date().toLocaleString('ar-EG'),
+            transactionId: txId,
+            type: type,
+            client: client,
+            invoice: invoice,
+            ebb: ebb,
+            amount: amount.toFixed(2)
+        });
+        showToast(`✅ تم دفع ${amount.toFixed(2)} دج بنجاح! جاري تحميل الإيصال`, false);
+        clientInput.value = '';
+        invoiceInput.value = '';
+        ebbField.value = '';
+        amountInput.value = '';
+        modal.style.display = 'none';
+    };
+
+    modalScanBtn.onclick = () => {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'black';
+        overlay.style.zIndex = '2000';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        const readerDiv = document.createElement('div');
+        readerDiv.id = 'temp-reader';
+        readerDiv.style.width = '90%';
+        readerDiv.style.maxWidth = '400px';
+        const closeScanBtn = document.createElement('button');
+        closeScanBtn.innerText = 'إغلاق';
+        closeScanBtn.style.marginTop = '15px';
+        closeScanBtn.style.padding = '10px';
+        closeScanBtn.style.background = '#dc2626';
+        closeScanBtn.style.color = 'white';
+        closeScanBtn.style.border = 'none';
+        closeScanBtn.style.borderRadius = '40px';
+        closeScanBtn.style.cursor = 'pointer';
+        overlay.appendChild(readerDiv);
+        overlay.appendChild(closeScanBtn);
+        document.body.appendChild(overlay);
+        const html5QrCode = new Html5Qrcode("temp-reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+            const parts = decodedText.split('|');
+            if (parts.length >= 4) {
+                clientInput.value = parts[0];
+                invoiceInput.value = parts[1];
+                if (billTypeSelect.value === 'electricite') ebbField.value = parts[2];
+                amountInput.value = parts[3];
+                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
+            } else {
+                clientInput.value = decodedText;
+                showToast('تم المسح، يرجى مراجعة الحقول', false);
+            }
+            html5QrCode.stop();
+            document.body.removeChild(overlay);
+        }).catch(err => {
+            showToast('خطأ في الكاميرا: ' + err, true);
+            document.body.removeChild(overlay);
+        });
+        closeScanBtn.onclick = () => {
+            if (html5QrCode.isScanning) html5QrCode.stop();
+            document.body.removeChild(overlay);
+        };
+    };
+
+    let userLat = null, userLon = null;
+    function getUserLocation() {
+        if (!navigator.geolocation) {
+            document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
+            document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLat = position.coords.latitude;
+                userLon = position.coords.longitude;
+                fetchPrayerTimes();
+                fetchWeather();
+            },
+            () => {
+                document.getElementById('prayerContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+                document.getElementById('weatherContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+            }
+        );
+    }
+    async function fetchPrayerTimes() {
+        const div = document.getElementById('prayerContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const today = new Date();
+            const url = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${userLat}&longitude=${userLon}&method=2`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.code === 200) {
+                const t = data.data.timings;
+                div.innerHTML = `
+                    <div class="prayer-grid">
+                        <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                    </div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    async function fetchWeather() {
+        const div = document.getElementById('weatherContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.cod === 200) {
+                div.innerHTML = `
+                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                    <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
+                    <div class="weather-desc">☁️ ${data.weather[0].description}</div>
+                    <div class="weather-detail"><span>💧 رطوبة ${data.main.humidity}%</span><span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span></div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    getUserLocation();
+    updateUIForUser();
+</script>
+</body>
+</html>
