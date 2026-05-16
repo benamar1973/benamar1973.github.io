@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>سونلغاز - دفع الفاتورة (مسح ضوئي)</title>
+    <title>سونلغاز - دفع الفاتورة (مع اسم الزبون)</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
         body { background: #f0f2f5; padding: 20px; }
@@ -33,6 +33,9 @@
     
     <button id="scanBtn" class="scanner-btn">📷 Scanner le code (Data Matrix)</button>
 
+    <label>👤 Nom Client *</label>
+    <input type="text" id="nomClient" placeholder="Nom complet du client">
+
     <label>📘 Numéro Client *</label>
     <input type="text" id="client" placeholder="Entrez votre numéro client">
 
@@ -56,6 +59,7 @@
         <h2>📄 إيصال دفع فاتورة الكهرباء</h2><hr>
         <p><strong>📅 التاريخ:</strong> <span id="receiptDate"></span></p>
         <p><strong>🔢 رقم العملية:</strong> <span id="receiptId"></span></p>
+        <p><strong>👤 اسم الزبون:</strong> <span id="receiptNom"></span></p>
         <p><strong>👤 رقم العميل:</strong> <span id="receiptClient"></span></p>
         <p><strong>🧾 رقم الفاتورة:</strong> <span id="receiptFacture"></span></p>
         <p><strong>🔢 رقم EBB:</strong> <span id="receiptEBB"></span></p>
@@ -82,7 +86,7 @@
     }
 
     function fillFields(data) {
-        // data قد يكون كائنًا يحتوي على client, facture, ebb, montant
+        if (data.nom) document.getElementById('nomClient').value = data.nom;
         if (data.client) document.getElementById('client').value = data.client;
         if (data.facture) document.getElementById('facture').value = data.facture;
         if (data.ebb) document.getElementById('ebb').value = data.ebb;
@@ -90,59 +94,29 @@
         showToast('✅ تم تعبئة الحقول من المسح', false);
     }
 
-    // تفسير النص الممسوح (يفترض تنسيقات مختلفة)
+    // تفسير النص الممسوح (يحاول استخراج الاسم، الرقم، الفاتورة، EBB، المبلغ)
     function parseScannedText(text) {
         let parts = [];
-        // حاول التقسيم بـ '|'
-        if (text.includes('|')) {
-            parts = text.split('|');
-        } 
-        // حاول التقسيم بمسافات أو فواصل
-        else if (text.includes(' ')) {
-            parts = text.split(/\s+/);
-        }
-        else {
-            // إذا كان النص طويلاً، ربما هو سطر واحد يحتوي كل المعلومات؟ سنعتبره رقم العميل فقط.
-            parts = [text];
-        }
-        // إزالة الأجزاء الفارغة
+        if (text.includes('|')) parts = text.split('|');
+        else if (text.includes(' ')) parts = text.split(/\s+/);
+        else parts = [text];
         parts = parts.filter(p => p.trim().length > 0);
         
-        if (parts.length >= 4) {
-            return {
-                client: parts[0].trim(),
-                facture: parts[1].trim(),
-                ebb: parts[2].trim(),
-                montant: parts[3].trim()
-            };
+        if (parts.length >= 5) {
+            return { nom: parts[0].trim(), client: parts[1].trim(), facture: parts[2].trim(), ebb: parts[3].trim(), montant: parts[4].trim() };
+        } else if (parts.length === 4) {
+            return { nom: '', client: parts[0].trim(), facture: parts[1].trim(), ebb: parts[2].trim(), montant: parts[3].trim() };
         } else if (parts.length === 3) {
-            return {
-                client: parts[0].trim(),
-                facture: parts[1].trim(),
-                ebb: parts[2].trim(),
-                montant: ''
-            };
+            return { nom: '', client: parts[0].trim(), facture: parts[1].trim(), ebb: parts[2].trim(), montant: '' };
         } else if (parts.length === 2) {
-            return {
-                client: parts[0].trim(),
-                facture: parts[1].trim(),
-                ebb: '',
-                montant: ''
-            };
+            return { nom: '', client: parts[0].trim(), facture: parts[1].trim(), ebb: '', montant: '' };
         } else {
-            return {
-                client: parts[0].trim(),
-                facture: '',
-                ebb: '',
-                montant: ''
-            };
+            return { nom: '', client: parts[0].trim(), facture: '', ebb: '', montant: '' };
         }
     }
 
-    // المسح الضوئي
     const scanBtn = document.getElementById('scanBtn');
     scanBtn.addEventListener('click', () => {
-        // إنشاء overlay
         const overlay = document.createElement('div');
         overlay.className = 'qr-overlay';
         const readerDiv = document.createElement('div');
@@ -167,7 +141,6 @@
         const config = { fps: 10, qrbox: { width: 250, height: 250 } };
         
         html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
-            // نجح المسح
             const parsed = parseScannedText(decodedText);
             fillFields(parsed);
             html5QrCode.stop();
@@ -184,18 +157,19 @@
         });
     });
 
-    // زر تعبئة تجريبية
     document.getElementById('demoFillBtn').addEventListener('click', () => {
+        document.getElementById('nomClient').value = 'محمد أحمد بن عمارة';
         document.getElementById('client').value = '0123456789';
         document.getElementById('facture').value = 'FACT-2026-123456';
         document.getElementById('ebb').value = 'EBB987654321';
         document.getElementById('montant').value = '1250.00';
-        showToast('📝 تم ملء الحقول ببيانات تجريبية', false);
+        showToast('📝 تم ملء الحقول ببيانات تجريبية (بما فيها الاسم)', false);
     });
 
     function generatePDF(data) {
         document.getElementById('receiptDate').innerText = data.date;
         document.getElementById('receiptId').innerText = data.transactionId;
+        document.getElementById('receiptNom').innerText = data.nom;
         document.getElementById('receiptClient').innerText = data.client;
         document.getElementById('receiptFacture').innerText = data.facture;
         document.getElementById('receiptEBB').innerText = data.ebb;
@@ -216,11 +190,12 @@
     });
 
     document.getElementById('payerBtn').addEventListener('click', () => {
+        const nomVal = document.getElementById('nomClient').value.trim();
         const clientVal = document.getElementById('client').value.trim();
         const factureVal = document.getElementById('facture').value.trim();
         const ebbVal = document.getElementById('ebb').value.trim();
         const montantVal = parseFloat(document.getElementById('montant').value);
-        if (!clientVal || !factureVal || !ebbVal || isNaN(montantVal) || montantVal <= 0) {
+        if (!nomVal || !clientVal || !factureVal || !ebbVal || isNaN(montantVal) || montantVal <= 0) {
             showToast('❌ الرجاء ملء جميع الحقول بشكل صحيح', true);
             return;
         }
@@ -231,7 +206,7 @@
         currentBalance -= montantVal;
         updateBalanceUI();
         const transactionId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-        generatePDF({ date: new Date().toLocaleString('ar-EG'), transactionId, client: clientVal, facture: factureVal, ebb: ebbVal, montant: montantVal.toFixed(2) });
+        generatePDF({ date: new Date().toLocaleString('ar-EG'), transactionId, nom: nomVal, client: clientVal, facture: factureVal, ebb: ebbVal, montant: montantVal.toFixed(2) });
         showToast(`✅ تم دفع ${montantVal.toFixed(2)} DZD بنجاح! جاري تحميل الإيصال`, false);
     });
 </script>
