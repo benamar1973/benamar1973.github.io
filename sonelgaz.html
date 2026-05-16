@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sonelgaz - دفع الفاتورة</title>
+    <title>خدماتي - دفع فاتورة سونلغاز</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
         body { background: #f0f2f5; padding: 20px; }
@@ -15,7 +15,6 @@
         input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
         button { width: 100%; background: #1f7b4d; color: white; padding: 15px; border: none; border-radius: 40px; font-size: 16px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         .recharge-btn { background: #2c5f8a; margin-top: 5px; }
-        .demo-btn { background: #6c757d; margin-top: 5px; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -41,7 +40,6 @@
     <input type="number" id="montant" step="0.01" placeholder="Entrez le montant">
 
     <button id="payerBtn">💳 Payer maintenant</button>
-    <button id="autoFillBtn" class="demo-btn">⚡ Remplir automatiquement (test)</button>
     <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille</button>
 </div>
 <div id="toast" class="toast"></div>
@@ -61,6 +59,15 @@
 </div>
 
 <script>
+    // تعبئة البيانات تلقائياً عند تحميل الصفحة
+    function autoFill() {
+        document.getElementById('client').value = '0123456789';
+        document.getElementById('facture').value = 'FACT-2026-123456';
+        document.getElementById('ebb').value = 'EBB987654321';
+        document.getElementById('montant').value = '1250.00';
+        showToast('📝 تم ملء الحقول تلقائياً ببيانات تجريبية (يمكنك تعديلها)', false);
+    }
+
     let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 500.00;
     function updateBalanceUI() {
         document.getElementById('soldeDisplay').innerText = currentBalance.toFixed(2) + ' DZD';
@@ -82,7 +89,7 @@
         document.getElementById('receiptClient').innerText = data.client;
         document.getElementById('receiptFacture').innerText = data.facture;
         document.getElementById('receiptEBB').innerText = data.ebb;
-        document.getElementById('receiptMontant').innerText = data.montant.toFixed(2);
+        document.getElementById('receiptMontant').innerText = data.montant;
         const element = document.getElementById('receiptContent');
         element.style.display = 'block';
         html2pdf().set({ margin: 0.5, filename: `facture_${data.transactionId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
@@ -96,26 +103,6 @@
             updateBalanceUI();
             showToast('✅ تم شحن المحفظة بنجاح', false);
         } else showToast('❌ مبلغ غير صحيح', true);
-    });
-
-    // تعبئة تلقائية ببيانات اختبار عند الضغط على الزر
-    document.getElementById('autoFillBtn').addEventListener('click', () => {
-        document.getElementById('client').value = '0123456789';
-        document.getElementById('facture').value = 'FACT-2024-001234';
-        document.getElementById('ebb').value = 'EBB987654321';
-        document.getElementById('montant').value = '1250.75';
-        showToast('📝 تم ملء الحقول ببيانات تجريبية (يمكنك تعديلها)', false);
-    });
-
-    // تعبئة تلقائية أول مرة عند تحميل الصفحة (إذا كانت الحقول فارغة)
-    window.addEventListener('load', () => {
-        if (!document.getElementById('client').value && !document.getElementById('facture').value) {
-            document.getElementById('client').value = '0123456789';
-            document.getElementById('facture').value = 'FACT-2024-001234';
-            document.getElementById('ebb').value = 'EBB987654321';
-            document.getElementById('montant').value = '1250.75';
-            showToast('📝 تم تعبئة البيانات تلقائياً، يمكنك تعديلها أو الدفع مباشرة', false);
-        }
     });
 
     document.getElementById('payerBtn').addEventListener('click', () => {
@@ -134,15 +121,11 @@
         currentBalance -= montantVal;
         updateBalanceUI();
         const transactionId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-        generatePDF({ date: new Date().toLocaleString('ar-EG'), transactionId, client: clientVal, facture: factureVal, ebb: ebbVal, montant: montantVal });
+        generatePDF({ date: new Date().toLocaleString('ar-EG'), transactionId, client: clientVal, facture: factureVal, ebb: ebbVal, montant: montantVal.toFixed(2) });
         showToast(`✅ تم دفع ${montantVal.toFixed(2)} DZD بنجاح! جاري تحميل الإيصال`, false);
-        // لا نمسح الحقول بعد الدفع لسهولة إعادة المحاولة (اختياري)
-        // يمكنك إلغاء التعليق لمسح الحقول:
-        // document.getElementById('client').value = '';
-        // document.getElementById('facture').value = '';
-        // document.getElementById('ebb').value = '';
-        // document.getElementById('montant').value = '';
     });
+
+    window.addEventListener('load', autoFill);
 </script>
 </body>
 </html>
