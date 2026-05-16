@@ -10,19 +10,15 @@
         .card { background: white; border-radius: 32px; padding: 20px; max-width: 500px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .solde-row { display: flex; gap: 15px; margin-bottom: 25px; }
         .solde-box { flex: 1; background: #f8fafd; border-radius: 24px; padding: 15px; text-align: center; }
-        .solde-box h4 { font-size: 14px; color: #5a6e8a; }
         .solde-box .number { font-size: 28px; font-weight: bold; color: #1a2c3e; }
         .title { font-size: 20px; font-weight: bold; color: #1f7b4d; margin-bottom: 10px; }
-        .scanner { background: #eef3fc; padding: 20px; border-radius: 28px; text-align: center; margin: 15px 0; cursor: pointer; border: 1px solid #dce5f0; }
-        .scanner:active { background: #e2e9f3; }
-        .scanner i { font-size: 40px; display: block; }
         input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
         button { width: 100%; background: #1f7b4d; color: white; padding: 15px; border: none; border-radius: 40px; font-size: 16px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         .recharge-btn { background: #2c5f8a; margin-top: 5px; }
+        .demo-btn { background: #6c757d; margin-top: 5px; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
 <div class="card">
@@ -32,62 +28,45 @@
     </div>
     <div class="title">⚡ Sonelgaz - Paiement Factures</div>
 
-    <div class="scanner" id="scanBtn">
-        <i>📷🔳</i>
-        <strong>Scanner Data Matrix</strong><br>
-        <span>Scannez votre Data Matrix Sonelgaz</span>
-    </div>
-
     <label>📘 Numéro Client *</label>
-    <input type="text" id="client" placeholder="رقم العميل">
+    <input type="text" id="client" placeholder="Entrez votre numéro client">
 
     <label>🧾 Numéro Facture *</label>
-    <input type="text" id="facture" placeholder="رقم الفاتورة">
+    <input type="text" id="facture" placeholder="Entrez le numéro de facture">
 
     <label>🔢 Numéro EBB *</label>
-    <input type="text" id="ebb" placeholder="رقم EBB">
+    <input type="text" id="ebb" placeholder="Entrez le numéro EBB">
 
     <label>💰 Montant *</label>
-    <input type="number" id="montant" placeholder="المبلغ">
+    <input type="number" id="montant" step="0.01" placeholder="Entrez le montant">
 
     <button id="payerBtn">💳 Payer maintenant</button>
-    <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille (test)</button>
+    <button id="autoFillBtn" class="demo-btn">⚡ Remplir automatiquement (test)</button>
+    <button id="rechargeBtn" class="recharge-btn">➕ Recharger le portefeuille</button>
 </div>
 <div id="toast" class="toast"></div>
 
-<!-- قالب الإيصال المخفي -->
 <div id="receiptContent" style="display: none; direction: rtl; padding: 20px; font-family: sans-serif;">
     <div style="text-align: center;">
-        <h2>📄 إيصال دفع فاتورة الكهرباء</h2>
-        <hr>
+        <h2>📄 إيصال دفع فاتورة الكهرباء</h2><hr>
         <p><strong>📅 التاريخ:</strong> <span id="receiptDate"></span></p>
         <p><strong>🔢 رقم العملية:</strong> <span id="receiptId"></span></p>
         <p><strong>👤 رقم العميل:</strong> <span id="receiptClient"></span></p>
         <p><strong>🧾 رقم الفاتورة:</strong> <span id="receiptFacture"></span></p>
         <p><strong>🔢 رقم EBB:</strong> <span id="receiptEBB"></span></p>
         <p><strong>💰 المبلغ المدفوع:</strong> <span id="receiptMontant"></span> DZD</p>
-        <p><strong>✅ الحالة:</strong> مدفوع</p>
-        <hr>
+        <p><strong>✅ الحالة:</strong> مدفوع</p><hr>
         <p>شكراً لاستخدامكم خدماتي</p>
     </div>
 </div>
 
 <script>
-    let currentBalance = localStorage.getItem('walletBalance') ? parseInt(localStorage.getItem('walletBalance')) : 500;
+    let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 500.00;
     function updateBalanceUI() {
-        document.getElementById('soldeDisplay').innerText = currentBalance + ' DZD';
+        document.getElementById('soldeDisplay').innerText = currentBalance.toFixed(2) + ' DZD';
         localStorage.setItem('walletBalance', currentBalance);
     }
     updateBalanceUI();
-
-    document.getElementById('rechargeBtn').addEventListener('click', () => {
-        let amount = prompt('أدخل مبلغ الشحن (DZD):', '500');
-        if (amount && !isNaN(amount) && parseInt(amount) > 0) {
-            currentBalance += parseInt(amount);
-            updateBalanceUI();
-            showToast('✅ تم شحن المحفظة بنجاح', false);
-        } else showToast('❌ مبلغ غير صحيح', true);
-    });
 
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
@@ -103,97 +82,66 @@
         document.getElementById('receiptClient').innerText = data.client;
         document.getElementById('receiptFacture').innerText = data.facture;
         document.getElementById('receiptEBB').innerText = data.ebb;
-        document.getElementById('receiptMontant').innerText = data.montant;
+        document.getElementById('receiptMontant').innerText = data.montant.toFixed(2);
         const element = document.getElementById('receiptContent');
         element.style.display = 'block';
         html2pdf().set({ margin: 0.5, filename: `facture_${data.transactionId}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(element).save();
         setTimeout(() => element.style.display = 'none', 1000);
     }
 
+    document.getElementById('rechargeBtn').addEventListener('click', () => {
+        let amount = prompt('أدخل مبلغ الشحن (DZD):', '500');
+        if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+            currentBalance += parseFloat(amount);
+            updateBalanceUI();
+            showToast('✅ تم شحن المحفظة بنجاح', false);
+        } else showToast('❌ مبلغ غير صحيح', true);
+    });
+
+    // تعبئة تلقائية ببيانات اختبار عند الضغط على الزر
+    document.getElementById('autoFillBtn').addEventListener('click', () => {
+        document.getElementById('client').value = '0123456789';
+        document.getElementById('facture').value = 'FACT-2024-001234';
+        document.getElementById('ebb').value = 'EBB987654321';
+        document.getElementById('montant').value = '1250.75';
+        showToast('📝 تم ملء الحقول ببيانات تجريبية (يمكنك تعديلها)', false);
+    });
+
+    // تعبئة تلقائية أول مرة عند تحميل الصفحة (إذا كانت الحقول فارغة)
+    window.addEventListener('load', () => {
+        if (!document.getElementById('client').value && !document.getElementById('facture').value) {
+            document.getElementById('client').value = '0123456789';
+            document.getElementById('facture').value = 'FACT-2024-001234';
+            document.getElementById('ebb').value = 'EBB987654321';
+            document.getElementById('montant').value = '1250.75';
+            showToast('📝 تم تعبئة البيانات تلقائياً، يمكنك تعديلها أو الدفع مباشرة', false);
+        }
+    });
+
     document.getElementById('payerBtn').addEventListener('click', () => {
         const clientVal = document.getElementById('client').value.trim();
         const factureVal = document.getElementById('facture').value.trim();
         const ebbVal = document.getElementById('ebb').value.trim();
-        const montantVal = parseInt(document.getElementById('montant').value);
+        const montantVal = parseFloat(document.getElementById('montant').value);
         if (!clientVal || !factureVal || !ebbVal || isNaN(montantVal) || montantVal <= 0) {
             showToast('❌ الرجاء ملء جميع الحقول بشكل صحيح', true);
             return;
         }
         if (montantVal > currentBalance) {
-            showToast(`❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance} DZD`, true);
+            showToast(`❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance.toFixed(2)} DZD`, true);
             return;
         }
         currentBalance -= montantVal;
         updateBalanceUI();
         const transactionId = 'SNG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
         generatePDF({ date: new Date().toLocaleString('ar-EG'), transactionId, client: clientVal, facture: factureVal, ebb: ebbVal, montant: montantVal });
-        showToast(`✅ تم دفع ${montantVal} DZD بنجاح! جاري تحميل الإيصال`, false);
-        // تفريغ الحقول بعد الدفع
-        document.getElementById('client').value = '';
-        document.getElementById('facture').value = '';
-        document.getElementById('ebb').value = '';
-        document.getElementById('montant').value = '';
-    });
-
-    // المسح الضوئي: يتطلب وجود الأجزاء الأربعة كاملة
-    const scanBtn = document.getElementById('scanBtn');
-    scanBtn.addEventListener('click', () => {
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.background = 'black';
-        overlay.style.zIndex = '1000';
-        overlay.style.display = 'flex';
-        overlay.style.flexDirection = 'column';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-
-        const readerDiv = document.createElement('div');
-        readerDiv.id = 'reader';
-        readerDiv.style.width = '90%';
-        readerDiv.style.maxWidth = '400px';
-        const closeBtn = document.createElement('button');
-        closeBtn.innerText = 'إغلاق';
-        closeBtn.style.marginTop = '15px';
-        closeBtn.style.padding = '10px';
-        closeBtn.style.background = '#dc2626';
-        closeBtn.style.color = 'white';
-        closeBtn.style.border = 'none';
-        closeBtn.style.borderRadius = '40px';
-        closeBtn.style.cursor = 'pointer';
-
-        overlay.appendChild(readerDiv);
-        overlay.appendChild(closeBtn);
-        document.body.appendChild(overlay);
-
-        const html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => {
-            const parts = decodedText.split('|');
-            if (parts.length === 4) {
-                // التنسيق المطلوب: العميل|الفاتورة|EBB|المبلغ
-                document.getElementById('client').value = parts[0];
-                document.getElementById('facture').value = parts[1];
-                document.getElementById('ebb').value = parts[2];
-                document.getElementById('montant').value = parts[3];
-                showToast('✅ تم تعبئة جميع الحقول من الفاتورة', false);
-            } else {
-                // رمز الفاتورة لا يحتوي على المعطيات الكاملة
-                showToast('❌ رمز الفاتورة لا يحوي جميع المعطيات (العميل، الفاتورة، EBB، المبلغ). يرجى إدخال البيانات يدوياً.', true);
-            }
-            html5QrCode.stop();
-            document.body.removeChild(overlay);
-        }).catch(err => {
-            showToast('خطأ في الكاميرا: ' + err, true);
-            document.body.removeChild(overlay);
-        });
-
-        closeBtn.addEventListener('click', () => {
-            if (html5QrCode.isScanning) html5QrCode.stop();
-            document.body.removeChild(overlay);
-        });
+        showToast(`✅ تم دفع ${montantVal.toFixed(2)} DZD بنجاح! جاري تحميل الإيصال`, false);
+        // لا نمسح الحقول بعد الدفع لسهولة إعادة المحاولة (اختياري)
+        // يمكنك إلغاء التعليق لمسح الحقول:
+        // document.getElementById('client').value = '';
+        // document.getElementById('facture').value = '';
+        // document.getElementById('ebb').value = '';
+        // document.getElementById('montant').value = '';
     });
 </script>
 </body>
