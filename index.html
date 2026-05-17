@@ -52,6 +52,17 @@
         .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
         .scan-btn { background: #0f3460; }
         .close-modal { background: #dc3545; margin-top: 5px; }
+        /* تنسيقات شحن الهاتف داخل النافذة المنبثقة */
+        .recharge-phone-group { display: flex; gap: 10px; margin-top: 10px; margin-bottom: 15px; }
+        .recharge-phone-group input { flex: 2; }
+        .recharge-phone-group button { flex: 1; background: #0f3460; color: white; border: none; border-radius: 40px; font-size: 14px; cursor: pointer; }
+        .operator-name { margin: 10px 0; font-size: 14px; color: #e94560; font-weight: bold; text-align: center; }
+        .offers-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; max-height: 300px; overflow-y: auto; }
+        .offer-item { background: #f8f9fa; padding: 12px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e9ecef; }
+        .offer-details { flex: 2; text-align: right; }
+        .offer-price { font-weight: bold; color: #0f3460; font-size: 15px; }
+        .offer-desc { font-size: 11px; color: #555; margin-top: 3px; }
+        .offer-btn { background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 30px; font-size: 12px; font-weight: bold; cursor: pointer; }
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         footer a { color: #000000; text-decoration: none; }
         #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
@@ -81,7 +92,7 @@
                 <div class="payment-grid">
                     <div class="payment-icon" id="openUtilityModal"><i>🔌</i><span>فواتير الكهرباء والماء</span></div>
                     <div class="payment-icon" onclick="window.open('https://paiement.at.dz/', '_blank')"><i>📞</i><span>الهاتف الثابت والانترنت</span></div>
-                    <div class="payment-icon" onclick="alert('🔜 خدمة شحن الهاتف قريباً')"><i>📱</i><span>شحن الهاتف (فليكسي)</span></div>
+                    <div class="payment-icon" id="openRechargeModal"><i>📱</i><span>شحن الهاتف (فليكسي)</span></div>
                 </div>
             </div>
         </div>
@@ -112,6 +123,7 @@
     </div>
 </div>
 
+<!-- نافذة منبثقة لدفع فواتير الكهرباء/الماء -->
 <div id="utilityModal" class="modal">
     <div class="modal-content">
         <h3>🔌 دفع فاتورة الكهرباء / الماء</h3>
@@ -128,9 +140,27 @@
         <button id="closeModalBtn" class="close-modal">إلغاء</button>
     </div>
 </div>
+
+<!-- نافذة منبثقة لشحن الهاتف (عند الضغط على أيقونة شحن الهاتف) -->
+<div id="rechargePhoneModal" class="modal">
+    <div class="modal-content">
+        <h3>📱 شحن الهاتف</h3>
+        <div class="recharge-phone-group">
+            <input type="tel" id="phoneNumber" placeholder="أدخل رقم الهاتف (10 أرقام)" maxlength="10">
+            <button id="detectOperatorBtn">تعرف على المشغل</button>
+        </div>
+        <div id="operatorResult" class="operator-name"></div>
+        <div id="offersContainer" class="offers-list"></div>
+        <button id="closeRechargeModalBtn" class="close-modal">إلغاء</button>
+    </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
+    // ----------------------------------------------
+    // 1. إدارة تسجيل الدخول والمحفظة
+    // ----------------------------------------------
     let loggedIn = localStorage.getItem('loggedIn') === 'true';
     let currentBalance = localStorage.getItem('walletBalance') ? parseFloat(localStorage.getItem('walletBalance')) : 1000.00;
 
@@ -211,6 +241,113 @@
         setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
+    // ----------------------------------------------
+    // 2. دوال شحن الهاتف (داخل النافذة المنبثقة)
+    // ----------------------------------------------
+    const rechargeModal = document.getElementById('rechargePhoneModal');
+    const openRechargeBtn = document.getElementById('openRechargeModal');
+    const closeRechargeBtn = document.getElementById('closeRechargeModalBtn');
+    const detectOperatorBtn = document.getElementById('detectOperatorBtn');
+    const phoneInput = document.getElementById('phoneNumber');
+    const operatorResultDiv = document.getElementById('operatorResult');
+    const offersContainer = document.getElementById('offersContainer');
+
+    openRechargeBtn.onclick = () => { rechargeModal.style.display = 'flex'; };
+    closeRechargeBtn.onclick = () => { rechargeModal.style.display = 'none'; };
+
+    function detectOperator(phone) {
+        if (!phone || phone.length < 4) return null;
+        const prefix = phone.substring(0, 4);
+        if (prefix === '0558' || prefix === '0559' || prefix === '0550') return 'Djezzy';
+        if (prefix === '0661' || prefix === '0662' || prefix === '0663') return 'Ooredoo';
+        if (prefix === '0770' || prefix === '0771' || prefix === '0772') return 'Mobilis';
+        return null;
+    }
+
+    function getOffersByOperator(operator) {
+        const offers = {
+            Djezzy: [
+                { price: '100 دج', desc: '2 جيغا + 100 دج رصيد (صلاحية 7 أيام)' },
+                { price: '300 دج', desc: '10 جيغا + رسائل غير محدودة (7 أيام)' },
+                { price: '1000 دج', desc: '30 جيغا + مكالمات غير محدودة لجازي (شهر)' },
+                { price: '1500 دج', desc: '60 جيغا + بونص 2 جيغا عبر التطبيق (شهر)' }
+            ],
+            Ooredoo: [
+                { price: '500 دج', desc: '5 جيغا + مكالمات غير محدودة لأوريدو + 500 دج رصيد (4 أسابيع)' },
+                { price: '1000 دج', desc: '15 جيغا + 5 جيغا يوتيوب (4 أسابيع)' },
+                { price: '2000 دج', desc: '40 جيغا + بونص 200 جيغا الشهر الأول (35 يوماً)' }
+            ],
+            Mobilis: [
+                { price: '500 دج', desc: 'رصيد 1500 دج + 10 جيغا (7 أيام)' },
+                { price: '1000 دج', desc: '5 جيغا هدية فورية عند الشحن الإلكتروني (48 ساعة)' },
+                { price: '1500 دج', desc: '3500 دج رصيد + مكالمات غير محدودة لموبيليس + 45 جيغا (30 يوماً)' }
+            ]
+        };
+        return offers[operator] || [];
+    }
+
+    function displayOffers(operator) {
+        if (!operator) {
+            operatorResultDiv.innerHTML = '';
+            offersContainer.innerHTML = '<p style="text-align:center; color:#e94560;">⚠️ لم يتم التعرف على المشغل. تأكد من رقم الهاتف (أول 4 أرقام).</p>';
+            return;
+        }
+        const operatorNames = { Djezzy: 'جيزي (Djezzy)', Ooredoo: 'أوريدو (Ooredoo)', Mobilis: 'موبيليس (Mobilis)' };
+        operatorResultDiv.innerHTML = `✅ المشغل: ${operatorNames[operator]}`;
+        
+        const offers = getOffersByOperator(operator);
+        if (offers.length === 0) {
+            offersContainer.innerHTML = '<p style="text-align:center;">لا توجد عروض متاحة حالياً</p>';
+            return;
+        }
+        
+        offersContainer.innerHTML = '';
+        offers.forEach(offer => {
+            const offerDiv = document.createElement('div');
+            offerDiv.className = 'offer-item';
+            offerDiv.innerHTML = `
+                <div class="offer-details">
+                    <div class="offer-price">💰 ${offer.price}</div>
+                    <div class="offer-desc">${offer.desc}</div>
+                </div>
+                <button class="offer-btn" data-price="${offer.price}">شراء</button>
+            `;
+            offersContainer.appendChild(offerDiv);
+        });
+        
+        // إضافة حدث لزر الشراء
+        document.querySelectorAll('#offersContainer .offer-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const priceText = btn.getAttribute('data-price');
+                const priceMatch = priceText.match(/\d+/);
+                const price = priceMatch ? parseInt(priceMatch[0]) : 0;
+                if (price > 0 && price <= currentBalance) {
+                    currentBalance -= price;
+                    updateBalanceUI();
+                    showToast(`✅ تم شراء الباقة بنجاح! تم خصم ${price} دج من رصيدك.`, false);
+                    displayOffers(operator); // تحديث القائمة (اختياري)
+                } else if (price > currentBalance) {
+                    showToast(`❌ رصيدك غير كافٍ! رصيدك الحالي: ${currentBalance.toFixed(2)} دج`, true);
+                } else {
+                    showToast('❌ حدث خطأ، يرجى المحاولة مرة أخرى', true);
+                }
+            });
+        });
+    }
+
+    detectOperatorBtn.addEventListener('click', () => {
+        const phone = phoneInput.value.trim();
+        if (!phone) {
+            showToast('❌ الرجاء إدخال رقم الهاتف', true);
+            return;
+        }
+        const operator = detectOperator(phone);
+        displayOffers(operator);
+    });
+
+    // ----------------------------------------------
+    // 3. دوال دفع فواتير الكهرباء/الماء (كما هي)
+    // ----------------------------------------------
     const billTypeSelect = document.getElementById('billType');
     const ebbField = document.getElementById('modalEBB');
     function toggleEBBField() {
@@ -351,6 +488,9 @@
         };
     };
 
+    // ----------------------------------------------
+    // 4. مواقيت الصلاة والطقس (تلقائي)
+    // ----------------------------------------------
     let userLat = null, userLon = null;
     function getUserLocation() {
         if (!navigator.geolocation) {
@@ -415,4 +555,4 @@
     updateUIForUser();
 </script>
 </body>
-                </html>
+    </html>
