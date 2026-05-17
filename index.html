@@ -267,22 +267,13 @@
     };
     closeRechargeBtn.onclick = () => { rechargeModal.style.display = 'none'; };
 
-    // كشف المشغل من أول 4 أرقام (البادئات الصحيحة)
+    // دالة الكشف عن المشغل بناءً على أول رقم (الصحيح)
     function detectOperator(phone) {
-        if (!phone || phone.length < 4) return null;
-        const prefix = phone.substring(0, 4);
-        // جيزي: 0558, 0559, 0550, 0551, 0552, 0553, 0554, 0555, 0556, 0557
-        if (prefix === '0558' || prefix === '0559' || prefix === '0550' ||
-            prefix === '0551' || prefix === '0552' || prefix === '0553' ||
-            prefix === '0554' || prefix === '0555' || prefix === '0556' || prefix === '0557') return 'Djezzy';
-        // أوريدو: 0661, 0662, 0663, 0664, 0665, 0666, 0667, 0668, 0669, 0660
-        if (prefix === '0661' || prefix === '0662' || prefix === '0663' ||
-            prefix === '0664' || prefix === '0665' || prefix === '0666' ||
-            prefix === '0667' || prefix === '0668' || prefix === '0669' || prefix === '0660') return 'Ooredoo';
-        // موبيليس: 0770, 0771, 0772, 0773, 0774, 0775, 0776, 0777, 0778, 0779
-        if (prefix === '0770' || prefix === '0771' || prefix === '0772' ||
-            prefix === '0773' || prefix === '0774' || prefix === '0775' ||
-            prefix === '0776' || prefix === '0777' || prefix === '0778' || prefix === '0779') return 'Mobilis';
+        if (!phone || phone.length < 1) return null;
+        const firstDigit = phone.charAt(0);
+        if (firstDigit === '5') return 'Ooredoo';
+        if (firstDigit === '6') return 'Mobilis';
+        if (firstDigit === '7') return 'Djezzy';
         return null;
     }
 
@@ -293,8 +284,8 @@
         if (operator) {
             const operatorNames = { Djezzy: 'جيزي (Djezzy)', Ooredoo: 'أوريدو (Ooredoo)', Mobilis: 'موبيليس (Mobilis)' };
             operatorResultDiv.innerHTML = `📡 المشغل: ${operatorNames[operator]}`;
-        } else if (phone.length >= 4) {
-            operatorResultDiv.innerHTML = '⚠️ لم يتم التعرف على المشغل. تأكد من الرقم.';
+        } else if (phone.length >= 1) {
+            operatorResultDiv.innerHTML = '⚠️ الرقم يجب أن يبدأ بـ 5 (أوريدو)، 6 (موبيليس) أو 7 (جيزي).';
         } else {
             operatorResultDiv.innerHTML = '';
         }
@@ -312,7 +303,7 @@
             return;
         }
         if (!operator) {
-            showToast('❌ لم يتم التعرف على المشغل', true);
+            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 5 أو 6 أو 7', true);
             return;
         }
         let amount = prompt('أدخل مبلغ الشحن (دج):', '500');
@@ -408,7 +399,7 @@
             return;
         }
         if (!operator) {
-            showToast('❌ لم يتم التعرف على المشغل', true);
+            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 5 أو 6 أو 7', true);
             return;
         }
         displayOffers(operator);
