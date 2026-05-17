@@ -267,13 +267,13 @@
     };
     closeRechargeBtn.onclick = () => { rechargeModal.style.display = 'none'; };
 
-    // دالة الكشف عن المشغل بناءً على أول رقم (الصحيح)
+    // دالة الكشف عن المشغل بناءً على أول رقمين (الصحيح)
     function detectOperator(phone) {
-        if (!phone || phone.length < 1) return null;
-        const firstDigit = phone.charAt(0);
-        if (firstDigit === '5') return 'Ooredoo';
-        if (firstDigit === '6') return 'Mobilis';
-        if (firstDigit === '7') return 'Djezzy';
+        if (!phone || phone.length < 2) return null;
+        const prefix = phone.substring(0, 2);
+        if (prefix === '05') return 'Ooredoo';
+        if (prefix === '06') return 'Mobilis';
+        if (prefix === '07') return 'Djezzy';
         return null;
     }
 
@@ -284,8 +284,8 @@
         if (operator) {
             const operatorNames = { Djezzy: 'جيزي (Djezzy)', Ooredoo: 'أوريدو (Ooredoo)', Mobilis: 'موبيليس (Mobilis)' };
             operatorResultDiv.innerHTML = `📡 المشغل: ${operatorNames[operator]}`;
-        } else if (phone.length >= 1) {
-            operatorResultDiv.innerHTML = '⚠️ الرقم يجب أن يبدأ بـ 5 (أوريدو)، 6 (موبيليس) أو 7 (جيزي).';
+        } else if (phone.length >= 2) {
+            operatorResultDiv.innerHTML = '⚠️ الرقم يجب أن يبدأ بـ 05 (أوريدو)، 06 (موبيليس) أو 07 (جيزي).';
         } else {
             operatorResultDiv.innerHTML = '';
         }
@@ -303,7 +303,7 @@
             return;
         }
         if (!operator) {
-            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 5 أو 6 أو 7', true);
+            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 05 أو 06 أو 07', true);
             return;
         }
         let amount = prompt('أدخل مبلغ الشحن (دج):', '500');
@@ -399,7 +399,7 @@
             return;
         }
         if (!operator) {
-            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 5 أو 6 أو 7', true);
+            showToast('❌ لم يتم التعرف على المشغل، تأكد أن الرقم يبدأ بـ 05 أو 06 أو 07', true);
             return;
         }
         displayOffers(operator);
