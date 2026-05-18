@@ -3,120 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - جميع الخدمات</title>
+    <title>خدماتي - الدليل الجزائري الشامل</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .main-card { background: #ffffff; border-radius: 35px; padding: 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
-        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
-        .icon-btn:active { transform: scale(0.96); }
-        .icon-btn svg { width: 48px; height: 48px; display: block; margin: 0 auto 5px; }
-        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; }
-        .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
-        .widget h3 { color: #0f3460; font-size: 18px; margin-bottom: 15px; border-bottom: 3px solid #e94560; display: inline-block; }
-        .exchange-rate p { display: flex; justify-content: space-between; margin: 10px 0; padding: 8px 0; border-bottom: 1px dashed #dee2e6; font-size: 15px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .prayer-item { background: white; padding: 12px; border-radius: 18px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .prayer-name { font-size: 14px; color: #0f3460; font-weight: bold; margin-bottom: 5px; }
-        .prayer-time { font-size: 18px; font-weight: bold; color: #e94560; font-family: monospace; }
-        .weather-temp { font-size: 38px; font-weight: bold; color: #e94560; text-align: center; margin: 10px 0; }
-        .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
-        .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
-        .loading { text-align: center; padding: 20px; color: #e94560; }
-        footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
-        footer a { color: #000000; text-decoration: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 35px;
+            padding: 20px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .icon-btn {
+            background: #f8f9fa;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #e9ecef;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.96);
+        }
+
+        .icon-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .icon-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .widgets {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .widget {
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 18px;
+            border: 1px solid #e9ecef;
+        }
+
+        .widget h3 {
+            color: #0f3460;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e94560;
+            display: inline-block;
+        }
+
+        .exchange-rate p {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px dashed #dee2e6;
+            font-size: 15px;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .prayer-item {
+            background: white;
+            padding: 12px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .prayer-name {
+            font-size: 14px;
+            color: #0f3460;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .prayer-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e94560;
+            font-family: monospace;
+        }
+
+        .weather-temp {
+            font-size: 38px;
+            font-weight: bold;
+            color: #e94560;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .weather-desc {
+            text-align: center;
+            font-size: 16px;
+            color: #2c3e50;
+            margin: 5px 0;
+        }
+
+        .weather-detail {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #e94560;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            color: #000000;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        footer a {
+            color: #000000;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="main-card">
-        <div class="header"><h1>📱 خدماتي الجزائر</h1></div>
+        <div class="header">
+            <h1>📱 خدماتي الجزائر</h1>
+        </div>
 
         <div class="grid">
-            <!-- سونلغاز SVG -->
             <div class="icon-btn" onclick="window.open('https://www.sonelgaz.dz/', '_blank')">
-                <svg viewBox="0 0 1024 1024" width="64" height="64">
-                    <use href="#sonelgaz-svg"/>
-                </svg>
-                <span>سونلغاز</span>
+                <i>⚡</i><span>سونلغاز</span>
             </div>
-            <!-- SEAAL SVG (رمز قطرة ماء بسيط) -->
             <div class="icon-btn" onclick="window.open('https://www.seaal.dz/', '_blank')">
-                <svg width="64" height="64" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="#3498db"/>
-                    <path d="M50 20 L50 80 M30 50 L70 50" stroke="white" stroke-width="6" stroke-linecap="round"/>
-                </svg>
-                <span>SEAAL</span>
+                <i>💧</i><span>SEAAL</span>
             </div>
-            <!-- موبيليس SVG -->
             <div class="icon-btn" onclick="window.open('https://www.mobilis.dz/', '_blank')">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="#e74c3c"/>
-                    <text x="50" y="65" text-anchor="middle" fill="white" font-size="20" font-weight="bold">M</text>
-                </svg>
-                <span>mobilis</span>
+                <i>📱</i><span>mobilis</span>
             </div>
-            <!-- جازي SVG -->
             <div class="icon-btn" onclick="window.open('https://www.djezzy.dz/', '_blank')">
-                <svg viewBox="0 0 100 100">
-                    <rect x="5" y="5" width="90" height="90" rx="15" fill="#27ae60"/>
-                    <text x="50" y="65" text-anchor="middle" fill="white" font-size="22" font-weight="bold">ج</text>
-                </svg>
-                <span>DJEZZY</span>
+                <i>📡</i><span>DJEZZY</span>
             </div>
-            <!-- أوريدو SVG -->
             <div class="icon-btn" onclick="window.open('https://www.ooredoo.dz/', '_blank')">
-                <svg viewBox="0 0 100 100">
-                    <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="#f39c12"/>
-                    <text x="50" y="65" text-anchor="middle" fill="white" font-size="22" font-weight="bold">O</text>
-                </svg>
-                <span>Ooredoo</span>
+                <i>🌐</i><span>Ooredoo</span>
             </div>
-            <!-- اتصالات الجزائر SVG -->
             <div class="icon-btn" onclick="window.open('https://www.algerietelecom.dz/', '_blank')">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="#2980b9"/>
-                    <text x="50" y="65" text-anchor="middle" fill="white" font-size="20" font-weight="bold">AT</text>
-                </svg>
-                <span>Algerie Telecom</span>
+                <i>📞</i><span>Algerie Telecom</span>
             </div>
-            <!-- باقي الخدمات (روابط خارجية) -->
-            <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><span>💰</span><span>منحة البطالة</span></div>
-            <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><span>🎖️</span><span>تجنيد الجيش</span></div>
-            <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><span>👨‍👩‍👧</span><span>فضاء الأولياء</span></div>
-            <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><span>🏢</span><span>سكنات عدل</span></div>
-            <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><span>💼</span><span>وسيط ANEM</span></div>
-            <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><span>🐑</span><span>أضحية العيد</span></div>
-            <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><span>🔧</span><span>التكوين المهني</span></div>
-            <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><span>🏕️</span><span>المخيم الشبابي</span></div>
-            <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><span>📄</span><span>التصريح بضياع وثائق</span></div>
-            <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><span>🏦</span><span>CCP</span></div>
-            <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><span>🚗</span><span>قسيمة السيارات</span></div>
-            <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><span>📜</span><span>شهادة CNAS</span></div>
-            <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><span>📜</span><span>شهادة CASNOS</span></div>
-            <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><span>📚</span><span>الفروض والإمتحانات</span></div>
-            <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><span>⛽</span><span>شراء العجلات</span></div>
-            <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><span>🏛️</span><span>الصفقات العمومية</span></div>
+            <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')">
+                <i>💰</i><span>منحة البطالة</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')">
+                <i>🎖️</i><span>تجنيد الجيش</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')">
+                <i>👨‍👩‍👧</i><span>فضاء الأولياء</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')">
+                <i>🏢</i><span>سكنات عدل</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')">
+                <i>💼</i><span>وسيط ANEM</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')">
+                <i>🐑</i><span>أضحية العيد</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')">
+                <i>🔧</i><span>التكوين المهني</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')">
+                <i>🏕️</i><span>المخيم الشبابي</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')">
+                <i>📄</i><span>التصريح بضياع وثائق</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')">
+                <i>🏦</i><span>CCP</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')">
+                <i>🚗</i><span>قسيمة السيارات</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')">
+                <i>📜</i><span>شهادة CNAS</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')">
+                <i>📜</i><span>شهادة CASNOS</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')">
+                <i>📚</i><span>الفروض والإمتحانات</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')">
+                <i>⛽</i><span>شراء العجلات</span>
+            </div>
+            <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')">
+                <i>🏛️</i><span>الصفقات العمومية</span>
+            </div>
         </div>
 
-        <!-- أسعار الصرف، مواقيت الصلاة، الطقس -->
         <div class="widgets">
-            <div class="widget exchange-rate"><h3>💱 أسعار الصرف</h3><p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p><p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p></div>
-            <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
-            <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
+            <div class="widget exchange-rate">
+                <h3>💱 أسعار الصرف</h3>
+                <p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p>
+                <p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p>
+            </div>
+
+            <div class="widget" id="prayerWidget">
+                <h3>🕋 مواقيت الصلاة</h3>
+                <div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div>
+            </div>
+
+            <div class="widget" id="weatherWidget">
+                <h3>☁️ حالة الطقس</h3>
+                <div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div>
+            </div>
         </div>
-        <footer><p>🇩🇿 خدماتي - جميع الخدمات الجزائرية في مكان واحد</p><p>📧 djadidkhadamati@gmail.com</p></footer>
+
+        <footer>
+            <p>🇩🇿 خدماتي - أول محفظة إلكترونية جزائرية للتسديد</p>
+            <p>📧 djadidkhadamati@gmail.com</p>
+        </footer>
     </div>
 </div>
 
 <script>
-    // دوال مواقيت الصلاة والطقس (تلقائية)
     let userLat = null, userLon = null;
+
     function getUserLocation() {
         if (!navigator.geolocation) {
             document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
@@ -136,6 +301,7 @@
             }
         );
     }
+
     async function fetchPrayerTimes() {
         const div = document.getElementById('prayerContent');
         div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
@@ -146,10 +312,24 @@
             const data = await resp.json();
             if (data.code === 200) {
                 const t = data.data.timings;
-                div.innerHTML = `<div class="prayer-grid"><div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div><div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div><div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div><div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div><div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div><div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div></div>`;
-            } else div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
-        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+                div.innerHTML = `
+                    <div class="prayer-grid">
+                        <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                    </div>
+                `;
+            } else {
+                div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+            }
+        } catch(e) {
+            div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+        }
     }
+
     async function fetchWeather() {
         const div = document.getElementById('weatherContent');
         div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
@@ -158,10 +338,23 @@
             const resp = await fetch(url);
             const data = await resp.json();
             if (data.cod === 200) {
-                div.innerHTML = `<div class="weather-temp">${Math.round(data.main.temp)}°C</div><div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div><div class="weather-desc">☁️ ${data.weather[0].description}</div><div class="weather-detail"><span>💧 رطوبة ${data.main.humidity}%</span><span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span></div>`;
-            } else div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
-        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+                div.innerHTML = `
+                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                    <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
+                    <div class="weather-desc">☁️ ${data.weather[0].description}</div>
+                    <div class="weather-detail">
+                        <span>💧 رطوبة ${data.main.humidity}%</span>
+                        <span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span>
+                    </div>
+                `;
+            } else {
+                div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+            }
+        } catch(e) {
+            div.innerHTML = '<p>⚠️ فشل الاتصال</p>';
+        }
     }
+
     getUserLocation();
 </script>
 </body>
