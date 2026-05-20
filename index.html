@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>خدماتي - دفع الفواتير</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
@@ -29,6 +31,12 @@
         .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
         .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
         .loading { text-align: center; padding: 20px; color: #e94560; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
+        .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
+        .scan-btn { background: #0f3460; }
+        .close-modal { background: #dc3545; margin-top: 5px; }
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         footer a { color: #000000; text-decoration: none; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
@@ -43,13 +51,13 @@
         </div>
 
         <div class="grid">
-            <div class="icon-btn" onclick="payWithChargily('سونلغاز')"><i>⚡</i><span>سونلغاز</span></div>
-            <div class="icon-btn" onclick="payWithChargily('SEAAL')"><i>💧</i><span>SEAAL</span></div>
-            <div class="icon-btn" onclick="payWithChargily('ADE')"><i>🚰</i><span>ADE</span></div>
-            <div class="icon-btn" onclick="payWithChargily('mobilis')"><i>📱</i><span>mobilis</span></div>
-            <div class="icon-btn" onclick="payWithChargily('DJEZZY')"><i>📡</i><span>DJEZZY</span></div>
-            <div class="icon-btn" onclick="payWithChargily('Ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
-            <div class="icon-btn" onclick="payWithChargily('Algerie Telecom')"><i>📞</i><span>Algerie Telecom</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('سونلغاز')"><i>⚡</i><span>سونلغاز</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('SEAAL')"><i>💧</i><span>SEAAL</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('ADE')"><i>🚰</i><span>ADE</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('mobilis')"><i>📱</i><span>mobilis</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('DJEZZY')"><i>📡</i><span>DJEZZY</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('Ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('Algerie Telecom')"><i>📞</i><span>Algerie Telecom</span></div>
             <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
@@ -77,7 +85,29 @@
     </div>
 </div>
 
+<!-- نافذة دفع الفاتورة (Modal) -->
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">دفع فاتورة</h3>
+        <select id="billType">
+            <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
+            <option value="eau">💧 ماء (ADE/SEAAL)</option>
+        </select>
+        <input type="text" id="clientNumber" placeholder="رقم العميل *">
+        <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
+        <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
+        <input type="number" id="amount" placeholder="المبلغ *">
+        <button id="scanBtn" class="scan-btn">📷 مسح Data Matrix</button>
+        <button id="payBtn">💳 دفع عبر Chargily Pay</button>
+        <button class="close-modal">❌ إلغاء</button>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
 <script>
+    let currentService = '';
+
     function shareApp() {
         if (navigator.share) {
             navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
@@ -87,16 +117,129 @@
         }
     }
 
-    function payWithChargily(service) {
-        let amount = prompt(`💰 دفع فاتورة ${service}\nأدخل المبلغ بالدينار (DZD):`, '1000');
-        if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-            alert('❌ مبلغ غير صحيح');
-            return;
-        }
-        alert(`🔜 سيتم تحويلك إلى بوابة Chargily Pay لدفع ${parseFloat(amount).toFixed(2)} دج`);
-        // هنا بعد التفعيل سيتم استبدال هذا السطر برابط الدفع الحقيقي
+    const modal = document.getElementById('paymentModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const billTypeSelect = document.getElementById('billType');
+    const ebbField = document.getElementById('ebbNumber');
+    const clientInput = document.getElementById('clientNumber');
+    const invoiceInput = document.getElementById('invoiceNumber');
+    const amountInput = document.getElementById('amount');
+    const closeBtn = document.querySelector('.close-modal');
+    const payBtn = document.getElementById('payBtn');
+    const scanBtn = document.getElementById('scanBtn');
+
+    function openPaymentModal(service) {
+        currentService = service;
+        modalTitle.innerText = `دفع فاتورة ${service}`;
+        modal.style.display = 'flex';
+        // إعادة تعيين الحقول
+        clientInput.value = '';
+        invoiceInput.value = '';
+        ebbField.value = '';
+        amountInput.value = '';
+        // التحكم في ظهور حقل EBB حسب نوع الفاتورة
+        toggleEBBField();
     }
 
+    function toggleEBBField() {
+        if (billTypeSelect.value === 'electricite') {
+            ebbField.style.display = 'block';
+            ebbField.placeholder = 'رقم EBB (خاص بالكهرباء) *';
+        } else {
+            ebbField.style.display = 'none';
+            ebbField.value = '';
+        }
+    }
+
+    billTypeSelect.addEventListener('change', toggleEBBField);
+    closeBtn.onclick = () => modal.style.display = 'none';
+
+    // دفع الفاتورة عبر Chargily Pay
+    payBtn.onclick = () => {
+        const client = clientInput.value.trim();
+        const invoice = invoiceInput.value.trim();
+        const ebb = (billTypeSelect.value === 'electricite') ? ebbField.value.trim() : '';
+        const amount = parseFloat(amountInput.value);
+
+        if (!client || !invoice || (billTypeSelect.value === 'electricite' && !ebb) || isNaN(amount) || amount <= 0) {
+            showToast('❌ الرجاء ملء جميع الحقول المطلوبة', true);
+            return;
+        }
+
+        // هنا يتم التحويل إلى Chargily Pay
+        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${amount.toFixed(2)} دج`, false);
+        // بعد التفعيل، سيتم استبدال هذا السطر بـ window.location.href = رابط_الدفع_من_Chargily_Pay
+    };
+
+    // المسح الضوئي (محاكاة)
+    scanBtn.onclick = () => {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'black';
+        overlay.style.zIndex = '2000';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+
+        const readerDiv = document.createElement('div');
+        readerDiv.id = 'temp-reader';
+        readerDiv.style.width = '90%';
+        readerDiv.style.maxWidth = '400px';
+        const closeScanBtn = document.createElement('button');
+        closeScanBtn.innerText = 'إغلاق';
+        closeScanBtn.style.marginTop = '15px';
+        closeScanBtn.style.padding = '10px';
+        closeScanBtn.style.background = '#dc2626';
+        closeScanBtn.style.color = 'white';
+        closeScanBtn.style.border = 'none';
+        closeScanBtn.style.borderRadius = '40px';
+        closeScanBtn.style.cursor = 'pointer';
+
+        overlay.appendChild(readerDiv);
+        overlay.appendChild(closeScanBtn);
+        document.body.appendChild(overlay);
+
+        const html5QrCode = new Html5Qrcode("temp-reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+            const parts = decodedText.split('|');
+            if (parts.length >= 4) {
+                clientInput.value = parts[0];
+                invoiceInput.value = parts[1];
+                if (billTypeSelect.value === 'electricite') ebbField.value = parts[2];
+                amountInput.value = parts[3];
+                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
+            } else {
+                clientInput.value = decodedText;
+                showToast('تم المسح، يرجى مراجعة الحقول', false);
+            }
+            html5QrCode.stop();
+            document.body.removeChild(overlay);
+        }).catch(err => {
+            showToast('خطأ في الكاميرا: ' + err, true);
+            document.body.removeChild(overlay);
+        });
+
+        closeScanBtn.onclick = () => {
+            if (html5QrCode.isScanning) html5QrCode.stop();
+            document.body.removeChild(overlay);
+        };
+    };
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        toast.style.background = isError ? '#c53030' : '#28a745';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    // دوال الطقس والصلاة (تلقائية)
     let userLat = null, userLon = null;
     function getUserLocation() {
         if (!navigator.geolocation) {
