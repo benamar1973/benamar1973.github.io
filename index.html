@@ -106,6 +106,26 @@
         .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
         .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
         .loading { text-align: center; padding: 20px; color: #e94560; }
+        
+        /* روابط الصفحات السفلية */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        .footer-links a {
+            color: #0f3460;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .footer-links a:hover {
+            color: #e94560;
+        }
+        
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         footer a { color: #000000; text-decoration: none; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
@@ -156,6 +176,15 @@
             <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
             <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
         </div>
+
+        <!-- روابط الصفحات السفلية -->
+        <div class="footer-links">
+            <a href="about.html">📖 من نحن</a>
+            <a href="contact.html">📞 اتصل بنا</a>
+            <a href="privacy.html">🔒 سياسة الخصوصية</a>
+            <a href="terms.html">📜 شروط الخدمة</a>
+        </div>
+
         <footer><p>🇩🇿 خدماتي - بوابة دفع إلكتروني معتمدة عبر EDAHABIA و CIB</p><p>📧 djadidkhadamati@gmail.com</p></footer>
     </div>
 </div>
