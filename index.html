@@ -51,7 +51,7 @@
         </div>
 
         <div class="grid">
-            <!-- خدمات الدفع (كل أيقونة تفتح نافذة خاصة بها) -->
+            <!-- خدمات الدفع -->
             <div class="icon-btn" onclick="openPaymentModal('sonelgaz', 'كهرباء')"><i>⚡</i><span>سونلغاز</span></div>
             <div class="icon-btn" onclick="openPaymentModal('seaal', 'ماء')"><i>💧</i><span>SEAAL</span></div>
             <div class="icon-btn" onclick="openPaymentModal('ade', 'ماء')"><i>🚰</i><span>ADE</span></div>
@@ -87,7 +87,7 @@
     </div>
 </div>
 
-<!-- نافذة دفع الفاتورة (Modal) -->
+<!-- نافذة دفع الفاتورة -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">دفع فاتورة</h3>
@@ -96,11 +96,11 @@
             <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
             <option value="eau">💧 ماء (ADE/SEAAL)</option>
         </select>
-        <input type="text" id="clientNumber" placeholder="رقم العميل *">
+        <input type="text" id="clientNumber" placeholder="رقم العقد / رقم العميل *">
         <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
         <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
         <input type="number" id="amount" placeholder="المبلغ *">
-        <button id="scanBtn" class="scan-btn">📷 مسح Data Matrix</button>
+        <button id="scanBtn" class="scan-btn">📷 مسح رمز الفاتورة (Data Matrix)</button>
         <button id="payBtn">💳 دفع عبر Chargily Pay</button>
         <button class="close-modal">❌ إلغاء</button>
     </div>
@@ -110,7 +110,6 @@
 
 <script>
     let currentService = '';
-    let currentServiceType = '';
 
     function shareApp() {
         if (navigator.share) {
@@ -135,9 +134,7 @@
 
     function openPaymentModal(service, type) {
         currentService = service;
-        currentServiceType = type;
         
-        // تعيين عنوان النافذة حسب الخدمة
         let serviceName = '';
         switch(service) {
             case 'sonelgaz': serviceName = 'سونلغاز (كهرباء/غاز)'; break;
@@ -149,25 +146,20 @@
             case 'algerie-telecom': serviceName = 'اتصالات الجزائر (هاتف ثابت/إنترنت)'; break;
             default: serviceName = service;
         }
+        
         modalTitle.innerText = `دفع فاتورة ${serviceName}`;
         serviceTypeDisplay.innerText = `الخدمة: ${serviceName}`;
         
-        // تعيين نوع الفاتورة المناسب
-        if (type === 'كهرباء') {
-            billTypeSelect.value = 'electricite';
-        } else if (type === 'ماء') {
-            billTypeSelect.value = 'eau';
-        }
+        if (type === 'كهرباء') billTypeSelect.value = 'electricite';
+        else if (type === 'ماء') billTypeSelect.value = 'eau';
         
         modal.style.display = 'flex';
         
-        // إعادة تعيين الحقول
         clientInput.value = '';
         invoiceInput.value = '';
         ebbField.value = '';
         amountInput.value = '';
         
-        // التحكم في ظهور حقل EBB حسب نوع الفاتورة
         toggleEBBField();
     }
 
@@ -184,7 +176,6 @@
     billTypeSelect.addEventListener('change', toggleEBBField);
     closeBtn.onclick = () => modal.style.display = 'none';
 
-    // دفع الفاتورة عبر Chargily Pay
     payBtn.onclick = () => {
         const client = clientInput.value.trim();
         const invoice = invoiceInput.value.trim();
@@ -196,7 +187,6 @@
             return;
         }
 
-        // رسالة توضيحية حسب الخدمة
         let serviceMsg = '';
         switch(currentService) {
             case 'sonelgaz': serviceMsg = 'فاتورة كهرباء/غاز (سونلغاز)'; break;
@@ -209,11 +199,10 @@
             default: serviceMsg = `${amount.toFixed(2)} دج`;
         }
         
-        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${serviceMsg}`, false);
-        // بعد التفعيل، سيتم استبدال هذا السطر بـ window.location.href = رابط_الدفع_من_Chargily_Pay
+        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${serviceMsg}`);
+        // بعد التفعيل: window.location.href = رابط_الدفع_من_Chargily_Pay
     };
 
-    // المسح الضوئي (محاكاة)
     scanBtn.onclick = () => {
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
@@ -281,7 +270,7 @@
         setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
-    // دوال الطقس والصلاة (تلقائية)
+    // دوال الطقس والصلاة
     let userLat = null, userLon = null;
     function getUserLocation() {
         if (!navigator.geolocation) {
