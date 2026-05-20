@@ -12,19 +12,87 @@
         .header { text-align: center; margin-bottom: 20px; }
         .header h1 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
         .share-btn { background: #25D366; color: white; border: none; padding: 6px 15px; border-radius: 50px; font-size: 14px; font-weight: bold; cursor: pointer; margin-right: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        
+        /* قسم منفصل لأيقونات الدفع */
+        .payment-section {
+            background: #fff5f5;
+            border-radius: 25px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #ffcccc;
+        }
+        .payment-section h3 {
+            color: #dc3545;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #dc3545;
+            display: inline-block;
+        }
+        
+        /* أيقونات الدفع - خلفية حمراء */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .payment-btn {
+            background: #dc3545;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+        }
+        .payment-btn:active {
+            background: #b02a37;
+            transform: scale(0.96);
+        }
+        .payment-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .payment-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
         
         /* الأيقونات العادية (الخدمات الإدارية) */
-        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
-        .icon-btn:active { transform: scale(0.96); }
-        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
-        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
-        
-        /* أيقونات الدفع - مربع أحمر */
-        .icon-btn.payment { background: #dc3545; border: none; box-shadow: 0 4px 12px rgba(220,53,69,0.4); }
-        .icon-btn.payment i { color: white; }
-        .icon-btn.payment span { color: white; font-weight: bold; }
-        .icon-btn.payment:active { background: #b02a37; transform: scale(0.96); }
+        .normal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .icon-btn {
+            background: #f8f9fa;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #e9ecef;
+        }
+        .icon-btn:active {
+            transform: scale(0.96);
+            background: #e9ecef;
+        }
+        .icon-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .icon-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
         
         .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
@@ -51,15 +119,20 @@
             <h1>خدماتي الجزائر</h1>
         </div>
 
-        <div class="grid">
-            <!-- أيقونات الدفع (خلفية حمراء) -->
-            <div class="icon-btn payment" onclick="payWithChargily('دفع فاتورة الكهرباء والماء')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
-            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد موبيليس')"><i>📱</i><span>mobilis</span></div>
-            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد جازي')"><i>📡</i><span>DJEZZY</span></div>
-            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد أوريدو')"><i>🌐</i><span>Ooredoo</span></div>
-            <div class="icon-btn payment" onclick="payWithChargily('دفع فاتورة اتصالات الجزائر')"><i>📞</i><span>Algerie Telecom</span></div>
-            
-            <!-- الخدمات الإدارية (بدون خلفية حمراء) -->
+        <!-- قسم منفصل لأيقونات الدفع (مربع أحمر) -->
+        <div class="payment-section">
+            <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
+            <div class="payment-grid">
+                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة الكهرباء والماء')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد موبيليس')"><i>📱</i><span>mobilis</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد جازي')"><i>📡</i><span>DJEZZY</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد أوريدو')"><i>🌐</i><span>Ooredoo</span></div>
+                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة اتصالات الجزائر')"><i>📞</i><span>Algerie Telecom</span></div>
+            </div>
+        </div>
+
+        <!-- الخدمات الإدارية (بدون مربع أحمر) -->
+        <div class="normal-grid">
             <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
