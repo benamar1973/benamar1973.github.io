@@ -51,14 +51,20 @@
         </div>
 
         <div class="grid">
-            <!-- خدمات الدفع -->
-            <div class="icon-btn" onclick="openPaymentModal('sonelgaz', 'كهرباء')"><i>⚡</i><span>سونلغاز</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('seaal', 'ماء')"><i>💧</i><span>SEAAL</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('ade', 'ماء')"><i>🚰</i><span>ADE</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('mobilis', 'هاتف')"><i>📱</i><span>mobilis</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('djezzy', 'هاتف')"><i>📡</i><span>DJEZZY</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('ooredoo', 'هاتف')"><i>🌐</i><span>Ooredoo</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('algerie-telecom', 'هاتف')"><i>📞</i><span>Algerie Telecom</span></div>
+            <!-- سونلغاز - كهرباء -->
+            <div class="icon-btn" onclick="openPaymentModal('sonelgaz', 'sonelgaz')"><i>⚡</i><span>سونلغاز</span></div>
+            <!-- SEAAL - ماء -->
+            <div class="icon-btn" onclick="openPaymentModal('seaal', 'seaal')"><i>💧</i><span>SEAAL</span></div>
+            <!-- ADE - ماء -->
+            <div class="icon-btn" onclick="openPaymentModal('ade', 'ade')"><i>🚰</i><span>ADE</span></div>
+            <!-- موبيليس - هاتف -->
+            <div class="icon-btn" onclick="openPaymentModal('mobilis', 'mobilis')"><i>📱</i><span>mobilis</span></div>
+            <!-- جازي - هاتف -->
+            <div class="icon-btn" onclick="openPaymentModal('djezzy', 'djezzy')"><i>📡</i><span>DJEZZY</span></div>
+            <!-- أوريدو - هاتف -->
+            <div class="icon-btn" onclick="openPaymentModal('ooredoo', 'ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
+            <!-- اتصالات الجزائر - هاتف -->
+            <div class="icon-btn" onclick="openPaymentModal('algerie', 'algerie')"><i>📞</i><span>Algerie Telecom</span></div>
             <!-- الخدمات الإدارية -->
             <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
@@ -95,9 +101,10 @@
         <select id="billType">
             <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
             <option value="eau">💧 ماء (ADE/SEAAL)</option>
+            <option value="mobile">📱 شحن هاتف (mobilis/DJEZZY/Ooredoo)</option>
         </select>
-        <input type="text" id="clientNumber" placeholder="رقم العقد / رقم العميل *">
-        <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
+        <input type="text" id="clientNumber" placeholder="رقم العقد / رقم العميل / رقم الهاتف *">
+        <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة (للكهرباء/الماء)">
         <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
         <input type="number" id="amount" placeholder="المبلغ *">
         <button id="scanBtn" class="scan-btn">📷 مسح رمز الفاتورة (Data Matrix)</button>
@@ -125,8 +132,8 @@
     const serviceTypeDisplay = document.getElementById('serviceTypeDisplay');
     const billTypeSelect = document.getElementById('billType');
     const ebbField = document.getElementById('ebbNumber');
+    const invoiceField = document.getElementById('invoiceNumber');
     const clientInput = document.getElementById('clientNumber');
-    const invoiceInput = document.getElementById('invoiceNumber');
     const amountInput = document.getElementById('amount');
     const closeBtn = document.querySelector('.close-modal');
     const payBtn = document.getElementById('payBtn');
@@ -136,55 +143,106 @@
         currentService = service;
         
         let serviceName = '';
+        let billType = 'electricite';
+        
         switch(service) {
-            case 'sonelgaz': serviceName = 'سونلغاز (كهرباء/غاز)'; break;
-            case 'seaal': serviceName = 'SEAAL (المياه)'; break;
-            case 'ade': serviceName = 'ADE (المياه)'; break;
-            case 'mobilis': serviceName = 'موبيليس (شحن رصيد)'; break;
-            case 'djezzy': serviceName = 'جازي (شحن رصيد)'; break;
-            case 'ooredoo': serviceName = 'أوريدو (شحن رصيد)'; break;
-            case 'algerie-telecom': serviceName = 'اتصالات الجزائر (هاتف ثابت/إنترنت)'; break;
+            case 'sonelgaz':
+                serviceName = 'سونلغاز (كهرباء/غاز)';
+                billType = 'electricite';
+                break;
+            case 'seaal':
+                serviceName = 'SEAAL (المياه)';
+                billType = 'eau';
+                break;
+            case 'ade':
+                serviceName = 'ADE (المياه)';
+                billType = 'eau';
+                break;
+            case 'mobilis':
+                serviceName = 'موبيليس (شحن رصيد)';
+                billType = 'mobile';
+                break;
+            case 'djezzy':
+                serviceName = 'جازي (شحن رصيد)';
+                billType = 'mobile';
+                break;
+            case 'ooredoo':
+                serviceName = 'أوريدو (شحن رصيد)';
+                billType = 'mobile';
+                break;
+            case 'algerie':
+                serviceName = 'اتصالات الجزائر (هاتف ثابت/إنترنت)';
+                billType = 'mobile';
+                break;
             default: serviceName = service;
         }
         
         modalTitle.innerText = `دفع فاتورة ${serviceName}`;
         serviceTypeDisplay.innerText = `الخدمة: ${serviceName}`;
-        
-        if (type === 'كهرباء') billTypeSelect.value = 'electricite';
-        else if (type === 'ماء') billTypeSelect.value = 'eau';
+        billTypeSelect.value = billType;
         
         modal.style.display = 'flex';
         
+        // إعادة تعيين الحقول
         clientInput.value = '';
-        invoiceInput.value = '';
+        invoiceField.value = '';
         ebbField.value = '';
         amountInput.value = '';
         
-        toggleEBBField();
+        // تحديث ظهور الحقول حسب نوع الفاتورة
+        toggleFieldsByType();
     }
 
-    function toggleEBBField() {
-        if (billTypeSelect.value === 'electricite') {
+    function toggleFieldsByType() {
+        const selectedType = billTypeSelect.value;
+        
+        if (selectedType === 'electricite') {
+            invoiceField.style.display = 'block';
+            invoiceField.placeholder = 'رقم الفاتورة *';
             ebbField.style.display = 'block';
             ebbField.placeholder = 'رقم EBB (خاص بالكهرباء) *';
-        } else {
+            clientInput.placeholder = 'رقم العقد / رقم العميل *';
+        } else if (selectedType === 'eau') {
+            invoiceField.style.display = 'block';
+            invoiceField.placeholder = 'رقم الفاتورة *';
             ebbField.style.display = 'none';
             ebbField.value = '';
+            clientInput.placeholder = 'رقم العقد / رقم العميل *';
+        } else {
+            invoiceField.style.display = 'none';
+            invoiceField.value = '';
+            ebbField.style.display = 'none';
+            ebbField.value = '';
+            clientInput.placeholder = 'رقم الهاتف *';
         }
     }
 
-    billTypeSelect.addEventListener('change', toggleEBBField);
+    billTypeSelect.addEventListener('change', toggleFieldsByType);
     closeBtn.onclick = () => modal.style.display = 'none';
 
     payBtn.onclick = () => {
         const client = clientInput.value.trim();
-        const invoice = invoiceInput.value.trim();
-        const ebb = (billTypeSelect.value === 'electricite') ? ebbField.value.trim() : '';
+        const invoice = invoiceField.value.trim();
+        const ebb = ebbField.value.trim();
         const amount = parseFloat(amountInput.value);
+        const selectedType = billTypeSelect.value;
 
-        if (!client || !invoice || (billTypeSelect.value === 'electricite' && !ebb) || isNaN(amount) || amount <= 0) {
-            showToast('❌ الرجاء ملء جميع الحقول المطلوبة', true);
-            return;
+        // التحقق من الحقول المطلوبة حسب النوع
+        if (selectedType === 'electricite') {
+            if (!client || !invoice || !ebb || isNaN(amount) || amount <= 0) {
+                showToast('❌ الرجاء ملء جميع الحقول المطلوبة (رقم العقد، رقم الفاتورة، رقم EBB، المبلغ)', true);
+                return;
+            }
+        } else if (selectedType === 'eau') {
+            if (!client || !invoice || isNaN(amount) || amount <= 0) {
+                showToast('❌ الرجاء ملء جميع الحقول المطلوبة (رقم العقد، رقم الفاتورة، المبلغ)', true);
+                return;
+            }
+        } else {
+            if (!client || isNaN(amount) || amount <= 0) {
+                showToast('❌ الرجاء إدخال رقم الهاتف والمبلغ', true);
+                return;
+            }
         }
 
         let serviceMsg = '';
@@ -195,7 +253,7 @@
             case 'mobilis': serviceMsg = `شحن رصيد موبيليس بقيمة ${amount.toFixed(2)} دج`; break;
             case 'djezzy': serviceMsg = `شحن رصيد جازي بقيمة ${amount.toFixed(2)} دج`; break;
             case 'ooredoo': serviceMsg = `شحن رصيد أوريدو بقيمة ${amount.toFixed(2)} دج`; break;
-            case 'algerie-telecom': serviceMsg = `دفع فاتورة هاتف ثابت/إنترنت بقيمة ${amount.toFixed(2)} دج`; break;
+            case 'algerie': serviceMsg = `دفع فاتورة هاتف ثابت/إنترنت بقيمة ${amount.toFixed(2)} دج`; break;
             default: serviceMsg = `${amount.toFixed(2)} دج`;
         }
         
@@ -241,7 +299,7 @@
             const parts = decodedText.split('|');
             if (parts.length >= 4) {
                 clientInput.value = parts[0];
-                invoiceInput.value = parts[1];
+                invoiceField.value = parts[1];
                 if (billTypeSelect.value === 'electricite') ebbField.value = parts[2];
                 amountInput.value = parts[3];
                 showToast('✅ تم تعبئة البيانات من الفاتورة', false);
