@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - دفع الفواتير</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <title>خدماتي - بوابة الدفع</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
@@ -15,10 +13,19 @@
         .header h1 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
         .share-btn { background: #25D366; color: white; border: none; padding: 6px 15px; border-radius: 50px; font-size: 14px; font-weight: bold; cursor: pointer; margin-right: 10px; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        
+        /* الأيقونات العادية (الخدمات الإدارية) */
         .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
         .icon-btn:active { transform: scale(0.96); }
-        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; }
+        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
         .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
+        
+        /* أيقونات الدفع - مربع أحمر */
+        .icon-btn.payment { background: #dc3545; border: none; box-shadow: 0 4px 12px rgba(220,53,69,0.4); }
+        .icon-btn.payment i { color: white; }
+        .icon-btn.payment span { color: white; font-weight: bold; }
+        .icon-btn.payment:active { background: #b02a37; transform: scale(0.96); }
+        
         .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
         .widget h3 { color: #0f3460; font-size: 18px; margin-bottom: 15px; border-bottom: 3px solid #e94560; display: inline-block; }
@@ -31,12 +38,6 @@
         .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
         .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
         .loading { text-align: center; padding: 20px; color: #e94560; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
-        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
-        .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
-        .scan-btn { background: #0f3460; }
-        .close-modal { background: #dc3545; margin-top: 5px; }
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         footer a { color: #000000; text-decoration: none; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
@@ -51,17 +52,14 @@
         </div>
 
         <div class="grid">
-            <!-- دفع فاتورة الكهرباء والماء -->
-            <div class="icon-btn" onclick="openPaymentModal('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
-            <!-- شحن موبيليس -->
-            <div class="icon-btn" onclick="openPaymentModal('mobilis')"><i>📱</i><span>mobilis</span></div>
-            <!-- شحن جازي -->
-            <div class="icon-btn" onclick="openPaymentModal('djezzy')"><i>📡</i><span>DJEZZY</span></div>
-            <!-- شحن أوريدو -->
-            <div class="icon-btn" onclick="openPaymentModal('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
-            <!-- شحن اتصالات الجزائر -->
-            <div class="icon-btn" onclick="openPaymentModal('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
-            <!-- الخدمات الإدارية (روابط مباشرة) -->
+            <!-- أيقونات الدفع (خلفية حمراء) -->
+            <div class="icon-btn payment" onclick="payWithChargily('دفع فاتورة الكهرباء والماء')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد موبيليس')"><i>📱</i><span>mobilis</span></div>
+            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد جازي')"><i>📡</i><span>DJEZZY</span></div>
+            <div class="icon-btn payment" onclick="payWithChargily('شحن رصيد أوريدو')"><i>🌐</i><span>Ooredoo</span></div>
+            <div class="icon-btn payment" onclick="payWithChargily('دفع فاتورة اتصالات الجزائر')"><i>📞</i><span>Algerie Telecom</span></div>
+            
+            <!-- الخدمات الإدارية (بدون خلفية حمراء) -->
             <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
@@ -89,27 +87,9 @@
     </div>
 </div>
 
-<!-- نافذة دفع موحدة (كهرباء/ماء + شحن هاتف) -->
-<div id="paymentModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle">دفع الخدمة</h3>
-        <div id="serviceTypeDisplay" style="margin-bottom: 10px; font-weight: bold;"></div>
-        <select id="billType" style="margin-bottom: 10px;"></select>
-        <input type="text" id="clientNumber" placeholder="رقم العقد / رقم الهاتف *">
-        <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة (للكهرباء/الماء)">
-        <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
-        <input type="number" id="amount" placeholder="المبلغ *">
-        <button id="scanBtn" class="scan-btn">📷 مسح رمز الفاتورة (Data Matrix)</button>
-        <button id="payBtn">💳 دفع عبر Chargily Pay</button>
-        <button class="close-modal">❌ إلغاء</button>
-    </div>
-</div>
-
 <div id="toast" class="toast"></div>
 
 <script>
-    let currentService = '';
-
     function shareApp() {
         if (navigator.share) {
             navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
@@ -119,226 +99,10 @@
         }
     }
 
-    const modal = document.getElementById('paymentModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const serviceTypeDisplay = document.getElementById('serviceTypeDisplay');
-    const billTypeSelect = document.getElementById('billType');
-    const ebbField = document.getElementById('ebbNumber');
-    const invoiceField = document.getElementById('invoiceNumber');
-    const clientInput = document.getElementById('clientNumber');
-    const amountInput = document.getElementById('amount');
-    const closeBtn = document.querySelector('.close-modal');
-    const payBtn = document.getElementById('payBtn');
-    const scanBtn = document.getElementById('scanBtn');
-
-    const servicesConfig = {
-        'electricite-eau': {
-            title: 'دفع فاتورة الكهرباء والماء',
-            types: [
-                { value: 'electricite', text: '⚡ كهرباء (SONELGAZ)' },
-                { value: 'eau', text: '💧 ماء (ADE/SEAAL)' }
-            ],
-            getFields: (type) => {
-                if (type === 'electricite') {
-                    return { client: 'رقم العقد *', invoice: 'رقم الفاتورة *', ebb: 'رقم EBB *' };
-                } else {
-                    return { client: 'رقم العقد *', invoice: 'رقم الفاتورة *', ebb: null };
-                }
-            }
-        },
-        'mobilis': {
-            title: 'شحن رصيد موبيليس',
-            types: [{ value: 'mobile', text: '📱 شحن رصيد موبيليس' }],
-            getFields: () => {
-                return { client: 'رقم الهاتف *', invoice: null, ebb: null };
-            }
-        },
-        'djezzy': {
-            title: 'شحن رصيد جازي',
-            types: [{ value: 'mobile', text: '📡 شحن رصيد جازي' }],
-            getFields: () => {
-                return { client: 'رقم الهاتف *', invoice: null, ebb: null };
-            }
-        },
-        'ooredoo': {
-            title: 'شحن رصيد أوريدو',
-            types: [{ value: 'mobile', text: '🌐 شحن رصيد أوريدو' }],
-            getFields: () => {
-                return { client: 'رقم الهاتف *', invoice: null, ebb: null };
-            }
-        },
-        'algerie': {
-            title: 'دفع فاتورة اتصالات الجزائر',
-            types: [{ value: 'mobile', text: '📞 دفع فاتورة هاتف ثابت/إنترنت' }],
-            getFields: () => {
-                return { client: 'رقم الهاتف أو رقم العقد *', invoice: null, ebb: null };
-            }
-        }
-    };
-
-    function openPaymentModal(service) {
-        currentService = service;
-        const config = servicesConfig[service];
-        if (!config) return;
-        
-        modalTitle.innerText = config.title;
-        serviceTypeDisplay.innerText = config.title;
-        
-        // تعبئة قائمة الأنواع
-        billTypeSelect.innerHTML = '';
-        config.types.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type.value;
-            option.textContent = type.text;
-            billTypeSelect.appendChild(option);
-        });
-        
-        modal.style.display = 'flex';
-        
-        // إعادة تعيين الحقول
-        clientInput.value = '';
-        invoiceField.value = '';
-        ebbField.value = '';
-        amountInput.value = '';
-        
-        updateFieldsVisibility();
-    }
-
-    function updateFieldsVisibility() {
-        const config = servicesConfig[currentService];
-        if (!config) return;
-        
-        const selectedType = billTypeSelect.value;
-        const fields = config.getFields(selectedType);
-        
-        // تحديث حقل العميل
-        clientInput.placeholder = fields.client;
-        clientInput.style.display = 'block';
-        
-        // تحديث حقل الفاتورة
-        if (fields.invoice) {
-            invoiceField.style.display = 'block';
-            invoiceField.placeholder = fields.invoice;
-        } else {
-            invoiceField.style.display ='none';
-            invoiceField.value = '';
-        }
-        
-        // تحديث حقل EBB
-        if (fields.ebb) {
-            ebbField.style.display = 'block';
-            ebbField.placeholder = fields.ebb;
-        } else {
-            ebbField.style.display = 'none';
-            ebbField.value = '';
-        }
-    }
-
-    billTypeSelect.addEventListener('change', updateFieldsVisibility);
-    closeBtn.onclick = () => modal.style.display = 'none';
-
-    payBtn.onclick = () => {
-        const config = servicesConfig[currentService];
-        if (!config) return;
-        
-        const selectedType = billTypeSelect.value;
-        const fields = config.getFields(selectedType);
-        
-        const client = clientInput.value.trim();
-        const invoice = invoiceField.value.trim();
-        const ebb = ebbField.value.trim();
-        const amount = parseFloat(amountInput.value);
-        
-        // التحقق من الحقول المطلوبة
-        if (!client || isNaN(amount) || amount <= 0) {
-            showToast('❌ الرجاء إدخال البيانات المطلوبة', true);
-            return;
-        }
-        
-        if (fields.invoice && !invoice) {
-            showToast('❌ الرجاء إدخال رقم الفاتورة', true);
-            return;
-        }
-        
-        if (fields.ebb && !ebb) {
-            showToast('❌ الرجاء إدخال رقم EBB', true);
-            return;
-        }
-        
-        let serviceMsg = '';
-        switch(currentService) {
-            case 'electricite-eau':
-                serviceMsg = `فاتورة ${selectedType === 'electricite' ? 'كهرباء' : 'ماء'} بقيمة ${amount.toFixed(2)} دج`;
-                break;
-            case 'mobilis': serviceMsg = `شحن رصيد موبيليس بقيمة ${amount.toFixed(2)} دج`; break;
-            case 'djezzy': serviceMsg = `شحن رصيد جازي بقيمة ${amount.toFixed(2)} دج`; break;
-            case 'ooredoo': serviceMsg = `شحن رصيد أوريدو بقيمة ${amount.toFixed(2)} دج`; break;
-            case 'algerie': serviceMsg = `دفع فاتورة اتصالات الجزائر بقيمة ${amount.toFixed(2)} دج`; break;
-            default: serviceMsg = `${amount.toFixed(2)} دج`;
-        }
-        
-        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${serviceMsg}`);
+    function payWithChargily(service) {
+        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${service}`);
         // بعد التفعيل: window.location.href = رابط_الدفع_من_Chargily_Pay
-    };
-
-    scanBtn.onclick = () => {
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.background = 'black';
-        overlay.style.zIndex = '2000';
-        overlay.style.display = 'flex';
-        overlay.style.flexDirection = 'column';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-
-        const readerDiv = document.createElement('div');
-        readerDiv.id = 'temp-reader';
-        readerDiv.style.width = '90%';
-        readerDiv.style.maxWidth = '400px';
-        const closeScanBtn = document.createElement('button');
-        closeScanBtn.innerText = 'إغلاق';
-        closeScanBtn.style.marginTop = '15px';
-        closeScanBtn.style.padding = '10px';
-        closeScanBtn.style.background = '#dc2626';
-        closeScanBtn.style.color = 'white';
-        closeScanBtn.style.border = 'none';
-        closeScanBtn.style.borderRadius = '40px';
-        closeScanBtn.style.cursor = 'pointer';
-
-        overlay.appendChild(readerDiv);
-        overlay.appendChild(closeScanBtn);
-        document.body.appendChild(overlay);
-
-        const html5QrCode = new Html5Qrcode("temp-reader");
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
-            const parts = decodedText.split('|');
-            if (parts.length >= 4) {
-                clientInput.value = parts[0];
-                if (invoiceField.style.display !== 'none') invoiceField.value = parts[1];
-                if (ebbField.style.display !== 'none') ebbField.value = parts[2];
-                amountInput.value = parts[3];
-                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
-            } else {
-                clientInput.value = decodedText;
-                showToast('تم المسح، يرجى مراجعة الحقول', false);
-            }
-            html5QrCode.stop();
-            document.body.removeChild(overlay);
-        }).catch(err => {
-            showToast('خطأ في الكاميرا: ' + err, true);
-            document.body.removeChild(overlay);
-        });
-
-        closeScanBtn.onclick = () => {
-            if (html5QrCode.isScanning) html5QrCode.stop();
-            document.body.removeChild(overlay);
-        };
-    };
+    }
 
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
