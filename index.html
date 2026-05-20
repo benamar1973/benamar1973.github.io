@@ -1,7 +1,252 @@
-<!-- روابط الصفحات -->
-<div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; padding: 10px; border-top: 1px solid #eee;">
-    <a href="about.html" style="color: #0f3460; text-decoration: none; font-size: 12px;">📖 من نحن</a>
-    <a href="contact.html" style="color: #0f3460; text-decoration: none; font-size: 12px;">📞 اتصل بنا</a>
-    <a href="privacy.html" style="color: #0f3460; text-decoration: none; font-size: 12px;">🔒 سياسة الخصوصية</a>
-    <a href="terms.html" style="color: #0f3460; text-decoration: none; font-size: 12px;">📜 شروط الخدمة</a>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>خدماتي - بوابة الدفع</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .main-card { background: #ffffff; border-radius: 35px; padding: 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
+        .share-btn { background: #25D366; color: white; border: none; padding: 6px 15px; border-radius: 50px; font-size: 14px; font-weight: bold; cursor: pointer; margin-right: 10px; }
+        
+        /* قسم منفصل لأيقونات الدفع */
+        .payment-section {
+            background: #fff5f5;
+            border-radius: 25px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #ffcccc;
+        }
+        .payment-section h3 {
+            color: #dc3545;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #dc3545;
+            display: inline-block;
+        }
+        
+        /* أيقونات الدفع - خلفية حمراء */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .payment-btn {
+            background: #dc3545;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+        }
+        .payment-btn:active {
+            background: #b02a37;
+            transform: scale(0.96);
+        }
+        .payment-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .payment-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        /* الأيقونات العادية (الخدمات الإدارية) */
+        .normal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .icon-btn {
+            background: #f8f9fa;
+            padding: 12px 5px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #e9ecef;
+        }
+        .icon-btn:active {
+            transform: scale(0.96);
+            background: #e9ecef;
+        }
+        .icon-btn i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        .icon-btn span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
+        .widget h3 { color: #0f3460; font-size: 18px; margin-bottom: 15px; border-bottom: 3px solid #e94560; display: inline-block; }
+        .exchange-rate p { display: flex; justify-content: space-between; margin: 10px 0; padding: 8px 0; border-bottom: 1px dashed #dee2e6; font-size: 15px; }
+        .prayer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .prayer-item { background: white; padding: 12px; border-radius: 18px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .prayer-name { font-size: 14px; color: #0f3460; font-weight: bold; margin-bottom: 5px; }
+        .prayer-time { font-size: 18px; font-weight: bold; color: #e94560; font-family: monospace; }
+        .weather-temp { font-size: 38px; font-weight: bold; color: #e94560; text-align: center; margin: 10px 0; }
+        .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
+        .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
+        .loading { text-align: center; padding: 20px; color: #e94560; }
+        footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
+        footer a { color: #000000; text-decoration: none; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-card">
+        <div class="header">
+            <button class="share-btn" onclick="shareApp()">📤 شارك التطبيق</button>
+            <h1>خدماتي الجزائر</h1>
+        </div>
+
+        <!-- قسم منفصل لأيقونات الدفع (مربع أحمر) -->
+        <div class="payment-section">
+            <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
+            <div class="payment-grid">
+                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة الكهرباء والماء')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد موبيليس')"><i>📱</i><span>mobilis</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد جازي')"><i>📡</i><span>DJEZZY</span></div>
+                <div class="payment-btn" onclick="payWithChargily('شحن رصيد أوريدو')"><i>🌐</i><span>Ooredoo</span></div>
+                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة اتصالات الجزائر')"><i>📞</i><span>Algerie Telecom</span></div>
+            </div>
+        </div>
+
+        <!-- الخدمات الإدارية (بدون مربع أحمر) -->
+        <div class="normal-grid">
+            <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
+            <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
+            <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><i>🏢</i><span>سكنات عدل</span></div>
+            <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><i>💼</i><span>وسيط ANEM</span></div>
+            <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><i>🐑</i><span>أضحية العيد</span></div>
+            <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
+            <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
+            <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>CCP</span></div>
+            <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><i>🚗</i><span>قسيمة السيارات</span></div>
+            <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>دفع مستحقات CNAS</span></div>
+            <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة CASNOS</span></div>
+            <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
+            <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
+            <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><i>🏛️</i><span>الصفقات العمومية</span></div>
+        </div>
+
+        <div class="widgets">
+            <div class="widget exchange-rate"><h3>💱 أسعار الصرف</h3><p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p><p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p></div>
+            <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
+            <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
+        </div>
+        <footer><p>🇩🇿 خدماتي - بوابة دفع إلكتروني معتمدة عبر EDAHABIA و CIB</p><p>📧 djadidkhadamati@gmail.com</p></footer>
+    </div>
 </div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+    function shareApp() {
+        if (navigator.share) {
+            navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
+        } else {
+            navigator.clipboard.writeText('https://benamar1973.github.io/');
+            alert('تم نسخ الرابط 📋');
+        }
+    }
+
+    function payWithChargily(service) {
+        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${service}`);
+        // بعد التفعيل: window.location.href = رابط_الدفع_من_Chargily_Pay
+    }
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        toast.style.background = isError ? '#c53030' : '#28a745';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    // دوال الطقس والصلاة
+    let userLat = null, userLon = null;
+    function getUserLocation() {
+        if (!navigator.geolocation) {
+            document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
+            document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLat = position.coords.latitude;
+                userLon = position.coords.longitude;
+                fetchPrayerTimes();
+                fetchWeather();
+            },
+            () => {
+                document.getElementById('prayerContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+                document.getElementById('weatherContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
+            }
+        );
+    }
+    async function fetchPrayerTimes() {
+        const div = document.getElementById('prayerContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const today = new Date();
+            const url = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${userLat}&longitude=${userLon}&method=2`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.code === 200) {
+                const t = data.data.timings;
+                div.innerHTML = `
+                    <div class="prayer-grid">
+                        <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
+                        <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
+                    </div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    async function fetchWeather() {
+        const div = document.getElementById('weatherContent');
+        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+        try {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.cod === 200) {
+                div.innerHTML = `
+                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                    <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
+                    <div class="weather-desc">☁️ ${data.weather[0].description}</div>
+                    <div class="weather-detail"><span>💧 رطوبة ${data.main.humidity}%</span><span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span></div>
+                `;
+            } else div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
+        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
+    }
+    getUserLocation();
+</script>
+</body>
+</html>
