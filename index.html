@@ -51,13 +51,15 @@
         </div>
 
         <div class="grid">
-            <div class="icon-btn" onclick="openPaymentModal('سونلغاز')"><i>⚡</i><span>سونلغاز</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('SEAAL')"><i>💧</i><span>SEAAL</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('ADE')"><i>🚰</i><span>ADE</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('mobilis')"><i>📱</i><span>mobilis</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('DJEZZY')"><i>📡</i><span>DJEZZY</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('Ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
-            <div class="icon-btn" onclick="openPaymentModal('Algerie Telecom')"><i>📞</i><span>Algerie Telecom</span></div>
+            <!-- خدمات الدفع (كل أيقونة تفتح نافذة خاصة بها) -->
+            <div class="icon-btn" onclick="openPaymentModal('sonelgaz', 'كهرباء')"><i>⚡</i><span>سونلغاز</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('seaal', 'ماء')"><i>💧</i><span>SEAAL</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('ade', 'ماء')"><i>🚰</i><span>ADE</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('mobilis', 'هاتف')"><i>📱</i><span>mobilis</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('djezzy', 'هاتف')"><i>📡</i><span>DJEZZY</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('ooredoo', 'هاتف')"><i>🌐</i><span>Ooredoo</span></div>
+            <div class="icon-btn" onclick="openPaymentModal('algerie-telecom', 'هاتف')"><i>📞</i><span>Algerie Telecom</span></div>
+            <!-- الخدمات الإدارية -->
             <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
             <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
             <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
@@ -89,6 +91,7 @@
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">دفع فاتورة</h3>
+        <div id="serviceTypeDisplay" style="margin-bottom: 10px; font-weight: bold;"></div>
         <select id="billType">
             <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
             <option value="eau">💧 ماء (ADE/SEAAL)</option>
@@ -107,6 +110,7 @@
 
 <script>
     let currentService = '';
+    let currentServiceType = '';
 
     function shareApp() {
         if (navigator.share) {
@@ -119,6 +123,7 @@
 
     const modal = document.getElementById('paymentModal');
     const modalTitle = document.getElementById('modalTitle');
+    const serviceTypeDisplay = document.getElementById('serviceTypeDisplay');
     const billTypeSelect = document.getElementById('billType');
     const ebbField = document.getElementById('ebbNumber');
     const clientInput = document.getElementById('clientNumber');
@@ -128,15 +133,40 @@
     const payBtn = document.getElementById('payBtn');
     const scanBtn = document.getElementById('scanBtn');
 
-    function openPaymentModal(service) {
+    function openPaymentModal(service, type) {
         currentService = service;
-        modalTitle.innerText = `دفع فاتورة ${service}`;
+        currentServiceType = type;
+        
+        // تعيين عنوان النافذة حسب الخدمة
+        let serviceName = '';
+        switch(service) {
+            case 'sonelgaz': serviceName = 'سونلغاز (كهرباء/غاز)'; break;
+            case 'seaal': serviceName = 'SEAAL (المياه)'; break;
+            case 'ade': serviceName = 'ADE (المياه)'; break;
+            case 'mobilis': serviceName = 'موبيليس (شحن رصيد)'; break;
+            case 'djezzy': serviceName = 'جازي (شحن رصيد)'; break;
+            case 'ooredoo': serviceName = 'أوريدو (شحن رصيد)'; break;
+            case 'algerie-telecom': serviceName = 'اتصالات الجزائر (هاتف ثابت/إنترنت)'; break;
+            default: serviceName = service;
+        }
+        modalTitle.innerText = `دفع فاتورة ${serviceName}`;
+        serviceTypeDisplay.innerText = `الخدمة: ${serviceName}`;
+        
+        // تعيين نوع الفاتورة المناسب
+        if (type === 'كهرباء') {
+            billTypeSelect.value = 'electricite';
+        } else if (type === 'ماء') {
+            billTypeSelect.value = 'eau';
+        }
+        
         modal.style.display = 'flex';
+        
         // إعادة تعيين الحقول
         clientInput.value = '';
         invoiceInput.value = '';
         ebbField.value = '';
         amountInput.value = '';
+        
         // التحكم في ظهور حقل EBB حسب نوع الفاتورة
         toggleEBBField();
     }
@@ -166,8 +196,20 @@
             return;
         }
 
-        // هنا يتم التحويل إلى Chargily Pay
-        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${amount.toFixed(2)} دج`, false);
+        // رسالة توضيحية حسب الخدمة
+        let serviceMsg = '';
+        switch(currentService) {
+            case 'sonelgaz': serviceMsg = 'فاتورة كهرباء/غاز (سونلغاز)'; break;
+            case 'seaal': serviceMsg = 'فاتورة مياه (SEAAL)'; break;
+            case 'ade': serviceMsg = 'فاتورة مياه (ADE)'; break;
+            case 'mobilis': serviceMsg = `شحن رصيد موبيليس بقيمة ${amount.toFixed(2)} دج`; break;
+            case 'djezzy': serviceMsg = `شحن رصيد جازي بقيمة ${amount.toFixed(2)} دج`; break;
+            case 'ooredoo': serviceMsg = `شحن رصيد أوريدو بقيمة ${amount.toFixed(2)} دج`; break;
+            case 'algerie-telecom': serviceMsg = `دفع فاتورة هاتف ثابت/إنترنت بقيمة ${amount.toFixed(2)} دج`; break;
+            default: serviceMsg = `${amount.toFixed(2)} دج`;
+        }
+        
+        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${serviceMsg}`, false);
         // بعد التفعيل، سيتم استبدال هذا السطر بـ window.location.href = رابط_الدفع_من_Chargily_Pay
     };
 
