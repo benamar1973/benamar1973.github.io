@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>خدماتي - بوابة الدفع</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
@@ -107,7 +109,54 @@
         .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
         .loading { text-align: center; padding: 20px; color: #e94560; }
         
-        /* روابط الصفحات السفلية */
+        /* نافذة إدخال البيانات (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 35px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-size: 14px;
+        }
+        .modal-content button {
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .scan-btn {
+            background: #0f3460;
+        }
+        .close-modal {
+            background: #dc3545;
+            margin-top: 5px;
+        }
+        
         .footer-links {
             display: flex;
             justify-content: center;
@@ -121,9 +170,6 @@
             color: #0f3460;
             text-decoration: none;
             font-size: 12px;
-        }
-        .footer-links a:hover {
-            color: #e94560;
         }
         
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
@@ -143,11 +189,11 @@
         <div class="payment-section">
             <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
             <div class="payment-grid">
-                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة الكهرباء والماء')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
-                <div class="payment-btn" onclick="payWithChargily('شحن رصيد موبيليس')"><i>📱</i><span>mobilis</span></div>
-                <div class="payment-btn" onclick="payWithChargily('شحن رصيد جازي')"><i>📡</i><span>DJEZZY</span></div>
-                <div class="payment-btn" onclick="payWithChargily('شحن رصيد أوريدو')"><i>🌐</i><span>Ooredoo</span></div>
-                <div class="payment-btn" onclick="payWithChargily('دفع فاتورة اتصالات الجزائر')"><i>📞</i><span>Algerie Telecom</span></div>
+                <div class="payment-btn" onclick="openPaymentModal('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+                <div class="payment-btn" onclick="openPaymentModal('mobilis')"><i>📱</i><span>mobilis</span></div>
+                <div class="payment-btn" onclick="openPaymentModal('djezzy')"><i>📡</i><span>DJEZZY</span></div>
+                <div class="payment-btn" onclick="openPaymentModal('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
+                <div class="payment-btn" onclick="openPaymentModal('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
             </div>
         </div>
 
@@ -189,9 +235,44 @@
     </div>
 </div>
 
+<!-- نافذة إدخال بيانات الدفع (Modal) -->
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">دفع الخدمة</h3>
+        <div id="serviceNameDisplay" style="margin-bottom: 10px; font-weight: bold; color: #e94560;"></div>
+        
+        <div id="electriciteEauFields" style="display: none;">
+            <select id="billType">
+                <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
+                <option value="eau">💧 ماء (ADE/SEAAL)</option>
+            </select>
+            <input type="text" id="contractNumber" placeholder="رقم العقد / رقم العميل *">
+            <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
+            <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
+            <input type="number" id="amount" placeholder="المبلغ *">
+        </div>
+        
+        <div id="mobileFields" style="display: none;">
+            <input type="tel" id="phoneNumber" placeholder="رقم الهاتف *">
+            <input type="number" id="mobileAmount" placeholder="المبلغ *">
+        </div>
+        
+        <div id="algerieFields" style="display: none;">
+            <input type="text" id="accountNumber" placeholder="رقم الهاتف أو رقم العقد *">
+            <input type="number" id="algerieAmount" placeholder="المبلغ *">
+        </div>
+        
+        <button id="scanBtn" class="scan-btn" style="display: none;">📷 مسح رمز الفاتورة (Data Matrix)</button>
+        <button id="payBtn">💳 دفع عبر Chargily Pay</button>
+        <button id="closeModalBtn" class="close-modal">❌ إلغاء</button>
+    </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script>
+    let currentService = '';
+
     function shareApp() {
         if (navigator.share) {
             navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
@@ -201,17 +282,179 @@
         }
     }
 
-    function payWithChargily(service) {
-        showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${service}`);
-        // بعد التفعيل: window.location.href = رابط_الدفع_من_Chargily_Pay
+    const modal = document.getElementById('paymentModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const serviceNameDisplay = document.getElementById('serviceNameDisplay');
+    const electriciteEauFields = document.getElementById('electriciteEauFields');
+    const mobileFields = document.getElementById('mobileFields');
+    const algerieFields = document.getElementById('algerieFields');
+    const scanBtn = document.getElementById('scanBtn');
+    const payBtn = document.getElementById('payBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const billTypeSelect = document.getElementById('billType');
+    const ebbField = document.getElementById('ebbNumber');
+
+    function openPaymentModal(service) {
+        currentService = service;
+        
+        // إخفاء جميع الحقول أولاً
+        electriciteEauFields.style.display = 'none';
+        mobileFields.style.display = 'none';
+        algerieFields.style.display = 'none';
+        scanBtn.style.display = 'none';
+        
+        // تعيين الحقول المناسبة حسب الخدمة
+        switch(service) {
+            case 'electricite-eau':
+                modalTitle.innerText = 'دفع فاتورة الكهرباء والماء';
+                serviceNameDisplay.innerText = '⚡💧 دفع فاتورة الكهرباء والماء';
+                electriciteEauFields.style.display = 'block';
+                scanBtn.style.display = 'block';
+                document.getElementById('contractNumber').value = '';
+                document.getElementById('invoiceNumber').value = '';
+                document.getElementById('ebbNumber').value = '';
+                document.getElementById('amount').value = '';
+                toggleEBBField();
+                break;
+            case 'mobilis':
+                modalTitle.innerText = 'شحن رصيد موبيليس';
+                serviceNameDisplay.innerText = '📱 شحن رصيد موبيليس';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'djezzy':
+                modalTitle.innerText = 'شحن رصيد جازي';
+                serviceNameDisplay.innerText = '📡 شحن رصيد جازي';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'ooredoo':
+                modalTitle.innerText = 'شحن رصيد أوريدو';
+                serviceNameDisplay.innerText = '🌐 شحن رصيد أوريدو';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'algerie':
+                modalTitle.innerText = 'دفع فاتورة اتصالات الجزائر';
+                serviceNameDisplay.innerText = '📞 دفع فاتورة اتصالات الجزائر';
+                algerieFields.style.display = 'block';
+                document.getElementById('accountNumber').value = '';
+                document.getElementById('algerieAmount').value = '';
+                break;
+        }
+        
+        modal.style.display = 'flex';
     }
+
+    function toggleEBBField() {
+        if (billTypeSelect.value === 'electricite') {
+            ebbField.style.display = 'block';
+            ebbField.placeholder = 'رقم EBB (خاص بالكهرباء) *';
+        } else {
+            ebbField.style.display = 'none';
+            ebbField.value = '';
+        }
+    }
+
+    if (billTypeSelect) {
+        billTypeSelect.addEventListener('change', toggleEBBField);
+    }
+    
+    closeModalBtn.onclick = () => modal.style.display = 'none';
+
+    payBtn.onclick = () => {
+        let dataSummary = '';
+        let isValid = true;
+        
+        switch(currentService) {
+            case 'electricite-eau':
+                const contract = document.getElementById('contractNumber').value.trim();
+                const invoice = document.getElementById('invoiceNumber').value.trim();
+                const ebb = document.getElementById('ebbNumber').value.trim();
+                const amount = document.getElementById('amount').value.trim();
+                const billType = billTypeSelect.value;
+                
+                if (!contract || !invoice || !amount || amount <= 0) {
+                    showToast('❌ الرجاء ملء جميع الحقول المطلوبة', true);
+                    isValid = false;
+                } else if (billType === 'electricite' && !ebb) {
+                    showToast('❌ الرجاء إدخال رقم EBB للفاتورة الكهرباء', true);
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    dataSummary = `فاتورة ${billType === 'electricite' ? 'كهرباء' : 'ماء'} - رقم العقد: ${contract}, رقم الفاتورة: ${invoice}${billType === 'electricite' ? `, EBB: ${ebb}` : ''}, المبلغ: ${amount} دج`;
+                    showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${dataSummary}`);
+                }
+                break;
+                
+            case 'mobilis':
+            case 'djezzy':
+            case 'ooredoo':
+                const phone = document.getElementById('phoneNumber').value.trim();
+                const mobileAmount = document.getElementById('mobileAmount').value.trim();
+                
+                if (!phone || !mobileAmount || mobileAmount <= 0) {
+                    showToast('❌ الرجاء إدخال رقم الهاتف والمبلغ', true);
+                    isValid = false;
+                } else {
+                    let operator = '';
+                    if (currentService === 'mobilis') operator = 'موبيليس';
+                    else if (currentService === 'djezzy') operator = 'جازي';
+                    else operator = 'أوريدو';
+                    dataSummary = `شحن رصيد ${operator} - رقم الهاتف: ${phone}, المبلغ: ${mobileAmount} دج`;
+                    showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${dataSummary}`);
+                }
+                break;
+                
+            case 'algerie':
+                const account = document.getElementById('accountNumber').value.trim();
+                const algerieAmount = document.getElementById('algerieAmount').value.trim();
+                
+                if (!account || !algerieAmount || algerieAmount <= 0) {
+                    showToast('❌ الرجاء إدخال رقم الحساب والمبلغ', true);
+                    isValid = false;
+                } else {
+                    dataSummary = `دفع فاتورة اتصالات الجزائر - رقم الحساب: ${account}, المبلغ: ${algerieAmount} دج`;
+                    showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${dataSummary}`);
+                }
+                break;
+        }
+        
+        if (isValid) {
+            modal.style.display = 'none';
+        }
+    };
+
+    // مسح ضوئي تجريبي (لفواتير الكهرباء/الماء فقط)
+    scanBtn.onclick = () => {
+        if (currentService !== 'electricite-eau') return;
+        
+        const fakeData = prompt('محاكاة مسح Data Matrix\nأدخل البيانات (مفصولة بـ |):\nمثال: 123456|789012|345678|1500');
+        if (fakeData) {
+            const parts = fakeData.split('|');
+            if (parts.length >= 4) {
+                document.getElementById('contractNumber').value = parts[0];
+                document.getElementById('invoiceNumber').value = parts[1];
+                if (billTypeSelect.value === 'electricite') document.getElementById('ebbNumber').value = parts[2];
+                document.getElementById('amount').value = parts[3];
+                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
+            } else {
+                document.getElementById('contractNumber').value = fakeData;
+                showToast('تم المسح، يرجى مراجعة الحقول', false);
+            }
+        }
+    };
 
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
         toast.style.opacity = '1';
         toast.style.background = isError ? '#c53030' : '#28a745';
-        setTimeout(() => toast.style.opacity = '0', 2500);
+        setTimeout(() => toast.style.opacity = '0', 3000);
     }
 
     // دوال الطقس والصلاة
