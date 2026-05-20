@@ -40,9 +40,10 @@
         </div>
 
         <div class="services-title">⚡ خدمات الدفع الفوري (عبر Chargily Pay)</div>
-        <div class="grid" id="servicesGrid">
-            <!-- سيتم إنشاء الأيقونات بواسطة JS -->
-        </div>
+        <div class="grid" id="servicesGrid"></div>
+
+        <div class="services-title">🏛️ خدمات إدارية وأخرى</div>
+        <div class="grid" id="otherServicesGrid"></div>
 
         <div class="info-widgets">
             <div class="widget exchange-rate">
@@ -59,7 +60,7 @@
                 <div id="weatherContent" style="text-align:center;">📍 جاري تحديد موقعك...</div>
             </div>
         </div>
-        <footer><p>🇩🇿 خدماتي - بوابة دفع إلكتروني معتمدة عبر EDAHABIA و CIB | جميع المعاملات مشفرة وآمنة</p></footer>
+        <footer><p>🇩🇿 خدماتي - بوابة دفع إلكتروني معتمدة عبر EDAHABIA و CIB</p></footer>
     </div>
 </div>
 <div id="toast" class="toast"></div>
@@ -80,20 +81,23 @@
             showToast('❌ مبلغ غير صحيح', true);
             return;
         }
-        // هنا في الإصدار الحقيقي سنقوم بإنشاء رابط دفع عبر Chargily Pay API
-        // حاليًا (وضع العرض التقديمي) نظهر رسالة توضيحية
         showToast(`🔜 جاري تحويلك إلى بوابة Chargily Pay لدفع ${parseFloat(amount).toFixed(2)} دج`);
         // عند توفر API حقيقي، سنستخدم window.location.href = رابط_الدفع;
     }
 
-    // قائمة الخدمات (جميعها تدفع مباشرة عبر Chargily Pay)
-    const services = [
-        { name: 'كهرباء (سونلغاز)', icon: '⚡', action: () => payWithChargily('سونلغاز', '2800') },
-        { name: 'ماء (SEAAL/ADE)', icon: '💧', action: () => payWithChargily('فواتير المياه', '1500') },
+    // خدمات الدفع (تفتح نافذة الدفع عبر Chargily Pay)
+    const paymentServices = [
+        { name: 'كهرباء سونلغاز', icon: '⚡', action: () => payWithChargily('سونلغاز', '2800') },
+        { name: 'ماء SEAAL', icon: '💧', action: () => payWithChargily('مياه SEAAL', '1500') },
+        { name: 'ماء ADE', icon: '🚰', action: () => payWithChargily('مياه ADE', '1200') },
         { name: 'mobilis', icon: '📱', action: () => payWithChargily('شحن موبيليس', '1000') },
         { name: 'DJEZZY', icon: '📡', action: () => payWithChargily('شحن جازي', '1000') },
         { name: 'Ooredoo', icon: '🌐', action: () => payWithChargily('شحن أوريدو', '1000') },
-        { name: 'Algérie Télécom', icon: '📞', action: () => payWithChargily('هاتف ثابت / إنترنت', '2000') },
+        { name: 'Algérie Télécom', icon: '📞', action: () => payWithChargily('هاتف ثابت / إنترنت', '2000') }
+    ];
+
+    // الخدمات الإدارية والأخرى (تفتح روابط خارجية مباشرة)
+    const otherServices = [
         { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
         { name: 'تجنيد الجيش', icon: '🎖️', url: 'https://preinscription.mdn.dz/' },
         { name: 'فضاء الأولياء', icon: '👨‍👩‍👧', url: 'https://awlyaa.education.dz/login' },
@@ -103,7 +107,7 @@
         { name: 'التكوين المهني', icon: '🔧', url: 'https://takwin.dz' },
         { name: 'المخيم الشبابي', icon: '🏕️', url: 'https://youthcamp.mjeunesse.gov.dz' },
         { name: 'التصريح بضياع وثائق', icon: '📄', url: 'https://www.dgsn.dz/e-declaration/' },
-        { name: 'دفع CCP/ECCP', icon: '🏦', url: 'https://eccp.poste.dz' },
+        { name: 'CCP (ECCP)', icon: '🏦', url: 'https://eccp.poste.dz' },
         { name: 'قسيمة السيارات', icon: '🚗', url: 'https://qassimatouka.mf.gov.dz/home' },
         { name: 'دفع مستحقات CNAS', icon: '📜', url: 'https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml' },
         { name: 'شهادة CASNOS', icon: '📜', url: 'https://damancom.casnos.dz/public-space' },
@@ -112,14 +116,22 @@
         { name: 'الصفقات العمومية', icon: '🏛️', url: 'https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar' }
     ];
 
-    const container = document.getElementById('servicesGrid');
-    services.forEach(service => {
+    const paymentContainer = document.getElementById('servicesGrid');
+    paymentServices.forEach(service => {
         const div = document.createElement('div');
         div.className = 'icon-card';
-        if (service.url) div.onclick = () => window.open(service.url, '_blank');
-        else if (service.action) div.onclick = service.action;
+        div.onclick = service.action;
         div.innerHTML = `<i>${service.icon}</i><span>${service.name}</span>`;
-        container.appendChild(div);
+        paymentContainer.appendChild(div);
+    });
+
+    const otherContainer = document.getElementById('otherServicesGrid');
+    otherServices.forEach(service => {
+        const div = document.createElement('div');
+        div.className = 'icon-card';
+        div.onclick = () => window.open(service.url, '_blank');
+        div.innerHTML = `<i>${service.icon}</i><span>${service.name}</span>`;
+        otherContainer.appendChild(div);
     });
 
     function shareApp() { if (navigator.share) navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' }).catch(()=>{}); else { navigator.clipboard.writeText('https://benamar1973.github.io/'); alert('تم نسخ الرابط 📋'); } }
