@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - المحفظة الإلكترونية</title>
+    <title>خدماتي - بوابة الدفع</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
@@ -45,7 +45,22 @@
         .btn-logout { background: #dc3545; color: white; }
         .btn-resend { background: #ffc107; color: #1a1a2e; margin-top: 5px; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
-        .warning-msg { background: #fff3cd; color: #856404; padding: 10px; border-radius: 20px; text-align: center; margin: 10px 0; font-size: 14px; }
+        
+        /* رسالة التحذير - سبام */
+        .warning-msg {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 14px;
+            border-right: 5px solid #ffc107;
+        }
+        .warning-msg a {
+            color: #856404;
+            text-decoration: underline;
+        }
         
         /* قسم منفصل لأيقونات الدفع */
         .payment-section {
@@ -55,78 +70,22 @@
             margin-bottom: 25px;
             border: 1px solid #ffcccc;
         }
-        .payment-section h3 {
-            color: #dc3545;
-            font-size: 18px;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 3px solid #dc3545;
-            display: inline-block;
-        }
-        
-        /* أيقونات الدفع - خلفية حمراء */
-        .payment-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
+        .payment-section h3 { color: #dc3545; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 3px solid #dc3545; display: inline-block; }
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .payment-btn {
-            background: #dc3545;
-            padding: 12px 5px;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: none;
-            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+            background: #dc3545; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer;
+            transition: 0.2s; border: none; box-shadow: 0 4px 12px rgba(220,53,69,0.3);
         }
-        .payment-btn:active {
-            background: #b02a37;
-            transform: scale(0.96);
-        }
-        .payment-btn i {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 5px;
-            color: white;
-        }
-        .payment-btn span {
-            font-size: 11px;
-            font-weight: 600;
-            color: white;
-        }
+        .payment-btn:active { background: #b02a37; transform: scale(0.96); }
+        .payment-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: white; }
+        .payment-btn span { font-size: 11px; font-weight: 600; color: white; }
         
-        /* الأيقونات العادية (الخدمات الإدارية) */
-        .normal-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        .icon-btn {
-            background: #f8f9fa;
-            padding: 12px 5px;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #e9ecef;
-        }
-        .icon-btn:active {
-            transform: scale(0.96);
-            background: #e9ecef;
-        }
-        .icon-btn i {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
-        .icon-btn span {
-            font-size: 11px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
+        /* الأيقونات العادية */
+        .normal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
+        .icon-btn:active { transform: scale(0.96); background: #e9ecef; }
+        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
+        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
         
         .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
@@ -141,63 +100,16 @@
         .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
         .loading { text-align: center; padding: 20px; color: #e94560; }
         
-        /* نافذة إدخال البيانات (Modal) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 35px;
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .modal-content input, .modal-content select {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 40px;
-            font-size: 14px;
-        }
-        .modal-content button {
-            background: #28a745;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 40px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-            width: 100%;
-        }
+        /* نافذة إدخال البيانات */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
+        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
+        .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
         .scan-btn { background: #0f3460; }
         .close-modal { background: #dc3545; margin-top: 5px; }
         
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            padding: 10px;
-            border-top: 1px solid #eee;
-        }
-        .footer-links a {
-            color: #0f3460;
-            text-decoration: none;
-            font-size: 12px;
-        }
+        .footer-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; padding: 10px; border-top: 1px solid #eee; }
+        .footer-links a { color: #0f3460; text-decoration: none; font-size: 12px; }
         
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
@@ -221,16 +133,20 @@
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
-        <!-- قسم المحفظة والخدمات (يظهر فقط بعد تسجيل الدخول وتأكيد البريد) -->
+        <!-- قسم الخدمات (يظهر فقط بعد تسجيل الدخول وتأكيد البريد) -->
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
+            
+            <!-- رسالة تحذيرية تفيد بضرورة تفقد Spam -->
             <div id="verifyWarning" class="warning-msg" style="display: none;">
-                ⚠️ يرجى تأكيد بريدك الإلكتروني لتفعيل الخدمات. تم إرسال رابط التأكيد إلى بريدك.
+                ⚠️ <strong>تنبيه هام:</strong> يرجى <strong>تفقد مجلد Spam (البريد العشوائي)</strong> في حساب Gmail الخاص بك.<br>
+                إذا لم تجد رسالة التأكيد، اضغط على زر "إعادة إرسال رابط التأكيد" أدناه.
                 <button id="resendVerifyBtn" class="btn-resend" style="display: block; margin: 10px auto 0; width: auto;">📧 إعادة إرسال رابط التأكيد</button>
             </div>
+            
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             
-            <!-- قسم منفصل لأيقونات الدفع (مربع أحمر) -->
+            <!-- قسم الدفع -->
             <div class="payment-section">
                 <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
                 <div class="payment-grid">
@@ -242,10 +158,8 @@
                 </div>
             </div>
 
-            <!-- الخدمات الإدارية (بدون مربع أحمر) -->
-            <div class="normal-grid" id="adminServices">
-                <!-- يتم تعبئتها بواسطة JS -->
-            </div>
+            <!-- الخدمات الإدارية -->
+            <div class="normal-grid" id="adminServices"></div>
         </div>
 
         <div class="widgets">
@@ -254,19 +168,17 @@
             <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
         </div>
 
-        <!-- روابط الصفحات السفلية -->
         <div class="footer-links">
             <a href="about.html">📖 من نحن</a>
             <a href="contact.html">📞 اتصل بنا</a>
             <a href="privacy.html">🔒 سياسة الخصوصية</a>
             <a href="terms.html">📜 شروط الخدمة</a>
         </div>
-
         <footer><p>🇩🇿 خدماتي - جميع الحقوق محفوظة</p></footer>
     </div>
 </div>
 
-<!-- نافذة إدخال بيانات الدفع (Modal) -->
+<!-- نافذة إدخال بيانات الدفع -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">دفع الخدمة</h3>
@@ -365,7 +277,6 @@
     }
     displayAdminServices();
 
-    // دالة التحقق من تأكيد البريد قبل فتح الخدمة
     window.checkVerifiedAndOpen = function(service) {
         const user = auth.currentUser;
         if (!user) {
@@ -373,14 +284,13 @@
             return;
         }
         if (!user.emailVerified) {
-            showToast('⚠️ يرجى تأكيد بريدك الإلكتروني أولاً. تم إرسال رابط التأكيد إلى بريدك.', true);
+            showToast('⚠️ يرجى تأكيد بريدك الإلكتروني أولاً. تأكد من صندوق الوارد أو مجلد Spam.', true);
             verifyWarning.style.display = 'block';
             return;
         }
         openPaymentModal(service);
     }
 
-    // تحديث الواجهة عند تغير حالة المستخدم
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
@@ -392,10 +302,6 @@
                 verifyWarning.style.display = 'none';
             } else {
                 verifyWarning.style.display = 'block';
-                // إرسال بريد تأكيد تلقائي عند إنشاء الحساب
-                if (!user.emailVerified) {
-                    sendEmailVerification(user).catch(console.error);
-                }
             }
         } else {
             authSection.style.display = 'block';
@@ -428,7 +334,7 @@
         }
     });
 
-    // إنشاء حساب جديد
+    // إنشاء حساب جديد مع رسالة تفيد بتفقد Spam
     signupBtn.addEventListener('click', async () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -448,7 +354,7 @@
         try {
             const userCred = await createUserWithEmailAndPassword(auth, email, password);
             await sendEmailVerification(userCred.user);
-            authStatus.innerText = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.';
+            authStatus.innerHTML = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.<br>⚠️ <strong>يرجى تفقد مجلد Spam (البريد العشوائي)</strong> إذا لم تجد الرسالة في صندوق الوارد.';
         } catch (error) {
             let msg = '❌ ';
             if (error.code === 'auth/email-already-in-use') msg += 'البريد الإلكتروني مستخدم بالفعل';
@@ -457,23 +363,21 @@
         }
     });
 
-    // إعادة إرسال رابط التأكيد
+    // إعادة إرسال رابط التأكيد مع تذكير بـ Spam
     resendVerifyBtn.addEventListener('click', async () => {
         const user = auth.currentUser;
         if (user && !user.emailVerified) {
             await sendEmailVerification(user);
-            showToast('✅ تم إعادة إرسال رابط التأكيد إلى بريدك الإلكتروني', false);
+            showToast('✅ تم إعادة إرسال رابط التأكيد. يرجى تفقد صندوق الوارد أو مجلد Spam.', false);
         } else {
             showToast('⚠️ بريدك الإلكتروني مؤكد بالفعل', true);
         }
     });
 
-    // تسجيل الخروج
     logoutBtn.addEventListener('click', async () => {
         await signOut(auth);
     });
 
-    // دوال المشاركة والدفع
     function shareApp() {
         if (navigator.share) {
             navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
