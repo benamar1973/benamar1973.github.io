@@ -46,7 +46,7 @@
         .btn-resend { background: #ffc107; color: #1a1a2e; margin-top: 5px; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
         
-        /* رسالة التحذير - سبام */
+        /* رسالة التحذير */
         .warning-msg {
             background: #fff3cd;
             color: #856404;
@@ -56,10 +56,6 @@
             margin: 10px 0;
             font-size: 14px;
             border-right: 5px solid #ffc107;
-        }
-        .warning-msg a {
-            color: #856404;
-            text-decoration: underline;
         }
         
         /* قسم منفصل لأيقونات الدفع */
@@ -86,19 +82,6 @@
         .icon-btn:active { transform: scale(0.96); background: #e9ecef; }
         .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
         .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
-        
-        .widgets { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .widget { background: #f8f9fa; border-radius: 25px; padding: 18px; border: 1px solid #e9ecef; }
-        .widget h3 { color: #0f3460; font-size: 18px; margin-bottom: 15px; border-bottom: 3px solid #e94560; display: inline-block; }
-        .exchange-rate p { display: flex; justify-content: space-between; margin: 10px 0; padding: 8px 0; border-bottom: 1px dashed #dee2e6; font-size: 15px; }
-        .prayer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .prayer-item { background: white; padding: 12px; border-radius: 18px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .prayer-name { font-size: 14px; color: #0f3460; font-weight: bold; margin-bottom: 5px; }
-        .prayer-time { font-size: 18px; font-weight: bold; color: #e94560; font-family: monospace; }
-        .weather-temp { font-size: 38px; font-weight: bold; color: #e94560; text-align: center; margin: 10px 0; }
-        .weather-desc { text-align: center; font-size: 16px; color: #2c3e50; margin: 5px 0; }
-        .weather-detail { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 12px; border-top: 1px solid #dee2e6; }
-        .loading { text-align: center; padding: 20px; color: #e94560; }
         
         /* نافذة إدخال البيانات */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
@@ -137,7 +120,7 @@
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
             
-            <!-- رسالة تحذيرية تفيد بضرورة تفقد Spam -->
+            <!-- رسالة تحذيرية -->
             <div id="verifyWarning" class="warning-msg" style="display: none;">
                 ⚠️ <strong>تنبيه هام:</strong> يرجى <strong>تفقد مجلد Spam (البريد العشوائي)</strong> في حساب Gmail الخاص بك.<br>
                 إذا لم تجد رسالة التأكيد، اضغط على زر "إعادة إرسال رابط التأكيد" أدناه.
@@ -162,12 +145,7 @@
             <div class="normal-grid" id="adminServices"></div>
         </div>
 
-        <div class="widgets">
-            <div class="widget exchange-rate"><h3>💱 أسعار الصرف</h3><p><span>🇪🇺 يورو</span><span>شراء 28.200 / بيع 28.000</span></p><p><span>🇺🇸 دولار</span><span>شراء 24.000 / بيع 23.800</span></p></div>
-            <div class="widget" id="prayerWidget"><h3>🕋 مواقيت الصلاة</h3><div id="prayerContent" class="loading">📍 جاري تحديد موقعك...</div></div>
-            <div class="widget" id="weatherWidget"><h3>☁️ حالة الطقس</h3><div id="weatherContent" class="loading">📍 جاري تحديد موقعك...</div></div>
-        </div>
-
+        <!-- روابط الصفحات السفلية -->
         <div class="footer-links">
             <a href="about.html">📖 من نحن</a>
             <a href="contact.html">📞 اتصل بنا</a>
@@ -334,7 +312,7 @@
         }
     });
 
-    // إنشاء حساب جديد مع رسالة تفيد بتفقد Spam
+    // إنشاء حساب جديد
     signupBtn.addEventListener('click', async () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -363,7 +341,7 @@
         }
     });
 
-    // إعادة إرسال رابط التأكيد مع تذكير بـ Spam
+    // إعادة إرسال رابط التأكيد
     resendVerifyBtn.addEventListener('click', async () => {
         const user = auth.currentUser;
         if (user && !user.emailVerified) {
@@ -535,69 +513,6 @@
         setTimeout(() => toast.style.opacity = '0', 3000);
     }
     window.showToast = showToast;
-
-    // دوال الطقس والصلاة
-    let userLat = null, userLon = null;
-    function getUserLocation() {
-        if (!navigator.geolocation) {
-            document.getElementById('prayerContent').innerHTML = '<p>⚠️ متصفحك لا يدعم تحديد الموقع</p>';
-            document.getElementById('weatherContent').innerHTML = '<p>⚠️ غير مدعوم</p>';
-            return;
-        }
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                userLat = position.coords.latitude;
-                userLon = position.coords.longitude;
-                fetchPrayerTimes();
-                fetchWeather();
-            },
-            () => {
-                document.getElementById('prayerContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
-                document.getElementById('weatherContent').innerHTML = '<p>🔒 يرجى السماح بالوصول إلى الموقع</p>';
-            }
-        );
-    }
-    async function fetchPrayerTimes() {
-        const div = document.getElementById('prayerContent');
-        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
-        try {
-            const today = new Date();
-            const url = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${userLat}&longitude=${userLon}&method=2`;
-            const resp = await fetch(url);
-            const data = await resp.json();
-            if (data.code === 200) {
-                const t = data.data.timings;
-                div.innerHTML = `
-                    <div class="prayer-grid">
-                        <div class="prayer-item"><div class="prayer-name">🇩🇿 الفجر</div><div class="prayer-time">${t.Fajr.slice(0,5)}</div></div>
-                        <div class="prayer-item"><div class="prayer-name">☀️ الشروق</div><div class="prayer-time">${t.Sunrise.slice(0,5)}</div></div>
-                        <div class="prayer-item"><div class="prayer-name">🌙 الظهر</div><div class="prayer-time">${t.Dhuhr.slice(0,5)}</div></div>
-                        <div class="prayer-item"><div class="prayer-name">🌓 العصر</div><div class="prayer-time">${t.Asr.slice(0,5)}</div></div>
-                        <div class="prayer-item"><div class="prayer-name">🌅 المغرب</div><div class="prayer-time">${t.Maghrib.slice(0,5)}</div></div>
-                        <div class="prayer-item"><div class="prayer-name">🌙 العشاء</div><div class="prayer-time">${t.Isha.slice(0,5)}</div></div>
-                    </div>
-                `;
-            } else div.innerHTML = '<p>⚠️ خطأ في التحميل</p>';
-        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
-    }
-    async function fetchWeather() {
-        const div = document.getElementById('weatherContent');
-        div.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
-        try {
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${userLat}&lon=${userLon}&APPID=979632c1e88b3a261b3ce2382dab19de&units=metric&lang=ar`;
-            const resp = await fetch(url);
-            const data = await resp.json();
-            if (data.cod === 200) {
-                div.innerHTML = `
-                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
-                    <div class="weather-desc">🌡️ يشعر بـ ${Math.round(data.main.feels_like)}°</div>
-                    <div class="weather-desc">☁️ ${data.weather[0].description}</div>
-                    <div class="weather-detail"><span>💧 رطوبة ${data.main.humidity}%</span><span>💨 رياح ${Math.round(data.wind.speed)} كم/س</span></div>
-                `;
-            } else div.innerHTML = '<p>⚠️ خطأ في الطقس</p>';
-        } catch(e) { div.innerHTML = '<p>⚠️ فشل الاتصال</p>'; }
-    }
-    getUserLocation();
 </script>
 </body>
 </html>
