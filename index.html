@@ -255,6 +255,17 @@
     }
     displayAdminServices();
 
+    // دالة إنشاء رابط دفع Chargily Pay (محاكاة - تحتاج إلى خادم خلفي للتكامل الكامل)
+    async function createChargilyCheckout(amount, serviceName) {
+        // في الإصدار الحقيقي، هنا سيتم استدعاء Cloud Function لإنشاء رابط دفع
+        // حالياً، سنستخدم رابط تجريبي ثابت للاختبار
+        const checkoutUrl = `https://pay.chargily.net/api/v2/checkouts?amount=${amount}&currency=dzd&description=${encodeURIComponent(serviceName)}&success_url=https://benamar1973.github.io/success.html`;
+        
+        // هذا رابط توضيحي فقط. للعمل الفعلي، تحتاج إلى إنشاء رابط عبر API باستخدام Secret Key
+        window.open('https://pay.chargily.net/test', '_blank');
+        showToast('🔜 جاري تحويلك إلى Chargily Pay (وضع الاختبار - للتجربة فقط)', false);
+    }
+
     window.checkVerifiedAndOpen = function(service) {
         const user = auth.currentUser;
         if (!user) {
@@ -445,12 +456,15 @@
 
     payBtnModal.onclick = () => {
         let isValid = true;
+        let amount = 0;
+        let serviceDescription = '';
+        
         switch(currentService) {
             case 'electricite-eau':
                 const contract = document.getElementById('contractNumber').value.trim();
                 const invoice = document.getElementById('invoiceNumber').value.trim();
                 const ebb = document.getElementById('ebbNumber').value.trim();
-                const amount = document.getElementById('amount').value.trim();
+                amount = parseFloat(document.getElementById('amount').value);
                 const billType = billTypeSelect.value;
                 if (!contract || !invoice || !amount || amount <= 0) {
                     showToast('❌ الرجاء ملء جميع الحقول المطلوبة', true);
@@ -459,32 +473,41 @@
                     showToast('❌ الرجاء إدخال رقم EBB للفاتورة الكهرباء', true);
                     isValid = false;
                 }
-                if (isValid) showToast(`🔜 جاري تحويلك إلى Chargily Pay لدفع فاتورة ${billType === 'electricite' ? 'كهرباء' : 'ماء'}`, false);
+                serviceDescription = `فاتورة ${billType === 'electricite' ? 'كهرباء' : 'ماء'} - رقم العقد: ${contract}`;
                 break;
             case 'mobilis':
             case 'djezzy':
             case 'ooredoo':
                 const phone = document.getElementById('phoneNumber').value.trim();
-                const mobileAmount = document.getElementById('mobileAmount').value.trim();
-                if (!phone || !mobileAmount || mobileAmount <= 0) {
+                amount = parseFloat(document.getElementById('mobileAmount').value);
+                if (!phone || !amount || amount <= 0) {
                     showToast('❌ الرجاء إدخال رقم الهاتف والمبلغ', true);
                     isValid = false;
-                } else {
-                    showToast(`🔜 جاري تحويلك إلى Chargily Pay لشحن رصيد`, false);
                 }
+                let operatorName = currentService === 'mobilis' ? 'موبيليس' : (currentService === 'djezzy' ? 'جازي' : 'أوريدو');
+                serviceDescription = `شحن رصيد ${operatorName} - رقم الهاتف: ${phone}`;
                 break;
             case 'algerie':
                 const account = document.getElementById('accountNumber').value.trim();
-                const algerieAmount = document.getElementById('algerieAmount').value.trim();
-                if (!account || !algerieAmount || algerieAmount <= 0) {
+                amount = parseFloat(document.getElementById('algerieAmount').value);
+                if (!account || !amount || amount <= 0) {
                     showToast('❌ الرجاء إدخال رقم الحساب والمبلغ', true);
                     isValid = false;
-                } else {
-                    showToast(`🔜 جاري تحويلك إلى Chargily Pay لدفع فاتورة اتصالات الجزائر`, false);
                 }
+                serviceDescription = `دفع فاتورة اتصالات الجزائر - رقم الحساب: ${account}`;
                 break;
         }
-        if (isValid) modal.style.display = 'none';
+        
+        if (isValid) {
+            // إنشاء رابط دفع Chargily Pay (تجريبي - يتطلب خادماً خلفياً للتكامل الكامل)
+            // حالياً نفتح صفحة Chargily Pay التجريبية
+            window.open('https://pay.chargily.net/test', '_blank');
+            showToast(`🔜 جاري تحويلك إلى Chargily Pay لدفع ${amount.toFixed(2)} دج`, false);
+            modal.style.display = 'none';
+            
+            // في المستقبل، سيتم استبدال السطر أعلاه بـ:
+            // createChargilyCheckout(amount, serviceDescription);
+        }
     };
 
     scanBtnModal.onclick = () => {
