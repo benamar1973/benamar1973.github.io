@@ -43,7 +43,9 @@
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
         .btn-logout { background: #dc3545; color: white; }
+        .btn-resend { background: #ffc107; color: #1a1a2e; margin-top: 5px; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
+        .warning-msg { background: #fff3cd; color: #856404; padding: 10px; border-radius: 20px; text-align: center; margin: 10px 0; font-size: 14px; }
         
         /* قسم منفصل لأيقونات الدفع */
         .payment-section {
@@ -219,41 +221,30 @@
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
-        <!-- قسم المحفظة والخدمات (يظهر فقط بعد تسجيل الدخول) -->
+        <!-- قسم المحفظة والخدمات (يظهر فقط بعد تسجيل الدخول وتأكيد البريد) -->
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
+            <div id="verifyWarning" class="warning-msg" style="display: none;">
+                ⚠️ يرجى تأكيد بريدك الإلكتروني لتفعيل الخدمات. تم إرسال رابط التأكيد إلى بريدك.
+                <button id="resendVerifyBtn" class="btn-resend" style="display: block; margin: 10px auto 0; width: auto;">📧 إعادة إرسال رابط التأكيد</button>
+            </div>
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             
             <!-- قسم منفصل لأيقونات الدفع (مربع أحمر) -->
             <div class="payment-section">
                 <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
                 <div class="payment-grid">
-                    <div class="payment-btn" onclick="openPaymentModal('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
-                    <div class="payment-btn" onclick="openPaymentModal('mobilis')"><i>📱</i><span>mobilis</span></div>
-                    <div class="payment-btn" onclick="openPaymentModal('djezzy')"><i>📡</i><span>DJEZZY</span></div>
-                    <div class="payment-btn" onclick="openPaymentModal('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
-                    <div class="payment-btn" onclick="openPaymentModal('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('mobilis')"><i>📱</i><span>mobilis</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('djezzy')"><i>📡</i><span>DJEZZY</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
                 </div>
             </div>
 
             <!-- الخدمات الإدارية (بدون مربع أحمر) -->
-            <div class="normal-grid">
-                <div class="icon-btn" onclick="window.open('https://minha.anem.dz/pre_inscription', '_blank')"><i>💰</i><span>منحة البطالة</span></div>
-                <div class="icon-btn" onclick="window.open('https://preinscription.mdn.dz/', '_blank')"><i>🎖️</i><span>تجنيد الجيش</span></div>
-                <div class="icon-btn" onclick="window.open('https://awlyaa.education.dz/login', '_blank')"><i>👨‍👩‍👧</i><span>فضاء الأولياء</span></div>
-                <div class="icon-btn" onclick="window.open('https://www.aadl.dz', '_blank')"><i>🏢</i><span>سكنات عدل</span></div>
-                <div class="icon-btn" onclick="window.open('https://wassitonline.anem.dz', '_blank')"><i>💼</i><span>وسيط ANEM</span></div>
-                <div class="icon-btn" onclick="window.open('https://adhahi.dz', '_blank')"><i>🐑</i><span>أضحية العيد</span></div>
-                <div class="icon-btn" onclick="window.open('https://takwin.dz', '_blank')"><i>🔧</i><span>التكوين المهني</span></div>
-                <div class="icon-btn" onclick="window.open('https://youthcamp.mjeunesse.gov.dz', '_blank')"><i>🏕️</i><span>المخيم الشبابي</span></div>
-                <div class="icon-btn" onclick="window.open('https://www.dgsn.dz/e-declaration/', '_blank')"><i>📄</i><span>التصريح بضياع وثائق</span></div>
-                <div class="icon-btn" onclick="window.open('https://eccp.poste.dz', '_blank')"><i>🏦</i><span>CCP</span></div>
-                <div class="icon-btn" onclick="window.open('https://qassimatouka.mf.gov.dz/home', '_blank')"><i>🚗</i><span>قسيمة السيارات</span></div>
-                <div class="icon-btn" onclick="window.open('https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml', '_blank')"><i>📜</i><span>دفع مستحقات CNAS</span></div>
-                <div class="icon-btn" onclick="window.open('https://damancom.casnos.dz/public-space', '_blank')"><i>📜</i><span>شهادة CASNOS</span></div>
-                <div class="icon-btn" onclick="window.open('https://www.dzexams.com/', '_blank')"><i>📚</i><span>الفروض والإمتحانات</span></div>
-                <div class="icon-btn" onclick="window.open('https://e-mahata.naftal.dz/', '_blank')"><i>⛽</i><span>شراء العجلات</span></div>
-                <div class="icon-btn" onclick="window.open('https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar', '_blank')"><i>🏛️</i><span>الصفقات العمومية</span></div>
+            <div class="normal-grid" id="adminServices">
+                <!-- يتم تعبئتها بواسطة JS -->
             </div>
         </div>
 
@@ -322,7 +313,7 @@
     };
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -331,6 +322,8 @@
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
+    const verifyWarning = document.getElementById('verifyWarning');
+    const resendVerifyBtn = document.getElementById('resendVerifyBtn');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const confirmInput = document.getElementById('confirmPassword');
@@ -338,6 +331,54 @@
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
+    const adminServicesGrid = document.getElementById('adminServices');
+
+    // الخدمات الإدارية
+    const adminServices = [
+        { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
+        { name: 'تجنيد الجيش', icon: '🎖️', url: 'https://preinscription.mdn.dz/' },
+        { name: 'فضاء الأولياء', icon: '👨‍👩‍👧', url: 'https://awlyaa.education.dz/login' },
+        { name: 'سكنات عدل', icon: '🏢', url: 'https://www.aadl.dz' },
+        { name: 'وسيط ANEM', icon: '💼', url: 'https://wassitonline.anem.dz' },
+        { name: 'أضحية العيد', icon: '🐑', url: 'https://adhahi.dz' },
+        { name: 'التكوين المهني', icon: '🔧', url: 'https://takwin.dz' },
+        { name: 'المخيم الشبابي', icon: '🏕️', url: 'https://youthcamp.mjeunesse.gov.dz' },
+        { name: 'التصريح بضياع وثائق', icon: '📄', url: 'https://www.dgsn.dz/e-declaration/' },
+        { name: 'CCP', icon: '🏦', url: 'https://eccp.poste.dz' },
+        { name: 'قسيمة السيارات', icon: '🚗', url: 'https://qassimatouka.mf.gov.dz/home' },
+        { name: 'دفع مستحقات CNAS', icon: '📜', url: 'https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml' },
+        { name: 'شهادة CASNOS', icon: '📜', url: 'https://damancom.casnos.dz/public-space' },
+        { name: 'الفروض والإمتحانات', icon: '📚', url: 'https://www.dzexams.com/' },
+        { name: 'شراء العجلات', icon: '⛽', url: 'https://e-mahata.naftal.dz/' },
+        { name: 'الصفقات العمومية', icon: '🏛️', url: 'https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar' }
+    ];
+
+    function displayAdminServices() {
+        adminServicesGrid.innerHTML = '';
+        adminServices.forEach(service => {
+            const div = document.createElement('div');
+            div.className = 'icon-btn';
+            div.onclick = () => window.open(service.url, '_blank');
+            div.innerHTML = `<i>${service.icon}</i><span>${service.name}</span>`;
+            adminServicesGrid.appendChild(div);
+        });
+    }
+    displayAdminServices();
+
+    // دالة التحقق من تأكيد البريد قبل فتح الخدمة
+    window.checkVerifiedAndOpen = function(service) {
+        const user = auth.currentUser;
+        if (!user) {
+            showToast('❌ الرجاء تسجيل الدخول أولاً', true);
+            return;
+        }
+        if (!user.emailVerified) {
+            showToast('⚠️ يرجى تأكيد بريدك الإلكتروني أولاً. تم إرسال رابط التأكيد إلى بريدك.', true);
+            verifyWarning.style.display = 'block';
+            return;
+        }
+        openPaymentModal(service);
+    }
 
     // تحديث الواجهة عند تغير حالة المستخدم
     onAuthStateChanged(auth, (user) => {
@@ -346,6 +387,16 @@
             appSection.style.display = 'block';
             userEmailDisplay.innerHTML = `👤 مرحباً ${user.email}`;
             authStatus.innerText = '';
+            
+            if (user.emailVerified) {
+                verifyWarning.style.display = 'none';
+            } else {
+                verifyWarning.style.display = 'block';
+                // إرسال بريد تأكيد تلقائي عند إنشاء الحساب
+                if (!user.emailVerified) {
+                    sendEmailVerification(user).catch(console.error);
+                }
+            }
         } else {
             authSection.style.display = 'block';
             appSection.style.display = 'none';
@@ -353,6 +404,7 @@
             passwordInput.value = '';
             confirmInput.value = '';
             authStatus.innerText = '';
+            verifyWarning.style.display = 'none';
         }
     });
 
@@ -394,8 +446,9 @@
             return;
         }
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            authStatus.innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            await sendEmailVerification(userCred.user);
+            authStatus.innerText = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.';
         } catch (error) {
             let msg = '❌ ';
             if (error.code === 'auth/email-already-in-use') msg += 'البريد الإلكتروني مستخدم بالفعل';
@@ -404,12 +457,23 @@
         }
     });
 
+    // إعادة إرسال رابط التأكيد
+    resendVerifyBtn.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (user && !user.emailVerified) {
+            await sendEmailVerification(user);
+            showToast('✅ تم إعادة إرسال رابط التأكيد إلى بريدك الإلكتروني', false);
+        } else {
+            showToast('⚠️ بريدك الإلكتروني مؤكد بالفعل', true);
+        }
+    });
+
     // تسجيل الخروج
     logoutBtn.addEventListener('click', async () => {
         await signOut(auth);
     });
 
-    // دوال المشاركة والدفع (نفس الكود السابق)
+    // دوال المشاركة والدفع
     function shareApp() {
         if (navigator.share) {
             navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
@@ -418,7 +482,6 @@
             alert('تم نسخ الرابط 📋');
         }
     }
-
     window.shareApp = shareApp;
 
     let currentService = '';
@@ -494,10 +557,7 @@
             ebbField.value = '';
         }
     }
-
-    if (billTypeSelect) {
-        billTypeSelect.addEventListener('change', toggleEBBField);
-    }
+    if (billTypeSelect) billTypeSelect.addEventListener('change', toggleEBBField);
     
     closeModalBtn.onclick = () => modal.style.display = 'none';
 
@@ -570,7 +630,6 @@
         toast.style.background = isError ? '#c53030' : '#28a745';
         setTimeout(() => toast.style.opacity = '0', 3000);
     }
-
     window.showToast = showToast;
 
     // دوال الطقس والصلاة
