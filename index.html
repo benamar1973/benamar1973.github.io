@@ -56,7 +56,6 @@
             border-right: 5px solid #ffc107;
         }
         
-        /* الشبكة والإطار */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -65,42 +64,18 @@
         }
         .icon-btn {
             background: white;
+            padding: 12px 5px;
             border-radius: 18px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
             border: 1px solid #ddd;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            overflow: hidden;
-            padding: 0;
         }
-        .icon-btn:active { transform: scale(0.96); }
-        .icon-btn img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            display: block;
-        }
-        .icon-btn span {
-            display: block;
-            padding: 8px 4px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #2c3e50;
-            background: white;
-            border-top: 1px solid #f0f0f0;
-        }
-        /* للأيقونات التي ليس لها صورة */
-        .icon-btn .no-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            background: #f8f9fa;
-            color: #2c3e50;
-        }
+        .icon-btn:active { transform: scale(0.96); background: #f8f9fa; }
+        .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
+        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; }
+        .icon-btn img { width: 48px; height: 48px; display: block; margin: 0 auto 5px; object-fit: contain; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
@@ -111,6 +86,7 @@
         
         .footer-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; padding: 10px; border-top: 1px solid #eee; }
         .footer-links a { color: #0f3460; text-decoration: none; font-size: 12px; }
+        
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
     </style>
@@ -134,11 +110,13 @@
 
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
+            
             <div id="verifyWarning" class="warning-msg" style="display: none;">
                 ⚠️ <strong>تنبيه هام:</strong> يرجى <strong>تفقد مجلد Spam (البريد العشوائي)</strong> في حساب Gmail الخاص بك.<br>
                 إذا لم تجد رسالة التأكيد، اضغط على زر "إعادة إرسال رابط التأكيد" أدناه.
                 <button id="resendVerifyBtn" class="btn-resend" style="display: block; margin: 10px auto 0; width: auto;">📧 إعادة إرسال رابط التأكيد</button>
             </div>
+            
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             
             <div class="grid" id="allServicesGrid"></div>
@@ -219,25 +197,24 @@
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
 
-    // جميع الخدمات (مع الصور حسب طلبك)
     const allServices = [
         { name: 'دفع فاتورة الكهرباء والماء', img: 'SONELGAZ.png', isPayment: true, serviceKey: 'electricite-eau' },
         { name: 'mobilis', img: 'MOBILIS.png', isPayment: true, serviceKey: 'mobilis' },
         { name: 'DJEZZY', img: 'DJEZZY.png', isPayment: true, serviceKey: 'djezzy' },
         { name: 'Ooredoo', img: 'OOREDOO.png', isPayment: true, serviceKey: 'ooredoo' },
         { name: 'Algerie Telecom', img: 'ALGERIETELECOM.png', isPayment: true, serviceKey: 'algerie', fallbackIcon: '📞' },
-        { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
+        { name: 'منحة البطالة', img: 'ANEM.png', url: 'https://minha.anem.dz/pre_inscription' },
         { name: 'تجنيد الجيش', img: 'الجيش الوطني.png', url: 'https://preinscription.mdn.dz/' },
         { name: 'فضاء الأولياء', img: 'فضاء الاولياء.png', url: 'https://awlyaa.education.dz/login' },
-        { name: 'سكنات عدل', icon: '🏢', url: 'https://www.aadl.dz' },
-        { name: 'وسيط ANEM', icon: '💼', url: 'https://wassitonline.anem.dz' },
+        { name: 'سكنات عدل', img: 'AADEL.png', url: 'https://www.aadl.dz' },
+        { name: 'وسيط ANEM', img: 'ANEM.png', url: 'https://wassitonline.anem.dz' },
         { name: 'التكوين المهني', img: 'التكوين-المهني.png', url: 'https://takwin.dz' },
         { name: 'المخيم الشبابي', img: 'المخيم-الشبابي.png', url: 'https://youthcamp.mjeunesse.gov.dz' },
         { name: 'التصريح بضياع وثائق', img: 'POLICE.png', url: 'https://www.dgsn.dz/e-declaration/' },
-        { name: 'CCP', img: 'المخيم-الشبابي CCP.png', url: 'https://eccp.poste.dz' },
+        { name: 'CCP', img: 'CCP.png', url: 'https://eccp.poste.dz' },
         { name: 'قسيمة السيارات', img: 'مديرية-الضرائب.png', url: 'https://qassimatouka.mf.gov.dz/home' },
         { name: 'دفع مستحقات CNAS', img: 'CNAS.png', url: 'https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml' },
-        { name: 'شهادة CASNOS', icon: '📜', url: 'https://damancom.casnos.dz/public-space' },
+        { name: 'شهادة CASNOS', img: 'CASNOS.jpeg', url: 'https://damancom.casnos.dz/public-space' },
         { name: 'الفروض والإمتحانات', img: 'DZEXAMIN.png', url: 'https://www.dzexams.com/' },
         { name: 'شراء العجلات', img: 'NAFTAL.png', url: 'https://e-mahata.naftal.dz/' }
     ];
@@ -247,35 +224,30 @@
         allServices.forEach(service => {
             const div = document.createElement('div');
             div.className = 'icon-btn';
-
+            
             if (service.isPayment) {
                 div.onclick = () => checkVerifiedAndOpen(service.serviceKey);
             } else if (service.url) {
                 div.onclick = () => window.open(service.url, '_blank');
             }
-
-            if (service.img) {
-                const img = document.createElement('img');
-                img.src = service.img;
-                img.alt = service.name;
-                img.onerror = () => {
-                    const fallback = document.createElement('div');
-                    fallback.className = 'no-img';
-                    fallback.innerText = service.fallbackIcon || service.icon || '📄';
-                    div.insertBefore(fallback, div.firstChild);
-                    img.remove();
-                };
-                div.appendChild(img);
-            } else if (service.icon) {
-                const fallback = document.createElement('div');
-                fallback.className = 'no-img';
-                fallback.innerText = service.icon;
-                div.appendChild(fallback);
-            }
-
-            const label = document.createElement('span');
-            label.innerText = service.name;
-            div.appendChild(label);
+            
+            const img = document.createElement('img');
+            img.src = service.img;
+            img.alt = service.name;
+            img.onerror = () => {
+                img.style.display = 'none';
+                const i = document.createElement('i');
+                i.innerText = service.fallbackIcon || '📌';
+                i.style.fontSize = '28px';
+                i.style.display = 'block';
+                i.style.marginBottom = '5px';
+                div.insertBefore(i, div.firstChild);
+            };
+            div.appendChild(img);
+            
+            const span = document.createElement('span');
+            span.innerText = service.name;
+            div.appendChild(span);
             allServicesGrid.appendChild(div);
         });
     }
@@ -293,7 +265,7 @@
             return;
         }
         openPaymentModal(service);
-    };
+    }
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -380,7 +352,7 @@
 
     function shareApp() {
         if (navigator.share) {
-            navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' }).catch(() => {});
+            navigator.share({ title: 'خدماتي', url: 'https://benamar1973.github.io/' });
         } else {
             navigator.clipboard.writeText('https://benamar1973.github.io/');
             alert('تم نسخ الرابط 📋');
