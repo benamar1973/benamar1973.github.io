@@ -79,8 +79,7 @@
         .icon-btn img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            padding: 15px;
+            object-fit: cover;
         }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
@@ -125,7 +124,7 @@
             
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             
-            <!-- شبكة واحدة - الصور تغطي كامل المربع -->
+            <!-- شبكة واحدة - الصورة تغطي المربع بالكامل -->
             <div class="grid" id="allServicesGrid"></div>
         </div>
 
@@ -205,15 +204,13 @@
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
 
-    // قائمة جميع الخدمات (الصور تغطي كامل المربع)
+    // قائمة جميع الخدمات
     const allServices = [
-        // خدمات الدفع (تفتح نافذة الدفع)
-        { name: 'دفع فاتورة الكهرباء والماء', img: 'SONELGAZ.png', isPayment: true, serviceKey: 'electricite-eau' },
+        { name: 'سونلغاز', img: 'SONELGAZ.png', isPayment: true, serviceKey: 'electricite-eau' },
         { name: 'mobilis', img: 'MOBILIS.png', isPayment: true, serviceKey: 'mobilis' },
         { name: 'DJEZZY', img: 'DJEZZY.png', isPayment: true, serviceKey: 'djezzy' },
         { name: 'Ooredoo', img: 'OOREDOO.png', isPayment: true, serviceKey: 'ooredoo' },
         { name: 'Algerie Telecom', img: 'ALGERIETELECOM.png', isPayment: true, serviceKey: 'algerie' },
-        // خدمات إدارية (تفتح روابط خارجية)
         { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
         { name: 'تجنيد الجيش', icon: '🎖️', url: 'https://preinscription.mdn.dz/' },
         { name: 'فضاء الأولياء', icon: '👨‍👩‍👧', url: 'https://awlyaa.education.dz/login' },
@@ -250,7 +247,6 @@
                 img.alt = service.name;
                 div.appendChild(img);
             } else if (service.icon) {
-                // للخدمات التي ليس لها صورة، نعرض الأيقونة بشكل مركز
                 const i = document.createElement('i');
                 i.innerText = service.icon;
                 i.style.fontSize = '48px';
