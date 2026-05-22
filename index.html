@@ -71,7 +71,6 @@
             transition: 0.2s;
             border: 1px solid #ddd;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            min-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -81,13 +80,12 @@
         .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
         .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; margin-top: 5px; }
         
-        /* الصور تملأ الإطار بالكامل */
+        /* الصور بحجمها الطبيعي داخل الإطار */
         .icon-btn img { 
-            width: 48px; 
-            height: 48px; 
             display: block; 
             margin: 0 auto; 
-            object-fit: cover;
+            max-width: 100%;
+            height: auto;
         }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
@@ -244,31 +242,21 @@
                 div.onclick = () => window.open(service.url, '_blank');
             }
             
-            // حاوية الصورة
-            const imgContainer = document.createElement('div');
-            imgContainer.style.width = '48px';
-            imgContainer.style.height = '48px';
-            imgContainer.style.margin = '0 auto';
-            imgContainer.style.overflow = 'hidden';
-            imgContainer.style.borderRadius = '8px';
-            
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
             img.onerror = () => {
                 img.style.display = 'none';
                 const i = document.createElement('i');
                 i.innerText = service.fallbackIcon || '📌';
                 i.style.fontSize = '28px';
                 i.style.display = 'block';
-                i.style.lineHeight = '48px';
-                imgContainer.appendChild(i);
+                i.style.marginBottom = '5px';
+                div.appendChild(i);
             };
-            imgContainer.appendChild(img);
-            div.appendChild(imgContainer);
+            div.appendChild(img);
             
             const span = document.createElement('span');
             span.innerText = service.name;
