@@ -56,35 +56,26 @@
             border-right: 5px solid #ffc107;
         }
         
-        .payment-section {
-            background: #fff5f5;
-            border-radius: 25px;
-            padding: 15px;
+        /* شبكة واحدة لجميع الأيقونات */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-bottom: 25px;
-            border: 1px solid #ffcccc;
         }
-        .payment-section h3 { color: #dc3545; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 3px solid #dc3545; display: inline-block; }
-        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .payment-btn {
-            background: #dc3545;
+        .icon-btn {
+            background: #f8f9fa;
             padding: 12px 5px;
             border-radius: 18px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
-            border: none;
-            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+            border: 1px solid #e9ecef;
         }
-        .payment-btn:active { background: #b02a37; transform: scale(0.96); }
-        .payment-btn img { width: 48px; height: 48px; display: block; margin: 0 auto 8px; object-fit: contain; }
-        .payment-btn span { font-size: 11px; font-weight: 600; color: white; display: block; }
-        
-        .normal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
-        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
         .icon-btn:active { transform: scale(0.96); background: #e9ecef; }
         .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
         .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; }
-        .icon-btn img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; object-fit: contain; }
+        .icon-btn img { width: 48px; height: 48px; display: block; margin: 0 auto 5px; object-fit: contain; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
@@ -128,38 +119,8 @@
             
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             
-            <div class="payment-section">
-                <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
-                <div class="payment-grid">
-                    <!-- سونلغاز -->
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('electricite-eau')">
-                        <img src="SONELGAZ.png" alt="سونلغاز">
-                        <span>دفع فاتورة الكهرباء والماء</span>
-                    </div>
-                    <!-- Mobilis -->
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('mobilis')">
-                        <img src="MOBILIS.png" alt="mobilis">
-                        <span>mobilis</span>
-                    </div>
-                    <!-- Djezzy -->
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('djezzy')">
-                        <img src="DJEZZY.png" alt="DJEZZY">
-                        <span>DJEZZY</span>
-                    </div>
-                    <!-- Ooredoo -->
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('ooredoo')">
-                        <img src="OOREDOO.png" alt="Ooredoo">
-                        <span>Ooredoo</span>
-                    </div>
-                    <!-- Algerie Telecom -->
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('algerie')">
-                        <img src="ALGERIETELECOM.png" alt="Algerie Telecom" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                        <span style="display:none;">📞 Algerie Telecom</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="normal-grid" id="adminServices"></div>
+            <!-- شبكة واحدة لجميع الأيقونات -->
+            <div class="grid" id="allServicesGrid"></div>
         </div>
 
         <div class="footer-links">
@@ -236,9 +197,17 @@
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
-    const adminServicesGrid = document.getElementById('adminServices');
+    const allServicesGrid = document.getElementById('allServicesGrid');
 
-    const adminServices = [
+    // قائمة جميع الخدمات (مدموجة مع الصور)
+    const allServices = [
+        // خدمات الدفع (تفتح نافذة الدفع)
+        { name: 'دفع فاتورة الكهرباء والماء', img: 'SONELGAZ.png', isPayment: true, serviceKey: 'electricite-eau' },
+        { name: 'mobilis', img: 'MOBILIS.png', isPayment: true, serviceKey: 'mobilis' },
+        { name: 'DJEZZY', img: 'DJEZZY.png', isPayment: true, serviceKey: 'djezzy' },
+        { name: 'Ooredoo', img: 'OOREDOO.png', isPayment: true, serviceKey: 'ooredoo' },
+        { name: 'Algerie Telecom', img: 'ALGERIETELECOM.png', isPayment: true, serviceKey: 'algerie', fallbackIcon: '📞' },
+        // خدمات إدارية (تفتح روابط خارجية)
         { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
         { name: 'تجنيد الجيش', icon: '🎖️', url: 'https://preinscription.mdn.dz/' },
         { name: 'فضاء الأولياء', icon: '👨‍👩‍👧', url: 'https://awlyaa.education.dz/login' },
@@ -257,39 +226,57 @@
         { name: 'الصفقات العمومية', icon: '🏛️', url: 'https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar' }
     ];
 
-    function displayAdminServices() {
-        adminServicesGrid.innerHTML = '';
-        adminServices.forEach(service => {
+    function displayAllServices() {
+        allServicesGrid.innerHTML = '';
+        allServices.forEach(service => {
             const div = document.createElement('div');
             div.className = 'icon-btn';
-            div.onclick = () => window.open(service.url, '_blank');
+            
+            if (service.isPayment) {
+                div.onclick = () => checkVerifiedAndOpen(service.serviceKey);
+            } else if (service.url) {
+                div.onclick = () => window.open(service.url, '_blank');
+            }
+            
             if (service.img) {
                 const img = document.createElement('img');
                 img.src = service.img;
                 img.alt = service.name;
-                img.style.width = '32px';
-                img.style.height = '32px';
-                img.style.display = 'block';
-                img.style.margin = '0 auto 5px';
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    if (service.fallbackIcon) {
+                        const i = document.createElement('i');
+                        i.innerText = service.fallbackIcon;
+                        i.style.fontSize = '28px';
+                        i.style.display = 'block';
+                        i.style.marginBottom = '5px';
+                        div.insertBefore(i, div.firstChild);
+                    } else if (service.icon) {
+                        const i = document.createElement('i');
+                        i.innerText = service.icon;
+                        i.style.fontSize = '28px';
+                        i.style.display = 'block';
+                        i.style.marginBottom = '5px';
+                        div.insertBefore(i, div.firstChild);
+                    }
+                };
                 div.appendChild(img);
-                const span = document.createElement('span');
-                span.innerText = service.name;
-                div.appendChild(span);
-            } else {
+            } else if (service.icon) {
                 const i = document.createElement('i');
                 i.innerText = service.icon;
                 i.style.fontSize = '28px';
                 i.style.display = 'block';
                 i.style.marginBottom = '5px';
                 div.appendChild(i);
-                const span = document.createElement('span');
-                span.innerText = service.name;
-                div.appendChild(span);
             }
-            adminServicesGrid.appendChild(div);
+            
+            const span = document.createElement('span');
+            span.innerText = service.name;
+            div.appendChild(span);
+            allServicesGrid.appendChild(div);
         });
     }
-    displayAdminServices();
+    displayAllServices();
 
     window.checkVerifiedAndOpen = function(service) {
         const user = auth.currentUser;
