@@ -75,6 +75,7 @@
         .payment-btn:active { background: #b02a37; transform: scale(0.96); }
         .payment-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: white; }
         .payment-btn span { font-size: 11px; font-weight: 600; color: white; }
+        .payment-btn img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; object-fit: contain; }
         
         /* الأيقونات العادية */
         .normal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
@@ -133,11 +134,31 @@
             <div class="payment-section">
                 <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
                 <div class="payment-grid">
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('mobilis')"><i>📱</i><span>mobilis</span></div>
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('djezzy')"><i>📡</i><span>DJEZZY</span></div>
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
-                    <div class="payment-btn" onclick="checkVerifiedAndOpen('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
+                    <!-- سونلغاز -->
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('electricite-eau')">
+                        <i>⚡💧</i>
+                        <span>دفع فاتورة الكهرباء والماء</span>
+                    </div>
+                    <!-- Mobilis -->
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('mobilis')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Mobilis_logo.svg" alt="mobilis">
+                        <span>mobilis</span>
+                    </div>
+                    <!-- Djezzy -->
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('djezzy')">
+                        <img src="https://logodownload.org/wp-content/uploads/2017/11/djezzy-logo-2.png" alt="DJEZZY">
+                        <span>DJEZZY</span>
+                    </div>
+                    <!-- Ooredoo -->
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('ooredoo')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Ooredoo_logo.svg" alt="Ooredoo">
+                        <span>Ooredoo</span>
+                    </div>
+                    <!-- Algerie Telecom -->
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('algerie')">
+                        <i>📞</i>
+                        <span>Algerie Telecom</span>
+                    </div>
                 </div>
             </div>
 
@@ -254,17 +275,6 @@
         });
     }
     displayAdminServices();
-
-    // دالة إنشاء رابط دفع Chargily Pay (محاكاة - تحتاج إلى خادم خلفي للتكامل الكامل)
-    async function createChargilyCheckout(amount, serviceName) {
-        // في الإصدار الحقيقي، هنا سيتم استدعاء Cloud Function لإنشاء رابط دفع
-        // حالياً، سنستخدم رابط تجريبي ثابت للاختبار
-        const checkoutUrl = `https://pay.chargily.net/api/v2/checkouts?amount=${amount}&currency=dzd&description=${encodeURIComponent(serviceName)}&success_url=https://benamar1973.github.io/success.html`;
-        
-        // هذا رابط توضيحي فقط. للعمل الفعلي، تحتاج إلى إنشاء رابط عبر API باستخدام Secret Key
-        window.open('https://pay.chargily.net/test', '_blank');
-        showToast('🔜 جاري تحويلك إلى Chargily Pay (وضع الاختبار - للتجربة فقط)', false);
-    }
 
     window.checkVerifiedAndOpen = function(service) {
         const user = auth.currentUser;
@@ -499,14 +509,10 @@
         }
         
         if (isValid) {
-            // إنشاء رابط دفع Chargily Pay (تجريبي - يتطلب خادماً خلفياً للتكامل الكامل)
-            // حالياً نفتح صفحة Chargily Pay التجريبية
-            window.open('https://pay.chargily.net/test', '_blank');
+            // فتح صفحة Chargily Pay (يمكن تعديلها لاحقاً للربط الفعلي)
+            window.open('https://pay.chargily.net/dashboard', '_blank');
             showToast(`🔜 جاري تحويلك إلى Chargily Pay لدفع ${amount.toFixed(2)} دج`, false);
             modal.style.display = 'none';
-            
-            // في المستقبل، سيتم استبدال السطر أعلاه بـ:
-            // createChargilyCheckout(amount, serviceDescription);
         }
     };
 
