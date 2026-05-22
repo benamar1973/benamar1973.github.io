@@ -62,9 +62,10 @@
             gap: 12px;
             margin-bottom: 25px;
         }
+        
+        /* مربع الإطار 80x80 */
         .icon-btn {
             background: white;
-            padding: 12px 5px;
             border-radius: 18px;
             text-align: center;
             cursor: pointer;
@@ -75,17 +76,30 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 10px 5px;
         }
         .icon-btn:active { transform: scale(0.96); background: #f8f9fa; }
         .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
         .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; margin-top: 5px; }
         
-        /* الصور بحجمها الطبيعي داخل الإطار */
-        .icon-btn img { 
-            display: block; 
-            margin: 0 auto; 
-            max-width: 100%;
-            height: auto;
+        /* حاوية الصورة 80x80 */
+        .img-frame {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        
+        /* الصورة تملأ الإطار بالكامل */
+        .img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
@@ -242,21 +256,23 @@
                 div.onclick = () => window.open(service.url, '_blank');
             }
             
+            // حاوية الصورة 80x80
+            const frame = document.createElement('div');
+            frame.className = 'img-frame';
+            
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
-            img.style.maxWidth = '100%';
-            img.style.height = 'auto';
             img.onerror = () => {
                 img.style.display = 'none';
                 const i = document.createElement('i');
                 i.innerText = service.fallbackIcon || '📌';
                 i.style.fontSize = '28px';
                 i.style.display = 'block';
-                i.style.marginBottom = '5px';
-                div.appendChild(i);
+                frame.appendChild(i);
             };
-            div.appendChild(img);
+            frame.appendChild(img);
+            div.appendChild(frame);
             
             const span = document.createElement('span');
             span.innerText = service.name;
