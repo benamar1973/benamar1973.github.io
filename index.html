@@ -202,7 +202,7 @@
         { name: 'mobilis', img: 'MOBILIS.png', isPayment: true, serviceKey: 'mobilis' },
         { name: 'DJEZZY', img: 'DJEZZY.png', isPayment: true, serviceKey: 'djezzy' },
         { name: 'Ooredoo', img: 'OOREDOO.png', isPayment: true, serviceKey: 'ooredoo' },
-        { name: 'Algerie Telecom', img: 'ALGERIETELECOM.png', isPayment: true, serviceKey: 'algerie', fallbackIcon: '📞' },
+        { name: 'Algerie Telecom', img: 'ALGERIE TELECOM.png', isPayment: true, serviceKey: 'algerie', fallbackIcon: '📞' },
         { name: 'منحة البطالة', img: 'ANEM.png', url: 'https://minha.anem.dz/pre_inscription' },
         { name: 'تجنيد الجيش', img: 'الجيش الوطني.png', url: 'https://preinscription.mdn.dz/' },
         { name: 'فضاء الأولياء', img: 'فضاء الاولياء.png', url: 'https://awlyaa.education.dz/login' },
@@ -234,6 +234,11 @@
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
+            img.style.width = '48px';
+            img.style.height = '48px';
+            img.style.display = 'block';
+            img.style.margin = '0 auto 5px';
+            img.style.objectFit = 'contain';
             img.onerror = () => {
                 img.style.display = 'none';
                 const i = document.createElement('i');
