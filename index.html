@@ -121,7 +121,7 @@
             border-right: 5px solid #ffc107;
         }
 
-        /* شبكة الأيقونات مع الإطار */
+        /* شبكة الأيقونات – الصورة تملأ الإطار بالكامل */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -131,7 +131,7 @@
 
         .icon-btn {
             background: #ffffff;
-            padding: 16px 8px;
+            padding: 0;
             border-radius: 20px;
             text-align: center;
             cursor: pointer;
@@ -140,9 +140,8 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            align-items: stretch;
+            overflow: hidden;
         }
 
         .icon-btn:active {
@@ -150,32 +149,37 @@
             background: #f8f9fa;
         }
 
-        .icon-btn i {
-            font-size: 28px;
-            color: #2c3e50;
+        /* الصورة تملأ كامل مساحة الإطار (المربع) */
+        .icon-btn img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            background: #ffffff;
         }
 
+        /* النص أسفل الصورة */
         .icon-btn span {
+            display: block;
+            padding: 10px 6px;
             font-size: 12px;
             font-weight: 600;
             color: #2c3e50;
+            background: #ffffff;
+            border-top: 1px solid #f0f0f0;
             line-height: 1.3;
         }
 
-        /* الصور تغطي كامل مساحة الأيقونة داخل الإطار */
-        .icon-btn img {
-            width: 100%;
-            max-width: 64px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            object-fit: contain;
-        }
-
-        /* الأيقونات التي ليس لها صورة (كاحتياطي) */
+        /* أيقونة احتياطية (إذا لم توجد صورة) */
         .icon-btn .fallback-icon {
-            font-size: 32px;
-            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            background: #f8f9fa;
+            color: #2c3e50;
         }
 
         .modal {
@@ -300,7 +304,7 @@
 
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
 
-            <!-- شبكة جميع الخدمات -->
+            <!-- شبكة جميع الخدمات (الصور تملأ الإطار كاملاً) -->
             <div class="grid" id="allServicesGrid"></div>
         </div>
 
@@ -380,7 +384,7 @@
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
 
-    // تكوين الخدمات (جميع الصور في نفس مستوى index.html)
+    // قائمة الخدمات – جميع الصور تملأ الإطار
     const allServices = [{
             name: 'دفع فاتورة الكهرباء والماء',
             img: 'SONELGAZ.png',
@@ -414,6 +418,7 @@
         },
         {
             name: 'منحة البطالة',
+            img: null,
             icon: '💰',
             url: 'https://minha.anem.dz/pre_inscription'
         },
@@ -429,11 +434,13 @@
         },
         {
             name: 'سكنات عدل',
+            img: null,
             icon: '🏢',
             url: 'https://www.aadl.dz'
         },
         {
             name: 'وسيط ANEM',
+            img: null,
             icon: '💼',
             url: 'https://wassitonline.anem.dz'
         },
@@ -469,6 +476,7 @@
         },
         {
             name: 'شهادة CASNOS',
+            img: null,
             icon: '📜',
             url: 'https://damancom.casnos.dz/public-space'
         },
@@ -496,26 +504,25 @@
                 div.onclick = () => window.open(service.url, '_blank');
             }
 
-            // الصورة أو الأيقونة الاحتياطية
+            // محتوى الأيقونة: صورة أو أيقونة احتياطية
             if (service.img) {
                 const img = document.createElement('img');
                 img.src = service.img;
                 img.alt = service.name;
                 img.loading = 'lazy';
                 img.onerror = () => {
-                    // إذا فشلت الصورة نعرض أيقونة تعبيرية أو النص
                     img.style.display = 'none';
                     const fallbackSpan = document.createElement('span');
                     fallbackSpan.className = 'fallback-icon';
-                    fallbackSpan.innerText = service.fallbackIcon || service.icon || '📄';
+                    fallbackSpan.innerText = service.fallbackIcon || '📄';
                     div.insertBefore(fallbackSpan, div.firstChild);
                 };
                 div.appendChild(img);
-            } else if (service.icon) {
-                const iconSpan = document.createElement('span');
-                iconSpan.className = 'fallback-icon';
-                iconSpan.innerText = service.icon;
-                div.appendChild(iconSpan);
+            } else {
+                const fallbackSpan = document.createElement('span');
+                fallbackSpan.className = 'fallback-icon';
+                fallbackSpan.innerText = service.icon || '📄';
+                div.appendChild(fallbackSpan);
             }
 
             const label = document.createElement('span');
@@ -739,7 +746,7 @@
                 amount = parseFloat(document.getElementById('mobileAmount').value);
                 if (!phone || !amount || amount <= 0) {
                     showToast('❌ الرجاء إدخال رقم الهاتف والمبلغ', true);
-                    isValid = false;
+                    isValid = false);
                 }
                 break;
             case 'algerie':
