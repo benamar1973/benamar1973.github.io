@@ -3,24 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - بوابة الدفع</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <title>خدماتي - المحفظة الإلكترونية</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .main-card { background: #ffffff; border-radius: 35px; padding: 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 26px; color: #1a1a2e; margin-bottom: 10px; }
-        .share-btn { background: #25D366; color: white; border: none; padding: 6px 15px; border-radius: 50px; font-size: 14px; font-weight: bold; cursor: pointer; margin-right: 10px; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 35px;
+            padding: 20px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .share-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /* قسم تسجيل الدخول */
         .auth-section {
             background: #f8f9fa;
             border-radius: 25px;
             padding: 15px;
             margin-bottom: 20px;
         }
+
         .auth-section input {
             width: 100%;
             padding: 12px;
@@ -29,6 +69,7 @@
             border-radius: 40px;
             font-size: 14px;
         }
+
         .auth-section button {
             width: 100%;
             padding: 12px;
@@ -39,12 +80,26 @@
             font-weight: bold;
             cursor: pointer;
         }
+
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
         .btn-logout { background: #dc3545; color: white; }
         .btn-resend { background: #ffc107; color: #1a1a2e; margin-top: 5px; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
-        
+
+        /* إشعار تعديل الروابط */
+        .update-notice {
+            background: #fff3cd;
+            border-right: 5px solid #ffc107;
+            color: #856404;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* رسالة التحذير */
         .warning-msg {
             background: #fff3cd;
             color: #856404;
@@ -55,60 +110,43 @@
             font-size: 14px;
             border-right: 5px solid #ffc107;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+
+        /* قسم منفصل لأيقونات الدفع */
+        .payment-section {
+            background: #fff5f5;
+            border-radius: 25px;
+            padding: 15px;
             margin-bottom: 25px;
+            border: 1px solid #ffcccc;
         }
-        
-        .icon-btn {
-            background: white;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 5px;
+        .payment-section h3 { color: #dc3545; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 3px solid #dc3545; display: inline-block; }
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .payment-btn {
+            background: #dc3545; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer;
+            transition: 0.2s; border: none; box-shadow: 0 4px 12px rgba(220,53,69,0.3);
         }
-        .icon-btn:active { transform: scale(0.96); background: #f8f9fa; }
+        .payment-btn:active { background: #b02a37; transform: scale(0.96); }
+        .payment-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: white; }
+        .payment-btn span { font-size: 11px; font-weight: 600; color: white; }
+
+        /* الأيقونات العادية */
+        .normal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
+        .icon-btn { background: #f8f9fa; padding: 12px 5px; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #e9ecef; }
+        .icon-btn:active { transform: scale(0.96); background: #e9ecef; }
         .icon-btn i { font-size: 28px; display: block; margin-bottom: 5px; color: #2c3e50; }
-        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; display: block; margin-top: 5px; }
-        
-        .img-frame {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f9fa;
-        }
-        
-        .img-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
+        .icon-btn span { font-size: 11px; font-weight: 600; color: #2c3e50; }
+
+        /* نافذة إدخال البيانات */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
         .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
         .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
         .scan-btn { background: #0f3460; }
         .close-modal { background: #dc3545; margin-top: 5px; }
-        
+
         .footer-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; padding: 10px; border-top: 1px solid #eee; }
         .footer-links a { color: #0f3460; text-decoration: none; font-size: 12px; }
-        
+
         footer { text-align: center; margin-top: 20px; padding: 15px; color: #000000; font-size: 12px; font-weight: bold; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a2c3e; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
     </style>
@@ -121,6 +159,7 @@
             <h1>خدماتي الجزائر</h1>
         </div>
 
+        <!-- قسم تسجيل الدخول وإنشاء حساب -->
         <div id="authSection" class="auth-section">
             <input type="email" id="email" placeholder="البريد الإلكتروني (Gmail)">
             <input type="password" id="password" placeholder="كلمة المرور">
@@ -130,20 +169,39 @@
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
+        <!-- قسم الخدمات (يظهر فقط بعد تسجيل الدخول وتأكيد البريد) -->
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
-            
+
+            <!-- 🔔 إشعار التحديثات (سيظهر تلقائياً إذا تم تعديل أي رابط) -->
+            <div id="updateNotice" class="update-notice" style="display: none;"></div>
+
+            <!-- رسالة تحذيرية -->
             <div id="verifyWarning" class="warning-msg" style="display: none;">
                 ⚠️ <strong>تنبيه هام:</strong> يرجى <strong>تفقد مجلد Spam (البريد العشوائي)</strong> في حساب Gmail الخاص بك.<br>
                 إذا لم تجد رسالة التأكيد، اضغط على زر "إعادة إرسال رابط التأكيد" أدناه.
                 <button id="resendVerifyBtn" class="btn-resend" style="display: block; margin: 10px auto 0; width: auto;">📧 إعادة إرسال رابط التأكيد</button>
             </div>
-            
+
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
-            
-            <div class="grid" id="allServicesGrid"></div>
+
+            <!-- قسم الدفع -->
+            <div class="payment-section">
+                <h3>💳 الدفع الإلكتروني (عبر Chargily Pay)</h3>
+                <div class="payment-grid">
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('electricite-eau')"><i>⚡💧</i><span>دفع فاتورة الكهرباء والماء</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('mobilis')"><i>📱</i><span>mobilis</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('djezzy')"><i>📡</i><span>DJEZZY</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('ooredoo')"><i>🌐</i><span>Ooredoo</span></div>
+                    <div class="payment-btn" onclick="checkVerifiedAndOpen('algerie')"><i>📞</i><span>Algerie Telecom</span></div>
+                </div>
+            </div>
+
+            <!-- الخدمات الإدارية -->
+            <div class="normal-grid" id="adminServices"></div>
         </div>
 
+        <!-- روابط الصفحات السفلية -->
         <div class="footer-links">
             <a href="about.html">📖 من نحن</a>
             <a href="contact.html">📞 اتصل بنا</a>
@@ -163,7 +221,7 @@
         <div id="electriciteEauFields" style="display: none;">
             <select id="billType">
                 <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
-                <option value="eau">💧 ماء (SEAAL)</option>
+                <option value="eau">💧 ماء (ADE/SEAAL)</option>
             </select>
             <input type="text" id="contractNumber" placeholder="رقم العقد / رقم العميل *">
             <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
@@ -190,6 +248,7 @@
 <div id="toast" class="toast"></div>
 
 <script type="module">
+    // Firebase Configuration
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
         authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -205,6 +264,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // عناصر HTML
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -217,62 +277,72 @@
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
-    const allServicesGrid = document.getElementById('allServicesGrid');
+    const adminServicesGrid = document.getElementById('adminServices');
 
-    const allServices = [
-        { name: 'دفع فاتورة الكهرباء', img: 'SONELGAZ.png', url: 'https://epayement.elit.dz/payementFacture.xhtml' },
-        { name: 'دفع فاتورة الماء', img: 'SEAAL.png', url: 'https://fatourati.seaal.dz/' },
-        { name: 'mobilis', img: 'MOBILIS.png', url: 'https://e-paiement.mobilis.dz/' },
-        { name: 'DJEZZY', img: 'DJEZZY.png', url: 'https://moncompte.djezzy.dz/fr/guest/recharge' },
-        { name: 'Ooredoo', img: 'OOREDOO.png', url: 'https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar' },
-        { name: 'تسديد فاتورة الهاتف وشحن الانترنت', img: 'ALGERIE TELECOM.png', url: 'https://paiement.at.dz/AR/index.php?p=internet_recharge&pr=in' },
-        { name: 'منحة البطالة', img: 'ANEM.png', url: 'https://minha.anem.dz/pre_inscription' },
-        { name: 'تجنيد الجيش', img: 'الجيش الوطني.png', url: 'https://preinscription.mdn.dz/' },
-        { name: 'فضاء الأولياء', img: 'فضاء الاولياء.png', url: 'https://awlyaa.education.dz/login' },
-        { name: 'سكنات عدل', img: 'AADEL.png', url: 'https://www.aadl.dz' },
-        { name: 'وسيط ANEM', img: 'ANEM.png', url: 'https://wassitonline.anem.dz' },
-        { name: 'التكوين المهني', img: 'التكوين-المهني.png', url: 'https://takwin.dz' },
-        { name: 'المخيم الشبابي', img: 'المخيم-الشبابي.png', url: 'https://youthcamp.mjeunesse.gov.dz' },
-        { name: 'التصريح بضياع وثائق', img: 'POLICE.png', url: 'https://www.dgsn.dz/e-declaration/' },
-        { name: 'CCP', img: 'CCP.png', url: 'https://eccp.poste.dz' },
-        { name: 'قسيمة السيارات', img: 'مديرية-الضرائب.png', url: 'https://qassimatouka.mf.gov.dz/home' },
-        { name: 'شهادة عدم الانتساب', img: 'CNAS.png', url: 'https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml' },
-        { name: 'دفع الاشتراك', img: 'CASNOS.jpeg', url: 'https://damancom.casnos.dz/public-space' },
-        { name: 'الفروض والإمتحانات', img: 'DZEXAMIN.png', url: 'https://www.dzexams.com/' },
-        { name: 'شراء العجلات', img: 'NAFTAL.png', url: 'https://e-mahata.naftal.dz/' }
+    // 🔔 إعداد الإشعارات للمستخدمين
+    // هنا يمكنك تعديل الرسالة في المستقبل عندما تغير أي رابط
+    const siteNotice = {
+        active: true,          // فعّل الإشعار (true) أو عطله (false)
+        message: "🔔 تم تحديث الروابط الرسمية للخدمات بتاريخ 23 مايو 2026. يرجى تحديث الصفحة إذا واجهتك أي مشكلة.",
+        date: "2026-05-23"
+    };
+
+    // عرض الإشعار إذا كان مفعلاً
+    function displayUpdateNotice() {
+        const noticeDiv = document.getElementById('updateNotice');
+        if (siteNotice.active && noticeDiv) {
+            noticeDiv.innerHTML = `${siteNotice.message} <span style="font-size:10px;">(آخر تحديث: ${siteNotice.date})</span>`;
+            noticeDiv.style.display = 'block';
+        }
+    }
+
+    // الخدمات الإدارية
+    const adminServices = [
+        { name: 'منحة البطالة', icon: '💰', url: 'https://minha.anem.dz/pre_inscription' },
+        { name: 'تجنيد الجيش', icon: '🎖️', url: 'https://preinscription.mdn.dz/' },
+        { name: 'فضاء الأولياء', icon: '👨‍👩‍👧', url: 'https://awlyaa.education.dz/login' },
+        { name: 'سكنات عدل', icon: '🏢', url: 'https://www.aadl.dz' },
+        { name: 'وسيط ANEM', icon: '💼', url: 'https://wassitonline.anem.dz' },
+        { name: 'أضحية العيد', icon: '🐑', url: 'https://adhahi.dz' },
+        { name: 'التكوين المهني', icon: '🔧', url: 'https://takwin.dz' },
+        { name: 'المخيم الشبابي', icon: '🏕️', url: 'https://youthcamp.mjeunesse.gov.dz' },
+        { name: 'التصريح بضياع وثائق', icon: '📄', url: 'https://www.dgsn.dz/e-declaration/' },
+        { name: 'CCP', icon: '🏦', url: 'https://eccp.poste.dz' },
+        { name: 'قسيمة السيارات', icon: '🚗', url: 'https://qassimatouka.mf.gov.dz/home' },
+        { name: 'دفع مستحقات CNAS', icon: '📜', url: 'https://elhanaa.cnas.dz/attestation_no_affiliation.xhtml' },
+        { name: 'شهادة CASNOS', icon: '📜', url: 'https://damancom.casnos.dz/public-space' },
+        { name: 'الفروض والإمتحانات', icon: '📚', url: 'https://www.dzexams.com/' },
+        { name: 'شراء العجلات', icon: '⛽', url: 'https://e-mahata.naftal.dz/' },
+        { name: 'نتائج شهادة التعليم المتوسط (BEM)', icon: '📘', url: 'https://bem.onec.dz/' },
+        { name: 'نتائج شهادة البكالوريا (BAC)', icon: '🎓', url: 'https://bac.onec.dz/' },
+        { name: 'الصفقات العمومية', icon: '🏛️', url: 'https://auth.marches-publics.gov.dz/auth/realms/DGB-REALM/protocol/openid-connect/auth?client_id=dgb-pemp-frontend&scope=openid%20email%20profile&response_type=code&redirect_uri=https%3A%2F%2Fmarches-publics.gov.dz%2Fapi%2Fauth%2Fcallback%2Fkeycloak&ui_locales=ar' }
     ];
 
-    function displayAllServices() {
-        allServicesGrid.innerHTML = '';
-        allServices.forEach(service => {
+    function displayAdminServices() {
+        adminServicesGrid.innerHTML = '';
+        adminServices.forEach(service => {
             const div = document.createElement('div');
             div.className = 'icon-btn';
             div.onclick = () => window.open(service.url, '_blank');
-            
-            const frame = document.createElement('div');
-            frame.className = 'img-frame';
-            
-            const img = document.createElement('img');
-            img.src = service.img;
-            img.alt = service.name;
-            img.onerror = () => {
-                img.style.display = 'none';
-                const i = document.createElement('i');
-                i.innerText = '📌';
-                i.style.fontSize = '28px';
-                i.style.display = 'block';
-                frame.appendChild(i);
-            };
-            frame.appendChild(img);
-            div.appendChild(frame);
-            
-            const span = document.createElement('span');
-            span.innerText = service.name;
-            div.appendChild(span);
-            allServicesGrid.appendChild(div);
+            div.innerHTML = `<i>${service.icon}</i><span>${service.name}</span>`;
+            adminServicesGrid.appendChild(div);
         });
     }
-    displayAllServices();
+    displayAdminServices();
+
+    window.checkVerifiedAndOpen = function(service) {
+        const user = auth.currentUser;
+        if (!user) {
+            showToast('❌ الرجاء تسجيل الدخول أولاً', true);
+            return;
+        }
+        if (!user.emailVerified) {
+            showToast('⚠️ يرجى تأكيد بريدك الإلكتروني أولاً. تأكد من صندوق الوارد أو مجلد Spam.', true);
+            verifyWarning.style.display = 'block';
+            return;
+        }
+        openPaymentModal(service);
+    }
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -280,11 +350,15 @@
             appSection.style.display = 'block';
             userEmailDisplay.innerHTML = `👤 مرحباً ${user.email}`;
             authStatus.innerText = '';
+            
             if (user.emailVerified) {
                 verifyWarning.style.display = 'none';
             } else {
                 verifyWarning.style.display = 'block';
             }
+            
+            // عرض الإشعار إذا كان هناك تحديثات في الروابط
+            displayUpdateNotice();
         } else {
             authSection.style.display = 'block';
             appSection.style.display = 'none';
@@ -296,6 +370,7 @@
         }
     });
 
+    // تسجيل الدخول
     loginBtn.addEventListener('click', async () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -315,6 +390,7 @@
         }
     });
 
+    // إنشاء حساب جديد
     signupBtn.addEventListener('click', async () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -334,7 +410,7 @@
         try {
             const userCred = await createUserWithEmailAndPassword(auth, email, password);
             await sendEmailVerification(userCred.user);
-            authStatus.innerHTML = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.<br>⚠️ <strong>يرجى تفقد مجلد Spam (البريد العشوائي)</strong> jika tidak menemukan pesan di kotak masuk.';
+            authStatus.innerHTML = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.<br>⚠️ <strong>يرجى تفقد مجلد Spam (البريد العشوائي)</strong> إذا لم تجد الرسالة في صندوق الوارد.';
         } catch (error) {
             let msg = '❌ ';
             if (error.code === 'auth/email-already-in-use') msg += 'البريد الإلكتروني مستخدم بالفعل';
@@ -343,6 +419,7 @@
         }
     });
 
+    // إعادة إرسال رابط التأكيد
     resendVerifyBtn.addEventListener('click', async () => {
         const user = auth.currentUser;
         if (user && !user.emailVerified) {
@@ -366,6 +443,147 @@
         }
     }
     window.shareApp = shareApp;
+
+    let currentService = '';
+    const modal = document.getElementById('paymentModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const serviceNameDisplay = document.getElementById('serviceNameDisplay');
+    const electriciteEauFields = document.getElementById('electriciteEauFields');
+    const mobileFields = document.getElementById('mobileFields');
+    const algerieFields = document.getElementById('algerieFields');
+    const scanBtnModal = document.getElementById('scanBtn');
+    const payBtnModal = document.getElementById('payBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const billTypeSelect = document.getElementById('billType');
+    const ebbField = document.getElementById('ebbNumber');
+
+    window.openPaymentModal = function(service) {
+        currentService = service;
+        electriciteEauFields.style.display = 'none';
+        mobileFields.style.display = 'none';
+        algerieFields.style.display = 'none';
+        scanBtnModal.style.display = 'none';
+        
+        switch(service) {
+            case 'electricite-eau':
+                modalTitle.innerText = 'دفع فاتورة الكهرباء والماء';
+                serviceNameDisplay.innerText = '⚡💧 دفع فاتورة الكهرباء والماء';
+                electriciteEauFields.style.display = 'block';
+                scanBtnModal.style.display = 'block';
+                document.getElementById('contractNumber').value = '';
+                document.getElementById('invoiceNumber').value = '';
+                document.getElementById('ebbNumber').value = '';
+                document.getElementById('amount').value = '';
+                toggleEBBField();
+                break;
+            case 'mobilis':
+                modalTitle.innerText = 'شحن رصيد موبيليس';
+                serviceNameDisplay.innerText = '📱 شحن رصيد موبيليس';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'djezzy':
+                modalTitle.innerText = 'شحن رصيد جازي';
+                serviceNameDisplay.innerText = '📡 شحن رصيد جازي';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'ooredoo':
+                modalTitle.innerText = 'شحن رصيد أوريدو';
+                serviceNameDisplay.innerText = '🌐 شحن رصيد أوريدو';
+                mobileFields.style.display = 'block';
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('mobileAmount').value = '';
+                break;
+            case 'algerie':
+                modalTitle.innerText = 'دفع فاتورة اتصالات الجزائر';
+                serviceNameDisplay.innerText = '📞 دفع فاتورة اتصالات الجزائر';
+                algerieFields.style.display = 'block';
+                document.getElementById('accountNumber').value = '';
+                document.getElementById('algerieAmount').value = '';
+                break;
+        }
+        modal.style.display = 'flex';
+    }
+
+    function toggleEBBField() {
+        if (billTypeSelect.value === 'electricite') {
+            ebbField.style.display = 'block';
+            ebbField.placeholder = 'رقم EBB (خاص بالكهرباء) *';
+        } else {
+            ebbField.style.display = 'none';
+            ebbField.value = '';
+        }
+    }
+    if (billTypeSelect) billTypeSelect.addEventListener('change', toggleEBBField);
+    
+    closeModalBtn.onclick = () => modal.style.display = 'none';
+
+    payBtnModal.onclick = () => {
+        let isValid = true;
+        let amount = 0;
+        
+        switch(currentService) {
+            case 'electricite-eau':
+                const contract = document.getElementById('contractNumber').value.trim();
+                const invoice = document.getElementById('invoiceNumber').value.trim();
+                const ebb = document.getElementById('ebbNumber').value.trim();
+                amount = parseFloat(document.getElementById('amount').value);
+                const billType = billTypeSelect.value;
+                if (!contract || !invoice || !amount || amount <= 0) {
+                    showToast('❌ الرجاء ملء جميع الحقول المطلوبة', true);
+                    isValid = false;
+                } else if (billType === 'electricite' && !ebb) {
+                    showToast('❌ الرجاء إدخال رقم EBB للفاتورة الكهرباء', true);
+                    isValid = false;
+                }
+                break;
+            case 'mobilis':
+            case 'djezzy':
+            case 'ooredoo':
+                const phone = document.getElementById('phoneNumber').value.trim();
+                amount = parseFloat(document.getElementById('mobileAmount').value);
+                if (!phone || !amount || amount <= 0) {
+                    showToast('❌ الرجاء إدخال رقم الهاتف والمبلغ', true);
+                    isValid = false;
+                }
+                break;
+            case 'algerie':
+                const account = document.getElementById('accountNumber').value.trim();
+                amount = parseFloat(document.getElementById('algerieAmount').value);
+                if (!account || !amount || amount <= 0) {
+                    showToast('❌ الرجاء إدخال رقم الحساب والمبلغ', true);
+                    isValid = false;
+                }
+                break;
+        }
+        
+        if (isValid) {
+            window.open('https://pay.chargily.net/dashboard', '_blank');
+            showToast(`🔜 جاري تحويلك إلى Chargily Pay لدفع ${amount.toFixed(2)} دج`, false);
+            modal.style.display = 'none';
+        }
+    };
+
+    scanBtnModal.onclick = () => {
+        if (currentService !== 'electricite-eau') return;
+        const fakeData = prompt('محاكاة مسح Data Matrix\nأدخل البيانات (مفصولة بـ |):\nمثال: 123456|789012|345678|1500');
+        if (fakeData) {
+            const parts = fakeData.split('|');
+            if (parts.length >= 4) {
+                document.getElementById('contractNumber').value = parts[0];
+                document.getElementById('invoiceNumber').value = parts[1];
+                if (billTypeSelect.value === 'electricite') document.getElementById('ebbNumber').value = parts[2];
+                document.getElementById('amount').value = parts[3];
+                showToast('✅ تم تعبئة البيانات من الفاتورة', false);
+            } else {
+                document.getElementById('contractNumber').value = fakeData;
+                showToast('تم المسح، يرجى مراجعة الحقول', false);
+            }
+        }
+    };
 
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
