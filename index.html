@@ -41,20 +41,8 @@
         }
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
-        .btn-google { background: #db4437; color: white; margin-top: 10px; }
         .btn-logout { background: #dc3545; color: white; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
-        
-        .warning-msg {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 10px 0;
-            font-size: 14px;
-            border-right: 5px solid #ffc107;
-        }
         
         .grid {
             display: grid;
@@ -127,7 +115,6 @@
             <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
             <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
             <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
-            <button id="googleBtn" class="btn-google">🔵 تسجيل الدخول عبر Google</button>
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
@@ -184,7 +171,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
@@ -197,7 +184,6 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
 
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
@@ -207,7 +193,6 @@
     const confirmInput = document.getElementById('confirmPassword');
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
-    const googleBtn = document.getElementById('googleBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
@@ -328,15 +313,6 @@
             if (error.code === 'auth/email-already-in-use') msg += 'البريد الإلكتروني مستخدم بالفعل';
             else msg += error.message;
             authStatus.innerText = msg;
-        }
-    });
-
-    googleBtn.addEventListener('click', async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            authStatus.innerText = `✅ مرحباً ${result.user.displayName || result.user.email}`;
-        } catch (error) {
-            authStatus.innerText = '❌ فشل تسجيل الدخول عبر Google: ' + error.message;
         }
     });
 
