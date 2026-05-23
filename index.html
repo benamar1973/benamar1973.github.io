@@ -41,8 +41,8 @@
         }
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
+        .btn-google { background: #db4437; color: white; margin-top: 10px; }
         .btn-logout { background: #dc3545; color: white; }
-        .btn-resend { background: #ffc107; color: #1a1a2e; margin-top: 5px; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
         
         .warning-msg {
@@ -127,20 +127,13 @@
             <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
             <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
             <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
+            <button id="googleBtn" class="btn-google">🔵 تسجيل الدخول عبر Google</button>
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
-            
-            <div id="verifyWarning" class="warning-msg" style="display: none;">
-                ⚠️ <strong>تنبيه هام:</strong> يرجى <strong>تفقد مجلد Spam (البريد العشوائي)</strong> في حساب Gmail الخاص بك.<br>
-                إذا لم تجد رسالة التأكيد، اضغط على زر "إعادة إرسال رابط التأكيد" أدناه.
-                <button id="resendVerifyBtn" class="btn-resend" style="display: block; margin: 10px auto 0; width: auto;">📧 إعادة إرسال رابط التأكيد</button>
-            </div>
-            
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
-            
             <div class="grid" id="allServicesGrid"></div>
         </div>
 
@@ -190,6 +183,9 @@
 <div id="toast" class="toast"></div>
 
 <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
         authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -199,22 +195,19 @@
         appId: "1:689071750342:web:10c232ebb79149385dabc7"
     };
 
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const verifyWarning = document.getElementById('verifyWarning');
-    const resendVerifyBtn = document.getElementById('resendVerifyBtn');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const confirmInput = document.getElementById('confirmPassword');
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
+    const googleBtn = document.getElementById('googleBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
@@ -282,11 +275,6 @@
             appSection.style.display = 'block';
             userEmailDisplay.innerHTML = `👤 مرحباً ${user.email}`;
             authStatus.innerText = '';
-            if (user.emailVerified) {
-                verifyWarning.style.display = 'none';
-            } else {
-                verifyWarning.style.display = 'block';
-            }
         } else {
             authSection.style.display = 'block';
             appSection.style.display = 'none';
@@ -294,7 +282,6 @@
             passwordInput.value = '';
             confirmInput.value = '';
             authStatus.innerText = '';
-            verifyWarning.style.display = 'none';
         }
     });
 
@@ -334,9 +321,8 @@
             return;
         }
         try {
-            const userCred = await createUserWithEmailAndPassword(auth, email, password);
-            await sendEmailVerification(userCred.user);
-            authStatus.innerHTML = '✅ تم إنشاء الحساب! تم إرسال رابط التأكيد إلى بريدك الإلكتروني.<br>⚠️ <strong>يرجى تفقد مجلد Spam (البريد العشوائي)</strong> إذا لم تجد الرسالة في صندوق الوارد.';
+            await createUserWithEmailAndPassword(auth, email, password);
+            authStatus.innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
         } catch (error) {
             let msg = '❌ ';
             if (error.code === 'auth/email-already-in-use') msg += 'البريد الإلكتروني مستخدم بالفعل';
@@ -345,13 +331,12 @@
         }
     });
 
-    resendVerifyBtn.addEventListener('click', async () => {
-        const user = auth.currentUser;
-        if (user && !user.emailVerified) {
-            await sendEmailVerification(user);
-            showToast('✅ تم إعادة إرسال رابط التأكيد. يرجى تفقد صندوق الوارد أو مجلد Spam.', false);
-        } else {
-            showToast('⚠️ بريدك الإلكتروني مؤكد بالفعل', true);
+    googleBtn.addEventListener('click', async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            authStatus.innerText = `✅ مرحباً ${result.user.displayName || result.user.email}`;
+        } catch (error) {
+            authStatus.innerText = '❌ فشل تسجيل الدخول عبر Google: ' + error.message;
         }
     });
 
