@@ -169,12 +169,12 @@
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
             
-            <!-- قسم الاشتراك (سيظهر بعد تسجيل الدخول) -->
+            <!-- قسم الاشتراك -->
             <div id="subscriptionBox" class="subscription-box">
                 <div id="subscriptionStatus" class="subscription-status inactive">⚠️ لا يوجد اشتراك نشط</div>
                 <div class="plan-buttons">
-                    <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn monthly">📅 اشتراك شهري - 1500 دج</a>
-                    <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي - 15000 دج</a>
+                    <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn monthly">📅 اشتراك شهري - 100 دج</a>
+                    <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي - 365 دج</a>
                 </div>
             </div>
             
@@ -192,7 +192,7 @@
     </div>
 </div>
 
-<!-- نافذة إدخال بيانات الدفع (لم نعد نستخدمها للاشتراك، لكن نتركها لخدمات الدفع الأخرى إن وجدت) -->
+<!-- نافذة إدخال بيانات الدفع (لم تعد مستخدمة للاشتراك، لكن نتركها لخدمات أخرى) -->
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">دفع الخدمة</h3>
@@ -255,9 +255,7 @@
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
     
-    // عناصر الاشتراك
     const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
-    let servicesButtons = []; // سنخزن فيها أزرار الخدمات بعد إنشائها
 
     const allServices = [
         { name: 'دفع فاتورة الكهرباء', img: 'SONELGAZ.png', url: 'https://epayement.elit.dz/payementFacture.xhtml' },
@@ -284,48 +282,41 @@
         { name: 'نتائج شهادة البكالوريا (BAC)', img: 'ONEC.png', url: 'https://bac.onec.dz/' }
     ];
 
-    // ========== نظام الاشتراك ==========
+    // نظام الاشتراك
     function checkAndApplySubscription() {
-        // قراءة parameters من الرابط (لتفعيل الاشتراك بعد الدفع)
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const days = urlParams.get('days');
         
         if (code && days) {
-            // التحقق من صحة الكود (يمكنك تعديل الأكواد حسب رغبتك)
-            const validCodes = ['ABC123', 'MONTHLY2024', 'YEARLY2024']; // أضف أكوادك هنا
+            const validCodes = ['MONTHLY2024', 'YEARLY2024', 'ABC123'];
             if (validCodes.includes(code)) {
                 const expiryDate = Date.now() + (parseInt(days) * 24 * 60 * 60 * 1000);
                 localStorage.setItem('subscription_expiry', expiryDate);
                 localStorage.setItem('subscription_code', code);
                 showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`, false);
-                // إزالة الكود من الرابط لتجنب إعادة التفعيل عند تحديث الصفحة
                 window.history.replaceState({}, document.title, window.location.pathname);
             } else {
                 showToast('❌ كود التفعيل غير صالح', true);
             }
         }
         
-        // التحقق من صلاحية الاشتراك الحالي
         const expiry = localStorage.getItem('subscription_expiry');
         const now = Date.now();
         let isActive = false;
-        let daysLeft = 0;
         
         if (expiry && now < parseInt(expiry)) {
             isActive = true;
-            daysLeft = Math.ceil((parseInt(expiry) - now) / (1000 * 60 * 60 * 24));
+            const daysLeft = Math.ceil((parseInt(expiry) - now) / (1000 * 60 * 60 * 24));
             subscriptionStatusDiv.innerHTML = `✅ اشتراكك مفعل - يتبقى ${daysLeft} يوم`;
             subscriptionStatusDiv.className = "subscription-status active";
         } else {
-            // انتهى الاشتراك أو غير موجود
             localStorage.removeItem('subscription_expiry');
             localStorage.removeItem('subscription_code');
             subscriptionStatusDiv.innerHTML = `⚠️ لا يوجد اشتراك نشط. يرجى الاشتراك للوصول إلى جميع الخدمات.`;
             subscriptionStatusDiv.className = "subscription-status inactive";
         }
         
-        // تطبيق الحماية على أزرار الخدمات
         applyProtectionToServices(!isActive);
         return isActive;
     }
@@ -335,9 +326,7 @@
         allServiceDivs.forEach(div => {
             if (disable) {
                 div.classList.add('disabled');
-                // نزيل حدث onclick الأصلي ونضيف رسالة تحذير
-                const oldClick = div.onclick;
-                div.setAttribute('data-oldclick', oldClick);
+                const originalUrl = div.getAttribute('data-url');
                 div.onclick = (e) => {
                     e.stopPropagation();
                     showToast('⚠️ يرجى الاشتراك أولاً للوصول إلى الخدمات', true);
@@ -345,16 +334,9 @@
                 };
             } else {
                 div.classList.remove('disabled');
-                // استعادة الحدث الأصلي إذا كان موجوداً
-                const oldClick = div.getAttribute('data-oldclick');
-                if (oldClick && oldClick !== 'null') {
-                    div.onclick = new Function('event', oldClick);
-                } else {
-                    // إذا لم نجد الحدث الأصلي (حدث افتراضي)، نربط فتح الرابط من بيانات الخدمة
-                    const serviceUrl = div.getAttribute('data-url');
-                    if (serviceUrl) {
-                        div.onclick = () => window.open(serviceUrl, '_blank');
-                    }
+                const originalUrl = div.getAttribute('data-url');
+                if (originalUrl) {
+                    div.onclick = () => window.open(originalUrl, '_blank');
                 }
             }
         });
@@ -366,7 +348,6 @@
             const div = document.createElement('div');
             div.className = 'icon-btn';
             div.setAttribute('data-url', service.url);
-            // نعلق الحدث مؤقتاً (سيتم تعديله لاحقاً حسب الاشتراك)
             div.onclick = () => window.open(service.url, '_blank');
             
             const frame = document.createElement('div');
@@ -391,21 +372,18 @@
             div.appendChild(span);
             allServicesGrid.appendChild(div);
         });
-        // بعد إنشاء جميع الأزرار، نطبق الحماية بناءً على حالة الاشتراك الحالية
         checkAndApplySubscription();
     }
     
-    // استدعاء عرض الخدمات
     displayAllServices();
 
-    // ========== Firebase Auth (بدون تغيير) ==========
+    // Firebase Auth
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
             appSection.style.display = 'block';
             userEmailDisplay.innerHTML = `👤 مرحباً ${user.email}`;
             authStatus.innerText = '';
-            // إعادة تطبيق حماية الاشتراك بعد تسجيل الدخول (لأن الخدمات قد أعيد إنشاؤها)
             setTimeout(() => checkAndApplySubscription(), 100);
         } else {
             authSection.style.display = 'block';
