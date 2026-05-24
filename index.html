@@ -42,6 +42,7 @@
         .btn-login { background: #0f3460; color: white; }
         .btn-signup { background: #e94560; color: white; }
         .btn-logout { background: #dc3545; color: white; }
+        .btn-reset { background: #6c757d; color: white; margin-top: 5px !important; }
         .user-info { text-align: center; margin: 10px 0; color: #0f3460; font-weight: bold; }
         
         .subscription-box {
@@ -162,6 +163,7 @@
             <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور (للحساب الجديد)">
             <button id="loginBtn" class="btn-login">تسجيل الدخول</button>
             <button id="signupBtn" class="btn-signup">إنشاء حساب جديد</button>
+            <button id="resetPasswordBtn" class="btn-reset">نسيت كلمة المرور؟</button>
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
@@ -171,9 +173,8 @@
             <div id="subscriptionBox" class="subscription-box">
                 <div id="subscriptionStatus" class="subscription-status inactive">⚠️ لا يوجد اشتراك نشط</div>
                 <div class="plan-buttons">
-                    <!-- ✅ الرابط الشهري الصحيح (ينتهي بـ d89yz) -->
+                    <!-- روابط الدفع المباشرة الحالية -->
                     <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn monthly">📅 اشتراك شهري - 100 دج</a>
-                    <!-- ✅ الرابط السنوي الصحيح (ينتهي بـ rmhn8) -->
                     <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي - 365 دج</a>
                 </div>
             </div>
@@ -229,7 +230,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
@@ -252,10 +253,29 @@
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
     const logoutBtn = document.getElementById('logoutBtn');
+    const resetPasswordBtn = document.getElementById('resetPasswordBtn');
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
     
     const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
+
+    // زر إعادة تعيين كلمة المرور
+    resetPasswordBtn.addEventListener('click', async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+            authStatus.innerText = '❌ الرجاء إدخال البريد الإلكتروني';
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            authStatus.innerText = '✅ تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني';
+        } catch (error) {
+            let msg = '❌ ';
+            if (error.code === 'auth/user-not-found') msg += 'البريد الإلكتروني غير مسجل';
+            else msg += error.message;
+            authStatus.innerText = msg;
+        }
+    });
 
     const allServices = [
         { name: 'دفع فاتورة الكهرباء', img: 'SONELGAZ.png', url: 'https://epayement.elit.dz/payementFacture.xhtml' },
