@@ -2,40 +2,82 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خدماتي - سياسة الخصوصية</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .card { background: #ffffff; border-radius: 35px; padding: 25px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 28px; color: #1a1a2e; }
-        .back-btn { background: #0f3460; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; cursor: pointer; margin-top: 20px; width: 100%; }
-        .back-btn:hover { background: #e94560; }
-        .content { line-height: 1.8; color: #2c3e50; }
-        .content p { margin-bottom: 15px; }
-        footer { text-align: center; margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 12px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .main-card { background: #ffffff; border-radius: 35px; padding: 25px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
+        .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .header h1 { font-size: 26px; color: #1a1a2e; }
+        .content { line-height: 1.8; color: #333; }
+        .content h2 { color: #0f3460; margin: 20px 0 10px 0; font-size: 20px; }
+        .content p { margin-bottom: 12px; }
+        .content ul { margin-right: 25px; margin-bottom: 15px; }
+        .back-link { display: inline-block; margin-top: 25px; background: #0f3460; color: white; padding: 10px 20px; border-radius: 40px; text-decoration: none; }
+        .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #777; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="card">
+    <div class="main-card">
         <div class="header">
             <h1>🔒 سياسة الخصوصية</h1>
+            <p>آخر تحديث: 24 مايو 2026</p>
         </div>
         <div class="content">
-            <p>نحن في <strong>خدماتي</strong> نلتزم بحماية خصوصية زوارنا ومستخدمينا. هذه السياسة تشرح كيفية جمع واستخدام وحماية معلوماتك.</p>
-            <p><strong>جمع المعلومات:</strong> لا نقوم بجمع أي بيانات شخصية عنك إلا إذا قدمتها طواعية عبر نماذج الاتصال أو عند استخدام خدمات الدفع.</p>
-            <p><strong>استخدام المعلومات:</strong> نستخدم المعلومات التي تقدمها فقط لتقديم الخدمات التي تطلبها (مثل دفع الفواتير، شحن الرصيد).</p>
-            <p><strong>حماية المعلومات:</strong> نطبق أعلى معايير الأمان لحماية بياناتك من الوصول غير المصرح به.</p>
-            <p><strong>الجهات الخارجية:</strong> قد نشارك بيانات الدفع مع شركائنا (مثل Chargily Pay، SATIM) لإتمام المعاملات المالية فقط.</p>
-            <p><strong>ملفات تعريف الارتباط (Cookies):</strong> نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح وتذكر تفضيلاتك.</p>
-            <p>آخر تحديث: 20 مايو 2026</p>
+            <h2>مقدمة</h2>
+            <p>نحن في "خدماتي الجزائر" ندرك أهمية حماية خصوصية بياناتك. توضح هذه السياسة كيفية جمع واستخدام وحماية المعلومات التي تقدمها عند استخدام موقعنا وخدمات الاشتراك.</p>
+
+            <h2>1. المعلومات التي نجمعها</h2>
+            <p><strong>أ. بيانات الحساب:</strong> عندما تقوم بإنشاء حساب، نجمع بريدك الإلكتروني وكلمة المرور المشفرة (عبر Firebase Authentication).</p>
+            <p><strong>ب. بيانات الدفع:</strong> <strong>نحن لا نجمع أو نخزن أي معلومات عن بطاقتك الائتمانية أو البنكية.</strong> تتم جميع عمليات الدفع عبر بوابة <strong>Chargily Pay</strong> الآمنة، وهي المسؤولة بالكامل عن معالجة بيانات الدفع وتخزينها وفقاً لمعايير PCI-DSS.</p>
+            <p><strong>ج. بيانات الاستخدام:</strong> قد نجمع بيانات تقنية مثل عنوان IP ونوع المتصفح والصفحات التي تزورها داخل موقعنا لتحسين الأداء. يتم تخزين حالة اشتراكك محلياً في متصفحك (localStorage) وليس على خوادمنا.</p>
+
+            <h2>2. كيف نستخدم معلوماتك؟</h2>
+            <ul>
+                <li>للتحقق من هويتك وتفعيل اشتراكك.</li>
+                <li>لتحسين تجربة المستخدم وتطوير الموقع.</li>
+                <li>لإرسال إشعارات تتعلق بالاشتراك (مثل اقتراب انتهاء الصلاحية) – عبر البريد الإلكتروني أو إشعارات المتصفح (في المستقبل).</li>
+                <li>للرد على استفساراتك وطلبات الدعم.</li>
+            </ul>
+
+            <h2>3. مشاركة البيانات مع أطراف ثالثة</h2>
+            <p>نحن لا نبيع أو نؤجر أو نشارك بياناتك الشخصية مع أي طرف ثالث لأغراض تسويقية. قد نضطر لمشاركة بياناتك في الحالات التالية:</p>
+            <ul>
+                <li><strong>مع مزودي الخدمة الأساسيين:</strong> مثل Firebase (لتسجيل الدخول) و Chargily Pay (للمدفوعات). كل من هذه الخدمات تلتزم بسياسات الخصوصية الخاصة بها.</li>
+                <li><strong>الامتثال للقانون:</strong> إذا طلبت منا جهة قضائية رسمية تقديم بيانات وفقاً للقوانين الجزائرية.</li>
+            </ul>
+
+            <h2>4. الأمان</h2>
+            <p>نحن نتخذ إجراءات تقنية وتنظيمية معقولة لحماية بياناتك من الوصول غير المصرح به أو التعديل أو التدمير. يتم تشفير الاتصال بين متصفحك وموقعنا باستخدام HTTPS. يتم تخزين كلمات المرور بشكل مشفر بواسطة Firebase. ومع ذلك، لا يوجد نظام أمني معصوم من الاختراق بنسبة 100%، لذا ننصحك باستخدام كلمة مرور قوية وفريدة لحسابك.</p>
+
+            <h2>5. حقوقك فيما يتعلق ببياناتك</h2>
+            <p>يمكنك في أي وقت:</p>
+            <ul>
+                <li>طلب نسخة من البيانات التي نحتفظ بها عنك.</li>
+                <li>طلب تصحيح أو حذف بيانات حسابك (مع العلم أن حذف الحساب يعني فقدان صلاحية الاشتراك).</li>
+                <li>إلغاء اشتراكك من الإشعارات البريدية (إذا قمنا بإضافتها لاحقاً).</li>
+            </ul>
+            <p>للقيام بذلك، يرجى الاتصال بنا عبر صفحة "اتصل بنا".</p>
+
+            <h2>6. الروابط الخارجية</h2>
+            <p>يحتوي موقعنا على روابط لمواقع خارجية (مثل Sonelgaz, Mobilis, ANEM, إلخ). <strong>نحن لسنا مسؤولين عن ممارسات الخصوصية أو محتوى تلك المواقع.</strong> ننصحك بقراءة سياسات الخصوصية الخاصة بكل موقع تزوره.</p>
+
+            <h2>7. تغييرات سياسة الخصوصية</h2>
+            <p>قد نقوم بتحديث هذه السياسة من وقت لآخر. سيتم إشعارك بأي تغييرات جوهرية عبر إعلان على الموقع أو عبر البريد الإلكتروني. تاريخ آخر تحديث مكتوب في أعلى الصفحة.</p>
+
+            <h2>8. الاتصال بنا</h2>
+            <p>إذا كان لديك أي أسئلة حول سياسة الخصوصية، يرجى الاتصال بنا عبر صفحة <a href="contact.html">اتصل بنا</a>.</p>
         </div>
-        <button class="back-btn" onclick="window.location.href='index.html'">🏠 العودة إلى الرئيسية</button>
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">🏠 العودة إلى الرئيسية</a>
+        </div>
+        <div class="footer">
+            <p>© 2026 خدماتي الجزائر - جميع الحقوق محفوظة</p>
+        </div>
     </div>
-    <footer><p>🇩🇿 خدماتي - جميع الحقوق محفوظة</p></footer>
 </div>
 </body>
 </html>
