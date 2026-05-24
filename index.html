@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>خدماتي - بوابة الدفع</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* الخلفية الطبيعية (تدرج أزرق) */
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
         .container { max-width: 500px; margin: 0 auto; }
         .main-card { background: #ffffff; border-radius: 35px; padding: 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
@@ -135,13 +134,6 @@
             object-fit: cover;
         }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; border-radius: 35px; padding: 20px; width: 90%; max-width: 400px; text-align: center; }
-        .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 40px; font-size: 14px; }
-        .modal-content button { background: #28a745; color: white; padding: 12px; border: none; border-radius: 40px; font-size: 16px; margin-top: 10px; cursor: pointer; width: 100%; }
-        .scan-btn { background: #0f3460; }
-        .close-modal { background: #dc3545; margin-top: 5px; }
-        
         .footer-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; padding: 10px; border-top: 1px solid #eee; }
         .footer-links a { color: #0f3460; text-decoration: none; font-size: 12px; }
         
@@ -169,16 +161,13 @@
 
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
-            
             <div id="subscriptionBox" class="subscription-box">
                 <div id="subscriptionStatus" class="subscription-status inactive">⚠️ لا يوجد اشتراك نشط</div>
                 <div class="plan-buttons">
-                    <!-- روابط الدفع المباشرة الحالية -->
                     <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn monthly">📅 اشتراك شهري - 100 دج</a>
                     <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي - 365 دج</a>
                 </div>
             </div>
-            
             <button id="logoutBtn" class="btn-logout" style="width: 100%; margin-bottom: 20px;">🚪 تسجيل الخروج</button>
             <div class="grid" id="allServicesGrid"></div>
         </div>
@@ -190,39 +179,6 @@
             <a href="terms.html">📜 شروط الخدمة</a>
         </div>
         <footer><p>🇩🇿 خدماتي - جميع الحقوق محفوظة</p></footer>
-    </div>
-</div>
-
-<!-- نافذة إدخال بيانات الدفع -->
-<div id="paymentModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle">دفع الخدمة</h3>
-        <div id="serviceNameDisplay" style="margin-bottom: 10px; font-weight: bold; color: #e94560;"></div>
-        
-        <div id="electriciteEauFields" style="display: none;">
-            <select id="billType">
-                <option value="electricite">⚡ كهرباء (SONELGAZ)</option>
-                <option value="eau">💧 ماء (SEAAL)</option>
-            </select>
-            <input type="text" id="contractNumber" placeholder="رقم العقد / رقم العميل *">
-            <input type="text" id="invoiceNumber" placeholder="رقم الفاتورة *">
-            <input type="text" id="ebbNumber" placeholder="رقم EBB (خاص بالكهرباء)">
-            <input type="number" id="amount" placeholder="المبلغ *">
-        </div>
-        
-        <div id="mobileFields" style="display: none;">
-            <input type="tel" id="phoneNumber" placeholder="رقم الهاتف *">
-            <input type="number" id="mobileAmount" placeholder="المبلغ *">
-        </div>
-        
-        <div id="algerieFields" style="display: none;">
-            <input type="text" id="accountNumber" placeholder="رقم الهاتف أو رقم العقد *">
-            <input type="number" id="algerieAmount" placeholder="المبلغ *">
-        </div>
-        
-        <button id="scanBtn" class="scan-btn" style="display: none;">📷 مسح رمز الفاتورة (Data Matrix)</button>
-        <button id="payBtn">💳 دفع عبر Chargily Pay</button>
-        <button id="closeModalBtn" class="close-modal">❌ إلغاء</button>
     </div>
 </div>
 
@@ -256,10 +212,9 @@
     const resetPasswordBtn = document.getElementById('resetPasswordBtn');
     const authStatus = document.getElementById('authStatus');
     const allServicesGrid = document.getElementById('allServicesGrid');
-    
     const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
 
-    // زر إعادة تعيين كلمة المرور
+    // إعادة تعيين كلمة المرور
     resetPasswordBtn.addEventListener('click', async () => {
         const email = emailInput.value.trim();
         if (!email) {
@@ -306,7 +261,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const days = urlParams.get('days');
-        
         if (code && days) {
             const validCodes = ['MONTHLY2024', 'YEARLY2024', 'ABC123'];
             if (validCodes.includes(code)) {
@@ -319,11 +273,9 @@
                 showToast('❌ كود التفعيل غير صالح', true);
             }
         }
-        
         const expiry = localStorage.getItem('subscription_expiry');
         const now = Date.now();
         let isActive = false;
-        
         if (expiry && now < parseInt(expiry)) {
             isActive = true;
             const daysLeft = Math.ceil((parseInt(expiry) - now) / (1000 * 60 * 60 * 24));
@@ -335,11 +287,10 @@
             subscriptionStatusDiv.innerHTML = `⚠️ لا يوجد اشتراك نشط. يرجى الاشتراك للوصول إلى جميع الخدمات.`;
             subscriptionStatusDiv.className = "subscription-status inactive";
         }
-        
         applyProtectionToServices(!isActive);
         return isActive;
     }
-    
+
     function applyProtectionToServices(disable) {
         const allServiceDivs = document.querySelectorAll('.icon-btn');
         allServiceDivs.forEach(div => {
@@ -359,7 +310,7 @@
             }
         });
     }
-    
+
     function displayAllServices() {
         allServicesGrid.innerHTML = '';
         allServices.forEach(service => {
@@ -367,10 +318,8 @@
             div.className = 'icon-btn';
             div.setAttribute('data-url', service.url);
             div.onclick = () => window.open(service.url, '_blank');
-            
             const frame = document.createElement('div');
             frame.className = 'img-frame';
-            
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
@@ -384,7 +333,6 @@
             };
             frame.appendChild(img);
             div.appendChild(frame);
-            
             const span = document.createElement('span');
             span.innerText = service.name;
             div.appendChild(span);
@@ -392,7 +340,7 @@
         });
         checkAndApplySubscription();
     }
-    
+
     displayAllServices();
 
     onAuthStateChanged(auth, (user) => {
