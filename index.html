@@ -169,11 +169,13 @@
         <div id="appSection" style="display: none;">
             <div class="user-info" id="userEmailDisplay"></div>
             
-            <!-- قسم الاشتراك -->
+            <!-- قسم الاشتراك مع تصحيح الروابط -->
             <div id="subscriptionBox" class="subscription-box">
                 <div id="subscriptionStatus" class="subscription-status inactive">⚠️ لا يوجد اشتراك نشط</div>
                 <div class="plan-buttons">
+                    <!-- الرابط الشهري الصحيح -->
                     <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn monthly">📅 اشتراك شهري - 100 دج</a>
+                    <!-- الرابط السنوي الصحيح -->
                     <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي - 365 دج</a>
                 </div>
             </div>
@@ -289,6 +291,7 @@
         const days = urlParams.get('days');
         
         if (code && days) {
+            // الأكواد الصالحة: MONTHLY2024 للشهري، YEARLY2024 للسنوي، ABC123 للتجربة
             const validCodes = ['MONTHLY2024', 'YEARLY2024', 'ABC123'];
             if (validCodes.includes(code)) {
                 const expiryDate = Date.now() + (parseInt(days) * 24 * 60 * 60 * 1000);
