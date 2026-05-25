@@ -16,8 +16,10 @@
         .subscription-days { background: #e8f0fe; border-radius: 40px; padding: 8px 15px; margin: 12px 0; font-weight: bold; color: #0f3460; }
         .subscription-status { font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 10px; }
         .current-plan { background: #fff3cd; border-radius: 40px; padding: 6px 12px; display: inline-block; font-size: 13px; color: #856404; margin-top: 5px; }
-        .open-chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 16px 20px; font-size: 1.4rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; }
+        /* زر فتح الشات بوت - مكبر ونص جديد */
+        .open-chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 20px 24px; font-size: 1.8rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; }
         .open-chat-btn:hover { transform: scale(1.02); }
+        /* باقي الأنماط كما هي */
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f9f9f9; z-index: 10000; display: flex; flex-direction: column; direction: rtl; font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transform: translateY(100%); transition: transform 0.3s ease-out; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: #007bff; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; font-weight: bold; }
@@ -63,7 +65,8 @@
                 <div class="subscription-status" id="subStatus">✅ اشتراكك مفعل</div>
                 <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج)</div>
             </div>
-            <button id="openChatBtn" class="open-chat-btn">💬 مساعدك boot</button>
+            <!-- الزر المعدل: "اضغط هنا" مكبر -->
+            <button id="openChatBtn" class="open-chat-btn">👇 اضغط هنا 👇</button>
         </div>
     </div>
 </div>
@@ -230,7 +233,7 @@
     openChatBtn.addEventListener('click', () => chatFull.classList.add('open'));
     closeChatBtn.addEventListener('click', () => chatFull.classList.remove('open'));
 
-    // -------------------- بيانات الخدمات (مع الصور) --------------------
+    // -------------------- بيانات الخدمات --------------------
     const allServices = [
         { name: 'دفع فاتورة الكهرباء', img: 'SONELGAZ.png', url: 'https://epayement.elit.dz/payementFacture.xhtml', instructions: '🔹 أدخل رقم العقد (13 رقماً) الموجود على الفاتورة.\n🔹 ستظهر قيمة الفاتورة.\n🔹 اختر طريقة الدفع.' },
         { name: 'دفع فاتورة الماء', img: 'SEAAL.png', url: 'https://fatourati.seaal.dz/', instructions: '🔹 أدخل رقم المشترك.\n🔹 ادفع إلكترونياً.' },
