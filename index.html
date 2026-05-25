@@ -5,325 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>boot خدماتي - مساعدك الذكي</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        .container {
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .main-card {
-            background: #ffffff;
-            border-radius: 35px;
-            padding: 25px 20px;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        /* أيقونة البوت الكبيرة */
-        .bot-icon {
-            font-size: 64px;
-            margin-bottom: 10px;
-        }
-        .version {
-            font-size: 13px;
-            color: #6c757d;
-            margin-bottom: 25px;
-            display: inline-block;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* معلومات المستخدم */
-        .user-greeting {
-            background: #f8f9fa;
-            border-radius: 25px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .user-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0f3460;
-        }
-        .subscription-days {
-            background: #e8f0fe;
-            border-radius: 40px;
-            padding: 8px 15px;
-            margin: 12px 0;
-            font-weight: bold;
-            color: #0f3460;
-        }
-        .subscription-status {
-            font-size: 16px;
-            font-weight: bold;
-            color: #28a745;
-            margin-bottom: 10px;
-        }
-        .current-plan {
-            background: #fff3cd;
-            border-radius: 40px;
-            padding: 6px 12px;
-            display: inline-block;
-            font-size: 13px;
-            color: #856404;
-            margin-top: 5px;
-        }
-
-        /* زر الخروج */
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-
-        /* زر فتح الشات بوت (كبير) */
-        .open-chat-btn {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border: none;
-            border-radius: 60px;
-            padding: 16px 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .open-chat-btn:hover {
-            transform: scale(1.02);
-        }
-
-        /* الشات بوت (Fullscreen) */
-        .chat-fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f9f9f9;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            direction: rtl;
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transform: translateY(100%);
-            transition: transform 0.3s ease-out;
-        }
-        .chat-fullscreen.open {
-            transform: translateY(0);
-        }
-        .chat-header {
-            background: #007bff;
-            color: white;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
-        .chat-header .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background: #f0f2f5;
-        }
-        .original-icons-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            background: white;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .icon-item {
-            background: #f8f9fa;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 5px;
-        }
-        .icon-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 6px;
-        }
-        .icon-item span {
-            font-size: 12px;
-            font-weight: 500;
-            color: #1e2a3a;
-        }
-        .bot-message {
-            background-color: #e3f2fd;
-            padding: 10px 14px;
-            border-radius: 20px;
-            max-width: 85%;
-            align-self: flex-start;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .user-message {
-            background-color: #d4edda;
-            padding: 10px 14px;
-            border-radius: 20px;
-            max-width: 85%;
-            align-self: flex-end;
-            font-size: 14px;
-        }
-        .quick-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 8px 0;
-            justify-content: center;
-        }
-        .quick-btn {
-            background: #e9ecef;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .input-area {
-            background: white;
-            padding: 12px;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 10px;
-            position: relative;
-        }
-        #chat-input {
-            flex: 1;
-            border: 1px solid #ccc;
-            border-radius: 30px;
-            padding: 12px 16px;
-            font-family: inherit;
-        }
-        #chat-send {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 0 20px;
-            cursor: pointer;
-        }
-        #suggestions-list {
-            position: absolute;
-            bottom: 70px;
-            left: 10px;
-            right: 10px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 16px;
-            max-height: 160px;
-            overflow-y: auto;
-            z-index: 10001;
-            display: none;
-        }
-        .suggestion-item {
-            padding: 10px 14px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-        .suggestion-item:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        .bot-link-btn {
-            display: inline-block;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .flex-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #28a745;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            opacity: 0;
-            transition: 0.2s;
-            pointer-events: none;
-            z-index: 999;
-        }
-        /* إخفاء أزرار الاشتراك القديمة */
-        .plan-buttons {
-            display: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
+        .container { max-width: 500px; width: 100%; margin: 0 auto; }
+        .main-card { background: #ffffff; border-radius: 35px; padding: 25px 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); text-align: center; }
+        .bot-icon { font-size: 80px; margin-bottom: 10px; }
+        .version { font-size: 13px; color: #6c757d; margin-bottom: 25px; display: inline-block; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        .user-greeting { background: #f8f9fa; border-radius: 25px; padding: 15px; margin-bottom: 20px; }
+        .user-name { font-size: 20px; font-weight: bold; color: #0f3460; }
+        .subscription-days { background: #e8f0fe; border-radius: 40px; padding: 8px 15px; margin: 12px 0; font-weight: bold; color: #0f3460; }
+        .subscription-status { font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 10px; }
+        .current-plan { background: #fff3cd; border-radius: 40px; padding: 6px 12px; display: inline-block; font-size: 13px; color: #856404; margin-top: 5px; }
+        .open-chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 16px 20px; font-size: 1.4rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; }
+        .open-chat-btn:hover { transform: scale(1.02); }
+        .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f9f9f9; z-index: 10000; display: flex; flex-direction: column; direction: rtl; font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transform: translateY(100%); transition: transform 0.3s ease-out; }
+        .chat-fullscreen.open { transform: translateY(0); }
+        .chat-header { background: #007bff; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; font-weight: bold; }
+        .chat-header .close-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; background: #f0f2f5; }
+        .original-icons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .icon-item { background: #f8f9fa; border-radius: 18px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 5px; }
+        .icon-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 12px; margin-bottom: 6px; }
+        .icon-item span { font-size: 12px; font-weight: 500; color: #1e2a3a; }
+        .bot-message { background-color: #e3f2fd; padding: 10px 14px; border-radius: 20px; max-width: 85%; align-self: flex-start; font-size: 14px; line-height: 1.5; }
+        .user-message { background-color: #d4edda; padding: 10px 14px; border-radius: 20px; max-width: 85%; align-self: flex-end; font-size: 14px; }
+        .input-area { background: white; padding: 12px; border-top: 1px solid #ddd; display: flex; gap: 10px; position: relative; }
+        #chat-input { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px 16px; font-family: inherit; }
+        #chat-send { background-color: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; }
+        #suggestions-list { position: absolute; bottom: 70px; left: 10px; right: 10px; background: white; border: 1px solid #ddd; border-radius: 16px; max-height: 160px; overflow-y: auto; z-index: 10001; display: none; }
+        .suggestion-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .suggestion-item:hover { background-color: #007bff; color: white; }
+        .bot-link-btn { display: inline-block; background-color: #007bff; color: white; border: none; border-radius: 30px; padding: 8px 16px; margin-top: 10px; cursor: pointer; font-size: 13px; }
+        .flex-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="main-card">
-        <!-- أيقونة البوت بدلاً من العناوين -->
         <div class="bot-icon">🤖</div>
         <div class="version">نسخة 2.0 · خدمات رقمية متكاملة</div>
 
-        <!-- قسم تسجيل الدخول (يظهر فقط إذا لم يسجل الدخول) -->
         <div id="authSection" style="display: none;">
             <input type="email" id="email" placeholder="البريد الإلكتروني (Gmail)" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
             <input type="password" id="password" placeholder="كلمة المرور" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
@@ -334,7 +56,6 @@
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
-        <!-- قسم التطبيق (بعد تسجيل الدخول) -->
         <div id="appSection" style="display: none;">
             <div class="user-greeting">
                 <div class="user-name" id="userNameDisplay">مرحباً</div>
@@ -342,14 +63,6 @@
                 <div class="subscription-status" id="subStatus">✅ اشتراكك مفعل</div>
                 <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج)</div>
             </div>
-
-            <!-- أزرار الاشتراخ مخفية حالياً (display:none) -->
-            <div class="plan-buttons" style="display:none;">
-                <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn monthly">📅 اشتراك شهري</a>
-                <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي</a>
-            </div>
-
-            <button id="logoutBtn" class="logout-btn">🚪 تسجيل الخروج</button>
             <button id="openChatBtn" class="open-chat-btn">💬 مساعدك boot</button>
         </div>
     </div>
@@ -357,7 +70,6 @@
 
 <div id="toast" class="toast"></div>
 
-<!-- الشات بوت (Fullscreen) -->
 <div id="chatFullscreen" class="chat-fullscreen">
     <div class="chat-header">
         <span>🤖 boot خدماتي | مساعدك الذكي</span>
@@ -372,7 +84,6 @@
 </div>
 
 <script type="module">
-    // -------------------- Firebase --------------------
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
@@ -387,14 +98,12 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // عناصر DOM
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userNameDisplay = document.getElementById('userNameDisplay');
     const daysLeftDisplay = document.getElementById('daysLeftDisplay');
     const subStatus = document.getElementById('subStatus');
     const currentPlanDisplay = document.getElementById('currentPlanDisplay');
-    const logoutBtn = document.getElementById('logoutBtn');
     const openChatBtn = document.getElementById('openChatBtn');
     const chatFull = document.getElementById('chatFullscreen');
     const closeChatBtn = document.getElementById('closeChatBtn');
@@ -406,7 +115,6 @@
         setTimeout(() => toast.style.opacity = '0', 3000);
     }
 
-    // التحقق من الاشتراك (localStorage)
     function getSubscriptionInfo() {
         const expiry = localStorage.getItem('subscription_expiry');
         const now = Date.now();
@@ -417,14 +125,11 @@
         return { active: false, daysLeft: 0 };
     }
 
-    // تحديث واجهة المستخدم بعد تسجيل الدخول
     function updateUIForUser(user) {
         if (!user) return;
-        // استخراج الاسم من البريد (قبل @) بدون تكرار البريد
         let name = user.email.split('@')[0];
         name = name.charAt(0).toUpperCase() + name.slice(1);
         userNameDisplay.innerText = `مرحباً ${name}`;
-        
         const sub = getSubscriptionInfo();
         if (sub.active) {
             daysLeftDisplay.innerText = `📅 يتبقى ${sub.daysLeft} يوم`;
@@ -437,7 +142,6 @@
         }
     }
 
-    // تفعيل الاشتراك عبر رابط العودة
     function checkAutoSubscription() {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -451,7 +155,6 @@
         }
     }
 
-    // مراقبة حالة المصادقة
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
@@ -467,7 +170,6 @@
         }
     });
 
-    // أزرار المصادقة
     document.getElementById('loginBtn').addEventListener('click', async () => {
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
@@ -525,19 +227,10 @@
         }
     });
 
-    logoutBtn.addEventListener('click', async () => {
-        await signOut(auth);
-    });
+    openChatBtn.addEventListener('click', () => chatFull.classList.add('open'));
+    closeChatBtn.addEventListener('click', () => chatFull.classList.remove('open'));
 
-    // فتح وإغلاق الشات بوت
-    openChatBtn.addEventListener('click', () => {
-        chatFull.classList.add('open');
-    });
-    closeChatBtn.addEventListener('click', () => {
-        chatFull.classList.remove('open');
-    });
-
-    // -------------------- بيانات الخدمات --------------------
+    // -------------------- بيانات الخدمات (مع الصور) --------------------
     const allServices = [
         { name: 'دفع فاتورة الكهرباء', img: 'SONELGAZ.png', url: 'https://epayement.elit.dz/payementFacture.xhtml', instructions: '🔹 أدخل رقم العقد (13 رقماً) الموجود على الفاتورة.\n🔹 ستظهر قيمة الفاتورة.\n🔹 اختر طريقة الدفع.' },
         { name: 'دفع فاتورة الماء', img: 'SEAAL.png', url: 'https://fatourati.seaal.dz/', instructions: '🔹 أدخل رقم المشترك.\n🔹 ادفع إلكترونياً.' },
@@ -563,7 +256,6 @@
         { name: 'نتائج BAC', img: 'ONEC.png', url: 'https://bac.onec.dz/', instructions: '🔹 أدخل رقم التسجيل.' }
     ];
 
-    // دوال الشات بوت
     const messagesDiv = document.getElementById('chatMessages');
     const sendBtn = document.getElementById('chat-send');
     const chatInput = document.getElementById('chat-input');
@@ -642,21 +334,24 @@
         const grid = document.createElement('div');
         grid.className = 'original-icons-grid';
         allServices.forEach(service => {
-            const icon = document.createElement('div');
-            icon.className = 'icon-item';
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'icon-item';
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
             img.onerror = () => { img.style.display = 'none'; };
             const span = document.createElement('span');
             span.innerText = service.name;
-            icon.appendChild(img);
-            icon.appendChild(span);
-            icon.onclick = () => {
-                if (!isUserSubscribed()) addMessage(`⚠️ خدمة "${service.name}" تتطلب اشتراكاً نشطاً.`, false);
-                else handleServiceRequest(service.name);
+            iconDiv.appendChild(img);
+            iconDiv.appendChild(span);
+            iconDiv.onclick = () => {
+                if (!isUserSubscribed()) {
+                    addMessage(`⚠️ خدمة "${service.name}" تتطلب اشتراكاً نشطاً.`, false);
+                } else {
+                    handleServiceRequest(service.name);
+                }
             };
-            grid.appendChild(icon);
+            grid.appendChild(iconDiv);
         });
         return grid;
     }
@@ -665,27 +360,8 @@
         messagesDiv.innerHTML = '';
         const welcomeMsg = document.createElement('div');
         welcomeMsg.className = 'bot-message';
-        welcomeMsg.innerText = 'مرحباً! أنا boot خدماتي 🤖\nسأرشدك خطوة بخطوة للتسجيل في أي خدمة.\n📌 اضغط على أيقونة الخدمة أو اكتب اسمها.';
+        welcomeMsg.innerText = 'مرحباً! أنا boot خدماتي 🤖\nسأرشدك خطوة بخطوة للتسجيل في أي خدمة.\n📌 اضغط على أيقونة الخدمة التي تريدها.';
         messagesDiv.appendChild(welcomeMsg);
-        
-        const quickDiv = document.createElement('div');
-        quickDiv.className = 'quick-buttons';
-        const buttons = ['اشتراك', 'نتائج BEM', 'نتائج BAC', 'منحة البطالة', 'فضاء الأولياء', 'تجنيد الجيش', 'قسيمة السيارات', 'مساعدة'];
-        buttons.forEach(btnText => {
-            const btn = document.createElement('button');
-            btn.innerText = btnText;
-            btn.className = 'quick-btn';
-            btn.onclick = () => {
-                addMessage(btnText, true);
-                setTimeout(() => {
-                    const special = getSpecialReply(btnText);
-                    if (special) addMessage(special.text, false, special.link, special.extraButtons);
-                    else handleServiceRequest(btnText);
-                }, 500);
-            };
-            quickDiv.appendChild(btn);
-        });
-        messagesDiv.appendChild(quickDiv);
         messagesDiv.appendChild(buildIconsGrid());
     }
 
@@ -702,7 +378,6 @@
     });
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
 
-    // الاقتراحات
     const suggestionsDiv = document.getElementById('suggestions-list');
     chatInput.addEventListener('input', function() {
         const val = this.value.trim().toLowerCase();
