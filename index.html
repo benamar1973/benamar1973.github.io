@@ -431,7 +431,7 @@
 </script>
 
 <!-- ============================================== -->
-<!-- بداية شات بوت CHABOOT - مساعد الزبون -->
+<!-- بداية شات بوت CHABOOT - المرحلة 5 -->
 <!-- ============================================== -->
 <style>
 #chabot-widget {
@@ -456,8 +456,8 @@
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 15px;
-    width: 320px;
-    height: 420px;
+    width: 340px;
+    height: 460px;
     margin-bottom: 10px;
     display: none;
     flex-direction: column;
@@ -523,6 +523,28 @@
 .bot-row {
     justify-content: flex-end;
 }
+.quick-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: center;
+}
+.quick-btn {
+    background: #e9ecef;
+    border: none;
+    border-radius: 25px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: inherit;
+}
+.quick-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: scale(0.96);
+}
 </style>
 
 <div id="chabot-widget">
@@ -530,7 +552,16 @@
     <div id="chat-box">
         <div id="chat-messages">
             <div class="message-row bot-row">
-                <div class="bot-message">مرحباً! أنا CHABOOT 🤖<br>سأرشدك خطوة بخطوة للتسجيل في أي خدمة في "خدماتي الجزائر".<br><br>📌 اكتب اسم الخدمة التي تريدها، مثلاً:<br>• اشتراك<br>• نتائج BEM<br>• منحة البطالة<br>• فضاء الأولياء<br>• تجنيد الجيش<br>• سكنات عدل<br>• CCP<br>• قسيمة السيارات</div>
+                <div class="bot-message">مرحباً! أنا CHABOOT 🤖<br>سأرشدك خطوة بخطوة للتسجيل في أي خدمة في "خدماتي الجزائر".<br><br>📌 اكتب اسم الخدمة التي تريدها، أو اختر من الأزرار أدناه:</div>
+            </div>
+            <div class="quick-buttons">
+                <button class="quick-btn" data-service="اشتراك">📝 اشتراك</button>
+                <button class="quick-btn" data-service="نتائج BEM">📚 BEM</button>
+                <button class="quick-btn" data-service="نتائج BAC">🎓 BAC</button>
+                <button class="quick-btn" data-service="منحة البطالة">💰 منحة البطالة</button>
+                <button class="quick-btn" data-service="فضاء الأولياء">👨‍👩‍👧 فضاء الأولياء</button>
+                <button class="quick-btn" data-service="تجنيد الجيش">🎖️ تجنيد الجيش</button>
+                <button class="quick-btn" data-service="قسيمة السيارات">🚗 قسيمة السيارات</button>
             </div>
         </div>
         <div id="chat-input-area">
@@ -617,11 +648,8 @@ function getBotReply(userMessage) {
     else if (msg.includes('تكوين') || msg.includes('مهني')) {
         return '🎓 التكوين المهني:\n\n🔹 رابط الخدمة: "التكوين المهني" في القائمة\n🔹 سيتم نقلك إلى takwin.dz\n🔹 للتسجيل في مراكز التكوين المهني:\n   1️⃣ اختر الولاية والتخصص\n   2️⃣ املأ طلب التسجيل\n   3️⃣ أرسل المستندات المطلوبة\n🔹 التكوين متاح للشباب من 16 سنة فما فوق.';
     }
-    else if (msg.includes('ccp') || msg.includes('بريد')) {
-        return '🏦 خدمة CCP - بريد الجزائر:\n\n🔹 رابط الخدمة موجود في القائمة\n🔹 يمكنك عبر eccp.poste.dz:\n   • الاطلاع على الرصيد\n   • دفع الفواتير (كهرباء، ماء، هاتف)\n   • تحويل الأموال\n   • شراء رصيد الإنترنت\n🔹 يلزمك رقم CCP ورمز الدخول.';
-    }
     else {
-        return '❓ عذراً، لم أفهم طلبك.\n\nالخدمات المتوفرة حالياً في موقع "خدماتي الجزائر":\n\n📌 خدمات الدفع والاشتراك:\n• اشتراك - تسجيل - عضوية\n• دفع فاتورة الكهرباء - Sonelgaz\n• دفع فاتورة الماء - SEAAL\n• Mobilis - Djezzy - Ooredoo\n• تسديد فاتورة الهاتف والإنترنت\n• CCP\n\n📌 الخدمات الإدارية والتعليمية:\n• منحة البطالة - ANEM\n• تجنيد الجيش\n• فضاء الأولياء\n• سكنات عدل\n• نتائج BEM - نتائج BAC\n• التكوين المهني\n• قسيمة السيارات\n• التصريح بضياع وثائق\n• شهادة عدم الانتساب\n\n📌 خدمات أخرى:\n• المخيم الشبابي\n• وسيط ANEM\n• الفروض والإمتحانات\n• شراء العجلات\n\n💡 اكتب اسم الخدمة التي تريدها وسأرشدك خطوة بخطوة.';
+        return '❓ عذراً، لم أفهم طلبك.\n\nالخدمات المتوفرة حالياً في موقع "خدماتي الجزائر":\n\n📌 خدمات الدفع والاشتراك:\n• اشتراك - تسجيل - عضوية\n• دفع فاتورة الكهرباء - Sonelgaz\n• دفع فاتورة الماء - SEAAL\n• Mobilis - Djezzy - Ooredoo\n• CCP\n\n📌 الخدمات الإدارية والتعليمية:\n• منحة البطالة - ANEM\n• تجنيد الجيش\n• فضاء الأولياء\n• سكنات عدل\n• نتائج BEM - نتائج BAC\n• التكوين المهني\n• قسيمة السيارات\n\n📌 خدمات أخرى:\n• المخيم الشبابي\n• وسيط ANEM\n• الفروض والإمتحانات\n• شراء العجلات\n\n💡 اكتب اسم الخدمة التي تريدها أو استخدم الأزرار أعلاه.';
     }
 }
 
@@ -643,9 +671,21 @@ inputField.addEventListener('keypress', (e) => {
         sendBtn.click();
     }
 });
+
+// تفعيل الأزرار السريعة
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('quick-btn')) {
+        const service = e.target.getAttribute('data-service');
+        addMessage(service, true);
+        setTimeout(() => {
+            const reply = getBotReply(service);
+            addMessage(reply, false);
+        }, 500);
+    }
+});
 </script>
 <!-- ============================================== -->
-<!-- نهاية شات بوت CHABOOT -->
+<!-- نهاية شات بوت CHABOOT - المرحلة 5 -->
 <!-- ============================================== -->
 
 </body>
