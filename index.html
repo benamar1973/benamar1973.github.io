@@ -89,52 +89,6 @@
             padding: 0 8px;
         }
 
-        .icons-scroll {
-            background: white;
-            border-bottom: 1px solid #ddd;
-            padding: 12px 8px;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: thin;
-            display: flex;
-            gap: 16px;
-            direction: ltr;
-        }
-        .icon-item {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-            min-width: 70px;
-            padding: 6px;
-            border-radius: 16px;
-            background: #f8f9fa;
-        }
-        .icon-item:active {
-            transform: scale(0.96);
-            background: #e9ecef;
-        }
-        .icon-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 12px;
-        }
-        .icon-item span {
-            font-size: 12px;
-            font-weight: 500;
-            color: #1e2a3a;
-            text-align: center;
-            word-break: keep-all;
-        }
-        .icon-item.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            filter: grayscale(0.2);
-        }
-
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -149,7 +103,7 @@
             background-color: #e3f2fd;
             padding: 10px 14px;
             border-radius: 20px;
-            max-width: 85%;
+            max-width: 90%;
             align-self: flex-start;
             font-size: 14px;
             line-height: 1.5;
@@ -165,10 +119,64 @@
             color: #155724;
         }
 
+        /* شبكة الأيقونات داخل رسالة البوت */
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .icon-item {
+            background: white;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 5px;
+        }
+        .icon-item:active {
+            transform: scale(0.96);
+            background: #f8f9fa;
+        }
+        .icon-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.2);
+        }
+        .img-frame {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        .img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .icon-item span {
+            font-size: 12px;
+            margin-top: 6px;
+            font-weight: 500;
+            color: #1e2a3a;
+        }
+
         .quick-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 12px;
             justify-content: center;
         }
@@ -176,8 +184,8 @@
             background: #e9ecef;
             border: none;
             border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 13px;
+            padding: 6px 12px;
+            font-size: 12px;
             cursor: pointer;
             transition: 0.2s;
             font-family: inherit;
@@ -272,26 +280,10 @@
         <button class="close-btn" id="closeChatBtn">✕</button>
     </div>
 
-    <div class="icons-scroll" id="iconsScroll"></div>
-
     <div class="chat-messages" id="chatMessages">
-        <div class="bot-message">
-            مرحباً! أنا <strong>boot خدماتي</strong> 🤖<br>
-            سأرشدك خطوة بخطوة للتسجيل في أي خدمة جزائرية.<br>
-            📌 اضغط على أيقونة الخدمة أو اكتب اسمها، سأشرح لك طريقة التسجيل ثم أعطيك الرابط.<br>
-            📌 للاشتراك المدفوع، اضغط على زر "اشتراك".
-        </div>
-        <div class="quick-buttons">
-            <button class="quick-btn" data-service="اشتراك">📝 اشتراك</button>
-            <button class="quick-btn" data-service="نتائج BEM">📚 BEM</button>
-            <button class="quick-btn" data-service="نتائج BAC">🎓 BAC</button>
-            <button class="quick-btn" data-service="منحة البطالة">💰 منحة البطالة</button>
-            <button class="quick-btn" data-service="فضاء الأولياء">👨‍👩‍👧 فضاء الأولياء</button>
-            <button class="quick-btn" data-service="تجنيد الجيش">🎖️ تجنيد الجيش</button>
-            <button class="quick-btn" data-service="قسيمة السيارات">🚗 قسيمة السيارات</button>
-            <button class="quick-btn" data-service="مساعدة">📋 قائمة الخدمات</button>
-        </div>
+        <!-- سيتم إضافة رسائل البوت والمستخدم ديناميكياً -->
     </div>
+
     <div class="input-area">
         <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا...">
         <button id="chat-send">إرسال</button>
@@ -333,9 +325,14 @@
     const messagesDiv = document.getElementById('chatMessages');
     const sendBtn = document.getElementById('chat-send');
     const inputField = document.getElementById('chat-input');
-    const iconsScroll = document.getElementById('iconsScroll');
 
-    openBtn.addEventListener('click', () => chatFull.classList.add('open'));
+    openBtn.addEventListener('click', () => {
+        chatFull.classList.add('open');
+        // إذا كانت الرسائل فارغة، نضيف رسالة الترحيب وشبكة الأيقونات
+        if (messagesDiv.children.length === 0) {
+            addWelcomeMessage();
+        }
+    });
     closeBtn.addEventListener('click', () => chatFull.classList.remove('open'));
 
     // التحقق من الاشتراك
@@ -344,7 +341,7 @@
         return expiry && Date.now() < parseInt(expiry);
     }
 
-    // دالة إضافة رسالة (نص + زر رابط اختياري)
+    // دالة إضافة رسالة عادية (نص + زر اختياري)
     function addMessage(text, isUser, linkUrl = null, extraButtons = null) {
         const msgDiv = document.createElement('div');
         msgDiv.className = isUser ? 'user-message' : 'bot-message';
@@ -375,68 +372,26 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // ردود البوت (شرح التسجيل + رابط)
-    function getServiceReply(serviceName) {
-        const service = allServices.find(s => s.name === serviceName);
-        if (!service) return null;
-        let replyText = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}\n\n`;
-        if (!isUserSubscribed()) {
-            replyText += '⚠️ **أنت غير مشترك.** يرجى الاشتراك أولاً للوصول إلى الرابط.\n🔹 اضغط على زر "اشتراك" أعلاه.';
-            return { text: replyText, link: null };
-        } else {
-            replyText += '🔻 اضغط على الزر أدناه لفتح الرابط.';
-            return { text: replyText, link: service.url };
-        }
-    }
-
-    // ردود خاصة (اشتراك، مساعدة، إلخ)
-    function getSpecialReply(userMessage) {
-        const msg = userMessage.toLowerCase().trim();
-        if (msg.includes('مساعدة') || msg.includes('help') || msg.includes('قائمة')) {
-            return { text: '📋 **قائمة الخدمات المتاحة**\n' + allServices.map(s => '• ' + s.name).join('\n') + '\n\n📌 اضغط على أيقونة الخدمة أو اكتب اسمها لتحصل على شرح التسجيل.', link: null };
-        }
-        if (msg.includes('اشتراك')) {
-            return { text: '📝 للاشتراك في خدماتنا المدفوعة:\n✅ شهري: 100 دج\n✅ سنوي: 365 دج\n⚠️ بعد الدفع سيتم تفعيل اشتراكك تلقائياً.\n🔻 اختر خطتك:', extraButtons: [
-                { text: 'اشتراك شهري', url: 'http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz' },
-                { text: 'اشتراك سنوي', url: 'http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8' }
-            ] };
-        }
-        // البحث عن الخدمة بالاسم (للمطابقة النصية)
-        const matchedService = allServices.find(s => userMessage.includes(s.name) || s.name.includes(userMessage));
-        if (matchedService) {
-            return getServiceReply(matchedService.name);
-        }
-        return null;
-    }
-
-    // دالة معالجة طلب المستخدم (نصياً أو من أيقونة)
-    function handleServiceRequest(serviceName) {
-        addMessage(serviceName, true);
-        setTimeout(() => {
-            const reply = getServiceReply(serviceName);
-            if (reply) {
-                addMessage(reply.text, false, reply.link, reply.extraButtons);
-            } else {
-                addMessage('❌ لم نجد هذه الخدمة. اكتب "مساعدة" لعرض القائمة.', false);
-            }
-        }, 500);
-    }
-
-    // بناء شريط الأيقونات
-    function buildIconsBar() {
-        iconsScroll.innerHTML = '';
+    // بناء شبكة الأيقونات كعنصر HTML (تعيد div يحتوي على الأيقونات)
+    function createIconsGrid() {
+        const gridDiv = document.createElement('div');
+        gridDiv.className = 'icons-grid';
         allServices.forEach(service => {
             const iconDiv = document.createElement('div');
             iconDiv.className = 'icon-item';
             iconDiv.setAttribute('data-name', service.name);
+            const frame = document.createElement('div');
+            frame.className = 'img-frame';
             const img = document.createElement('img');
             img.src = service.img;
             img.alt = service.name;
-            img.onerror = () => { img.src = ''; img.style.display = 'none'; };
+            img.onerror = () => { img.style.display = 'none'; };
+            frame.appendChild(img);
+            iconDiv.appendChild(frame);
             const span = document.createElement('span');
             span.innerText = service.name.length > 12 ? service.name.slice(0,10)+'..' : service.name;
-            iconDiv.appendChild(img);
             iconDiv.appendChild(span);
+            // إضافة حدث النقر للأيقونة
             iconDiv.onclick = () => {
                 if (!isUserSubscribed()) {
                     addMessage(`⚠️ خدمة "${service.name}" تتطلب اشتراكاً نشطاً. يرجى الاشتراك أولاً.`, false);
@@ -444,17 +399,83 @@
                     handleServiceRequest(service.name);
                 }
             };
-            iconsScroll.appendChild(iconDiv);
+            gridDiv.appendChild(iconDiv);
         });
+        return gridDiv;
     }
 
-    // تحديث حالة الأيقونات (لإظهار/إخفاء القفل) - مجرد تزيين
-    function refreshIconsSubscriptionStatus() {
-        const subscribed = isUserSubscribed();
-        document.querySelectorAll('.icon-item').forEach(icon => {
-            if (!subscribed) icon.style.opacity = '0.6';
-            else icon.style.opacity = '1';
+    // دالة إضافة رسالة الترحيب مع شبكة الأيقونات
+    function addWelcomeMessage() {
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'bot-message';
+        welcomeDiv.innerHTML = `
+            <strong>مرحباً! أنا boot خدماتي 🤖</strong><br>
+            سأرشدك خطوة بخطوة للتسجيل في أي خدمة جزائرية.<br>
+            📌 اضغط على أيقونة الخدمة، سأشرح لك طريقة التسجيل ثم أعطيك الرابط.<br>
+            📌 للاشتراك المدفوع، اضغط على زر "اشتراك" في الأزرار السريعة أدناه.
+        `;
+        messagesDiv.appendChild(welcomeDiv);
+        
+        // إضافة شبكة الأيقونات
+        const iconsGrid = createIconsGrid();
+        messagesDiv.appendChild(iconsGrid);
+        
+        // إضافة الأزرار النصية السريعة
+        const quickDiv = document.createElement('div');
+        quickDiv.className = 'quick-buttons';
+        const buttonsList = ['اشتراك', 'نتائج BEM', 'نتائج BAC', 'منحة البطالة', 'فضاء الأولياء', 'تجنيد الجيش', 'قسيمة السيارات', 'مساعدة'];
+        buttonsList.forEach(btnText => {
+            const btn = document.createElement('button');
+            btn.innerText = btnText;
+            btn.className = 'quick-btn';
+            btn.setAttribute('data-service', btnText);
+            quickDiv.appendChild(btn);
         });
+        messagesDiv.appendChild(quickDiv);
+        
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // ردود البوت الخاصة بالخدمة (شرح + رابط)
+    function getServiceReply(serviceName) {
+        const service = allServices.find(s => s.name === serviceName);
+        if (!service) return null;
+        let replyText = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}\n\n`;
+        if (!isUserSubscribed()) {
+            replyText += '⚠️ **أنت غير مشترك.** يرجى الاشتراك أولاً للوصول إلى الرابط.\n🔹 اضغط على زر "اشتراك" في الأزرار السريعة.';
+            return { text: replyText, link: null };
+        } else {
+            replyText += '🔻 اضغط على الزر أدناه لفتح الرابط.';
+            return { text: replyText, link: service.url };
+        }
+    }
+
+    // ردود خاصة (اشتراك، مساعدة)
+    function getSpecialReply(userMessage) {
+        const msg = userMessage.toLowerCase().trim();
+        if (msg.includes('مساعدة') || msg.includes('help') || msg.includes('قائمة')) {
+            return { text: '📋 **قائمة الخدمات المتاحة**\n' + allServices.map(s => '• ' + s.name).join('\n') + '\n\n📌 اضغط على أيقونة الخدمة أعلاه لتحصل على شرح التسجيل.', link: null };
+        }
+        if (msg.includes('اشتراك')) {
+            return { text: '📝 للاشتراك في خدماتنا المدفوعة:\n✅ شهري: 100 دج\n✅ سنوي: 365 دج\n⚠️ بعد الدفع سيتم تفعيل اشتراكك تلقائياً.\n🔻 اختر خطتك:', extraButtons: [
+                { text: 'اشتراك شهري', url: 'http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz' },
+                { text: 'اشتراك سنوي', url: 'http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8' }
+            ] };
+        }
+        return null;
+    }
+
+    // معالجة طلب الخدمة (من أيقونة أو زر سريع)
+    function handleServiceRequest(serviceName) {
+        addMessage(serviceName, true);
+        setTimeout(() => {
+            const reply = getServiceReply(serviceName);
+            if (reply) {
+                addMessage(reply.text, false, reply.link, reply.extraButtons);
+            } else {
+                addMessage('❌ لم نجد هذه الخدمة. استخدم الأيقونات أعلاه.', false);
+            }
+        }, 500);
     }
 
     // إرسال رسالة من حقل الكتابة
@@ -468,7 +489,13 @@
             if (special) {
                 addMessage(special.text, false, special.link, special.extraButtons);
             } else {
-                addMessage('❓ لم أفهم طلبك. اكتب "مساعدة" لعرض الخدمات أو استخدم الأيقونات.', false);
+                // البحث عن خدمة تطابق النص
+                const matchedService = allServices.find(s => userText.includes(s.name) || s.name.includes(userText));
+                if (matchedService) {
+                    handleServiceRequest(matchedService.name);
+                } else {
+                    addMessage('❓ لم أفهم طلبك. اكتب "مساعدة" لعرض الخدمات أو استخدم الأيقونات.', false);
+                }
             }
         }, 500);
     }
@@ -476,7 +503,7 @@
     sendBtn.addEventListener('click', sendMessage);
     inputField.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-    // الأزرار السريعة (تعمل نفس طريقة الأيقونات)
+    // الأزرار السريعة (موجودة داخل الرسائل، نستخدم حدث مستند)
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('quick-btn')) {
             const service = e.target.getAttribute('data-service');
@@ -487,10 +514,7 @@
                     if (special) addMessage(special.text, false, special.link, special.extraButtons);
                 }, 500);
             } else {
-                // بحث عن الخدمة في allServices
-                const found = allServices.find(s => s.name === service);
-                if (found) handleServiceRequest(found.name);
-                else handleServiceRequest(service);
+                handleServiceRequest(service);
             }
         }
     });
@@ -525,14 +549,11 @@
         if (code && days && (code === 'MONTHLY2024' || code === 'YEARLY2024' || code === 'ABC123')) {
             const expiry = Date.now() + (parseInt(days) * 24 * 60 * 60 * 1000);
             localStorage.setItem('subscription_expiry', expiry);
-            refreshIconsSubscriptionStatus();
+            // تحديث مظهر الأيقونات (يمكن إعادة إنشاء الشبكة بالكامل)
             addMessage(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً! يمكنك الآن الضغط على أي أيقونة لتحصل على شرح التسجيل والرابط.`, false);
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     })();
-
-    buildIconsBar();
-    refreshIconsSubscriptionStatus();
 </script>
 </body>
 </html>
