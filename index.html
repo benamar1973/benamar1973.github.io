@@ -429,5 +429,224 @@
     }
     window.showToast = showToast;
 </script>
+
+<!-- ============================================== -->
+<!-- بداية شات بوت CHABOOT - مساعد الزبون -->
+<!-- ============================================== -->
+<style>
+#chabot-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#chat-toggle {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+#chat-box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    width: 320px;
+    height: 420px;
+    margin-bottom: 10px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    direction: rtl;
+}
+#chat-messages {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+#chat-input-area {
+    display: flex;
+    border-top: 1px solid #eee;
+    padding: 8px;
+    background: white;
+}
+#chat-input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 12px;
+    margin-left: 8px;
+    font-family: inherit;
+}
+#chat-send {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+.bot-message {
+    background-color: #e3f2fd;
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin: 5px 0;
+    display: inline-block;
+    max-width: 85%;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.user-message {
+    background-color: #d4edda;
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin: 5px 0;
+    display: inline-block;
+    max-width: 85%;
+    align-self: flex-start;
+}
+.message-row {
+    display: flex;
+    margin: 8px 0;
+}
+.user-row {
+    justify-content: flex-start;
+}
+.bot-row {
+    justify-content: flex-end;
+}
+</style>
+
+<div id="chabot-widget">
+    <button id="chat-toggle">💬 CHABOOT - مساعدك</button>
+    <div id="chat-box">
+        <div id="chat-messages">
+            <div class="message-row bot-row">
+                <div class="bot-message">مرحباً! أنا CHABOOT 🤖<br>سأرشدك خطوة بخطوة للتسجيل في أي خدمة في "خدماتي الجزائر".<br><br>📌 اكتب اسم الخدمة التي تريدها، مثلاً:<br>• اشتراك<br>• نتائج BEM<br>• منحة البطالة<br>• فضاء الأولياء<br>• تجنيد الجيش<br>• سكنات عدل<br>• CCP<br>• قسيمة السيارات</div>
+            </div>
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا...">
+            <button id="chat-send">إرسال</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// فتح/إغلاق الشات بوت
+const toggleBtn = document.getElementById('chat-toggle');
+const chatBox = document.getElementById('chat-box');
+toggleBtn.addEventListener('click', () => {
+    if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+        chatBox.style.display = 'flex';
+    } else {
+        chatBox.style.display = 'none';
+    }
+});
+
+// إرسال الرسالة
+const sendBtn = document.getElementById('chat-send');
+const inputField = document.getElementById('chat-input');
+const messagesDiv = document.getElementById('chat-messages');
+
+function addMessage(text, isUser) {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = `message-row ${isUser ? 'user-row' : 'bot-row'}`;
+    const msgDiv = document.createElement('div');
+    msgDiv.className = isUser ? 'user-message' : 'bot-message';
+    msgDiv.innerText = text;
+    rowDiv.appendChild(msgDiv);
+    messagesDiv.appendChild(rowDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function getBotReply(userMessage) {
+    const msg = userMessage.toLowerCase();
+    
+    // قائمة الخدمات والتوجيهات حسب موقعك
+    if (msg.includes('اشتراك') || msg.includes('تسجيل') || msg.includes('عضوية')) {
+        return '📝 خطوات الاشتراك في خدماتي الجزائر:\n\n1️⃣ قم بتسجيل الدخول أو إنشاء حساب جديد (البريد الإلكتروني + كلمة المرور)\n2️⃣ بعد الدخول، اضغط على "اشتراك شهري 100 دج" أو "اشتراك سنوي 365 دج"\n3️⃣ سيتم تحويلك إلى بوابة الدفع الآمنة (Chargily)\n4️⃣ بعد الدفع، سيتم تفعيل اشتراكك تلقائياً\n5️⃣ يمكنك الآن الوصول إلى جميع الخدمات (22 خدمة)\n\n⚠️ ملاحظة: بدون اشتراك، الخدمات مقفلة.';
+    }
+    else if (msg.includes('bem') || (msg.includes('نتائج') && msg.includes('متوسط'))) {
+        return '📚 نتائج شهادة التعليم المتوسط (BEM):\n\n🔹 رابط الخدمة موجود في القائمة الرئيسية\n🔹 اضغط على أيقونة "نتائج شهادة التعليم المتوسط (BEM)"\n🔹 سيتم نقلك إلى موقع ONEC الرسمي\n🔹 أدخل رقم التسجيل الخاص بك\n🔹 ستظهر النتيجة مباشرة\n\n💡 نصيحة: تأكد من أن لديك رقم التسجيل من مدرستك.';
+    }
+    else if (msg.includes('bac') || msg.includes('بكالوريا')) {
+        return '🎓 نتائج البكالوريا:\n\n🔹 رابط الخدمة موجود في القائمة الرئيسية\n🔹 اضغط على أيقونة "نتائج شهادة البكالوريا (BAC)"\n🔹 سيتم نقلك إلى موقع ONEC الرسمي\n🔹 أدخل رقم التسجيل الخاص بك\n🔹 تظهر النتيجة فوراً\n\n💡 تتوفر النتائج عادة في شهر يوليو من كل عام.';
+    }
+    else if (msg.includes('منحة') || msg.includes('بطالة')) {
+        return '💰 منحة البطالة (ANEM):\n\n🔹 رابط الخدمة: "منحة البطالة" في القائمة\n🔹 اضغط على الأيقونة\n🔹 سيتم توجيهك إلى رابط التسجيل: minha.anem.dz\n🔹 يلزمك: شهادة ميلاد، رقم التسجيل في ANEM، بطاقة تعريف وطنية\n🔹 اتبع التعليمات في الموقع الرسمي لإتمام التسجيل\n\n📞 يمكنك الاتصال بـ ANEM للمزيد من التفاصيل.';
+    }
+    else if (msg.includes('فضاء') || msg.includes('أولياء')) {
+        return '👨‍👩‍👧 فضاء الأولياء:\n\n🔹 رابط الخدمة: "فضاء الأولياء" في القائمة الرئيسية\n🔹 اضغط على الأيقونة\n🔹 سيتم نقلك إلى: awlyaa.education.dz\n🔹 تحتاج إلى:\n   - اسم المستخدم (عادة رقم تسجيل التلميذ)\n   - كلمة المرور (تحصل عليها من المدرسة)\n🔹 بعد الدخول، يمكنك متابعة النتائج والغيابات والمواظبة.';
+    }
+    else if (msg.includes('جيش') || msg.includes('تجنيد')) {
+        return '🎖️ تجنيد الجيش (الخدمة الوطنية):\n\n🔹 رابط الخدمة: "تجنيد الجيش" في القائمة\n🔹 سيتم نقلك إلى موقع وزارة الدفاع: preinscription.mdn.dz\n🔹 خطوات التسجيل:\n   1️⃣ إنشاء حساب جديد\n   2️⃣ تعبئة البيانات الشخصية (الاسم، تاريخ الميلاد، رقم البطاقة)\n   3️⃣ رفع الصور والمستندات المطلوبة\n   4️⃣ طباعة استمارة ما قبل التجنيد\n\n⚠️ التسجيل إلزامي للذكور في سن 19 سنة.';
+    }
+    else if (msg.includes('سكنات') || msg.includes('عدل') || msg.includes('aadl')) {
+        return '🏠 سكنات عدل (AADL):\n\n🔹 رابط الخدمة: "سكنات عدل" في القائمة\n🔹 سيتم نقلك إلى الموقع الرسمي: www.aadl.dz\n🔹 للتسجيل في برامج السكن:\n   1️⃣ إنشاء ملف على الموقع\n   2️⃣ متابعة الإعلانات عن الاكتتابات\n   3️⃣ تقديم الطلب عند فتح التسجيلات\n   4️⃣ انتظار القرعة\n\n💡 ملاحظة: التوفر حسب البرامج الجديدة التي تعلن عنها وزارة السكن.';
+    }
+    else if (msg.includes('ccp')) {
+        return '🏦 خدمة CCP (البريد الجزائري):\n\n🔹 رابط الخدمة: "CCP" في القائمة الرئيسية\n🔹 سيتم نقلك إلى منصة eccp.poste.dz\n🔹 الخدمات المتاحة:\n   • الاستعلام عن رصيد CCP\n   • دفع الفواتير\n   • تحويل الأموال\n   • شراء الإنترنت\n🔹 تحتاج إلى رقم CCP ورمز التحقق للدخول.';
+    }
+    else if (msg.includes('قسيمة') || msg.includes('سيارات') || msg.includes('qassimatouka')) {
+        return '🚗 خدمة قسيمة السيارات (مديرية الضرائب):\n\n🔹 رابط الخدمة: "قسيمة السيارات" في القائمة\n🔹 سيتم نقلك إلى: qassimatouka.mf.gov.dz\n🔹 خطوات الاستخدام:\n   1️⃣ أدخل رقم التسجيل المركزي للسيارة\n   2️⃣ اختر السنة المطلوبة\n   3️⃣ سيتم عرض المبلغ المستحق\n   4️⃣ ادفع عبر بطاقة بنكية أو CCP\n\n💡 يمكنك دفع قسيمة السيارات السنوية إلكترونياً دون الحاجة للذهاب إلى مصلحة الضرائب.';
+    }
+    else if (msg.includes('كهرباء') || msg.includes('sonelgaz')) {
+        return '⚡ دفع فاتورة الكهرباء (Sonelgaz):\n\n🔹 رابط الخدمة: "دفع فاتورة الكهرباء" في القائمة\n🔹 سيتم نقلك إلى منصة epayement.elit.dz\n🔹 أدخل رقم العقد (13 رقماً) الموجود على الفاتورة\n🔹 ستظهر قيمة الفاتورة\n🔹 اختر طريقة الدفع (بطاقة بنكية أو CCP)\n🔹 أكمل الدفع وستصلك إيصال إلكتروني.';
+    }
+    else if (msg.includes('ماء') || msg.includes('seaal')) {
+        return '💧 دفع فاتورة الماء (SEAAL):\n\n🔹 رابط الخدمة: "دفع فاتورة الماء" في القائمة\n🔹 سيتم نقلك إلى fatourati.seaal.dz\n🔹 أدخل رقم المشترك الموجود على الفاتورة\n🔹 سيتم عرض المبلغ المستحق\n🔹 ادفع إلكترونياً بسهولة.';
+    }
+    else if (msg.includes('mobilis')) {
+        return '📱 خدمات Mobilis:\n\n🔹 رابط الخدمة: "mobilis" في القائمة\n🔹 سيتم نقلك إلى e-paiement.mobilis.dz\n🔹 يمكنك:\n   • شحن الرصيد\n   • دفع فواتير الهاتف\n   • الاشتراك في العروض\n🔹 أدخل رقم الهاتف واتبع التعليمات.';
+    }
+    else if (msg.includes('djezzy')) {
+        return '📱 خدمات Djezzy:\n\n🔹 رابط الخدمة: "DJEZZY" في القائمة\n🔹 سيتم نقلك إلى moncompte.djezzy.dz\n🔹 يمكنك:\n   • شحن الرصيد\n   • الاستعلام عن الاستهلاك\n   • تفعيل الباقات\n🔹 تحتاج إلى رقم الهاتف للدخول.';
+    }
+    else if (msg.includes('ooredoo')) {
+        return '📱 خدمات Ooredoo:\n\n🔹 رابط الخدمة: "Ooredoo" في القائمة\n🔹 سيتم نقلك إلى estorm.ooredoo.dz\n🔹 يمكنك:\n   • شحن الرصيد\n   • دفع الفواتير\n   • شراء باقات الإنترنت\n🔹 سهل وسريع.';
+    }
+    else if (msg.includes('تكوين') || msg.includes('مهني')) {
+        return '🎓 التكوين المهني:\n\n🔹 رابط الخدمة: "التكوين المهني" في القائمة\n🔹 سيتم نقلك إلى takwin.dz\n🔹 للتسجيل في مراكز التكوين المهني:\n   1️⃣ اختر الولاية والتخصص\n   2️⃣ املأ طلب التسجيل\n   3️⃣ أرسل المستندات المطلوبة\n🔹 التكوين متاح للشباب من 16 سنة فما فوق.';
+    }
+    else if (msg.includes('ccp') || msg.includes('بريد')) {
+        return '🏦 خدمة CCP - بريد الجزائر:\n\n🔹 رابط الخدمة موجود في القائمة\n🔹 يمكنك عبر eccp.poste.dz:\n   • الاطلاع على الرصيد\n   • دفع الفواتير (كهرباء، ماء، هاتف)\n   • تحويل الأموال\n   • شراء رصيد الإنترنت\n🔹 يلزمك رقم CCP ورمز الدخول.';
+    }
+    else {
+        return '❓ عذراً، لم أفهم طلبك.\n\nالخدمات المتوفرة حالياً في موقع "خدماتي الجزائر":\n\n📌 خدمات الدفع والاشتراك:\n• اشتراك - تسجيل - عضوية\n• دفع فاتورة الكهرباء - Sonelgaz\n• دفع فاتورة الماء - SEAAL\n• Mobilis - Djezzy - Ooredoo\n• تسديد فاتورة الهاتف والإنترنت\n• CCP\n\n📌 الخدمات الإدارية والتعليمية:\n• منحة البطالة - ANEM\n• تجنيد الجيش\n• فضاء الأولياء\n• سكنات عدل\n• نتائج BEM - نتائج BAC\n• التكوين المهني\n• قسيمة السيارات\n• التصريح بضياع وثائق\n• شهادة عدم الانتساب\n\n📌 خدمات أخرى:\n• المخيم الشبابي\n• وسيط ANEM\n• الفروض والإمتحانات\n• شراء العجلات\n\n💡 اكتب اسم الخدمة التي تريدها وسأرشدك خطوة بخطوة.';
+    }
+}
+
+sendBtn.addEventListener('click', () => {
+    const userText = inputField.value.trim();
+    if (userText === '') return;
+    
+    addMessage(userText, true);
+    inputField.value = '';
+    
+    setTimeout(() => {
+        const reply = getBotReply(userText);
+        addMessage(reply, false);
+    }, 500);
+});
+
+inputField.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendBtn.click();
+    }
+});
+</script>
+<!-- ============================================== -->
+<!-- نهاية شات بوت CHABOOT -->
+<!-- ============================================== -->
+
 </body>
 </html>
