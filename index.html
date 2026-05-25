@@ -429,7 +429,7 @@
 </script>
 
 <!-- ============================================== -->
-<!-- شات بوت CHABOOT - الإصدار النهائي (المراحل 5-9) -->
+<!-- شات بوت CHABOOT مع أزرار فتح الرابط -->
 <!-- ============================================== -->
 <style>
 #chabot-widget {
@@ -454,8 +454,8 @@
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 15px;
-    width: 350px;
-    height: 500px;
+    width: 360px;
+    height: 520px;
     margin-bottom: 10px;
     display: none;
     flex-direction: column;
@@ -568,6 +568,23 @@
     background-color: #007bff;
     color: white;
 }
+/* زر الرابط داخل رسالة البوت */
+.bot-link-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.bot-link-btn:hover {
+    background-color: #0056b3;
+}
 </style>
 
 <div id="chabot-widget">
@@ -575,7 +592,7 @@
     <div id="chat-box">
         <div id="chat-messages">
             <div class="message-row bot-row">
-                <div class="bot-message">مرحباً! أنا CHABOOT 🤖<br>سأرشدك خطوة بخطوة للتسجيل في أي خدمة في "خدماتي الجزائر".<br><br>📌 اكتب اسم الخدمة أو اختر من الأزرار أدناه.<br>📌 للقائمة الكاملة اكتب "مساعدة" أو "قائمة".</div>
+                <div class="bot-message">مرحباً! أنا CHABOOT 🤖<br>سأرشدك خطوة بخطوة للتسجيل في أي خدمة.<br>📌 اكتب اسم الخدمة أو اختر من الأزرار أدناه.<br>📌 سأعطيك زراً لفتح الرابط مباشرة.</div>
             </div>
             <div class="quick-buttons">
                 <button class="quick-btn" data-service="اشتراك">📝 اشتراك</button>
@@ -597,23 +614,18 @@
 </div>
 
 <script>
-// ---------- إحصائيات بسيطة للمحادثات (المرحلة 9) ----------
+// إحصائيات بسيطة
 let chatCounter = parseInt(localStorage.getItem('chaboot_chat_count') || '0');
 function incrementChatCount() {
     chatCounter++;
     localStorage.setItem('chaboot_chat_count', chatCounter);
-    console.log(`CHABOOT: تمت المساعدة ${chatCounter} مرة حتى الآن.`);
 }
-// تسجيل أول فتح للشات بوت
 let chatOpened = false;
 document.getElementById('chat-toggle').addEventListener('click', () => {
-    if (!chatOpened) {
-        chatOpened = true;
-        incrementChatCount();
-    }
+    if (!chatOpened) { chatOpened = true; incrementChatCount(); }
 });
 
-// ---------- عناصر الشات بوت ----------
+// عناصر الشات
 const toggleBtn = document.getElementById('chat-toggle');
 const chatBox = document.getElementById('chat-box');
 const sendBtn = document.getElementById('chat-send');
@@ -623,155 +635,195 @@ const messagesDiv = document.getElementById('chat-messages');
 toggleBtn.addEventListener('click', () => {
     if (chatBox.style.display === 'none' || chatBox.style.display === '') {
         chatBox.style.display = 'flex';
-        if (!chatOpened) {
-            chatOpened = true;
-            incrementChatCount();
-        }
+        if (!chatOpened) { chatOpened = true; incrementChatCount(); }
     } else {
         chatBox.style.display = 'none';
     }
 });
 
-function addMessage(text, isUser) {
+// دالة إضافة رسالة مع دعم زر الرابط
+function addMessage(text, isUser, linkUrl = null) {
     const rowDiv = document.createElement('div');
     rowDiv.className = `message-row ${isUser ? 'user-row' : 'bot-row'}`;
     const msgDiv = document.createElement('div');
     msgDiv.className = isUser ? 'user-message' : 'bot-message';
-    msgDiv.innerText = text;
+    
+    const textSpan = document.createElement('span');
+    textSpan.innerText = text;
+    msgDiv.appendChild(textSpan);
+    
+    if (!isUser && linkUrl) {
+        const btn = document.createElement('button');
+        btn.innerText = '🔗 افتح الرابط';
+        btn.className = 'bot-link-btn';
+        btn.onclick = () => window.open(linkUrl, '_blank');
+        msgDiv.appendChild(document.createElement('br'));
+        msgDiv.appendChild(btn);
+    }
+    
     rowDiv.appendChild(msgDiv);
     messagesDiv.appendChild(rowDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// ---------- التحقق من الاشتراك (للمرحلة 8) ----------
+// التحقق من الاشتراك
 function isUserSubscribed() {
     const expiry = localStorage.getItem('subscription_expiry');
     if (!expiry) return false;
     return Date.now() < parseInt(expiry);
 }
 
-// ---------- ردود البوت المتقدمة (مع روابط للمشتركين) ----------
-function getBotReply(userMessage) {
+// ردود البوت مع روابط
+function getBotReplyWithLink(userMessage) {
     const msg = userMessage.toLowerCase();
     
-    // المساعدة والقائمة الرئيسية
+    // مساعدة وقائمة
     if (msg.includes('مساعدة') || msg.includes('help') || msg.includes('قائمة') || msg.includes('menu')) {
-        return '📋 **القائمة الرئيسية لخدماتي الجزائر** 📋\n\n' +
-               '🔹 **الخدمات المالية والدفع:**\n' +
-               '   • اشتراك - تسجيل عضوية\n' +
-               '   • دفع فاتورة الكهرباء / الماء\n' +
-               '   • Mobilis - Djezzy - Ooredoo\n' +
-               '   • CCP - قسيمة السيارات\n\n' +
-               '🔹 **الخدمات الإدارية:**\n' +
-               '   • منحة البطالة - تجنيد الجيش\n' +
-               '   • سكنات عدل - التصريح بضياع وثائق\n' +
-               '   • شهادة عدم الانتساب\n\n' +
-               '🔹 **الخدمات التعليمية:**\n' +
-               '   • فضاء الأولياء - نتائج BEM - نتائج BAC\n' +
-               '   • التكوين المهني - الفروض والإمتحانات\n\n' +
-               '💬 **للحصول على تعليمات خطوة بخطوة، اكتب اسم الخدمة.**\n' +
-               '📌 مثال: "نتائج BEM" أو "منحة البطالة"';
+        return { text: '📋 **القائمة الرئيسية لخدماتي الجزائر** 📋\n\n' +
+               '🔹 اشتراك - تسجيل عضوية\n🔹 دفع فاتورة الكهرباء / الماء\n🔹 Mobilis - Djezzy - Ooredoo\n🔹 CCP - قسيمة السيارات\n🔹 منحة البطالة - تجنيد الجيش\n🔹 سكنات عدل\n🔹 فضاء الأولياء\n🔹 نتائج BEM - نتائج BAC\n🔹 التكوين المهني\n\n📌 اكتب اسم الخدمة للحصول على رابط مباشر.',
+               link: null };
     }
     
-    // اشتراك
+    // اشتراك (لا يوجد رابط واحد محدد، لكن نعطي روابط الخطط)
     if (msg.includes('اشتراك') || msg.includes('تسجيل') || msg.includes('عضوية')) {
-        return '📝 خطوات الاشتراك في خدماتي الجزائر:\n\n1️⃣ قم بتسجيل الدخول أو إنشاء حساب جديد (البريد الإلكتروني + كلمة المرور)\n2️⃣ بعد الدخول، اضغط على "اشتراك شهري 100 دج" أو "اشتراك سنوي 365 دج"\n3️⃣ سيتم تحويلك إلى بوابة الدفع الآمنة (Chargily)\n4️⃣ بعد الدفع، سيتم تفعيل اشتراكك تلقائياً\n5️⃣ يمكنك الآن الوصول إلى جميع الخدمات (22 خدمة)\n\n⚠️ ملاحظة: بدون اشتراك، الخدمات مقفلة.';
+        return { text: '📝 خطوات الاشتراك:\n1️⃣ سجل الدخول أو أنشئ حساباً\n2️⃣ اختر الخطة: شهري 100 دج أو سنوي 365 دج\n3️⃣ اضغط على زر الدفع أدناه.\n⚠️ بدون اشتراك، الخدمات مقفلة.',
+               link: null, extraButtons: [
+                   { text: '📅 اشتراك شهري', url: 'http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz' },
+                   { text: '📅 اشتراك سنوي', url: 'http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8' }
+               ] };
     }
     
     // نتائج BEM
     if (msg.includes('bem') || (msg.includes('نتائج') && msg.includes('متوسط'))) {
-        let reply = '📚 نتائج شهادة التعليم المتوسط (BEM):\n\n🔹 رابط الخدمة: https://bem.onec.dz/\n';
-        if (isUserSubscribed()) {
-            reply += '✅ **أنت مشترك حالياً** → يمكنك الضغط على الرابط أعلاه مباشرة من قائمة الخدمات.\n\n';
-        } else {
-            reply += '⚠️ **ملاحظة:** هذا الرابط يعمل فقط للمستخدمين المسجلين والداخلين إلى حساباتهم.\n🔐 يرجى تسجيل الدخول والاشتراك أولاً للوصول إلى جميع الخدمات.\n\n';
-        }
-        reply += '🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة "نتائج BEM" في القائمة الرئيسية\n2️⃣ أدخل رقم التسجيل الخاص بك\n3️⃣ ستظهر النتيجة مباشرة';
-        return reply;
+        let text = '📚 نتائج شهادة التعليم المتوسط (BEM):\n🔹 أدخل رقم التسجيل في الموقع الرسمي.\n';
+        if (!isUserSubscribed()) text += '⚠️ يتطلب اشتراكاً نشطاً للوصول عبر قائمة الخدمات.\n';
+        return { text: text, link: 'https://bem.onec.dz/' };
     }
     
     // نتائج BAC
     if (msg.includes('bac') || msg.includes('بكالوريا')) {
-        let reply = '🎓 نتائج البكالوريا:\n\n🔹 رابط الخدمة: https://bac.onec.dz/\n';
-        if (isUserSubscribed()) reply += '✅ **أنت مشترك** → استخدم الرابط من القائمة.\n\n';
-        else reply += '⚠️ يتطلب اشتراكاً نشطاً.\n\n';
-        reply += '🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة "نتائج BAC"\n2️⃣ أدخل رقم التسجيل\n3️⃣ تظهر النتيجة فوراً';
-        return reply;
+        let text = '🎓 نتائج البكالوريا:\n🔹 أدخل رقم التسجيل في الموقع الرسمي.\n';
+        if (!isUserSubscribed()) text += '⚠️ يتطلب اشتراكاً نشطاً.\n';
+        return { text: text, link: 'https://bac.onec.dz/' };
     }
     
     // منحة البطالة
     if (msg.includes('منحة') || msg.includes('بطالة')) {
-        return '💰 منحة البطالة (ANEM):\n\n🔹 رابط الخدمة: https://minha.anem.dz/pre_inscription\n🔹 يلزمك: شهادة ميلاد، رقم التسجيل في ANEM، بطاقة تعريف وطنية\n🔹 اتبع التعليمات في الموقع الرسمي لإتمام التسجيل\n📞 يمكنك الاتصال بـ ANEM للمزيد.';
+        return { text: '💰 منحة البطالة (ANEM):\n🔹 يلزمك: شهادة ميلاد، رقم ANEM، بطاقة تعريف.\n🔹 اتبع التعليمات في الرابط أدناه.',
+                 link: 'https://minha.anem.dz/pre_inscription' };
     }
     
     // فضاء الأولياء
     if (msg.includes('فضاء') || msg.includes('أولياء')) {
-        return '👨‍👩‍👧 فضاء الأولياء:\n\n🔹 رابط الخدمة: https://awlyaa.education.dz/login\n🔹 تحتاج إلى:\n   - اسم المستخدم (رقم تسجيل التلميذ)\n   - كلمة المرور (من المدرسة)\n🔹 بعد الدخول، يمكنك متابعة النتائج والغيابات.';
+        return { text: '👨‍👩‍👧 فضاء الأولياء:\n🔹 استخدم رقم تسجيل التلميذ وكلمة المرور من المدرسة.\n🔹 الدخول عبر الرابط:',
+                 link: 'https://awlyaa.education.dz/login' };
     }
     
     // تجنيد الجيش
     if (msg.includes('جيش') || msg.includes('تجنيد')) {
-        return '🎖️ تجنيد الجيش (الخدمة الوطنية):\n\n🔹 رابط التسجيل: https://preinscription.mdn.dz\n🔹 خطوات التسجيل:\n   1️⃣ إنشاء حساب جديد\n   2️⃣ تعبئة البيانات الشخصية\n   3️⃣ رفع الصور والمستندات\n   4️⃣ طباعة استمارة ما قبل التجنيد\n⚠️ إلزامي للذكور في سن 19 سنة.';
+        return { text: '🎖️ تجنيد الجيش (الخدمة الوطنية):\n🔹 أنشئ حساباً ثم املأ البيانات.\n🔹 الرابط:',
+                 link: 'https://preinscription.mdn.dz/' };
     }
     
     // سكنات عدل
     if (msg.includes('سكنات') || msg.includes('عدل') || msg.includes('aadl')) {
-        return '🏠 سكنات عدل (AADL):\n\n🔹 الموقع الرسمي: www.aadl.dz\n🔹 للتسجيل:\n   1️⃣ إنشاء ملف على الموقع\n   2️⃣ متابعة الإعلانات عن الاكتتابات\n   3️⃣ تقديم الطلب عند فتح التسجيلات\n   4️⃣ انتظار القرعة';
+        return { text: '🏠 سكنات عدل (AADL):\n🔹 تابع الاكتتابات على الموقع الرسمي.',
+                 link: 'https://www.aadl.dz' };
     }
     
     // CCP
     if (msg.includes('ccp')) {
-        return '🏦 خدمة CCP (البريد الجزائري):\n\n🔹 منصة eccp.poste.dz\n🔹 الخدمات: الاستعلام عن الرصيد، دفع الفواتير، تحويل الأموال، شراء الإنترنت\n🔹 تحتاج إلى رقم CCP ورمز التحقق.';
+        return { text: '🏦 خدمة CCP:\n🔹 استعلم عن رصيدك وادفع فواتيرك عبر المنصة.',
+                 link: 'https://eccp.poste.dz' };
     }
     
     // قسيمة السيارات
     if (msg.includes('قسيمة') || msg.includes('سيارات') || msg.includes('qassimatouka')) {
-        return '🚗 خدمة قسيمة السيارات (مديرية الضرائب):\n\n🔹 رابط الخدمة: qassimatouka.mf.gov.dz\n🔹 خطوات الاستخدام:\n   1️⃣ أدخل رقم التسجيل المركزي للسيارة\n   2️⃣ اختر السنة المطلوبة\n   3️⃣ سيتم عرض المبلغ المستحق\n   4️⃣ ادفع عبر بطاقة بنكية أو CCP';
+        return { text: '🚗 قسيمة السيارات:\n🔹 أدخل رقم التسجيل المركزي للسيارة وادفع أونلاين.',
+                 link: 'https://qassimatouka.mf.gov.dz/home' };
     }
     
     // كهرباء
     if (msg.includes('كهرباء') || msg.includes('sonelgaz')) {
-        return '⚡ دفع فاتورة الكهرباء (Sonelgaz):\n\n🔹 رابط الخدمة: epayement.elit.dz\n🔹 أدخل رقم العقد (13 رقماً) الموجود على الفاتورة\n🔹 اختر طريقة الدفع (بطاقة بنكية أو CCP)';
+        return { text: '⚡ دفع فاتورة الكهرباء:\n🔹 أدخل رقم العقد (13 رقماً).',
+                 link: 'https://epayement.elit.dz/payementFacture.xhtml' };
     }
     
     // ماء
     if (msg.includes('ماء') || msg.includes('seaal')) {
-        return '💧 دفع فاتورة الماء (SEAAL):\n\n🔹 رابط الخدمة: fatourati.seaal.dz\n🔹 أدخل رقم المشترك الموجود على الفاتورة\n🔹 ادفع إلكترونياً بسهولة.';
+        return { text: '💧 دفع فاتورة الماء:\n🔹 أدخل رقم المشترك.',
+                 link: 'https://fatourati.seaal.dz/' };
     }
     
     // Mobilis
     if (msg.includes('mobilis')) {
-        return '📱 خدمات Mobilis:\n\n🔹 رابط الشحن والدفع: e-paiement.mobilis.dz\n🔹 يمكنك شحن الرصيد، دفع الفواتير، الاشتراك في العروض.';
+        return { text: '📱 خدمات Mobilis:\n🔹 شحن، دفع فواتير، اشتراكات.',
+                 link: 'https://e-paiement.mobilis.dz/' };
     }
     
     // Djezzy
     if (msg.includes('djezzy')) {
-        return '📱 خدمات Djezzy:\n\n🔹 رابط الخدمة: moncompte.djezzy.dz\n🔹 شحن الرصيد، الاستعلام عن الاستهلاك، تفعيل الباقات.';
+        return { text: '📱 خدمات Djezzy:\n🔹 شحن الرصيد والاستعلام.',
+                 link: 'https://moncompte.djezzy.dz/fr/guest/recharge' };
     }
     
     // Ooredoo
     if (msg.includes('ooredoo')) {
-        return '📱 خدمات Ooredoo:\n\n🔹 رابط الخدمة: estorm.ooredoo.dz\n🔹 شحن الرصيد، دفع الفواتير، شراء باقات الإنترنت.';
+        return { text: '📱 خدمات Ooredoo:\n🔹 شحن ودفع الفواتير.',
+                 link: 'https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar' };
     }
     
     // التكوين المهني
     if (msg.includes('تكوين') || msg.includes('مهني')) {
-        return '🎓 التكوين المهني:\n\n🔹 رابط التسجيل: takwin.dz\n🔹 اختر الولاية والتخصص، املأ طلب التسجيل، أرسل المستندات.\n🔹 التكوين متاح للشباب من 16 سنة فما فوق.';
+        return { text: '🎓 التكوين المهني:\n🔹 سجل في مراكز التكوين عبر الرابط.',
+                 link: 'https://takwin.dz' };
     }
     
     // الرد الافتراضي
-    return '❓ عذراً، لم أفهم طلبك.\n\nالخدمات المتوفرة:\n• اشتراك\n• نتائج BEM / BAC\n• منحة البطالة\n• فضاء الأولياء\n• تجنيد الجيش\n• سكنات عدل\n• CCP - قسيمة السيارات\n• كهرباء - ماء\n• Mobilis - Djezzy - Ooredoo\n• التكوين المهني\n\n📌 اكتب "مساعدة" للقائمة الكاملة.';
+    return { text: '❓ لم أفهم طلبك. اكتب "مساعدة" لعرض الخدمات المتاحة أو استخدم الأزرار.',
+             link: null };
 }
 
-// ---------- إرسال الرسالة ----------
+// معالجة الأزرار المتعددة للاشتراك (حالة خاصة)
+function addMessageWithExtraButtons(text, buttons) {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'message-row bot-row';
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'bot-message';
+    const textSpan = document.createElement('span');
+    textSpan.innerText = text;
+    msgDiv.appendChild(textSpan);
+    
+    if (buttons && buttons.length) {
+        msgDiv.appendChild(document.createElement('br'));
+        buttons.forEach(btn => {
+            const btnElem = document.createElement('button');
+            btnElem.innerText = btn.text;
+            btnElem.className = 'bot-link-btn';
+            btnElem.style.marginLeft = '5px';
+            btnElem.onclick = () => window.open(btn.url, '_blank');
+            msgDiv.appendChild(btnElem);
+        });
+    }
+    rowDiv.appendChild(msgDiv);
+    messagesDiv.appendChild(rowDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// إرسال الرسالة
 sendBtn.addEventListener('click', () => {
     const userText = inputField.value.trim();
     if (userText === '') return;
-    addMessage(userText, true);
+    addMessage(userText, true, null);
     inputField.value = '';
+    
     setTimeout(() => {
-        const reply = getBotReply(userText);
-        addMessage(reply, false);
+        const reply = getBotReplyWithLink(userText);
+        if (reply.extraButtons) {
+            addMessageWithExtraButtons(reply.text, reply.extraButtons);
+        } else {
+            addMessage(reply.text, false, reply.link);
+        }
     }, 500);
 });
 
@@ -779,24 +831,27 @@ inputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendBtn.click();
 });
 
-// ---------- الأزرار السريعة ----------
+// الأزرار السريعة
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('quick-btn')) {
         const service = e.target.getAttribute('data-service');
-        addMessage(service, true);
+        addMessage(service, true, null);
         setTimeout(() => {
-            const reply = getBotReply(service);
-            addMessage(reply, false);
+            const reply = getBotReplyWithLink(service);
+            if (reply.extraButtons) {
+                addMessageWithExtraButtons(reply.text, reply.extraButtons);
+            } else {
+                addMessage(reply.text, false, reply.link);
+            }
         }, 500);
     }
 });
 
-// ---------- الاقتراحات التلقائية ----------
+// الاقتراحات التلقائية
 const suggestionsList = [
-    "اشتراك", "نتائج BEM", "نتائج BAC", "منحة البطالة",
-    "فضاء الأولياء", "تجنيد الجيش", "سكنات عدل", "CCP",
-    "قسيمة السيارات", "دفع فاتورة الكهرباء", "دفع فاتورة الماء",
-    "Mobilis", "Djezzy", "Ooredoo", "التكوين المهني", "مساعدة"
+    "اشتراك", "نتائج BEM", "نتائج BAC", "منحة البطالة", "فضاء الأولياء",
+    "تجنيد الجيش", "سكنات عدل", "CCP", "قسيمة السيارات", "دفع فاتورة الكهرباء",
+    "دفع فاتورة الماء", "Mobilis", "Djezzy", "Ooredoo", "التكوين المهني", "مساعدة"
 ];
 const suggestionsDiv = document.getElementById('suggestions-list');
 
