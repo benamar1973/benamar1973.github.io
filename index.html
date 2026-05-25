@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>خدمات مساعدك - boot الذكي</title>
+    <title>boot خدماتي - مساعدك الذكي</title>
     <style>
         * {
             margin: 0;
@@ -28,7 +27,6 @@
             margin: 0 auto;
         }
 
-        /* البطاقة الرئيسية */
         .main-card {
             background: #ffffff;
             border-radius: 35px;
@@ -37,25 +35,18 @@
             text-align: center;
         }
 
-        /* الهيدر */
-        .site-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1a1a2e;
-            margin-bottom: 5px;
-        }
-        .site-subtitle {
-            font-size: 18px;
-            color: #e94560;
-            margin-bottom: 8px;
+        /* أيقونة البوت الكبيرة */
+        .bot-icon {
+            font-size: 64px;
+            margin-bottom: 10px;
         }
         .version {
             font-size: 13px;
             color: #6c757d;
             margin-bottom: 25px;
-            border-bottom: 1px solid #eee;
             display: inline-block;
             padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
         }
 
         /* معلومات المستخدم */
@@ -69,12 +60,6 @@
             font-size: 20px;
             font-weight: bold;
             color: #0f3460;
-        }
-        .user-email {
-            font-size: 14px;
-            color: #6c757d;
-            word-break: break-all;
-            margin-top: 4px;
         }
         .subscription-days {
             background: #e8f0fe;
@@ -98,36 +83,6 @@
             font-size: 13px;
             color: #856404;
             margin-top: 5px;
-        }
-
-        /* أزرار الاشتراك */
-        .plan-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 15px 0;
-        }
-        .plan-btn {
-            display: inline-block;
-            background: #0f3460;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .plan-btn.monthly {
-            background: #28a745;
-        }
-        .plan-btn.yearly {
-            background: #e94560;
-        }
-        .plan-btn:hover {
-            transform: scale(0.97);
-            opacity: 0.9;
         }
 
         /* زر الخروج */
@@ -167,7 +122,7 @@
             transform: scale(1.02);
         }
 
-        /* الشات بوت (Fullscreen) - نفس الكود السابق */
+        /* الشات بوت (Fullscreen) */
         .chat-fullscreen {
             position: fixed;
             top: 0;
@@ -355,13 +310,17 @@
             pointer-events: none;
             z-index: 999;
         }
+        /* إخفاء أزرار الاشتراك القديمة */
+        .plan-buttons {
+            display: none;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="main-card">
-        <div class="site-title">خدمات مساعدك</div>
-        <div class="site-subtitle">boot الذكي | دعم فوري</div>
+        <!-- أيقونة البوت بدلاً من العناوين -->
+        <div class="bot-icon">🤖</div>
         <div class="version">نسخة 2.0 · خدمات رقمية متكاملة</div>
 
         <!-- قسم تسجيل الدخول (يظهر فقط إذا لم يسجل الدخول) -->
@@ -379,19 +338,19 @@
         <div id="appSection" style="display: none;">
             <div class="user-greeting">
                 <div class="user-name" id="userNameDisplay">مرحباً</div>
-                <div class="user-email" id="userEmailDisplay"></div>
                 <div class="subscription-days" id="daysLeftDisplay"></div>
                 <div class="subscription-status" id="subStatus">✅ اشتراكك مفعل</div>
-                <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج) - تجدد تلقائياً</div>
+                <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج)</div>
             </div>
 
-            <div class="plan-buttons">
+            <!-- أزرار الاشتراخ مخفية حالياً (display:none) -->
+            <div class="plan-buttons" style="display:none;">
                 <a href="http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz" target="_blank" class="plan-btn monthly">📅 اشتراك شهري</a>
                 <a href="http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8" target="_blank" class="plan-btn yearly">📅 اشتراك سنوي</a>
             </div>
 
             <button id="logoutBtn" class="logout-btn">🚪 تسجيل الخروج</button>
-            <button id="openChatBtn" class="open-chat-btn">💬 boot مساعدك</button>
+            <button id="openChatBtn" class="open-chat-btn">💬 مساعدك boot</button>
         </div>
     </div>
 </div>
@@ -413,7 +372,7 @@
 </div>
 
 <script type="module">
-    // -------------------- Firebase (نفس الكود الأصلي) --------------------
+    // -------------------- Firebase --------------------
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
@@ -432,7 +391,6 @@
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userNameDisplay = document.getElementById('userNameDisplay');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
     const daysLeftDisplay = document.getElementById('daysLeftDisplay');
     const subStatus = document.getElementById('subStatus');
     const currentPlanDisplay = document.getElementById('currentPlanDisplay');
@@ -441,7 +399,6 @@
     const chatFull = document.getElementById('chatFullscreen');
     const closeChatBtn = document.getElementById('closeChatBtn');
 
-    // --- دوال مساعدة ---
     function showToast(msg) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
@@ -449,7 +406,7 @@
         setTimeout(() => toast.style.opacity = '0', 3000);
     }
 
-    // التحقق من الاشتراك
+    // التحقق من الاشتراك (localStorage)
     function getSubscriptionInfo() {
         const expiry = localStorage.getItem('subscription_expiry');
         const now = Date.now();
@@ -463,18 +420,16 @@
     // تحديث واجهة المستخدم بعد تسجيل الدخول
     function updateUIForUser(user) {
         if (!user) return;
-        // استخراج الاسم من البريد (قبل @)
+        // استخراج الاسم من البريد (قبل @) بدون تكرار البريد
         let name = user.email.split('@')[0];
         name = name.charAt(0).toUpperCase() + name.slice(1);
         userNameDisplay.innerText = `مرحباً ${name}`;
-        userEmailDisplay.innerText = user.email;
         
         const sub = getSubscriptionInfo();
         if (sub.active) {
             daysLeftDisplay.innerText = `📅 يتبقى ${sub.daysLeft} يوم`;
             subStatus.innerText = '✅ اشتراكك مفعل';
-            // تحديد الخطة الحالية (من رابط الدفع المستخدم - افتراضي شهري)
-            currentPlanDisplay.innerText = 'اشتراك شهري (100 دج) - تجدد تلقائياً';
+            currentPlanDisplay.innerText = 'اشتراك شهري (100 دج)';
         } else {
             daysLeftDisplay.innerText = '⚠️ لا يوجد اشتراك نشط';
             subStatus.innerText = '❌ غير مشترك';
@@ -482,7 +437,7 @@
         }
     }
 
-    // معالجة تفعيل الاشتراك عبر رابط العودة
+    // تفعيل الاشتراك عبر رابط العودة
     function checkAutoSubscription() {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -496,7 +451,7 @@
         }
     }
 
-    // -------------------- مراقبة حالة المصادقة --------------------
+    // مراقبة حالة المصادقة
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
@@ -505,7 +460,6 @@
         } else {
             authSection.style.display = 'block';
             appSection.style.display = 'none';
-            // مسح الحقول
             document.getElementById('email').value = '';
             document.getElementById('password').value = '';
             document.getElementById('confirmPassword').value = '';
@@ -609,7 +563,7 @@
         { name: 'نتائج BAC', img: 'ONEC.png', url: 'https://bac.onec.dz/', instructions: '🔹 أدخل رقم التسجيل.' }
     ];
 
-    // دوال الشات بوت (نفس السابق)
+    // دوال الشات بوت
     const messagesDiv = document.getElementById('chatMessages');
     const sendBtn = document.getElementById('chat-send');
     const chatInput = document.getElementById('chat-input');
@@ -769,9 +723,7 @@
         }
     });
 
-    // تفعيل الاشتراك التلقائي
     checkAutoSubscription();
-    // تهيئة الشات بوت
     initChat();
 </script>
 </body>
