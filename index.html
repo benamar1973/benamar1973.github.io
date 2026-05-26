@@ -9,11 +9,40 @@
         body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
         .container { max-width: 500px; width: 100%; }
         .card { background: white; border-radius: 35px; padding: 25px 20px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .bot-icon { font-size: 80px; margin-bottom: 10px; animation: bounce 2s infinite; }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        
+        /* أيقونة في أعلى الصفحة */
+        .top-icon { 
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            transition: all 0.3s;
         }
+        .top-icon:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        /* إضافة مسافة علوية للبطاقة بسبب الأيقونة الثابتة */
+        .card {
+            margin-top: 50px;
+        }
+        
         .version { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
         .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; transition: all 0.3s; }
@@ -22,8 +51,30 @@
         .user-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; padding: 15px; margin: 15px 0; color: white; }
         .user-name { font-size: 20px; font-weight: bold; word-break: break-all; }
         .sub-days { background: rgba(255,255,255,0.2); border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
-        .open-chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 18px; font-size: 1.5rem; font-weight: bold; color: white; width: 100%; cursor: pointer; margin-top: 15px; transition: all 0.3s; }
-        .open-chat-btn:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        /* زر boot خدماتي المعدل */
+        .open-chat-btn { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            border: none; 
+            border-radius: 60px; 
+            padding: 18px; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: white; 
+            width: 100%; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .open-chat-btn:hover { 
+            transform: scale(1.02); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+        }
+        
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.3rem; }
@@ -57,12 +108,33 @@
         }
         .quick-reply { background: #007bff; color: white; border: none; border-radius: 20px; padding: 8px 15px; margin: 5px; cursor: pointer; transition: all 0.3s; }
         .quick-reply:hover { background: #0056b3; transform: scale(1.05); }
+        
+        @media (max-width: 768px) {
+            .top-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 35px;
+                top: 10px;
+            }
+            .card {
+                margin-top: 40px;
+            }
+            .open-chat-btn {
+                font-size: 1.2rem;
+                padding: 14px;
+            }
+        }
     </style>
 </head>
 <body>
+
+<!-- الأيقونة في أعلى الصفحة -->
+<div class="top-icon" id="topIconBtn">
+    🤖
+</div>
+
 <div class="container">
     <div class="card">
-        <div class="bot-icon">🤖</div>
         <div class="version">نسخة 2.1 · خدمات رقمية ذكية</div>
 
         <div id="loginSection">
@@ -78,7 +150,10 @@
                 <div style="font-size:13px; margin-top: 8px;" id="planText">يرجى الاشتراك للوصول إلى الخدمات</div>
                 <div style="font-size:12px; margin-top: 5px;" id="statsText"></div>
             </div>
-            <button id="openChatBtn" class="open-chat-btn">👇 اضغط هنا 👇</button>
+            <!-- زر boot خدماتي المعدل -->
+            <button id="openChatBtn" class="open-chat-btn">
+                <span>🤖</span> boot خدماتي <span>💬</span>
+            </button>
             <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
         </div>
     </div>
@@ -120,7 +195,6 @@
         { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", instructions: "🔹 أدخل رقم التسجيل المركزي.", needsCard: false, keywords: ["سيارة", "قسيمة"] }
     ];
 
-    // ردود ذكية للبوت
     const smartResponses = {
         "مرحب": ["مرحباً بك! 🌟 كيف يمكنني مساعدتك اليوم؟", "أهلاً وسهلاً! 🤗 تفضل باختيار الخدمة التي تريدها"],
         "شكر": ["العفو! 😊 أنا هنا لخدمتك دائماً", "بكل سرور! 🌹 هل تحتاج مساعدة أخرى؟"],
@@ -204,7 +278,6 @@
             document.getElementById('statsText').innerHTML = '⭐ قم بالاشتراك للوصول إلى جميع الخدمات';
         }
         
-        // تنبيه قبل انتهاء الاشتراك بيومين
         if (sub.active && sub.days <= 2) {
             showToast(`⚠️ تنبيه: اشتراكك سينتهي بعد ${sub.days} يوم! جدد الآن`, true);
         }
@@ -253,7 +326,6 @@
             }
         }
         
-        // البحث عن خدمات
         for (let service of services) {
             for (let keyword of service.keywords) {
                 if (lowerText.includes(keyword)) {
@@ -334,7 +406,6 @@
         
         messagesDiv.appendChild(buildIcons());
         
-        // إضافة رسالة ترحيب مخصصة للمشتركين
         const sub = getSubscription();
         if (sub.active) {
             const premiumMsg = document.createElement('div');
@@ -343,7 +414,6 @@
             messagesDiv.appendChild(premiumMsg);
         }
         
-        // روابط الاشتراك
         const subBtn = document.createElement('div');
         subBtn.style.display = 'flex';
         subBtn.style.gap = '10px';
@@ -372,7 +442,6 @@
         subBtn.appendChild(yearly);
         messagesDiv.appendChild(subBtn);
         
-        // عرض أكثر الخدمات استخداماً
         const topServices = getTopServices();
         if (topServices.length > 0 && sub.active) {
             const statsMsg = document.createElement('div');
@@ -395,7 +464,6 @@
         updateUI();
         showToast(`مرحباً ${email.split('@')[0]}! 👋`);
         
-        // رسالة ترحيب عند أول دخول
         if (!localStorage.getItem(`firstLogin_${currentUser}`)) {
             localStorage.setItem(`firstLogin_${currentUser}`, 'true');
             setTimeout(() => {
@@ -430,11 +498,23 @@
     const openChatBtn = document.getElementById('openChatBtn');
     const chatFull = document.getElementById('chatFullscreen');
     const closeChatBtn = document.getElementById('closeChatBtn');
+    const topIconBtn = document.getElementById('topIconBtn');
 
+    // فتح الشات من الأيقونة العلوية أو الزر
     openChatBtn.onclick = () => {
         chatFull.classList.add('open');
         if (messagesDiv.children.length === 0) initChat();
     };
+    
+    topIconBtn.onclick = () => {
+        if (currentUser) {
+            chatFull.classList.add('open');
+            if (messagesDiv.children.length === 0) initChat();
+        } else {
+            showToast('⚠️ الرجاء تسجيل الدخول أولاً', true);
+        }
+    };
+    
     closeChatBtn.onclick = () => chatFull.classList.remove('open');
 
     sendBtn.onclick = async () => {
@@ -491,13 +571,12 @@
         }
     })();
     
-    // تنبيه دوري لتجديد الاشتراك
     setInterval(() => {
         const sub = getSubscription();
         if (sub.active && sub.days <= 3 && sub.days > 0 && currentUser) {
             showToast(`💡 تذكير: اشتراكك سينتهي بعد ${sub.days} يوم! جدد الآن`, true);
         }
-    }, 86400000); // كل 24 ساعة
+    }, 86400000);
 </script>
 </body>
 </html>
