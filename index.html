@@ -38,6 +38,9 @@
         .bot-link-btn { display: inline-block; background-color: #007bff; color: white; border: none; border-radius: 30px; padding: 8px 16px; margin-top: 10px; cursor: pointer; font-size: 13px; }
         .flex-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 999; }
+        .google-btn { background: #4285F4; color: white; border: none; border-radius: 40px; padding: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .google-btn:hover { background: #357ae8; }
+        .logout-btn { background: #dc3545; color: white; border: none; border-radius: 40px; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -46,16 +49,15 @@
         <div class="bot-icon">🤖</div>
         <div class="version">نسخة 2.0 · خدمات رقمية متكاملة</div>
 
-        <div id="authSection" style="display: none;">
-            <input type="email" id="email" placeholder="البريد الإلكتروني (Gmail)" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
-            <input type="password" id="password" placeholder="كلمة المرور" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
-            <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
-            <button id="loginBtn" style="background:#0f3460; color:white; width:100%; padding:12px; border-radius:40px; margin:5px 0;">تسجيل الدخول</button>
-            <button id="signupBtn" style="background:#e94560; color:white; width:100%; padding:12px; border-radius:40px; margin:5px 0;">إنشاء حساب جديد</button>
-            <button id="resetPasswordBtn" style="background:#6c757d; color:white; width:100%; padding:12px; border-radius:40px;">نسيت كلمة المرور؟</button>
+        <!-- قسم تسجيل الدخول بحساب Google فقط -->
+        <div id="authSection">
+            <button id="googleSignInBtn" class="google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" style="background:white; border-radius:50%; padding:4px;"> إنشاء حساب أو تسجيل الدخول بـ Gmail
+            </button>
             <div id="authStatus" style="text-align:center; margin-top:10px; color:#e94560;"></div>
         </div>
 
+        <!-- قسم التطبيق (بعد تسجيل الدخول) -->
         <div id="appSection" style="display: none;">
             <div class="user-greeting">
                 <div class="user-name" id="userNameDisplay">مرحباً</div>
@@ -64,12 +66,14 @@
                 <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج)</div>
             </div>
             <button id="openChatBtn" class="open-chat-btn">👇 اضغط هنا 👇</button>
+            <button id="logoutBtn" class="logout-btn">🚪 تسجيل الخروج</button>
         </div>
     </div>
 </div>
 
 <div id="toast" class="toast"></div>
 
+<!-- الشات بوت -->
 <div id="chatFullscreen" class="chat-fullscreen">
     <div class="chat-header">
         <span>🤖 boot خدماتي | مساعدك الذكي</span>
@@ -85,7 +89,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
@@ -97,7 +101,9 @@
     };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
+    // عناصر DOM
     const authSection = document.getElementById('authSection');
     const appSection = document.getElementById('appSection');
     const userNameDisplay = document.getElementById('userNameDisplay');
@@ -107,6 +113,8 @@
     const openChatBtn = document.getElementById('openChatBtn');
     const chatFull = document.getElementById('chatFullscreen');
     const closeChatBtn = document.getElementById('closeChatBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const authStatus = document.getElementById('authStatus');
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
@@ -127,8 +135,7 @@
 
     function updateUIForUser(user) {
         if (!user) return;
-        let name = user.email.split('@')[0];
-        name = name.charAt(0).toUpperCase() + name.slice(1);
+        let name = user.displayName || user.email.split('@')[0];
         userNameDisplay.innerText = `مرحباً ${name}`;
         const sub = getSubscriptionInfo();
         if (sub.active) {
@@ -155,6 +162,23 @@
         }
     }
 
+    // تسجيل الدخول ب Google
+    document.getElementById('googleSignInBtn').addEventListener('click', async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            authStatus.innerText = `✅ مرحباً ${result.user.displayName || result.user.email}`;
+            showToast(`تم تسجيل الدخول بنجاح`);
+        } catch (error) {
+            authStatus.innerText = `❌ فشل تسجيل الدخول: ${error.message}`;
+        }
+    });
+
+    // تسجيل الخروج
+    logoutBtn.addEventListener('click', async () => {
+        await signOut(auth);
+        showToast("تم تسجيل الخروج");
+    });
+
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
@@ -163,67 +187,7 @@
         } else {
             authSection.style.display = 'block';
             appSection.style.display = 'none';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('confirmPassword').value = '';
-            document.getElementById('authStatus').innerText = '';
-        }
-    });
-
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        if (!email || !password) {
-            document.getElementById('authStatus').innerText = '❌ الرجاء إدخال البريد وكلمة المرور';
-            return;
-        }
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            document.getElementById('authStatus').innerText = '✅ تم تسجيل الدخول بنجاح';
-        } catch (error) {
-            let msg = '❌ ';
-            if (error.code === 'auth/user-not-found') msg += 'المستخدم غير موجود';
-            else if (error.code === 'auth/wrong-password') msg += 'كلمة المرور غير صحيحة';
-            else msg += error.message;
-            document.getElementById('authStatus').innerText = msg;
-        }
-    });
-
-    document.getElementById('signupBtn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const confirm = document.getElementById('confirmPassword').value.trim();
-        if (!email || !password || !confirm) {
-            document.getElementById('authStatus').innerText = '❌ الرجاء ملء جميع الحقول';
-            return;
-        }
-        if (password !== confirm) {
-            document.getElementById('authStatus').innerText = '❌ كلمتا المرور غير متطابقتين';
-            return;
-        }
-        if (password.length < 6) {
-            document.getElementById('authStatus').innerText = '❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل';
-            return;
-        }
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            document.getElementById('authStatus').innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
-        } catch (error) {
-            document.getElementById('authStatus').innerText = '❌ ' + (error.code === 'auth/email-already-in-use' ? 'البريد مستخدم بالفعل' : error.message);
-        }
-    });
-
-    document.getElementById('resetPasswordBtn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        if (!email) {
-            document.getElementById('authStatus').innerText = '❌ الرجاء إدخال البريد الإلكتروني';
-            return;
-        }
-        try {
-            await sendPasswordResetEmail(auth, email);
-            document.getElementById('authStatus').innerText = '✅ تم إرسال رابط إعادة التعيين إلى بريدك';
-        } catch (error) {
-            document.getElementById('authStatus').innerText = '❌ ' + (error.code === 'auth/user-not-found' ? 'البريد غير مسجل' : error.message);
+            authStatus.innerText = '';
         }
     });
 
