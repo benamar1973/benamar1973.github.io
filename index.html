@@ -42,6 +42,7 @@
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; transition: all 0.3s; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .btn-logout { background: #dc3545; margin-top: 15px; }
+        .btn-activate { background: linear-gradient(135deg, #28a745, #20c997); margin-top: 10px; }
         .user-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; padding: 15px; margin: 15px 0; color: white; }
         .user-name { font-size: 20px; font-weight: bold; word-break: break-all; }
         .sub-days { background: rgba(255,255,255,0.2); border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
@@ -135,7 +136,7 @@
         <div class="version">نسخة 2.1 · خدمات رقمية ذكية</div>
 
         <div id="loginSection">
-            <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" required>
+            <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" value="mustaphabenamar40@gmail.com">
             <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
             <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
         </div>
@@ -143,8 +144,8 @@
         <div id="appSection" style="display: none;">
             <div class="user-info">
                 <div class="user-name" id="userName"></div>
-                <div class="sub-days" id="daysLeft">⚠️ لا يوجد اشتراك نشط</div>
-                <div style="font-size:13px; margin-top: 8px;" id="planText">يرجى الاشتراك للوصول إلى الخدمات</div>
+                <div class="sub-days" id="daysLeft"></div>
+                <div style="font-size:13px; margin-top: 8px;" id="planText"></div>
                 <div style="font-size:12px; margin-top: 5px;" id="statsText"></div>
             </div>
             
@@ -192,16 +193,6 @@
         { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", instructions: "🔹 أدخل رقم التسجيل المركزي.", needsCard: false, keywords: ["سيارة", "قسيمة"] }
     ];
 
-    const smartResponses = {
-        "مرحب": ["مرحباً بك! 🌟 كيف يمكنني مساعدتك اليوم؟", "أهلاً وسهلاً! 🤗 تفضل باختيار الخدمة التي تريدها"],
-        "شكر": ["العفو! 😊 أنا هنا لخدمتك دائماً", "بكل سرور! 🌹 هل تحتاج مساعدة أخرى؟"],
-        "كيف حالك": ["أنا بخير والحمدلله! 🤖 متحمس لمساعدتك", "تمام التمام! 🚀 كيف يمكنني خدمتك اليوم؟"],
-        "اشتراك": ["📝 روابط الاشتراك متاحة دائماً أسفل الشاشة\n• شهري: 100 دج\n• سنوي: 365 دج", "للاتباع اشتراكك، استخدم الروابط الموجودة أسفل الشات 💳"],
-        "مساعدة": ["🤝 إليك ما يمكنني فعله:\n• شحن الهاتف\n• دفع الفواتير\n• نتائج الامتحانات\n• خدمات إدارية\n• وغيرها الكثير!"],
-        "الخدمات": ["🎯 قائمة الخدمات المتاحة:\n" + services.slice(0, 5).map(s => "• " + s.name).join("\n") + "\n...والمزيد! اضغط على الأيقونات لرؤية الكل"],
-        "بطاقة": ["💳 البطاقة الذهبية أو CIB مطلوبة لعمليات الشحن فقط. الخدمات الأخرى لا تحتاج بطاقة بنكية."]
-    };
-
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
@@ -238,6 +229,21 @@
             return { active: true, days };
         }
         return { active: false, days: 0 };
+    }
+
+    // تفعيل تلقائي لحساب mustaphabenamar40
+    function autoActivateForUser(email) {
+        if (email === 'mustaphabenamar40@gmail.com') {
+            const existingExpiry = localStorage.getItem(`sub_${email}`);
+            if (!existingExpiry || Date.now() >= parseInt(existingExpiry)) {
+                // تفعيل تلقائي لمدة 365 يوم
+                const expiry = Date.now() + (365 * 86400000);
+                localStorage.setItem(`sub_${email}`, expiry);
+                console.log('✅ تم تفعيل حساب mustaphabenamar40 تلقائياً');
+                return true;
+            }
+        }
+        return false;
     }
 
     function updateStats(serviceName) {
@@ -305,7 +311,6 @@
         messagesDiv.appendChild(welcomeDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         
-        // إضافة رسالة ترحيب إضافية من البوت
         setTimeout(() => {
             addMessage("🌟 أنا سعيد بانضمامك إلينا! اختر أي خدمة من الأيقونات أعلاه وسأكون معك خطوة بخطوة.", false);
             addMessage("💡 نصيحة: يمكنك أيضاً كتابة 'مساعدة' في أي وقت للحصول على اقتراحات سريعة.", false);
@@ -337,6 +342,15 @@
 
     function getSmartResponse(text) {
         const lowerText = text.toLowerCase();
+        const smartResponses = {
+            "مرحب": ["مرحباً بك! 🌟 كيف يمكنني مساعدتك اليوم؟", "أهلاً وسهلاً! 🤗 تفضل باختيار الخدمة التي تريدها"],
+            "شكر": ["العفو! 😊 أنا هنا لخدمتك دائماً", "بكل سرور! 🌹 هل تحتاج مساعدة أخرى؟"],
+            "كيف حالك": ["أنا بخير والحمدلله! 🤖 متحمس لمساعدتك", "تمام التمام! 🚀 كيف يمكنني خدمتك اليوم؟"],
+            "اشتراك": ["📝 اشتراكك مفعل بالفعل! يمكنك استخدام جميع الخدمات 🎉", "أنت مشترك معنا! استمتع بالخدمات المتاحة ✨"],
+            "مساعدة": ["🤝 إليك ما يمكنني فعله:\n• شحن الهاتف\n• دفع الفواتير\n• نتائج الامتحانات\n• خدمات إدارية\n• وغيرها الكثير!"],
+            "الخدمات": ["🎯 قائمة الخدمات المتاحة:\n" + services.slice(0, 5).map(s => "• " + s.name).join("\n") + "\n...والمزيد! اضغط على الأيقونات لرؤية الكل"]
+        };
+        
         for (let [key, responses] of Object.entries(smartResponses)) {
             if (lowerText.includes(key)) {
                 return responses[Math.floor(Math.random() * responses.length)];
@@ -402,8 +416,7 @@
             item.onclick = () => {
                 const sub = getSubscription();
                 if (!sub.active) {
-                    addMessage(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً نشطاً. استخدم زر "اشتراك" بالأسفل. 💳`, false);
-                    addMessage("📅 الاشتراك الشهري 100 دج فقط! اضغط على زر الاشتراك أدناه", false);
+                    addMessage(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً نشطاً.`, false);
                     return;
                 }
                 requestConfirmation(s);
@@ -411,37 +424,6 @@
             grid.appendChild(item);
         });
         return grid;
-    }
-
-    function buildSubscriptionButtons() {
-        const subBtn = document.createElement('div');
-        subBtn.id = 'subscriptionButtons';
-        subBtn.style.display = 'flex';
-        subBtn.style.gap = '10px';
-        subBtn.style.marginTop = '10px';
-        subBtn.style.flexWrap = 'wrap';
-        
-        const monthly = document.createElement('button');
-        monthly.innerText = '📅 اشتراك شهري 100 دج';
-        monthly.className = 'quick-reply';
-        monthly.style.background = '#28a745';
-        monthly.onclick = () => {
-            window.open('http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz');
-            addMessage("🔄 جاري تحويلك إلى بوابة الدفع...", false);
-        };
-        
-        const yearly = document.createElement('button');
-        yearly.innerText = '🌟 اشتراك سنوي 365 دج (وفر 25%)';
-        yearly.className = 'quick-reply';
-        yearly.style.background = '#e94560';
-        yearly.onclick = () => {
-            window.open('http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8');
-            addMessage("🔄 جاري تحويلك إلى بوابة الدفع...", false);
-        };
-        
-        subBtn.appendChild(monthly);
-        subBtn.appendChild(yearly);
-        return subBtn;
     }
 
     function initChat() {
@@ -456,9 +438,7 @@
         
         const sub = getSubscription();
         
-        // التحقق من حالة الاشتراك
         if (sub.active) {
-            // للمشترك المفعل: تظهر رسالة ترحيب خاصة ولا تظهر أيقونات الاشتراك
             if (!hasShownWelcome && currentUser) {
                 addWelcomeMessage();
                 hasShownWelcome = true;
@@ -477,49 +457,47 @@
                 messagesDiv.appendChild(statsMsg);
             }
         } else {
-            // للمشترك الجديد: تظهر أيقونات الاشتراك
             const newUserMsg = document.createElement('div');
             newUserMsg.className = 'bot-msg';
-            newUserMsg.innerText = '👋 مرحباً بك! للوصول إلى جميع الخدمات، يرجى الاشتراك أولاً:';
+            newUserMsg.innerText = '👋 مرحباً بك! للوصول إلى جميع الخدمات، يرجى الاشتراك أولاً.';
             messagesDiv.appendChild(newUserMsg);
-            
-            messagesDiv.appendChild(buildSubscriptionButtons());
-            
-            const infoMsg = document.createElement('div');
-            infoMsg.className = 'bot-msg';
-            infoMsg.innerText = '💡 بعد الاشتراك، سيتم تفعيل حسابك تلقائياً وستظهر لك رسالة ترحيب خاصة.';
-            messagesDiv.appendChild(infoMsg);
         }
     }
 
+    // تسجيل الدخول
     document.getElementById('loginBtn').onclick = () => {
-        const email = document.getElementById('emailInput').value.trim();
-        if (!email || !email.includes('@') || !email.endsWith('@gmail.com')) {
-            document.getElementById('loginMsg').innerText = '❌ أدخل بريد Gmail صحيحاً';
+        let email = document.getElementById('emailInput').value.trim();
+        if (!email || !email.includes('@')) {
+            document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
             return;
         }
+        
+        // تأكد من صيغة البريد
+        if (!email.endsWith('@gmail.com')) {
+            email = email + '@gmail.com';
+        }
+        
         currentUser = email;
         localStorage.setItem('currentUser', currentUser);
+        
+        // تفعيل تلقائي لحساب mustaphabenamar40
+        autoActivateForUser(currentUser);
+        
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('appSection').style.display = 'block';
         updateUI();
-        showToast(`مرحباً ${email.split('@')[0]}! 👋`);
-        
-        // إعادة تعيين رسالة الترحيب للمستخدم الجديد
+        showToast(`مرحباً ${currentUser.split('@')[0]}! 👋`);
         hasShownWelcome = false;
         
-        if (!localStorage.getItem(`firstLogin_${currentUser}`)) {
-            localStorage.setItem(`firstLogin_${currentUser}`, 'true');
+        setTimeout(() => {
+            openChatBtn.click();
             setTimeout(() => {
-                openChatBtn.click();
-                setTimeout(() => {
-                    const sub = getSubscription();
-                    if (!sub.active) {
-                        addMessage(`🎉 أهلاً بك ${email.split('@')[0]}!\n\n📢 للوصول إلى جميع الخدمات، قم بالاشتراك من الأزرار أدناه.\n\n✅ بعد الاشتراك، سيتم تفعيل حسابك وستظهر لك رسالة ترحيب مميزة!`, false);
-                    }
-                }, 500);
-            }, 1000);
-        }
+                const sub = getSubscription();
+                if (sub.active) {
+                    addMessage(`🎉 أهلاً بك ${currentUser.split('@')[0]}! اشتراكك مفعل. استمتع بالخدمات!`, false);
+                }
+            }, 500);
+        }, 1000);
     };
 
     document.getElementById('logoutBtn').onclick = () => {
@@ -527,14 +505,16 @@
         localStorage.removeItem('currentUser');
         document.getElementById('loginSection').style.display = 'block';
         document.getElementById('appSection').style.display = 'none';
-        document.getElementById('emailInput').value = '';
+        document.getElementById('emailInput').value = 'mustaphabenamar40@gmail.com';
         hasShownWelcome = false;
         showToast('تم تسجيل الخروج 👋');
     };
 
+    // استعادة الجلسة
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
         currentUser = savedUser;
+        autoActivateForUser(currentUser);
         document.getElementById('loginSection').style.display = 'none';
         document.getElementById('appSection').style.display = 'block';
         updateUI();
@@ -582,30 +562,12 @@
                 const smartResponse = getSmartResponse(text);
                 if (smartResponse) {
                     addMessage(smartResponse, false);
-                    if (smartResponse.includes("فتح الرابط")) {
-                        addMessage("هل تريد فتح الرابط الآن؟ (نعم/لا)", false);
-                    }
-                } else if (text.includes('إحصائياتي')) {
-                    const sub = getSubscription();
-                    if (sub.active) {
-                        const topServices = getTopServices();
-                        if (topServices.length > 0) {
-                            addMessage(`📊 إحصائيات استخدامك حتى الآن:\n${topServices.map(s => `• ${s[0]}: ${s[1]} مرة`).join('\n')}`, false);
-                        } else {
-                            addMessage("📊 لم تستخدم أي خدمة بعد! ابدأ باختيار خدمة من الأيقونات", false);
-                        }
-                    } else {
-                        addMessage("📊 للإحصائيات، يرجى الاشتراك أولاً في الباقة المناسبة.", false);
-                    }
                 } else {
                     const sub = getSubscription();
                     if (sub.active) {
-                        addMessage("💡 يمكنني مساعدتك في:\n• شحن الرصيد\n• دفع الفواتير\n• نتائج الامتحانات\n• الخدمات الإدارية\n\nاختر الخدمة من الأيقونات أو اكتب 'مساعدة'", false, true);
+                        addMessage("💡 يمكنني مساعدتك في:\n• شحن الرصيد\n• دفع الفواتير\n• نتائج الامتحانات\n\nاختر الخدمة من الأيقونات", false, true);
                     } else {
-                        addMessage("💡 للاستفادة من خدماتي، يرجى الاشتراك أولاً:\n• شهري: 100 دج\n• سنوي: 365 دج\n\nاستخدم أزرار الاشتراك أدناه للبدء!", false);
-                        const subButtons = buildSubscriptionButtons();
-                        messagesDiv.appendChild(subButtons);
-                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                        addMessage("💡 يرجى الاشتراك أولاً للاستفادة من الخدمات.", false);
                     }
                 }
             }
@@ -613,41 +575,6 @@
     };
 
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
-
-    (function checkPayment() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const days = urlParams.get('days');
-        if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
-            const expiry = Date.now() + (parseInt(days) * 86400000);
-            localStorage.setItem(`sub_${currentUser}`, expiry);
-            showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً! شكراً لثقتك 🌟`);
-            updateUI();
-            
-            if (chatFull.classList.contains('open')) {
-                // إعادة تهيئة الشات لإظهار رسالة الترحيب للمشترك الجديد
-                initChat();
-                hasShownWelcome = true;
-            } else {
-                // فتح الشات تلقائياً لعرض رسالة الترحيب
-                setTimeout(() => {
-                    openChatBtn.click();
-                    setTimeout(() => {
-                        initChat();
-                        hasShownWelcome = true;
-                    }, 500);
-                }, 1000);
-            }
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    })();
-    
-    setInterval(() => {
-        const sub = getSubscription();
-        if (sub.active && sub.days <= 3 && sub.days > 0 && currentUser) {
-            showToast(`💡 تذكير: اشتراكك سينتهي بعد ${sub.days} يوم! جدد الآن`, true);
-        }
-    }, 86400000);
 </script>
 </body>
 </html>
