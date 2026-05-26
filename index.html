@@ -1,29 +1,771 @@
-المستخدم: يضغط على أيقونة "منحة البطالة"
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>بوت مصطفى - مساعدك الذكي (مثل DeepSeek)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-البوت يشرح:
-📌 منحة البطالة - التسجيل في ANEM
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+        }
 
-🔹 فائدة الرابط: التسجيل في منحة البطالة (دعم مالي للباحثين عن عمل)
-   المنحة تصرف شهرياً بقيمة 18,000 دج لمدة 12 شهراً
+        .top-bot-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            border-radius: 80px;
+            padding: 20px 30px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: glow 2s infinite;
+        }
 
-📋 متطلبات التسجيل:
-• شهادة ميلاد رقم 12
-• شهادة مدرسية أو جامعية
-• بطاقة تعريف وطنية
-• رقم الهاتف الشخصي
+        .top-bot-bar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
+        }
 
-📝 خطوات التسجيل كاملة:
-1️⃣ أنشئ حساباً على المنصة
-2️⃣ أدخل البريد الإلكتروني ورقم الهاتف
-3️⃣ املأ البيانات الشخصية بالكامل
-4️⃣ ارفع الوثائق المطلوبة
-5️⃣ اختر أقرب وكالة ANEM
-6️⃣ أرسل الطلب وانتظر الرد خلال 15 يوماً
-7️⃣ بعد القبول، تصرف المنحة شهرياً
+        @keyframes glow {
+            0% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
+            50% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
+            100% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
+        }
 
-❓ هل أنت جاهز لفتح الرابط الآن؟
+        .top-bot-text {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-المستخدم: نعم
+        .top-bot-text span:first-child {
+            font-size: 3rem;
+            animation: bounce 1s infinite;
+        }
 
-البوت: ✅ تم فتح الرابط بنجاح!
-(يفتح الرابط تلقائياً)
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .top-bot-sub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            display: block;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .version {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px 0;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            margin-top: 15px;
+        }
+
+        .user-info {
+            background: #e8f0fe;
+            border-radius: 25px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f3460;
+            word-break: break-all;
+        }
+
+        .sub-days {
+            background: #fff3cd;
+            border-radius: 40px;
+            padding: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .chat-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0f2f5;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: 0.3s;
+            direction: rtl;
+        }
+
+        .chat-fullscreen.open {
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bot-msg, .user-msg {
+            padding: 12px 16px;
+            border-radius: 20px;
+            max-width: 85%;
+            font-size: 15px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-msg {
+            background: #e3f2fd;
+            align-self: flex-start;
+            border-bottom-right-radius: 5px;
+        }
+
+        .user-msg {
+            background: #d4edda;
+            align-self: flex-end;
+            border-bottom-left-radius: 5px;
+        }
+
+        .input-area {
+            background: white;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        #chatInput {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        #sendBtn {
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 10px 0;
+        }
+
+        .icon-item {
+            background: #f8f9fa;
+            border-radius: 18px;
+            padding: 10px 5px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .icon-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #007bff;
+        }
+
+        .icon-item img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 6px;
+        }
+
+        .icon-item span {
+            font-size: 11px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 9999;
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        .typing {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+
+        .typing span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #888;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 480px) {
+            .top-bot-text { font-size: 1.6rem; }
+            .top-bot-text span:first-child { font-size: 2.2rem; }
+            .top-bot-bar { padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bot-bar" id="topBotBar">
+        <div class="top-bot-text">
+            <span>🤖</span>
+            <span>بوت مصطفى</span>
+            <span>✨</span>
+        </div>
+        <div class="top-bot-sub">مساعدك الذكي مثل DeepSeek | اضغط للدخول</div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="version">⭐ بوت مصطفى · شرح مفصل مثل DeepSeek ⭐</div>
+
+            <div id="loginSection">
+                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" required>
+                <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
+                <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
+            </div>
+
+            <div id="appSection" style="display: none;">
+                <div class="user-info">
+                    <div class="user-name" id="userName"></div>
+                    <div class="sub-days" id="daysLeft">⚠️ لا يوجد اشتراك نشط</div>
+                    <div style="font-size:13px; color:#856404;" id="planText">يرجى الاشتراك للوصول إلى الخدمات</div>
+                </div>
+                <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="chatFullscreen" class="chat-fullscreen">
+        <div class="chat-header">
+            <span>🤖 بوت مصطفى | مثل DeepSeek - شرح مفصل</span>
+            <button class="close-btn" id="closeChatBtn">✕</button>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="chatInput" placeholder="اسألني عن أي خدمة... سأشرح لك كل شيء بالتفصيل">
+            <button id="sendBtn">إرسال</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let isBotTyping = false;
+        let conversationHistory = [];
+        let pendingService = null;
+
+        // بيانات الخدمات مع شرح مفصل لكل خدمة
+        const services = [
+            { 
+                name: "DJEZZY", 
+                img: "DJEZZY.png", 
+                url: "https://moncompte.djezzy.dz/fr/guest/recharge",
+                description: "شحن رصيد هاتف دجازي",
+                benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان، بدون الحاجة للذهاب إلى وكالة.\n🔹 يمكنك الشحن بأي مبلغ تختاره (500 دج، 1000 دج، 2000 دج، 5000 دج).",
+                requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية (Gold Card) أو بطاقة CIB بنكية 💳\n• اتصال بالإنترنت 🌐",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اضغط على الرابط أعلاه\n2️⃣ أدخل رقم الهاتف المراد شحنه (بدون 0، مثال: 551234567)\n3️⃣ اختر المبلغ المناسب لك\n4️⃣ اختر طريقة الدفع (بطاقة ذهبية أو CIB)\n5️⃣ أدخل بيانات بطاقتك (رقم البطاقة، تاريخ الصلاحية، الرمز السري)\n6️⃣ تأكيد العملية عبر رمز OTP يرسل لجوالك\n7️⃣ انتظر رسالة تأكيد وصول الرصيد\n\n✅ سيصلك الرصيد فوراً خلال دقائق!",
+                needsCard: true
+            },
+            { 
+                name: "mobilis", 
+                img: "MOBILIS.png", 
+                url: "https://e-paiement.mobilis.dz/",
+                description: "شحن رصيد هاتف موبيليس",
+                benefit: "🔹 **فائدة الرابط:** خدمة رسمية من موبيليس لشحن رصيد أي رقم موبيليس.\n🔹 متوفر عروض خاصة عند الشحن عبر الإنترنت (مكالمات + إنترنت إضافية).",
+                requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم موبيليس المراد شحنه 📱\n• بطاقة ذهبية أو CIB 💳\n• البريد الإلكتروني لتأكيد العملية 📧",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ افتح الرابط\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ حدد المبلغ (500-5000 دج)\n4️⃣ اختر طريقة الدفع الإلكتروني\n5️⃣ أدخل بيانات البطاقة البنكية\n6️⃣ تأكيد عبر رمز التحقق\n7️⃣ استلم الرصيد خلال 5 دقائق",
+                needsCard: true
+            },
+            { 
+                name: "Ooredoo", 
+                img: "OOREDOO.png", 
+                url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar",
+                description: "شحن رصيد هاتف أوريدو",
+                benefit: "🔹 **فائدة الرابط:** خدمة E-Storm من أوريدو لشحن الرصيد وشراء الباقات.\n🔹 يمكنك شحن رصيد عادي أو شراء باقات إنترنت ومكالمات.",
+                requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم أوريدو المراد شحنه 📱\n• بطاقة CIB أو بطاقة ذهبية 💳\n• اتصال آمن بالإنترنت",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اختر 'شحن الرصيد' من الصفحة الرئيسية\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ يستلم الرصيد فوراً",
+                needsCard: true
+            },
+            { 
+                name: "دفع فاتورة الكهرباء", 
+                img: "SONELGAZ.png", 
+                url: "https://epayement.elit.dz/payementFacture.xhtml",
+                description: "دفع فاتورة الكهرباء والغاز",
+                benefit: "🔹 **فائدة الرابط:** دفع فواتير الكهرباء والغاز إلكترونياً بدون الحاجة للذهاب إلى الوكالات.\n🔹 تحصل على إشعار فوري بالدفع وإيصال إلكتروني.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم العقد الموجود أعلى الفاتورة (14 رقم) 📄\n• بطاقة ذهبية أو CIB 💳",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أدخل رقم العقد المكون من 14 رقماً\n2️⃣ سيظهر المبلغ المطلوب دفعه\n3️⃣ اضغط على 'دفع الآن'\n4️⃣ اختر طريقة الدفع\n5️⃣ أدخل بيانات البطاقة\n6️⃣ تأكيد الدفع\n7️⃣ احفظ الإيصال الإلكتروني",
+                needsCard: false
+            },
+            { 
+                name: "دفع فاتورة الماء", 
+                img: "SEAAL.png", 
+                url: "https://fatourati.seaal.dz/",
+                description: "دفع فاتورة الماء",
+                benefit: "🔹 **فائدة الرابط:** منصة SEAAL الرسمية لدفع فواتير الماء.\n🔹 يمكنك دفع الفاتورة الشهرية أو السنوية.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم المشترك الموجود على الفاتورة 📄\n• بطاقة دفع إلكترونية 💳",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة المراد دفعها\n3️⃣ اضغط على 'دفع'\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد وطباعة الإيصال",
+                needsCard: false
+            },
+            { 
+                name: "نتائج BEM", 
+                img: "ONEC.png", 
+                url: "https://bem.onec.dz/",
+                description: "نتائج شهادة التعليم المتوسط (BEM)",
+                benefit: "🔹 **فائدة الرابط:** الاستعلام عن نتائج البيم فور إعلانها رسمياً.\n🔹 النتيجة تظهر مع المعدل والتقدير.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل الخاص بالمترشح 📝\n• تاريخ الميلاد 🗓️",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل (8 أرقام)\n2️⃣ أدخل تاريخ الميلاد\n3️⃣ اضغط على 'استعلام'\n4️⃣ ستظهر النتيجة فوراً",
+                needsCard: false
+            },
+            { 
+                name: "نتائج BAC", 
+                img: "ONEC.png", 
+                url: "https://bac.onec.dz/",
+                description: "نتائج الباكالوريا (BAC)",
+                benefit: "🔹 **فائدة الرابط:** الاستعلام عن نتائج الباكالوريا لحظة إعلانها.\n🔹 ظهور النتيجة مع المعدل والشعب.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل الخاص بالمترشح 📝\n• تاريخ الميلاد 🗓️",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل\n2️⃣ أدخل تاريخ الميلاد\n3️⃣ اضغط 'استعلام'\n4️⃣ تظهر النتيجة مع المواد والمعدل",
+                needsCard: false
+            },
+            { 
+                name: "منحة البطالة", 
+                img: "ANEM.png", 
+                url: "https://minha.anem.dz/pre_inscription",
+                description: "التسجيل في منحة البطالة ANEM",
+                benefit: "🔹 **فائدة الرابط:** التسجيل في منحة البطالة (دعم مالي للباحثين عن عمل).\n🔹 المنحة تصرف شهرياً بقيمة 13,000 دج لمدة 12 شهراً.",
+                requirements: "📋 **متطلبات التسجيل:**\n• شهادة ميلاد رقم 12 📄\n• شهادة مدرسية أو جامعية 🎓\n• بطاقة تعريف وطنية 🪪\n• رقم الهاتف الشخصي 📱",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أنشئ حساباً على المنصة\n2️⃣ أدخل البريد الإلكتروني ورقم الهاتف\n3️⃣ املأ البيانات الشخصية بالكامل\n4️⃣ ارفع الوثائق المطلوبة (شهادة الميلاد، الشهادة، البطاقة)\n5️⃣ اختر أقرب وكالة ANEM لك\n6️⃣ أرسل الطلب وانتظر الرد خلال 15 يوماً\n7️⃣ بعد القبول، تصرف المنحة شهرياً",
+                needsCard: false
+            },
+            { 
+                name: "تجنيد الجيش", 
+                img: "الجيش الوطني.png", 
+                url: "https://preinscription.mdn.dz/",
+                description: "التسجيل للتجنيد في الجيش الوطني",
+                benefit: "🔹 **فائدة الرابط:** التسجيل المسبق للخدمة الوطنية.\n🔹 يسمح لك بمعرفة موعد استدعائك وتجنب الغرامات.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم البطاقة الوطنية 🪪\n• شهادة ميلاد رقم 12 📄\n• شهادة مدرسية أو جامعية 🎓",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أنشئ حساباً برقم البطاقة الوطنية\n2️⃣ املأ البيانات الشخصية والعائلية\n3️⃣ أدخل المؤهلات العلمية\n4️⃣ ارفع الوثائق المطلوبة\n5️⃣ اختر مركز التجنيد الأقرب إليك\n6️⃣ أرسل الطلب وانتظر الرد",
+                needsCard: false
+            },
+            { 
+                name: "فضاء الأولياء", 
+                img: "فضاء الاولياء.png", 
+                url: "https://awlyaa.education.dz/login",
+                description: "متابعة أبناءك الدراسة",
+                benefit: "🔹 **فائدة الرابط:** متابعة النقاط والغيابات وجداول الامتحانات لأبنائك.\n🔹 يمكنك دفع المستحقات المدرسية إلكترونياً.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم تسجيل التلميذ (12 رقم) 📝\n• كلمة المرور من المدرسة 🔑",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم تسجيل التلميذ\n2️⃣ أدخل كلمة المرور (تحصل عليها من إدارة المدرسة)\n3️⃣ اضغط 'دخول'\n4️⃣ ستظهر لك صفحة التلميذ:\n   - النقاط والتحصيل الدراسي\n   - الغيابات\n   - جداول الامتحانات\n   - دفع المستحقات المدرسية",
+                needsCard: false
+            },
+            { 
+                name: "سكنات عدل", 
+                img: "AADEL.png", 
+                url: "https://www.aadl.dz",
+                description: "التسجيل في سكنات عدل AADL",
+                benefit: "🔹 **فائدة الرابط:** التسجيل في برنامج سكنات عدل (AADL).\n🔹 يمكنك الاكتتاب عند فتح التسجيلات ومتابعة ملفك.",
+                requirements: "📋 **متطلبات التسجيل:**\n• بطاقة تعريف وطنية 🪪\n• شهادة ميلاد رقم 12 📄\n• شهادة سكن (إيجار أو ملك) 🏠\n• كشف راتب لآخر 3 أشهر 💰",
+                steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أنشئ حساباً على المنصة\n2️⃣ املأ البيانات الشخصية والمهنية\n3️⃣ ارفع الوثائق المطلوبة (بطاقة، شهادة ميلاد، شهادة سكن، كشوف رواتب)\n4️⃣ اختر الولاية التي ترغب بالسكن فيها\n5️⃣ انتظر فتح التسجيلات الرسمية\n6️⃣ عند فتح التسجيل، قدم طلب الاكتتاب\n7️⃣ انتظر القرعة العلنية\n8️⃣ إذا فزت، أكمل إجراءات الدفع والاستلام",
+                needsCard: false
+            },
+            { 
+                name: "CCP", 
+                img: "CCP.png", 
+                url: "https://eccp.poste.dz",
+                description: "خدمات CCP البريدية",
+                benefit: "🔹 **فائدة الرابط:** الاستعلام عن رصيد CCP وتحويل الأموال ودفع الفواتير.\n🔹 يمكنك إجراء كل العمليات البنكية بدون الذهاب للبريد.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم CCP (مكون من 7 أرقام) 🔢\n• كلمة المرور الشخصية 🔑\n• رمز التحقق من الهاتف 📱",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم CCP\n2️⃣ أدخل كلمة المرور\n3️⃣ أدخل رمز التحقق المرسل لجوالك\n4️⃣ ستظهر لك الصفحة الرئيسية:\n   - الاستعلام عن الرصيد\n   - تحويل الأموال\n   - دفع الفواتير\n   - سحب الأموال",
+                needsCard: false
+            },
+            { 
+                name: "قسيمة السيارات", 
+                img: "مديرية-الضرائب.png", 
+                url: "https://qassimatouka.mf.gov.dz/home",
+                description: "الاستعلام عن قسيمة السيارات",
+                benefit: "🔹 **فائدة الرابط:** الاستعلام عن رصيد قسيمة السيارات وقيمتها والمدة المتبقية.\n🔹 تستخدم القسيمة لدفع المخالفات والضرائب.",
+                requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل المركزي (في البطاقة الرمادية) 🚗",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل المركزي\n2️⃣ اضغط 'استعلام'\n3️⃣ ستظهر لك:\n   - قيمة القسيمة المتبقية\n   - تاريخ الصلاحية\n   - المخالفات المسجلة\n4️⃣ يمكنك الدفع مباشرة عبر الموقع",
+                needsCard: false
+            }
+        ];
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 2500);
+        }
+
+        function getSubscription() {
+            if (!currentUser) return { active: false, days: 0 };
+            const expiry = localStorage.getItem(`sub_${currentUser}`);
+            if (expiry && Date.now() < parseInt(expiry)) {
+                const days = Math.ceil((parseInt(expiry) - Date.now()) / (86400000));
+                return { active: true, days };
+            }
+            return { active: false, days: 0 };
+        }
+
+        function updateUI() {
+            if (!currentUser) return;
+            document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
+            const sub = getSubscription();
+            if (sub.active) {
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
+                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - شرح مفصل مثل DeepSeek';
+            } else {
+                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
+                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
+            }
+        }
+
+        document.getElementById('loginBtn').onclick = () => {
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email || !email.includes('@')) {
+                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
+                return;
+            }
+            currentUser = email;
+            localStorage.setItem('currentUser', currentUser);
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            updateUI();
+            showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 🚀`);
+        };
+
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('appSection').style.display = 'none';
+            document.getElementById('emailInput').value = '';
+            showToast('تم تسجيل الخروج');
+        };
+
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = savedUser;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            updateUI();
+        }
+
+        const messagesDiv = document.getElementById('messages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatFull = document.getElementById('chatFullscreen');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const topBotBar = document.getElementById('topBotBar');
+
+        topBotBar.onclick = () => {
+            chatFull.classList.add('open');
+            if (messagesDiv.children.length === 0) initChat();
+        };
+        closeChatBtn.onclick = () => chatFull.classList.remove('open');
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'bot-msg';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div> جاري التفكير مثل DeepSeek...';
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function addMessage(text, isUser, saveToHistory = true) {
+            const div = document.createElement('div');
+            div.className = isUser ? 'user-msg' : 'bot-msg';
+            div.innerText = text;
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            if (saveToHistory) {
+                conversationHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
+                if (conversationHistory.length > 20) conversationHistory.shift();
+            }
+        }
+
+        // عرض شرح مفصل للخدمة مثل DeepSeek
+        function showDetailedServiceExplanation(service) {
+            let msg = `📌 **${service.name}** - ${service.description}\n\n`;
+            msg += `${service.benefit}\n\n`;
+            msg += `${service.requirements}\n\n`;
+            msg += `${service.steps}\n\n`;
+            if (service.needsCard) {
+                msg += `💳 **ملاحظة مهمة:** تحتاج إلى بطاقة بنكية (ذهبية أو CIB) لإتمام عملية الدفع.\n\n`;
+            }
+            msg += `❓ **هل أنت جاهز لفتح الرابط الآن؟**\nأجب بـ 'نعم' لفتح الرابط مباشرة، أو 'لا' للعودة للقائمة.`;
+            addMessage(msg, false);
+            pendingService = service;
+        }
+
+        async function handleReply(text) {
+            const lower = text.trim().toLowerCase();
+            if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز' || lower === 'نعم جاهز') {
+                if (pendingService) {
+                    window.open(pendingService.url, '_blank');
+                    await addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nالآن يمكنك اتباع الخطوات الموضحة أعلاه لإتمام العملية. إذا واجهتك أي مشكلة، أنا هنا للمساعدة.`, false);
+                    pendingService = null;
+                }
+                return true;
+            } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن' || lower === 'لا شكراً') {
+                await addMessage("🙂 **لا مشكلة!** أنا هنا في أي وقت تحتاج فيه إلى مساعدة.\n\nيمكنك اختيار خدمة أخرى من الأيقونات أو سؤالي عن أي شيء آخر. 🤝", false);
+                pendingService = null;
+                return true;
+            }
+            return false;
+        }
+
+        function buildIcons() {
+            const grid = document.createElement('div');
+            grid.className = 'icon-grid';
+            services.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                const img = document.createElement('img');
+                img.src = s.img;
+                img.alt = s.name;
+                img.onerror = () => { img.src = 'https://via.placeholder.com/55/cccccc/white?text=icon'; };
+                const span = document.createElement('span');
+                span.innerText = s.name;
+                item.appendChild(img);
+                item.appendChild(span);
+                item.onclick = async () => {
+                    const sub = getSubscription();
+                    if (!sub.active) {
+                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: تواصل مع المطور عبر البريد الإلكتروني أو صفحتنا على فيسبوك.\n\nبعد التفعيل، ستحصل على جميع الخدمات لمدة سنة كاملة! 🎉`, false);
+                        return;
+                    }
+                    showDetailedServiceExplanation(s);
+                };
+                grid.appendChild(item);
+            });
+            return grid;
+        }
+
+        async function initChat() {
+            messagesDiv.innerHTML = '';
+            conversationHistory = [];
+            const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى - مثل DeepSeek تماماً!** ✨
+
+أنا مساعدك الذكي للخدمات الرقمية في الجزائر. 🇩🇿
+
+**ماذا يميزني؟**
+✅ أشرح لك **فائدة كل رابط** قبل فتحه
+✅ أعدد **متطلبات التسجيل والدفع** بالكامل
+✅ أوضح **كل خطوات التسجيل** بتسلسل مفهوم
+✅ أسألك إن كنت جاهزاً **ثم أفتح الرابط**
+
+**الخدمات المتاحة (13 خدمة):**
+📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)
+⚡ دفع فواتير الكهرباء والماء
+📚 نتائج BEM و BAC
+🏦 منحة البطالة وسكنات عدل
+👨‍👩‍👧 فضاء الأولياء
+💳 CCP وقسيمة السيارات
+🎖️ تجنيد الجيش
+
+**كيف تبدأ؟**
+• اضغط على أيقونة الخدمة التي تريدها
+• سأشرح لك كل شيء بالتفصيل
+• أجب بـ 'نعم' لفتح الرابط
+
+اسألني عن أي خدمة، وسأجيبك مثل DeepSeek! 🚀💙`;
+
+            addMessage(welcomeMsg, false);
+            messagesDiv.appendChild(buildIcons());
+        }
+
+        sendBtn.onclick = async () => {
+            if (isBotTyping) return;
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            chatInput.value = '';
+            
+            if (pendingService) {
+                const handled = await handleReply(text);
+                if (!handled) {
+                    await addMessage("عذراً، أجب بـ 'نعم' أو 'لا' فقط.", false);
+                }
+                return;
+            }
+            
+            isBotTyping = true;
+            showTypingIndicator();
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            removeTypingIndicator();
+            
+            // ردود ذكية للأسئلة المباشرة
+            const lowerText = text.toLowerCase();
+            let response = "";
+            
+            if (lowerText.includes('مرحب') || lowerText.includes('السلام')) {
+                response = "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**. أنا هنا لخدمتك 24 ساعة.\n\nاضغط على أي أيقونة لتحصل على شرح مفصل مثل DeepSeek!";
+            } else if (lowerText.includes('شكر')) {
+                response = "العفو على الرحب والسعة! 🤍\nأتمنى أكون عند حسن ظنك. لو احتجت أي مساعدة، أنا موجود.";
+            } else if (lowerText.includes('كيف تستخدم') || lowerText.includes('طريقة الاستخدام')) {
+                response = "📖 **طريقة استخدام بوت مصطفى:**\n\n1️⃣ اضغط على أيقونة الخدمة التي تريدها\n2️⃣ سأعرض عليك:\n   • فائدة الرابط\n   • متطلبات التسجيل والدفع\n   • كل خطوات التسجيل بالتفصيل\n3️⃣ أجب بـ 'نعم' لفتح الرابط\n4️⃣ أكمل العملية على الموقع\n\nجرب تختار أي خدمة من الأيقونات!";
+            } else if (lowerText.includes('الخدمات') || lowerText.includes('ماذا تقدم')) {
+                response = "📋 **جميع الخدمات المتاحة (13 خدمة):**\n\n📱 شحن الجوال: Djezzy, Mobilis, Ooredoo\n⚡ دفع الفواتير: كهرباء + ماء\n🎓 النتائج: BAC + BEM\n🏦 الخدمات الحكومية: منحة البطالة، تجنيد الجيش، سكنات عدل\n👨‍👩‍👧 فضاء الأولياء\n💳 CCP، قسيمة السيارات\n\n⚠️ **ملاحظة:** كل خدمة تحتاج اشتراكاً نشطاً.\n\nللاشتراك: تواصل مع المطور.";
+            } else {
+                response = "🤔 **أهلاً بك!**\n\nللاستفادة من خدماتي، يرجى اتباع الخطوات التالية:\n\n1️⃣ اضغط على **أيقونة الخدمة** التي تريدها من القائمة أعلاه\n2️⃣ سأشرح لك بالتفصيل:\n   • فائدة الرابط 🔗\n   • كل متطلبات التسجيل والدفع 💳\n   • الخطوات الكاملة للتسجيل 📝\n3️⃣ جاوب بـ 'نعم' عندما تكون جاهزاً لفتح الرابط\n\n**جرب تسألني:** 'كيف أشحن دجازي؟' أو 'وش لازم عشان منحة البطالة؟'\n\nأنا هنا لمساعدتك مثل DeepSeek تماماً! 🚀";
+            }
+            
+            await addMessage(response, false);
+            isBotTyping = false;
+        };
+
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
+
+        function checkPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const days = urlParams.get('days');
+            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
+                const expiry = Date.now() + (parseInt(days) * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, expiry);
+                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
+                updateUI();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+        checkPayment();
+    </script>
+</body>
+</html>
