@@ -16,10 +16,8 @@
         .subscription-days { background: #e8f0fe; border-radius: 40px; padding: 8px 15px; margin: 12px 0; font-weight: bold; color: #0f3460; }
         .subscription-status { font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 10px; }
         .current-plan { background: #fff3cd; border-radius: 40px; padding: 6px 12px; display: inline-block; font-size: 13px; color: #856404; margin-top: 5px; }
-        /* زر فتح الشات بوت - مكبر ونص جديد */
         .open-chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 20px 24px; font-size: 1.8rem; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 15px; }
         .open-chat-btn:hover { transform: scale(1.02); }
-        /* باقي الأنماط كما هي */
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f9f9f9; z-index: 10000; display: flex; flex-direction: column; direction: rtl; font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transform: translateY(100%); transition: transform 0.3s ease-out; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: #007bff; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; font-weight: bold; }
@@ -65,7 +63,6 @@
                 <div class="subscription-status" id="subStatus">✅ اشتراكك مفعل</div>
                 <div class="current-plan" id="currentPlanDisplay">اشتراك شهري (100 دج)</div>
             </div>
-            <!-- الزر المعدل: "اضغط هنا" مكبر -->
             <button id="openChatBtn" class="open-chat-btn">👇 اضغط هنا 👇</button>
         </div>
     </div>
@@ -263,6 +260,9 @@
     const sendBtn = document.getElementById('chat-send');
     const chatInput = document.getElementById('chat-input');
 
+    // متغير لحالة التفاعل: حفظ الخدمة المطلوبة وانتظار التأكيد
+    let pendingService = null;
+
     function isUserSubscribed() {
         const expiry = localStorage.getItem('subscription_expiry');
         return expiry && Date.now() < parseInt(expiry);
@@ -296,43 +296,83 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
+    // ردود خاصة بالخدمات (تطلب التأكيد قبل فتح الرابط)
+    function requestServiceConfirmation(service) {
+        if (!service) return;
+        // رسالة تفاعلية تشرح متطلبات الدفع (بطاقة ذهبية/CIB)
+        let extraNote = "";
+        if (service.name.includes('mobilis') || service.name.includes('DJEZZY') || service.name.includes('Ooredoo') || service.name.includes('شحن')) {
+            extraNote = "\n💳 ملاحظة: عملية الشحن تحتاج إلى بطاقة ذهبية أو بطاقة CIB بنكية. تأكد من أن بطاقتك مفعلة للدفع عبر الإنترنت.\n";
+        }
+        const confirmMsg = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}${extraNote}\n❓ هل أنت جاهز لفتح الرابط الآن؟ (أجب بنعم أو لا)`;
+        addMessage(confirmMsg, false);
+        pendingService = service;  // تخزين الخدمة لانتظار الجواب
+    }
+
+    // معالجة ردود المستخدم على سؤال التأكيد
+    function handleConfirmationReply(userMsg) {
+        const lower = userMsg.trim().toLowerCase();
+        if (lower === 'نعم' || lower === 'yes' || lower === 'اهلا' || lower === 'جاهز' || lower === 'نعم جاهز' || lower === 'y') {
+            // فتح الرابط مباشرة
+            window.open(pendingService.url, '_blank');
+            addMessage(`✅ تم فتح رابط "${pendingService.name}" في نافذة جديدة.`, false);
+            pendingService = null;
+            return true;
+        } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن' || lower === 'ليس الان' || lower === 'n' || lower === 'no') {
+            addMessage("لا مشكلة، أنا هنا في أي وقت تحتاج فيه إلى مساعدة 🤝. فقط عد واطلب الخدمة عندما تكون مستعداً.", false);
+            pendingService = null;
+            return true;
+        }
+        return false; // لم يفهم الجواب
+    }
+
     function getServiceReply(serviceName) {
         const service = allServices.find(s => s.name === serviceName);
         if (!service) return null;
-        let replyText = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}\n\n`;
         if (!isUserSubscribed()) {
-            replyText += '⚠️ **أنت غير مشترك.** يرجى الاشتراك أولاً من الصفحة الرئيسية.';
-            return { text: replyText, link: null };
+            return { text: `⚠️ خدمة "${service.name}" تتطلب اشتراكاً نشطاً. يرجى الاشتراك أولاً من الصفحة الرئيسية.`, link: null, needConfirm: false };
         } else {
-            replyText += '🔻 اضغط على الزر أدناه لفتح الرابط.';
-            return { text: replyText, link: service.url };
+            // لا نرسل رابطاً مباشراً، بل نطلب التأكيد
+            return { service: service, needConfirm: true };
         }
     }
 
     function getSpecialReply(userMessage) {
         const msg = userMessage.toLowerCase();
         if (msg.includes('مساعدة') || msg.includes('help') || msg.includes('قائمة')) {
-            return { text: '📋 قائمة الخدمات:\n' + allServices.map(s => '• ' + s.name).join('\n'), link: null };
+            return { text: '📋 قائمة الخدمات:\n' + allServices.map(s => '• ' + s.name).join('\n'), link: null, needConfirm: false };
         }
         if (msg.includes('اشتراك')) {
             return { text: '📝 للاشتراك، استخدم الروابط في الصفحة الرئيسية.', extraButtons: [
                 { text: 'اشتراك شهري', url: 'http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz' },
                 { text: 'اشتراك سنوي', url: 'http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8' }
-            ] };
+            ], needConfirm: false };
         }
         const matched = allServices.find(s => userMessage.includes(s.name) || s.name.includes(userMessage));
-        return matched ? getServiceReply(matched.name) : null;
+        if (matched) {
+            return getServiceReply(matched.name);
+        }
+        return null;
     }
 
+    // معالجة طلب الخدمة (من أيقونة أو كتابة)
     function handleServiceRequest(serviceName) {
         addMessage(serviceName, true);
         setTimeout(() => {
             const reply = getServiceReply(serviceName);
-            if (reply) addMessage(reply.text, false, reply.link, reply.extraButtons);
-            else addMessage('❌ لم نجد هذه الخدمة.', false);
+            if (!reply) {
+                addMessage('❌ لم نجد هذه الخدمة.', false);
+                return;
+            }
+            if (reply.needConfirm && reply.service) {
+                requestServiceConfirmation(reply.service);
+            } else if (reply.text) {
+                addMessage(reply.text, false, reply.link, reply.extraButtons);
+            }
         }, 500);
     }
 
+    // بناء شبكة الأيقونات
     function buildIconsGrid() {
         const grid = document.createElement('div');
         grid.className = 'original-icons-grid';
@@ -363,24 +403,45 @@
         messagesDiv.innerHTML = '';
         const welcomeMsg = document.createElement('div');
         welcomeMsg.className = 'bot-message';
-        welcomeMsg.innerText = 'مرحباً! أنا boot خدماتي 🤖\nسأرشدك خطوة بخطوة للتسجيل في أي خدمة.\n📌 اضغط على أيقونة الخدمة التي تريدها.';
+        welcomeMsg.innerText = 'مرحباً! أنا boot خدماتي 🤖\nسأرشدك خطوة بخطوة للتسجيل في أي خدمة.\n📌 اضغط على أيقونة الخدمة التي تريدها، ثم سأسألك إن كنت جاهزاً لفتح الرابط.';
         messagesDiv.appendChild(welcomeMsg);
         messagesDiv.appendChild(buildIconsGrid());
     }
 
-    sendBtn.addEventListener('click', () => {
+    // معالجة إرسال الرسائل (دعم الردود على التأكيد)
+    function onSendMessage() {
         const text = chatInput.value.trim();
         if (!text) return;
         addMessage(text, true);
         chatInput.value = '';
-        setTimeout(() => {
-            const special = getSpecialReply(text);
-            if (special) addMessage(special.text, false, special.link, special.extraButtons);
-            else addMessage('❓ لم أفهم طلبك. اكتب "مساعدة" أو استخدم الأيقونات.', false);
-        }, 500);
-    });
-    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
 
+        setTimeout(() => {
+            // إذا كان هناك خدمة معلقة في انتظار التأكيد
+            if (pendingService) {
+                const confirmed = handleConfirmationReply(text);
+                if (confirmed) return;
+                else {
+                    addMessage("عذراً، لم أفهم ردك. أجب بـ 'نعم' لفتح الرابط أو 'لا' لتأجيل الأمر.", false);
+                }
+            } else {
+                const special = getSpecialReply(text);
+                if (special) {
+                    if (special.needConfirm && special.service) {
+                        requestServiceConfirmation(special.service);
+                    } else {
+                        addMessage(special.text, false, special.link, special.extraButtons);
+                    }
+                } else {
+                    addMessage('❓ لم أفهم طلبك. اكتب "مساعدة" لعرض قائمة الخدمات أو استخدم الأيقونات.', false);
+                }
+            }
+        }, 500);
+    }
+
+    sendBtn.addEventListener('click', onSendMessage);
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') onSendMessage(); });
+
+    // الاقتراحات التلقائية
     const suggestionsDiv = document.getElementById('suggestions-list');
     chatInput.addEventListener('input', function() {
         const val = this.value.trim().toLowerCase();
@@ -395,7 +456,7 @@
         if (e.target.classList.contains('suggestion-item')) {
             chatInput.value = e.target.getAttribute('data-suggestion');
             suggestionsDiv.style.display = 'none';
-            sendBtn.click();
+            onSendMessage();
         } else if (!suggestionsDiv.contains(e.target) && e.target !== chatInput) {
             suggestionsDiv.style.display = 'none';
         }
