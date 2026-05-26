@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>بوت مصطفى - مساعدك الذكي (مثل DeepSeek)</title>
+    <title>بوت مصطفى - مساعدك الذكي</title>
     <style>
         * {
             margin: 0;
@@ -340,12 +340,12 @@
             <span>بوت مصطفى</span>
             <span>✨</span>
         </div>
-        <div class="top-bot-sub">مساعدك الذكي مثل DeepSeek | اضغط للدخول</div>
+        <div class="top-bot-sub">مساعدك الذكي للخدمات الرقمية | اضغط للدخول</div>
     </div>
 
     <div class="container">
         <div class="card">
-            <div class="version">⭐ بوت مصطفى · شرح مفصل مثل DeepSeek ⭐</div>
+            <div class="version">⭐ بوت مصطفى · خدمات رقمية متكاملة ⭐</div>
 
             <div id="loginSection">
                 <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" required>
@@ -368,12 +368,12 @@
 
     <div id="chatFullscreen" class="chat-fullscreen">
         <div class="chat-header">
-            <span>🤖 بوت مصطفى | مثل DeepSeek - شرح مفصل</span>
+            <span>🤖 بوت مصطفى | مساعدك الذكي</span>
             <button class="close-btn" id="closeChatBtn">✕</button>
         </div>
         <div class="messages" id="messages"></div>
         <div class="input-area">
-            <input type="text" id="chatInput" placeholder="اسألني عن أي خدمة... سأشرح لك كل شيء بالتفصيل">
+            <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا...">
             <button id="sendBtn">إرسال</button>
         </div>
     </div>
@@ -541,7 +541,7 @@
             const sub = getSubscription();
             if (sub.active) {
                 document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - شرح مفصل مثل DeepSeek';
+                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - خدمات رقمية متكاملة';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
                 document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
@@ -596,7 +596,7 @@
             const typingDiv = document.createElement('div');
             typingDiv.className = 'bot-msg';
             typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div> جاري التفكير مثل DeepSeek...';
+            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div> جاري التفكير...';
             messagesDiv.appendChild(typingDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
@@ -618,7 +618,7 @@
             }
         }
 
-        // عرض شرح مفصل للخدمة مثل DeepSeek
+        // عرض شرح مفصل للخدمة
         function showDetailedServiceExplanation(service) {
             let msg = `📌 **${service.name}** - ${service.description}\n\n`;
             msg += `${service.benefit}\n\n`;
@@ -666,7 +666,7 @@
                 item.onclick = async () => {
                     const sub = getSubscription();
                     if (!sub.active) {
-                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: تواصل مع المطور عبر البريد الإلكتروني أو صفحتنا على فيسبوك.\n\nبعد التفعيل، ستحصل على جميع الخدمات لمدة سنة كاملة! 🎉`, false);
+                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: تواصل مع المطور عبر البريد الإلكتروني أو صفحتنا على فيسبوك.\n\nبعد التفعيل، ستحصل على جميع الخدمات. 🎉`, false);
                         return;
                     }
                     showDetailedServiceExplanation(s);
@@ -679,7 +679,7 @@
         async function initChat() {
             messagesDiv.innerHTML = '';
             conversationHistory = [];
-            const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى - مثل DeepSeek تماماً!** ✨
+            const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى!** ✨
 
 أنا مساعدك الذكي للخدمات الرقمية في الجزائر. 🇩🇿
 
@@ -703,7 +703,7 @@
 • سأشرح لك كل شيء بالتفصيل
 • أجب بـ 'نعم' لفتح الرابط
 
-اسألني عن أي خدمة، وسأجيبك مثل DeepSeek! 🚀💙`;
+اسألني عن أي خدمة، وسأجيبك فوراً! 🚀💙`;
 
             addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
@@ -736,7 +736,7 @@
             let response = "";
             
             if (lowerText.includes('مرحب') || lowerText.includes('السلام')) {
-                response = "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**. أنا هنا لخدمتك 24 ساعة.\n\nاضغط على أي أيقونة لتحصل على شرح مفصل مثل DeepSeek!";
+                response = "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**. أنا هنا لخدمتك 24 ساعة.\n\nاضغط على أي أيقونة لتحصل على شرح مفصل لكل خدمة!";
             } else if (lowerText.includes('شكر')) {
                 response = "العفو على الرحب والسعة! 🤍\nأتمنى أكون عند حسن ظنك. لو احتجت أي مساعدة، أنا موجود.";
             } else if (lowerText.includes('كيف تستخدم') || lowerText.includes('طريقة الاستخدام')) {
@@ -744,7 +744,7 @@
             } else if (lowerText.includes('الخدمات') || lowerText.includes('ماذا تقدم')) {
                 response = "📋 **جميع الخدمات المتاحة (13 خدمة):**\n\n📱 شحن الجوال: Djezzy, Mobilis, Ooredoo\n⚡ دفع الفواتير: كهرباء + ماء\n🎓 النتائج: BAC + BEM\n🏦 الخدمات الحكومية: منحة البطالة (18,000 دج)، تجنيد الجيش، سكنات عدل\n👨‍👩‍👧 فضاء الأولياء\n💳 CCP، قسيمة السيارات\n\n⚠️ **ملاحظة:** كل خدمة تحتاج اشتراكاً نشطاً.\n\nللاشتراك: تواصل مع المطور.";
             } else {
-                response = "🤔 **أهلاً بك!**\n\nللاستفادة من خدماتي، يرجى اتباع الخطوات التالية:\n\n1️⃣ اضغط على **أيقونة الخدمة** التي تريدها من القائمة أعلاه\n2️⃣ سأشرح لك بالتفصيل:\n   • فائدة الرابط 🔗\n   • كل متطلبات التسجيل والدفع 💳\n   • الخطوات الكاملة للتسجيل 📝\n3️⃣ جاوب بـ 'نعم' عندما تكون جاهزاً لفتح الرابط\n\n**جرب تسألني:** 'كيف أشحن دجازي؟' أو 'وش لازم عشان منحة البطالة؟'\n\nأنا هنا لمساعدتك مثل DeepSeek تماماً! 🚀";
+                response = "🤔 **أهلاً بك!**\n\nللاستفادة من خدماتي، يرجى اتباع الخطوات التالية:\n\n1️⃣ اضغط على **أيقونة الخدمة** التي تريدها من القائمة أعلاه\n2️⃣ سأشرح لك بالتفصيل:\n   • فائدة الرابط 🔗\n   • كل متطلبات التسجيل والدفع 💳\n   • الخطوات الكاملة للتسجيل 📝\n3️⃣ جاوب بـ 'نعم' عندما تكون جاهزاً لفتح الرابط\n\n**جرب تسألني:** 'كيف أشحن دجازي؟' أو 'وش لازم عشان منحة البطالة؟'\n\nأنا هنا لمساعدتك! 🚀";
             }
             
             await addMessage(response, false);
