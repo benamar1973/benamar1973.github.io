@@ -42,7 +42,6 @@
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; transition: all 0.3s; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .btn-logout { background: #dc3545; margin-top: 15px; }
-        .btn-activate { background: linear-gradient(135deg, #28a745, #20c997); margin-top: 10px; }
         .user-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; padding: 15px; margin: 15px 0; color: white; }
         .user-name { font-size: 20px; font-weight: bold; word-break: break-all; }
         .sub-days { background: rgba(255,255,255,0.2); border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
@@ -86,11 +85,48 @@
         #chatInput:focus { outline: none; border-color: #007bff; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; transition: all 0.3s; }
         #sendBtn:hover { background: #218838; transform: scale(1.05); }
-        .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
-        .icon-item { background: #f8f9fa; border-radius: 18px; padding: 10px 5px; cursor: pointer; text-align: center; border: 1px solid #ddd; transition: all 0.3s; }
-        .icon-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #e9ecef; }
-        .icon-item img { width: 55px; height: 55px; object-fit: cover; border-radius: 12px; margin-bottom: 6px; }
-        .icon-item span { font-size: 11px; display: block; }
+        
+        /* أيقونات الخدمات - أسفل المحادثة */
+        .services-container {
+            background: white;
+            border-top: 1px solid #ddd;
+            padding: 12px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .icon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 12px; 
+            background: white;
+            padding: 8px;
+        }
+        .icon-item { 
+            background: #f8f9fa; 
+            border-radius: 18px; 
+            padding: 10px 5px; 
+            cursor: pointer; 
+            text-align: center; 
+            border: 1px solid #ddd; 
+            transition: all 0.3s;
+        }
+        .icon-item:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            background: #e9ecef; 
+        }
+        .icon-item img { 
+            width: 50px; 
+            height: 50px; 
+            object-fit: cover; 
+            border-radius: 12px; 
+            margin-bottom: 6px;
+        }
+        .icon-item span { 
+            font-size: 10px; 
+            display: block;
+            font-weight: bold;
+        }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .typing-indicator { display: flex; gap: 5px; padding: 10px; background: #e3f2fd; border-radius: 20px; align-self: flex-start; }
         .typing-dot { width: 8px; height: 8px; background: #007bff; border-radius: 50%; animation: typing 1.4s infinite; }
@@ -121,6 +157,17 @@
             .open-chat-btn {
                 font-size: 1.2rem;
                 padding: 14px;
+            }
+            .icon-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .icon-item img {
+                width: 40px;
+                height: 40px;
+            }
+            .icon-item span {
+                font-size: 9px;
             }
         }
     </style>
@@ -165,6 +212,12 @@
         <button class="close-btn" id="closeChatBtn">✕</button>
     </div>
     <div class="messages" id="messages"></div>
+    
+    <!-- أيقونات الخدمات تحت المحادثة -->
+    <div class="services-container" id="servicesContainer">
+        <div class="icon-grid" id="iconGrid"></div>
+    </div>
+    
     <div class="input-area">
         <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا...">
         <button id="sendBtn">إرسال</button>
@@ -236,7 +289,6 @@
         if (email === 'mustaphabenamar40@gmail.com') {
             const existingExpiry = localStorage.getItem(`sub_${email}`);
             if (!existingExpiry || Date.now() >= parseInt(existingExpiry)) {
-                // تفعيل تلقائي لمدة 365 يوم
                 const expiry = Date.now() + (365 * 86400000);
                 localStorage.setItem(`sub_${email}`, expiry);
                 console.log('✅ تم تفعيل حساب mustaphabenamar40 تلقائياً');
@@ -312,7 +364,7 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         
         setTimeout(() => {
-            addMessage("🌟 أنا سعيد بانضمامك إلينا! اختر أي خدمة من الأيقونات أعلاه وسأكون معك خطوة بخطوة.", false);
+            addMessage("🌟 أنا سعيد بانضمامك إلينا! اختر أي خدمة من الأيقونات أدناه وسأكون معك خطوة بخطوة.", false);
             addMessage("💡 نصيحة: يمكنك أيضاً كتابة 'مساعدة' في أي وقت للحصول على اقتراحات سريعة.", false);
         }, 500);
     }
@@ -348,7 +400,7 @@
             "كيف حالك": ["أنا بخير والحمدلله! 🤖 متحمس لمساعدتك", "تمام التمام! 🚀 كيف يمكنني خدمتك اليوم؟"],
             "اشتراك": ["📝 اشتراكك مفعل بالفعل! يمكنك استخدام جميع الخدمات 🎉", "أنت مشترك معنا! استمتع بالخدمات المتاحة ✨"],
             "مساعدة": ["🤝 إليك ما يمكنني فعله:\n• شحن الهاتف\n• دفع الفواتير\n• نتائج الامتحانات\n• خدمات إدارية\n• وغيرها الكثير!"],
-            "الخدمات": ["🎯 قائمة الخدمات المتاحة:\n" + services.slice(0, 5).map(s => "• " + s.name).join("\n") + "\n...والمزيد! اضغط على الأيقونات لرؤية الكل"]
+            "الخدمات": ["🎯 جميع الخدمات متاحة في الأيقونات أسفل الشاشة!"]
         };
         
         for (let [key, responses] of Object.entries(smartResponses)) {
@@ -360,7 +412,7 @@
         for (let service of services) {
             for (let keyword of service.keywords) {
                 if (lowerText.includes(keyword)) {
-                    return `🔍 أرى أنك تبحث عن خدمة "${service.name}"\nهل تريد مني فتح الرابط الخاص بهذه الخدمة؟`;
+                    return `🔍 أرى أنك تبحث عن خدمة "${service.name}"\nاضغط على أيقونتها من الأسفل لفتح الرابط.`;
                 }
             }
         }
@@ -386,12 +438,12 @@
             if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز' || lower === 'نعم جاهز') {
                 window.open(pendingService.url, '_blank');
                 addMessage(`✅ تم فتح رابط "${pendingService.name}" بنجاح! 🚀`, false);
-                addMessage("💡 هل تحتاج مساعدة في خدمة أخرى؟", false, true);
+                addMessage("💡 هل تحتاج مساعدة في خدمة أخرى؟ اضغط على أيقونتها من الأسفل.", false);
                 pendingService = null;
                 return true;
             } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن') {
                 addMessage("لا مشكلة، أنا هنا في أي وقت تحتاج فيه إلى مساعدة 🤝", false);
-                addMessage("✨ يمكنك العودة للخدمات من الأيقونات أعلاه ✨", false);
+                addMessage("✨ يمكنك العودة للخدمات من الأيقونات بالأسفل ✨", false);
                 pendingService = null;
                 return true;
             }
@@ -399,9 +451,11 @@
         return false;
     }
 
-    function buildIcons() {
-        const grid = document.createElement('div');
-        grid.className = 'icon-grid';
+    // بناء أيقونات الخدمات أسفل المحادثة
+    function buildIconsInContainer() {
+        const iconGrid = document.getElementById('iconGrid');
+        iconGrid.innerHTML = '';
+        
         services.forEach(s => {
             const item = document.createElement('div');
             item.className = 'icon-item';
@@ -421,9 +475,8 @@
                 }
                 requestConfirmation(s);
             };
-            grid.appendChild(item);
+            iconGrid.appendChild(item);
         });
-        return grid;
     }
 
     function initChat() {
@@ -431,10 +484,8 @@
         
         const welcome = document.createElement('div');
         welcome.className = 'bot-msg';
-        welcome.innerText = 'مرحباً! أنا boot خدماتي الذكي 🤖\nاختر الخدمة من الأيقونات، أو اكتب سؤالك وسأجيبك فوراً!';
+        welcome.innerText = 'مرحباً! أنا boot خدماتي الذكي 🤖\nاختر الخدمة من الأيقونات بالأسفل، أو اكتب سؤالك وسأجيبك فوراً!';
         messagesDiv.appendChild(welcome);
-        
-        messagesDiv.appendChild(buildIcons());
         
         const sub = getSubscription();
         
@@ -462,6 +513,9 @@
             newUserMsg.innerText = '👋 مرحباً بك! للوصول إلى جميع الخدمات، يرجى الاشتراك أولاً.';
             messagesDiv.appendChild(newUserMsg);
         }
+        
+        // بناء أيقونات الخدمات في الحاوية
+        buildIconsInContainer();
     }
 
     // تسجيل الدخول
@@ -472,7 +526,6 @@
             return;
         }
         
-        // تأكد من صيغة البريد
         if (!email.endsWith('@gmail.com')) {
             email = email + '@gmail.com';
         }
@@ -480,7 +533,6 @@
         currentUser = email;
         localStorage.setItem('currentUser', currentUser);
         
-        // تفعيل تلقائي لحساب mustaphabenamar40
         autoActivateForUser(currentUser);
         
         document.getElementById('loginSection').style.display = 'none';
@@ -510,7 +562,6 @@
         showToast('تم تسجيل الخروج 👋');
     };
 
-    // استعادة الجلسة
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
         currentUser = savedUser;
@@ -565,7 +616,7 @@
                 } else {
                     const sub = getSubscription();
                     if (sub.active) {
-                        addMessage("💡 يمكنني مساعدتك في:\n• شحن الرصيد\n• دفع الفواتير\n• نتائج الامتحانات\n\nاختر الخدمة من الأيقونات", false, true);
+                        addMessage("💡 يمكنني مساعدتك في:\n• شحن الرصيد\n• دفع الفواتير\n• نتائج الامتحانات\n\nاختر الخدمة من الأيقونات بالأسفل", false, true);
                     } else {
                         addMessage("💡 يرجى الاشتراك أولاً للاستفادة من الخدمات.", false);
                     }
