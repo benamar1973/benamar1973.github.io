@@ -3,629 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>boot خدماتي - مساعدك الذكي</title>
+    <title>boot خدماتي</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
-        .container { max-width: 500px; width: 100%; }
-        .card { background: white; border-radius: 35px; padding: 25px 20px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); margin-top: 50px; }
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
+        .card { background: white; border-radius: 35px; padding: 25px 20px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
         
-        .top-icon { 
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
+        /* أيقونة البوت الكبيرة مع النص داخلها */
+        .bot-icon {
+            font-size: 100px;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 160px;
+            height: 160px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 45px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            cursor: pointer;
-            animation: bounce 2s infinite;
-            transition: all 0.3s;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .top-icon:hover {
-            transform: translateX(-50%) scale(1.1);
+        .bot-icon span:first-child {
+            font-size: 70px;
         }
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
-        
-        .version { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
-        .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
-        .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .btn-logout { background: #dc3545; margin-top: 15px; }
-        .user-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; padding: 15px; margin: 15px 0; color: white; }
-        .user-name { font-size: 20px; font-weight: bold; word-break: break-all; }
-        .sub-days { background: rgba(255,255,255,0.2); border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
-        
-        .open-chat-btn { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            border: none; 
-            border-radius: 60px; 
-            padding: 18px; 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            color: white; 
-            width: 100%; 
-            cursor: pointer; 
-            margin-top: 15px; 
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .open-chat-btn:hover { 
-            transform: scale(1.02); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
-        }
-        
-        .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
-        .chat-fullscreen.open { transform: translateY(0); }
-        .chat-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.3rem; }
-        .close-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
-        .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 14px; animation: fadeIn 0.3s; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
-        .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
-        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; transition: all 0.3s; }
-        #chatInput:focus { outline: none; border-color: #007bff; }
-        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; transition: all 0.3s; }
-        #sendBtn:hover { background: #218838; transform: scale(1.05); }
-        
-        /* أيقونات الخدمات - أسفل المحادثة */
-        .services-container {
-            background: white;
-            border-top: 1px solid #ddd;
-            padding: 12px;
-            max-height: 180px;
-            overflow-y: auto;
-        }
-        .icon-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 12px; 
-            background: white;
-            padding: 8px;
-        }
-        .icon-item { 
-            background: #f8f9fa; 
-            border-radius: 18px; 
-            padding: 10px 5px; 
-            cursor: pointer; 
-            text-align: center; 
-            border: 1px solid #ddd; 
-            transition: all 0.3s;
-        }
-        .icon-item:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-            background: #e9ecef; 
-        }
-        .icon-item img { 
-            width: 50px; 
-            height: 50px; 
-            object-fit: cover; 
-            border-radius: 12px; 
-            margin-bottom: 6px;
-        }
-        .icon-item span { 
-            font-size: 10px; 
-            display: block;
+        .bot-icon span:last-child {
+            font-size: 18px;
             font-weight: bold;
+            color: white;
+            margin-top: 5px;
         }
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .typing-indicator { display: flex; gap: 5px; padding: 10px; background: #e3f2fd; border-radius: 20px; align-self: flex-start; }
-        .typing-dot { width: 8px; height: 8px; background: #007bff; border-radius: 50%; animation: typing 1.4s infinite; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-            30% { transform: translateY(-10px); opacity: 1; }
-        }
-        .quick-reply { background: #007bff; color: white; border: none; border-radius: 20px; padding: 8px 15px; margin: 5px; cursor: pointer; transition: all 0.3s; }
-        .quick-reply:hover { background: #0056b3; transform: scale(1.05); }
-        .welcome-message { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 15px; border-radius: 20px; margin: 10px 0; text-align: center; animation: slideIn 0.5s; }
-        @keyframes slideIn {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
+        .version { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+        .user-info { background: #f8f9fa; border-radius: 25px; padding: 15px; margin-bottom: 20px; }
+        .user-name { font-size: 18px; font-weight: bold; color: #0f3460; word-break: break-all; }
+        .sub-status { font-size: 14px; font-weight: bold; color: #28a745; margin: 8px 0; }
+        .sub-note { font-size: 13px; color: #0f3460; }
+        .stats { background: #e8f0fe; border-radius: 40px; padding: 8px; margin: 12px 0; font-size: 13px; }
+        .chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 15px; font-size: 1.3rem; font-weight: bold; color: white; width: 100%; cursor: pointer; margin: 10px 0; }
+        .logout-btn { background: #dc3545; border: none; border-radius: 50px; padding: 12px; width: 100%; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        @media (max-width: 768px) {
-            .top-icon {
-                width: 55px;
-                height: 55px;
-                font-size: 35px;
-                top: 10px;
-            }
-            .card {
-                margin-top: 40px;
-            }
-            .open-chat-btn {
-                font-size: 1.2rem;
-                padding: 14px;
-            }
-            .icon-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 8px;
-            }
-            .icon-item img {
-                width: 40px;
-                height: 40px;
-            }
-            .icon-item span {
-                font-size: 9px;
-            }
-        }
+        /* الشات بوت */
+        .chat-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
+        .chat-full.open { transform: translateY(0); }
+        .chat-head { background: #007bff; color: white; padding: 16px; display: flex; justify-content: space-between; font-size: 1.3rem; }
+        .close { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
+        .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .bot-msg, .user-msg { padding: 10px 14px; border-radius: 20px; max-width: 85%; font-size: 14px; }
+        .bot-msg { background: #e3f2fd; align-self: flex-start; }
+        .user-msg { background: #d4edda; align-self: flex-end; }
+        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; }
+        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; }
+        .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
+        .icon-item { background: #f8f9fa; border-radius: 18px; padding: 10px 5px; cursor: pointer; text-align: center; border: 1px solid #ddd; }
+        .icon-item img { width: 55px; height: 55px; object-fit: cover; border-radius: 12px; margin-bottom: 6px; }
+        .icon-item span { font-size: 11px; display: block; }
+        .link-btn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 8px 16px; margin-top: 10px; cursor: pointer; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; z-index: 9999; }
     </style>
 </head>
 <body>
+<div class="card">
+    <!-- أيقونة البوت مع النص داخلها -->
+    <div class="bot-icon">
+        <span>🤖</span>
+        <span>boot خدماتي</span>
+    </div>
+    <div class="version">نسخة 2.1 · خدمات رقمية ذكية</div>
 
-<div class="top-icon" id="topIconBtn">
-    🤖
-</div>
+    <div id="loginBox">
+        <input type="email" id="email" placeholder="بريدك الإلكتروني" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
+        <button id="loginBtn" style="background:#0f3460; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">دخول / إنشاء حساب</button>
+        <div id="loginMsg" style="color:#e94560; margin-top:8px;"></div>
+    </div>
 
-<div class="container">
-    <div class="card">
-        <div class="version">نسخة 2.1 · خدمات رقمية ذكية</div>
-
-        <div id="loginSection">
-            <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" value="mustaphabenamar40@gmail.com">
-            <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
-            <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
+    <div id="appBox" style="display:none;">
+        <div class="user-info">
+            <div class="user-name" id="userName"></div>
+            <div class="sub-status" id="subStatus">✅ اشتراك مفعل - يتبقى 365 يوم</div>
+            <div class="sub-note" id="subNote">اشتراك نشط - تمتع بجميع الخدمات 🚀</div>
+            <div class="stats" id="statsTxt">📊 أكبر خدمة: Ooredoo (1 مرة)</div>
         </div>
-
-        <div id="appSection" style="display: none;">
-            <div class="user-info">
-                <div class="user-name" id="userName"></div>
-                <div class="sub-days" id="daysLeft"></div>
-                <div style="font-size:13px; margin-top: 8px;" id="planText"></div>
-                <div style="font-size:12px; margin-top: 5px;" id="statsText"></div>
-            </div>
-            
-            <button id="openChatBtn" class="open-chat-btn">
-                <span>🤖</span> boot خدماتي <span>💬</span>
-            </button>
-            <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
-        </div>
+        <button id="openChat" class="chat-btn">💬 افتح المساعد</button>
+        <button id="logout" class="logout-btn">تسجيل الخروج</button>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
-
-<div id="chatFullscreen" class="chat-fullscreen">
-    <div class="chat-header">
-        <span>🤖 boot خدماتي | مساعدك الذكي</span>
-        <button class="close-btn" id="closeChatBtn">✕</button>
+<div id="chatPanel" class="chat-full">
+    <div class="chat-head">
+        <span>🤖 boot خدماتي | مساعدك</span>
+        <button class="close" id="closeChat">✕</button>
     </div>
-    <div class="messages" id="messages"></div>
-    
-    <!-- أيقونات الخدمات تحت المحادثة -->
-    <div class="services-container" id="servicesContainer">
-        <div class="icon-grid" id="iconGrid"></div>
-    </div>
-    
+    <div class="msgs" id="msgs"></div>
     <div class="input-area">
-        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا...">
+        <input type="text" id="chatInput" placeholder="اكتب سؤالك...">
         <button id="sendBtn">إرسال</button>
     </div>
 </div>
 
+<div id="toastMsg" class="toast"></div>
+
 <script>
     let currentUser = null;
+    let stats = {};
     let pendingService = null;
-    let isTyping = false;
-    let hasShownWelcome = false;
 
     const services = [
-        { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر طريقة الشحن.", needsCard: true, keywords: ["شحن", "ديزي", "djezzy"] },
-        { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر المبلغ.", needsCard: true, keywords: ["موبيليس", "mobilis"] },
-        { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", instructions: "🔹 اختر الخدمة.\n🔹 أدخل رقم الهاتف.", needsCard: true, keywords: ["اوريدو", "ooredoo"] },
-        { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", instructions: "🔹 أدخل رقم العقد.", needsCard: false, keywords: ["كهرباء", "سونلغاز"] },
-        { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", instructions: "🔹 أدخل رقم المشترك.", needsCard: false, keywords: ["ماء", "سيال"] },
-        { name: "نتائج BEM", img: "ONEC.png", url: "https://bem.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false, keywords: ["bem", "بيم"] },
-        { name: "نتائج BAC", img: "ONEC.png", url: "https://bac.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false, keywords: ["bac", "باك"] },
-        { name: "منحة البطالة", img: "ANEM.png", url: "https://minha.anem.dz/pre_inscription", instructions: "🔹 تحتاج إلى شهادة ميلاد ورقم ANEM.", needsCard: false, keywords: ["بطالة", "منحة"] },
-        { name: "تجنيد الجيش", img: "الجيش الوطني.png", url: "https://preinscription.mdn.dz/", instructions: "🔹 أنشئ حساباً واملأ البيانات.", needsCard: false, keywords: ["جيش", "تجنيد"] },
-        { name: "فضاء الأولياء", img: "فضاء الاولياء.png", url: "https://awlyaa.education.dz/login", instructions: "🔹 اسم المستخدم: رقم التسجيل.\n🔹 كلمة المرور من المدرسة.", needsCard: false, keywords: ["اولياء", "مدرسة"] },
-        { name: "سكنات عدل", img: "AADEL.png", url: "https://www.aadl.dz", instructions: "🔹 أنشئ ملفاً وتابع الاكتتابات.", needsCard: false, keywords: ["عدل", "سكن"] },
-        { name: "CCP", img: "CCP.png", url: "https://eccp.poste.dz", instructions: "🔹 أدخل رقم CCP ورمز التحقق.", needsCard: false, keywords: ["ccp", "بريد"] },
-        { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", instructions: "🔹 أدخل رقم التسجيل المركزي.", needsCard: false, keywords: ["سيارة", "قسيمة"] }
+        { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر طريقة الشحن.", needsCard: true },
+        { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر المبلغ.", needsCard: true },
+        { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", instructions: "🔹 اختر الخدمة.\n🔹 أدخل رقم الهاتف.", needsCard: true },
+        { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", instructions: "🔹 أدخل رقم العقد.", needsCard: false },
+        { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", instructions: "🔹 أدخل رقم المشترك.", needsCard: false },
+        { name: "نتائج BEM", img: "ONEC.png", url: "https://bem.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false },
+        { name: "نتائج BAC", img: "ONEC.png", url: "https://bac.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false },
+        { name: "منحة البطالة", img: "ANEM.png", url: "https://minha.anem.dz/pre_inscription", instructions: "🔹 تحتاج شهادة ميلاد ورقم ANEM.", needsCard: false },
+        { name: "تجنيد الجيش", img: "الجيش الوطني.png", url: "https://preinscription.mdn.dz/", instructions: "🔹 أنشئ حساباً واملأ البيانات.", needsCard: false },
+        { name: "فضاء الأولياء", img: "فضاء الاولياء.png", url: "https://awlyaa.education.dz/login", instructions: "🔹 رقم التسجيل وكلمة المرور من المدرسة.", needsCard: false },
+        { name: "سكنات عدل", img: "AADEL.png", url: "https://www.aadl.dz", instructions: "🔹 أنشئ ملفاً وتابع الاكتتابات.", needsCard: false },
+        { name: "CCP", img: "CCP.png", url: "https://eccp.poste.dz", instructions: "🔹 أدخل رقم CCP ورمز التحقق.", needsCard: false },
+        { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", instructions: "🔹 أدخل رقم التسجيل المركزي.", needsCard: false }
     ];
 
-    function showToast(msg, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.innerText = msg;
-        toast.style.background = isError ? '#dc3545' : '#28a745';
+    function showToast(t) {
+        let toast = document.getElementById('toastMsg');
+        toast.innerText = t;
         toast.style.opacity = '1';
-        setTimeout(() => toast.style.opacity = '0', 3000);
+        setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
-    function showTypingIndicator() {
-        if (isTyping) return;
-        isTyping = true;
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.id = 'typingIndicator';
-        for (let i = 0; i < 3; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'typing-dot';
-            typingDiv.appendChild(dot);
-        }
-        messagesDiv.appendChild(typingDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function hideTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) indicator.remove();
-        isTyping = false;
-    }
-
-    function getSubscription() {
-        const expiry = localStorage.getItem(`sub_${currentUser}`);
-        if (expiry && Date.now() < parseInt(expiry)) {
-            const days = Math.ceil((parseInt(expiry) - Date.now()) / (86400000));
-            return { active: true, days };
-        }
-        return { active: false, days: 0 };
-    }
-
-    // تفعيل تلقائي لحساب mustaphabenamar40
-    function autoActivateForUser(email) {
-        if (email === 'mustaphabenamar40@gmail.com') {
-            const existingExpiry = localStorage.getItem(`sub_${email}`);
-            if (!existingExpiry || Date.now() >= parseInt(existingExpiry)) {
-                const expiry = Date.now() + (365 * 86400000);
-                localStorage.setItem(`sub_${email}`, expiry);
-                console.log('✅ تم تفعيل حساب mustaphabenamar40 تلقائياً');
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function updateStats(serviceName) {
-        if (!currentUser) return;
-        const stats = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || '{}');
-        stats[serviceName] = (stats[serviceName] || 0) + 1;
-        localStorage.setItem(`stats_${currentUser}`, JSON.stringify(stats));
-        updateUI();
-    }
-
-    function getTopServices() {
-        const stats = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || '{}');
-        const sorted = Object.entries(stats).sort((a, b) => b[1] - a[1]).slice(0, 3);
-        return sorted;
+    function isSubscribed() {
+        let expiry = localStorage.getItem(`sub_${currentUser}`);
+        return expiry && Date.now() < parseInt(expiry);
     }
 
     function updateUI() {
         if (!currentUser) return;
         document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
-        const sub = getSubscription();
-        
-        if (sub.active) {
-            document.getElementById('daysLeft').innerHTML = `✅ اشتراك مفعل - يتبقى ${sub.days} يوم`;
-            document.getElementById('planText').innerHTML = '✨ اشتراك نشط - تمتع بجميع الخدمات ✨';
-            
-            const topServices = getTopServices();
-            if (topServices.length > 0) {
-                document.getElementById('statsText').innerHTML = `📊 أكثر خدمة استخدمتها: ${topServices[0][0]} (${topServices[0][1]} مرة)`;
-            } else {
-                document.getElementById('statsText').innerHTML = '💡 استخدم الخدمات لظهور إحصائياتك';
-            }
+        let sub = isSubscribed();
+        if (sub) {
+            let days = Math.ceil((localStorage.getItem(`sub_${currentUser}`) - Date.now()) / 86400000);
+            document.getElementById('subStatus').innerHTML = `✅ اشتراك مفعل - يتبقى ${days} يوم`;
+            document.getElementById('subNote').innerHTML = 'اشتراك نشط - تمتع بجميع الخدمات 🚀';
         } else {
-            document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-            document.getElementById('planText').innerHTML = '🔹 اشتراك شهري 100 دج / سنوي 365 دج';
-            document.getElementById('statsText').innerHTML = '⭐ قم بالاشتراك للوصول إلى جميع الخدمات';
+            document.getElementById('subStatus').innerHTML = '⚠️ لا يوجد اشتراك نشط';
+            document.getElementById('subNote').innerHTML = '🔹 اشتراك شهري 100 دج / سنوي 365 دج';
         }
-        
-        if (sub.active && sub.days <= 2) {
-            showToast(`⚠️ تنبيه: اشتراكك سينتهي بعد ${sub.days} يوم! جدد الآن`, true);
-        }
+        let maxS = "لا توجد", maxC = 0;
+        for (let s in stats) if (stats[s] > maxC) { maxC = stats[s]; maxS = s; }
+        if (maxC > 0) document.getElementById('statsTxt').innerHTML = `📊 أكبر خدمة: ${maxS} (${maxC} مرة)`;
+        else document.getElementById('statsTxt').innerHTML = `📊 لم تستخدم أي خدمة بعد`;
     }
 
-    function addMessage(text, isUser, withQuickReplies = false) {
-        const div = document.createElement('div');
-        div.className = isUser ? 'user-msg' : 'bot-msg';
-        div.innerText = text;
-        messagesDiv.appendChild(div);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        
-        if (!isUser && withQuickReplies) {
-            addQuickReplies();
-        }
-    }
-
-    function addWelcomeMessage() {
-        const welcomeDiv = document.createElement('div');
-        welcomeDiv.className = 'welcome-message';
-        welcomeDiv.innerHTML = `
-            🎉 **مرحباً بك في boot خدماتي!** 🎉<br><br>
-            ✨ اشتراكك مفعل الآن! ✨<br>
-            🚀 يمكنك استخدام جميع الخدمات دون قيود<br>
-            💡 اضغط على أيقونة الخدمة التي تريدها وسأرشدك خطوة بخطوة<br><br>
-            🌟 استمتع بتجربة مميزة مع مساعدك الذكي!
-        `;
-        messagesDiv.appendChild(welcomeDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        
-        setTimeout(() => {
-            addMessage("🌟 أنا سعيد بانضمامك إلينا! اختر أي خدمة من الأيقونات أدناه وسأكون معك خطوة بخطوة.", false);
-            addMessage("💡 نصيحة: يمكنك أيضاً كتابة 'مساعدة' في أي وقت للحصول على اقتراحات سريعة.", false);
-        }, 500);
-    }
-
-    function addQuickReplies() {
-        const replies = ["الخدمات المتاحة", "كيف أشترك", "مساعدة", "إحصائياتي"];
-        const repliesDiv = document.createElement('div');
-        repliesDiv.style.display = 'flex';
-        repliesDiv.style.flexWrap = 'wrap';
-        repliesDiv.style.gap = '8px';
-        repliesDiv.style.marginTop = '8px';
-        
-        replies.forEach(reply => {
-            const btn = document.createElement('button');
-            btn.innerText = reply;
-            btn.className = 'quick-reply';
-            btn.onclick = () => {
-                document.getElementById('chatInput').value = reply;
-                sendBtn.click();
-            };
-            repliesDiv.appendChild(btn);
-        });
-        
-        messagesDiv.appendChild(repliesDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function getSmartResponse(text) {
-        const lowerText = text.toLowerCase();
-        const smartResponses = {
-            "مرحب": ["مرحباً بك! 🌟 كيف يمكنني مساعدتك اليوم؟", "أهلاً وسهلاً! 🤗 تفضل باختيار الخدمة التي تريدها"],
-            "شكر": ["العفو! 😊 أنا هنا لخدمتك دائماً", "بكل سرور! 🌹 هل تحتاج مساعدة أخرى؟"],
-            "كيف حالك": ["أنا بخير والحمدلله! 🤖 متحمس لمساعدتك", "تمام التمام! 🚀 كيف يمكنني خدمتك اليوم؟"],
-            "اشتراك": ["📝 اشتراكك مفعل بالفعل! يمكنك استخدام جميع الخدمات 🎉", "أنت مشترك معنا! استمتع بالخدمات المتاحة ✨"],
-            "مساعدة": ["🤝 إليك ما يمكنني فعله:\n• شحن الهاتف\n• دفع الفواتير\n• نتائج الامتحانات\n• خدمات إدارية\n• وغيرها الكثير!"],
-            "الخدمات": ["🎯 جميع الخدمات متاحة في الأيقونات أسفل الشاشة!"]
-        };
-        
-        for (let [key, responses] of Object.entries(smartResponses)) {
-            if (lowerText.includes(key)) {
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-        }
-        
-        for (let service of services) {
-            for (let keyword of service.keywords) {
-                if (lowerText.includes(keyword)) {
-                    return `🔍 أرى أنك تبحث عن خدمة "${service.name}"\nاضغط على أيقونتها من الأسفل لفتح الرابط.`;
-                }
-            }
-        }
-        
-        return null;
-    }
-
-    function requestConfirmation(service) {
-        updateStats(service.name);
-        let extra = "";
-        if (service.needsCard) {
-            extra = "\n💳 ملاحظة: عملية الشحن تحتاج إلى بطاقة ذهبية أو بطاقة CIB بنكية.\n";
-        }
-        const msg = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}${extra}\n❓ هل أنت جاهز لفتح الرابط الآن؟ (أجب بنعم أو لا)`;
-        addMessage(msg, false);
-        pendingService = service;
-    }
-
-    function handleReply(text) {
-        const lower = text.trim().toLowerCase();
-        
-        if (pendingService) {
-            if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز' || lower === 'نعم جاهز') {
-                window.open(pendingService.url, '_blank');
-                addMessage(`✅ تم فتح رابط "${pendingService.name}" بنجاح! 🚀`, false);
-                addMessage("💡 هل تحتاج مساعدة في خدمة أخرى؟ اضغط على أيقونتها من الأسفل.", false);
-                pendingService = null;
-                return true;
-            } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن') {
-                addMessage("لا مشكلة، أنا هنا في أي وقت تحتاج فيه إلى مساعدة 🤝", false);
-                addMessage("✨ يمكنك العودة للخدمات من الأيقونات بالأسفل ✨", false);
-                pendingService = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // بناء أيقونات الخدمات أسفل المحادثة
-    function buildIconsInContainer() {
-        const iconGrid = document.getElementById('iconGrid');
-        iconGrid.innerHTML = '';
-        
-        services.forEach(s => {
-            const item = document.createElement('div');
-            item.className = 'icon-item';
-            const img = document.createElement('img');
-            img.src = s.img;
-            img.alt = s.name;
-            img.onerror = () => img.style.display = 'none';
-            const span = document.createElement('span');
-            span.innerText = s.name;
-            item.appendChild(img);
-            item.appendChild(span);
-            item.onclick = () => {
-                const sub = getSubscription();
-                if (!sub.active) {
-                    addMessage(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً نشطاً.`, false);
-                    return;
-                }
-                requestConfirmation(s);
-            };
-            iconGrid.appendChild(item);
-        });
-    }
-
-    function initChat() {
-        messagesDiv.innerHTML = '';
-        
-        const welcome = document.createElement('div');
-        welcome.className = 'bot-msg';
-        welcome.innerText = 'مرحباً! أنا boot خدماتي الذكي 🤖\nاختر الخدمة من الأيقونات بالأسفل، أو اكتب سؤالك وسأجيبك فوراً!';
-        messagesDiv.appendChild(welcome);
-        
-        const sub = getSubscription();
-        
-        if (sub.active) {
-            if (!hasShownWelcome && currentUser) {
-                addWelcomeMessage();
-                hasShownWelcome = true;
-            }
-            
-            const premiumMsg = document.createElement('div');
-            premiumMsg.className = 'bot-msg';
-            premiumMsg.innerText = `🎉 اشتراكك مفعل لمدة ${sub.days} يوماً! استمتع بجميع الخدمات.`;
-            messagesDiv.appendChild(premiumMsg);
-            
-            const topServices = getTopServices();
-            if (topServices.length > 0) {
-                const statsMsg = document.createElement('div');
-                statsMsg.className = 'bot-msg';
-                statsMsg.innerText = `📊 إحصائيات استخدامك:\n${topServices.map(s => `• ${s[0]}: ${s[1]} مرة`).join('\n')}`;
-                messagesDiv.appendChild(statsMsg);
-            }
-        } else {
-            const newUserMsg = document.createElement('div');
-            newUserMsg.className = 'bot-msg';
-            newUserMsg.innerText = '👋 مرحباً بك! للوصول إلى جميع الخدمات، يرجى الاشتراك أولاً.';
-            messagesDiv.appendChild(newUserMsg);
-        }
-        
-        // بناء أيقونات الخدمات في الحاوية
-        buildIconsInContainer();
+    function recordUse(serviceName) {
+        if (!currentUser) return;
+        stats[serviceName] = (stats[serviceName] || 0) + 1;
+        localStorage.setItem(`stats_${currentUser}`, JSON.stringify(stats));
+        updateUI();
     }
 
     // تسجيل الدخول
     document.getElementById('loginBtn').onclick = () => {
-        let email = document.getElementById('emailInput').value.trim();
+        let email = document.getElementById('email').value.trim();
         if (!email || !email.includes('@')) {
-            document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
+            document.getElementById('loginMsg').innerText = '❌ أدخل بريداً صحيحاً';
             return;
         }
-        
-        if (!email.endsWith('@gmail.com')) {
-            email = email + '@gmail.com';
-        }
-        
         currentUser = email;
         localStorage.setItem('currentUser', currentUser);
-        
-        autoActivateForUser(currentUser);
-        
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('appSection').style.display = 'block';
+        let saved = localStorage.getItem(`stats_${currentUser}`);
+        if (saved) stats = JSON.parse(saved); else stats = {};
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('appBox').style.display = 'block';
         updateUI();
-        showToast(`مرحباً ${currentUser.split('@')[0]}! 👋`);
-        hasShownWelcome = false;
-        
-        setTimeout(() => {
-            openChatBtn.click();
-            setTimeout(() => {
-                const sub = getSubscription();
-                if (sub.active) {
-                    addMessage(`🎉 أهلاً بك ${currentUser.split('@')[0]}! اشتراكك مفعل. استمتع بالخدمات!`, false);
-                }
-            }, 500);
-        }, 1000);
+        showToast(`مرحباً ${email.split('@')[0]}`);
     };
-
-    document.getElementById('logoutBtn').onclick = () => {
+    document.getElementById('logout').onclick = () => {
         currentUser = null;
         localStorage.removeItem('currentUser');
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('appSection').style.display = 'none';
-        document.getElementById('emailInput').value = 'mustaphabenamar40@gmail.com';
-        hasShownWelcome = false;
-        showToast('تم تسجيل الخروج 👋');
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('appBox').style.display = 'none';
+        document.getElementById('email').value = '';
+        showToast('تم الخروج');
     };
-
-    const savedUser = localStorage.getItem('currentUser');
+    let savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
         currentUser = savedUser;
-        autoActivateForUser(currentUser);
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('appSection').style.display = 'block';
+        let savedStats = localStorage.getItem(`stats_${currentUser}`);
+        if (savedStats) stats = JSON.parse(savedStats);
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('appBox').style.display = 'block';
         updateUI();
     }
 
-    const messagesDiv = document.getElementById('messages');
-    const chatInput = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const openChatBtn = document.getElementById('openChatBtn');
-    const chatFull = document.getElementById('chatFullscreen');
-    const closeChatBtn = document.getElementById('closeChatBtn');
-    const topIconBtn = document.getElementById('topIconBtn');
+    // الشات بوت
+    let msgsDiv = document.getElementById('msgs');
+    let chatInput = document.getElementById('chatInput');
+    let sendChat = document.getElementById('sendBtn');
+    let openChat = document.getElementById('openChat');
+    let closeChat = document.getElementById('closeChat');
+    let chatPanel = document.getElementById('chatPanel');
 
-    openChatBtn.onclick = () => {
-        chatFull.classList.add('open');
-        if (messagesDiv.children.length === 0) initChat();
-    };
-    
-    topIconBtn.onclick = () => {
-        if (currentUser) {
-            chatFull.classList.add('open');
-            if (messagesDiv.children.length === 0) initChat();
-        } else {
-            showToast('⚠️ الرجاء تسجيل الدخول أولاً', true);
+    openChat.onclick = () => chatPanel.classList.add('open');
+    closeChat.onclick = () => chatPanel.classList.remove('open');
+
+    function addMsg(text, isUser) {
+        let d = document.createElement('div');
+        d.className = isUser ? 'user-msg' : 'bot-msg';
+        d.innerText = text;
+        msgsDiv.appendChild(d);
+        msgsDiv.scrollTop = msgsDiv.scrollHeight;
+    }
+
+    function askConfirm(service) {
+        let extra = service.needsCard ? "\n💳 تحتاج بطاقة ذهبية أو CIB.\n" : "";
+        addMsg(`📌 ${service.name}\n📝 ${service.instructions}${extra}\n❓ هل أنت جاهز لفتح الرابط؟ (نعم/لا)`, false);
+        pendingService = service;
+    }
+
+    function handleReply(txt) {
+        let low = txt.trim().toLowerCase();
+        if (low === 'نعم' || low === 'yes' || low === 'جاهز') {
+            window.open(pendingService.url, '_blank');
+            addMsg(`✅ تم فتح رابط ${pendingService.name}`, false);
+            recordUse(pendingService.name);
+            pendingService = null;
+            return true;
+        } else if (low === 'لا' || low === 'لأ') {
+            addMsg("لا مشكلة، أنا هنا للمساعدة 🤝", false);
+            pendingService = null;
+            return true;
         }
-    };
-    
-    closeChatBtn.onclick = () => chatFull.classList.remove('open');
+        return false;
+    }
 
-    sendBtn.onclick = async () => {
-        const text = chatInput.value.trim();
-        if (!text) return;
-        
-        addMessage(text, true);
-        chatInput.value = '';
-        
-        showTypingIndicator();
-        
-        setTimeout(() => {
-            hideTypingIndicator();
-            
-            if (pendingService) {
-                handleReply(text);
-            } else {
-                const smartResponse = getSmartResponse(text);
-                if (smartResponse) {
-                    addMessage(smartResponse, false);
-                } else {
-                    const sub = getSubscription();
-                    if (sub.active) {
-                        addMessage("💡 يمكنني مساعدتك في:\n• شحن الرصيد\n• دفع الفواتير\n• نتائج الامتحانات\n\nاختر الخدمة من الأيقونات بالأسفل", false, true);
-                    } else {
-                        addMessage("💡 يرجى الاشتراك أولاً للاستفادة من الخدمات.", false);
-                    }
+    function buildGrid() {
+        let grid = document.createElement('div');
+        grid.className = 'icon-grid';
+        services.forEach(s => {
+            let item = document.createElement('div');
+            item.className = 'icon-item';
+            let img = document.createElement('img');
+            img.src = s.img;
+            img.onerror = () => img.style.display = 'none';
+            let span = document.createElement('span');
+            span.innerText = s.name;
+            item.appendChild(img);
+            item.appendChild(span);
+            item.onclick = () => {
+                if (!isSubscribed()) {
+                    addMsg(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً. استخدم زر الاشتراك بالأسفل.`, false);
+                    return;
                 }
-            }
-        }, 1000);
-    };
+                askConfirm(s);
+            };
+            grid.appendChild(item);
+        });
+        return grid;
+    }
 
-    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
+    function initChat() {
+        msgsDiv.innerHTML = '';
+        let welcome = document.createElement('div');
+        welcome.className = 'bot-msg';
+        welcome.innerText = 'مرحباً! اختر الخدمة من الأيقونات 👇';
+        msgsDiv.appendChild(welcome);
+        msgsDiv.appendChild(buildGrid());
+        let subDiv = document.createElement('div');
+        subDiv.style.display = 'flex';
+        subDiv.style.gap = '10px';
+        subDiv.style.marginTop = '10px';
+        let mBtn = document.createElement('button');
+        mBtn.innerText = '📅 اشتراك شهري 100 دج';
+        mBtn.className = 'link-btn';
+        mBtn.style.background = '#28a745';
+        mBtn.onclick = () => window.open('http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz');
+        let yBtn = document.createElement('button');
+        yBtn.innerText = '📅 اشتراك سنوي 365 دج';
+        yBtn.className = 'link-btn';
+        yBtn.style.background = '#e94560';
+        yBtn.onclick = () => window.open('http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8');
+        subDiv.appendChild(mBtn);
+        subDiv.appendChild(yBtn);
+        msgsDiv.appendChild(subDiv);
+    }
+
+    sendChat.onclick = () => {
+        let txt = chatInput.value.trim();
+        if (!txt) return;
+        addMsg(txt, true);
+        chatInput.value = '';
+        setTimeout(() => {
+            if (pendingService) {
+                if (!handleReply(txt)) addMsg("أجب بـ 'نعم' أو 'لا' فقط.", false);
+            } else {
+                if (txt.includes('اشتراك')) addMsg("روابط الاشتراك موجودة أسفل الشاشة.", false);
+                else addMsg("اختر خدمة من الأيقونات.", false);
+            }
+        }, 300);
+    };
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChat.click(); });
+
+    // تفعيل اشتراك
+    (function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let code = urlParams.get('code');
+        let days = urlParams.get('days');
+        if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
+            let expiry = Date.now() + (parseInt(days) * 86400000);
+            localStorage.setItem(`sub_${currentUser}`, expiry);
+            showToast(`✅ تم تفعيل اشتراك ${days} يوماً`);
+            updateUI();
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    })();
+
+    initChat();
 </script>
 </body>
 </html>
