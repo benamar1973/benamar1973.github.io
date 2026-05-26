@@ -260,7 +260,6 @@
     const sendBtn = document.getElementById('chat-send');
     const chatInput = document.getElementById('chat-input');
 
-    // متغير لحالة التفاعل: حفظ الخدمة المطلوبة وانتظار التأكيد
     let pendingService = null;
 
     function isUserSubscribed() {
@@ -296,24 +295,21 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // ردود خاصة بالخدمات (تطلب التأكيد قبل فتح الرابط)
+    // خدمة تحتاج تأكيداً (مع ملاحظة البطاقة)
     function requestServiceConfirmation(service) {
         if (!service) return;
-        // رسالة تفاعلية تشرح متطلبات الدفع (بطاقة ذهبية/CIB)
         let extraNote = "";
         if (service.name.includes('mobilis') || service.name.includes('DJEZZY') || service.name.includes('Ooredoo') || service.name.includes('شحن')) {
             extraNote = "\n💳 ملاحظة: عملية الشحن تحتاج إلى بطاقة ذهبية أو بطاقة CIB بنكية. تأكد من أن بطاقتك مفعلة للدفع عبر الإنترنت.\n";
         }
         const confirmMsg = `📌 **${service.name}**\n\n📝 **خطوات التسجيل:**\n${service.instructions}${extraNote}\n❓ هل أنت جاهز لفتح الرابط الآن؟ (أجب بنعم أو لا)`;
         addMessage(confirmMsg, false);
-        pendingService = service;  // تخزين الخدمة لانتظار الجواب
+        pendingService = service;
     }
 
-    // معالجة ردود المستخدم على سؤال التأكيد
     function handleConfirmationReply(userMsg) {
         const lower = userMsg.trim().toLowerCase();
         if (lower === 'نعم' || lower === 'yes' || lower === 'اهلا' || lower === 'جاهز' || lower === 'نعم جاهز' || lower === 'y') {
-            // فتح الرابط مباشرة
             window.open(pendingService.url, '_blank');
             addMessage(`✅ تم فتح رابط "${pendingService.name}" في نافذة جديدة.`, false);
             pendingService = null;
@@ -323,7 +319,7 @@
             pendingService = null;
             return true;
         }
-        return false; // لم يفهم الجواب
+        return false;
     }
 
     function getServiceReply(serviceName) {
@@ -332,7 +328,6 @@
         if (!isUserSubscribed()) {
             return { text: `⚠️ خدمة "${service.name}" تتطلب اشتراكاً نشطاً. يرجى الاشتراك أولاً من الصفحة الرئيسية.`, link: null, needConfirm: false };
         } else {
-            // لا نرسل رابطاً مباشراً، بل نطلب التأكيد
             return { service: service, needConfirm: true };
         }
     }
@@ -349,13 +344,10 @@
             ], needConfirm: false };
         }
         const matched = allServices.find(s => userMessage.includes(s.name) || s.name.includes(userMessage));
-        if (matched) {
-            return getServiceReply(matched.name);
-        }
+        if (matched) return getServiceReply(matched.name);
         return null;
     }
 
-    // معالجة طلب الخدمة (من أيقونة أو كتابة)
     function handleServiceRequest(serviceName) {
         addMessage(serviceName, true);
         setTimeout(() => {
@@ -372,7 +364,6 @@
         }, 500);
     }
 
-    // بناء شبكة الأيقونات
     function buildIconsGrid() {
         const grid = document.createElement('div');
         grid.className = 'original-icons-grid';
@@ -408,7 +399,6 @@
         messagesDiv.appendChild(buildIconsGrid());
     }
 
-    // معالجة إرسال الرسائل (دعم الردود على التأكيد)
     function onSendMessage() {
         const text = chatInput.value.trim();
         if (!text) return;
@@ -416,11 +406,9 @@
         chatInput.value = '';
 
         setTimeout(() => {
-            // إذا كان هناك خدمة معلقة في انتظار التأكيد
             if (pendingService) {
                 const confirmed = handleConfirmationReply(text);
-                if (confirmed) return;
-                else {
+                if (!confirmed) {
                     addMessage("عذراً، لم أفهم ردك. أجب بـ 'نعم' لفتح الرابط أو 'لا' لتأجيل الأمر.", false);
                 }
             } else {
@@ -441,7 +429,6 @@
     sendBtn.addEventListener('click', onSendMessage);
     chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') onSendMessage(); });
 
-    // الاقتراحات التلقائية
     const suggestionsDiv = document.getElementById('suggestions-list');
     chatInput.addEventListener('input', function() {
         const val = this.value.trim().toLowerCase();
