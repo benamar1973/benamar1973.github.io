@@ -259,7 +259,6 @@
     const messagesDiv = document.getElementById('chatMessages');
     const sendBtn = document.getElementById('chat-send');
     const chatInput = document.getElementById('chat-input');
-
     let pendingService = null;
 
     function isUserSubscribed() {
@@ -295,7 +294,6 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // خدمة تحتاج تأكيداً (مع ملاحظة البطاقة)
     function requestServiceConfirmation(service) {
         if (!service) return;
         let extraNote = "";
@@ -309,12 +307,12 @@
 
     function handleConfirmationReply(userMsg) {
         const lower = userMsg.trim().toLowerCase();
-        if (lower === 'نعم' || lower === 'yes' || lower === 'اهلا' || lower === 'جاهز' || lower === 'نعم جاهز' || lower === 'y') {
+        if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز' || lower === 'نعم جاهز' || lower === 'y') {
             window.open(pendingService.url, '_blank');
             addMessage(`✅ تم فتح رابط "${pendingService.name}" في نافذة جديدة.`, false);
             pendingService = null;
             return true;
-        } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن' || lower === 'ليس الان' || lower === 'n' || lower === 'no') {
+        } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن' || lower === 'n' || lower === 'no') {
             addMessage("لا مشكلة، أنا هنا في أي وقت تحتاج فيه إلى مساعدة 🤝. فقط عد واطلب الخدمة عندما تكون مستعداً.", false);
             pendingService = null;
             return true;
@@ -404,7 +402,6 @@
         if (!text) return;
         addMessage(text, true);
         chatInput.value = '';
-
         setTimeout(() => {
             if (pendingService) {
                 const confirmed = handleConfirmationReply(text);
