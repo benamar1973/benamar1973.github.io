@@ -2,20 +2,26 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوت مصطفى - مساعدك الذكي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
-        /* جميع الألوان والتنسيقات كما هي */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 16px;
         }
+
+        /* الشريط العلوي */
         .top-bot-bar {
             width: 100%;
             max-width: 600px;
@@ -29,11 +35,18 @@
             transition: all 0.3s ease;
             animation: glow 2s infinite;
         }
-        .top-bot-bar:hover { transform: scale(1.02); }
+
+        .top-bot-bar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
+        }
+
         @keyframes glow {
             0% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
-            100% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
+            50% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
+            100% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
         }
+
         .top-bot-text {
             font-size: 2.2rem;
             font-weight: bold;
@@ -42,17 +55,46 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
-        .top-bot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-top: 8px; }
-        .container { max-width: 500px; width: 100%; }
+
+        .top-bot-text span:first-child {
+            font-size: 3rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .top-bot-sub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            display: block;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
         .card {
             background: white;
             border-radius: 35px;
             padding: 25px 20px;
             text-align: center;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
         }
-        .version { font-size: 14px; color: #6c757d; margin-bottom: 20px; }
+
+        .version {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
         .auth-input {
             width: 100%;
             padding: 14px;
@@ -62,6 +104,7 @@
             font-size: 16px;
             text-align: center;
         }
+
         .btn {
             background: #007bff;
             color: white;
@@ -74,19 +117,26 @@
             cursor: pointer;
             margin: 8px 0;
         }
-        .btn-logout { background: #dc3545; margin-top: 15px; }
-        .btn-subscribe {
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            margin-top: 10px;
-            font-size: 18px;
+
+        .btn-logout {
+            background: #dc3545;
+            margin-top: 15px;
         }
+
         .user-info {
             background: #e8f0fe;
             border-radius: 25px;
             padding: 15px;
             margin: 15px 0;
         }
-        .user-name { font-size: 24px; font-weight: bold; color: #0f3460; }
+
+        .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f3460;
+            word-break: break-all;
+        }
+
         .sub-days {
             background: #fff3cd;
             border-radius: 40px;
@@ -94,6 +144,7 @@
             margin: 10px 0;
             font-size: 14px;
         }
+
         .chat-fullscreen {
             position: fixed;
             top: 0;
@@ -108,7 +159,11 @@
             transition: 0.3s;
             direction: rtl;
         }
-        .chat-fullscreen.open { transform: translateY(0); }
+
+        .chat-fullscreen.open {
+            transform: translateY(0);
+        }
+
         .chat-header {
             background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
@@ -117,36 +172,141 @@
             justify-content: space-between;
             align-items: center;
             font-size: 1.5rem;
+            font-weight: bold;
         }
-        .close-btn { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
-        .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; }
-        .bot-msg { background: #e3f2fd; align-self: flex-start; }
-        .user-msg { background: #d4edda; align-self: flex-end; }
-        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; }
-        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bot-msg,
+        .user-msg {
+            padding: 12px 16px;
+            border-radius: 20px;
+            max-width: 85%;
+            font-size: 15px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-msg {
+            background: #e3f2fd;
+            align-self: flex-start;
+            border-bottom-right-radius: 5px;
+        }
+
+        .user-msg {
+            background: #d4edda;
+            align-self: flex-end;
+            border-bottom-left-radius: 5px;
+        }
+
+        .input-area {
+            background: white;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        #chatInput {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        #sendBtn {
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 15px;
             background: white;
             border-radius: 20px;
             padding: 16px;
             margin: 10px 0;
         }
+
+        @media (min-width: 480px) {
+            .icon-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         .icon-item {
-            background: #f8f9fa;
-            border-radius: 18px;
-            padding: 10px 5px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 15px 8px;
             cursor: pointer;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 2px solid #dee2e6;
             transition: all 0.3s;
         }
-        .icon-item:hover { transform: translateY(-5px); border-color: #007bff; }
-        .icon-item img { width: 55px; height: 55px; object-fit: contain; border-radius: 12px; margin-bottom: 6px; }
-        .icon-item span { font-size: 11px; display: block; }
+
+        .icon-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: #007bff;
+            background: linear-gradient(135deg, #fff, #f1f3f5);
+        }
+
+        .icon-item .icon-emoji {
+            font-size: 48px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .icon-item span {
+            font-size: 14px;
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .icon-item .sub-text {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -159,35 +319,93 @@
             opacity: 0;
             transition: 0.3s;
             z-index: 9999;
+            font-weight: bold;
+            pointer-events: none;
         }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #888;
+            border-radius: 50%;
+            display: inline-block;
+            animation: typingAnim 1.4s infinite;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnim {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .rules-box {
+            background: #fff3cd;
+            border-right: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
         @media (max-width: 480px) {
-            .top-bot-text { font-size: 1.6rem; }
-            .top-bot-bar { padding: 15px 20px; }
+            .top-bot-text {
+                font-size: 1.6rem;
+            }
+
+            .top-bot-text span:first-child {
+                font-size: 2.2rem;
+            }
+
+            .top-bot-bar {
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="top-bot-bar" id="topBotBar">
-        <div class="top-bot-text">🤖 بوت مصطفى ✨</div>
-        <div class="top-bot-sub">مساعدك الذكي للخدمات الرقمية | اضغط للدخول</div>
+        <div class="top-bot-text">
+            <span>🤖</span>
+            <span>بوت مصطفى</span>
+            <span>✨</span>
+        </div>
+        <div class="top-bot-sub">خدمة الإعلانات | اشترك وانشر إعلانك الآن</div>
     </div>
 
     <div class="container">
         <div class="card">
-            <div class="version">⭐ بوت مصطفى · خدمات رقمية متكاملة ⭐</div>
+            <div class="version">⭐ بوت مصطفى · خدمة الإعلانات التجارية ⭐</div>
+
             <div id="loginSection">
                 <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" required>
                 <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
                 <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
             </div>
+
             <div id="appSection" style="display: none;">
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
                     <div class="sub-days" id="daysLeft">⚠️ لا يوجد اشتراك نشط</div>
-                    <div style="font-size:13px; color:#856404;" id="planText">اشترك الآن للوصول إلى جميع الخدمات</div>
+                    <div style="font-size:13px; color:#856404;" id="planText">اشترك الآن لنشر إعلاناتك على صفحتنا</div>
                 </div>
-                <button id="subscribeBtn" class="btn btn-subscribe">💰 اشتراك سنوي - 365 يوماً (365 دج) 💰</button>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
             </div>
         </div>
@@ -197,47 +415,50 @@
 
     <div id="chatFullscreen" class="chat-fullscreen">
         <div class="chat-header">
-            <span>🤖 بوت مصطفى</span>
+            <span>🤖 بوت مصطفى | خدمة الإعلانات</span>
             <button class="close-btn" id="closeChatBtn">✕</button>
         </div>
         <div class="messages" id="messages"></div>
         <div class="input-area">
-            <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا...">
+            <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
             <button id="sendBtn">إرسال</button>
         </div>
     </div>
 
     <script>
-        // ====== الإعدادات (آمنة - لا مفتاح هنا!) ======
-        const WEBHOOK_URL = "https://chargily-webhook-mvi5.onrender.com";
-        // ===========================================
-        
         let currentUser = null;
         let isBotTyping = false;
-        let pendingService = null;
+        let pendingAd = {
+            step: null, // 'link', 'description', 'confirm'
+            link: null,
+            description: null
+        };
 
-        const services = [
-            { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 يتيح لك شحن الرصيد بسهولة", requirements: "📋 رقم هاتف دجازي + بطاقة بنكية", steps: "1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ ادفع", needsCard: true },
-            { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", description: "شحن رصيد هاتف موبيليس", benefit: "🔹 خدمة رسمية من موبيليس", requirements: "📋 رقم موبيليس + بطاقة بنكية", steps: "1️⃣ افتح الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ حدد المبلغ\n4️⃣ ادفع", needsCard: true },
-            { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", description: "شحن رصيد هاتف أوريدو", benefit: "🔹 خدمة E-Storm", requirements: "📋 رقم أوريدو + بطاقة بنكية", steps: "1️⃣ اختر شحن الرصيد\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ ادفع", needsCard: true },
-            { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", description: "دفع فاتورة الكهرباء والغاز", benefit: "🔹 دفع إلكتروني بدون وكالات", requirements: "📋 رقم العقد (14 رقم) + بطاقة بنكية", steps: "1️⃣ أدخل رقم العقد\n2️⃣ سيظهر المبلغ\n3️⃣ ادفع", needsCard: false },
-            { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", description: "دفع فاتورة الماء", benefit: "🔹 منصة SEAAL الرسمية", requirements: "📋 رقم المشترك + بطاقة بنكية", steps: "1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة\n3️⃣ ادفع", needsCard: false },
-            { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", description: "الاستعلام عن قسيمة السيارات", benefit: "🔹 الاستعلام عن الرصيد والمدة", requirements: "📋 رقم التسجيل المركزي", steps: "1️⃣ أدخل رقم التسجيل\n2️⃣ اضغط استعلام", needsCard: false }
-        ];
+        // القوانين التي يوافق عليها التاجر
+        const AD_RULES = `📜 **قوانين نشر الإعلانات:**
 
-        function showToast(msg, isError = false) {
+❌ لا إعلانات مخلة بالآداب
+❌ لا عنف أو كراهية
+❌ لا منتجات ممنوعة أو احتيال
+❌ لا إعلانات سياسية أو دينية
+✅ الإعلان يكون حلالاً ومفيداً
+✅ يحترم قوانين النشر في الجزائر
+
+⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.`;
+
+        function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.innerText = msg;
-            toast.style.backgroundColor = isError ? '#dc3545' : '#28a745';
             toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 4000);
+            setTimeout(() => toast.style.opacity = '0', 2500);
         }
 
         function getSubscription() {
             if (!currentUser) return { active: false, days: 0 };
             const expiry = localStorage.getItem(`sub_${currentUser}`);
             if (expiry && Date.now() < parseInt(expiry)) {
-                return { active: true, days: Math.ceil((parseInt(expiry) - Date.now()) / 86400000) };
+                const days = Math.ceil((parseInt(expiry) - Date.now()) / (86400000));
+                return { active: true, days };
             }
             return { active: false, days: 0 };
         }
@@ -247,63 +468,18 @@
             document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
             const sub = getSubscription();
             if (sub.active) {
-                document.getElementById('daysLeft').innerHTML = `✅ مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = 'جميع الخدمات متاحة';
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
+                document.getElementById('planText').innerHTML = 'يمكنك الآن نشر إعلاناتك التجارية';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك (365 دج سنوياً)';
+                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك لنشر الإعلانات (اشتراك سنوي 365 يوم)';
             }
         }
-
-        // إنشاء رابط دفع آمن عبر السيرفر
-        async function createPayment() {
-            try {
-                const response = await fetch(`${WEBHOOK_URL}/create-payment`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: currentUser, name: currentUser.split('@')[0] })
-                });
-                const data = await response.json();
-                if (data.checkout_url) {
-                    window.open(data.checkout_url, "_blank");
-                    showToast("⏳ تم التحويل إلى بوابة الدفع");
-                    startPaymentCheck();
-                } else {
-                    throw new Error("فشل إنشاء رابط الدفع");
-                }
-            } catch (error) {
-                showToast("❌ خطأ في الاتصال", true);
-            }
-        }
-
-        let paymentCheckInterval = null;
-        function startPaymentCheck() {
-            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
-            paymentCheckInterval = setInterval(async () => {
-                try {
-                    const res = await fetch(`${WEBHOOK_URL}/check-payment?email=${encodeURIComponent(currentUser)}`);
-                    const result = await res.json();
-                    if (result.paid === true) {
-                        clearInterval(paymentCheckInterval);
-                        const expiry = Date.now() + (365 * 86400000);
-                        localStorage.setItem(`sub_${currentUser}`, expiry);
-                        updateUI();
-                        showToast("✅ تم تفعيل اشتراكك السنوي!");
-                    }
-                } catch(e) { console.log("جاري انتظار الدفع..."); }
-            }, 3000);
-            setTimeout(() => { if (paymentCheckInterval) clearInterval(paymentCheckInterval); }, 300000);
-        }
-
-        document.getElementById('subscribeBtn').onclick = async () => {
-            if (!currentUser) { showToast('سجل الدخول أولاً', true); return; }
-            await createPayment();
-        };
 
         document.getElementById('loginBtn').onclick = () => {
             const email = document.getElementById('emailInput').value.trim();
             if (!email || !email.includes('@')) {
-                document.getElementById('loginMsg').innerText = '❌ بريد إلكتروني صحيح';
+                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
                 return;
             }
             currentUser = email;
@@ -311,7 +487,7 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
-            showToast(`مرحباً ${email.split('@')[0]} 🚀`);
+            showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 📢`);
         };
 
         document.getElementById('logoutBtn').onclick = () => {
@@ -319,17 +495,19 @@
             localStorage.removeItem('currentUser');
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('appSection').style.display = 'none';
+            document.getElementById('emailInput').value = '';
+            pendingAd = { step: null, link: null, description: null };
             showToast('تم تسجيل الخروج');
         };
 
-        if (localStorage.getItem('currentUser')) {
-            currentUser = localStorage.getItem('currentUser');
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = savedUser;
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
         }
 
-        // باقي كود الدردشة والأيقونات...
         const messagesDiv = document.getElementById('messages');
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
@@ -338,12 +516,24 @@
         const topBotBar = document.getElementById('topBotBar');
 
         topBotBar.onclick = () => {
-            const sub = getSubscription();
-            if (!sub.active) { showToast('⚠️ اشترك أولاً (365 دج سنوياً)', true); return; }
             chatFull.classList.add('open');
             if (messagesDiv.children.length === 0) initChat();
         };
         closeChatBtn.onclick = () => chatFull.classList.remove('open');
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'bot-msg';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
 
         function addMessage(text, isUser) {
             const div = document.createElement('div');
@@ -353,57 +543,222 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
+        // محاكاة النشر على Facebook (هنا ستضع API الحقيقي لاحقاً)
+        async function publishToFacebook(link, description) {
+            // 🔐 هنا ستضيف كود النشر الفعلي على Facebook باستخدام Access Token
+            // مؤقتاً محاكاة نجاح النشر
+            
+            // مثال على كود النشر الحقيقي (يحتاج Page ID و Access Token):
+            /*
+            const formData = new FormData();
+            formData.append('message', description || 'إعلان جديد');
+            formData.append('link', link);
+            formData.append('access_token', 'YOUR_ACCESS_TOKEN');
+            
+            const response = await fetch(`https://graph.facebook.com/v18.0/YOUR_PAGE_ID/feed`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.id) return true;
+            return false;
+            */
+            
+            // حالياً: محاكاة النجاح
+            console.log(`[محاكاة النشر] الرابط: ${link}, الوصف: ${description}`);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            return true;
+        }
+
+        async function startAdFlow() {
+            addMessage(AD_RULES, false);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n🔗 من فضلك أرسل رابط الإعلان (مثال: https://example.com/product)", false);
+            pendingAd.step = 'link';
+        }
+
+        async function handleAdFlow(userMessage) {
+            if (pendingAd.step === 'link') {
+                // التحقق من صحة الرابط
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                const match = userMessage.match(urlRegex);
+                if (!match) {
+                    addMessage("❌ الرابط غير صحيح. يرجى إرسال رابط صحيح يبدأ بـ http:// أو https://", false);
+                    return false;
+                }
+                pendingAd.link = match[0];
+                addMessage("✅ تم استلام الرابط بنجاح!\n\n📝 هل تريد إضافة وصف للإعلان؟\n(أرسل الوصف أو اكتب 'لا' لتخطي هذه الخطوة)", false);
+                pendingAd.step = 'description';
+                return true;
+            }
+            
+            if (pendingAd.step === 'description') {
+                if (userMessage.toLowerCase() !== 'لا' && userMessage.toLowerCase() !== 'تخطي') {
+                    pendingAd.description = userMessage;
+                    addMessage("✅ تم استلام الوصف.", false);
+                } else {
+                    pendingAd.description = "📢 إعلان جديد من أحد عملائنا";
+                    addMessage("✅ تم تخطي الوصف.", false);
+                }
+                
+                // عرض ملخص الإعلان
+                let summary = `📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n`;
+                summary += `📝 الوصف: ${pendingAd.description}\n\n`;
+                summary += `❓ هل تريد تأكيد النشر على صفحة "خدماتي"؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
+                addMessage(summary, false);
+                pendingAd.step = 'confirm';
+                return true;
+            }
+            
+            if (pendingAd.step === 'confirm') {
+                if (userMessage.toLowerCase() === 'نعم' || userMessage.toLowerCase() === 'yes') {
+                    addMessage("🚀 جاري نشر إعلانك على صفحة خدماتي...", false);
+                    showTypingIndicator();
+                    
+                    const success = await publishToFacebook(pendingAd.link, pendingAd.description);
+                    removeTypingIndicator();
+                    
+                    if (success) {
+                        addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nسيظهر إعلانك على صفحة 'خدماتي' قريباً.\n\n📢 يمكنك نشر إعلان آخر باتباع نفس الخطوات.", false);
+                    } else {
+                        addMessage("❌ عذراً، حدث خطأ أثناء نشر الإعلان. يرجى المحاولة لاحقاً أو التواصل مع الدعم الفني.", false);
+                    }
+                    
+                    // إعادة تعيين حالة الإعلان
+                    pendingAd = { step: null, link: null, description: null };
+                } else if (userMessage.toLowerCase() === 'لا' || userMessage.toLowerCase() === 'لأ') {
+                    addMessage("🙂 تم إلغاء نشر الإعلان. يمكنك البدء من جديد بالضغط على أيقونة '📢 خدمة الإعلانات'.", false);
+                    pendingAd = { step: null, link: null, description: null };
+                } else {
+                    addMessage("❓ أجب بـ 'نعم' للتأكيد أو 'لا' للإلغاء.", false);
+                }
+                return true;
+            }
+            
+            return false;
+        }
+
+        async function handleGeneralMessage(message) {
+            const lower = message.toLowerCase();
+            
+            if (lower.includes('مرحب') || lower.includes('السلام') || lower.includes('اهلا')) {
+                return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 يمكنك نشر إعلاناتك التجارية على صفحة 'خدماتي'.\n\nاضغط على أيقونة **📢 خدمة الإعلانات** لبدء النشر.";
+            }
+            
+            if (lower.includes('شكر')) {
+                return "العفو على الرحب والسعة! 🤍\nنتمنى لك التوفيق في أعمالك التجارية.";
+            }
+            
+            if (lower.includes('القوانين') || lower.includes('شروط')) {
+                return AD_RULES;
+            }
+            
+            if (lower.includes('سعر') || lower.includes('تكلفة') || lower.includes('دفع')) {
+                return "💰 **أسعار النشر:**\n\n• الإعلان الواحد: 200 دج\n• يمكنك الدفع عبر تحويل CCP أو بطاقة ذهبية\n• بعد الدفع، سيتم تفعيل حسابك لمدة سنة كاملة للنشر غير المحدود\n\nللاشتراك، تواصل مع المطور على الصفحة.";
+            }
+            
+            return "📢 **بوت مصطفى - خدمة الإعلانات**\n\nيمكنني مساعدتك في:\n✅ نشر إعلاناتك التجارية على صفحة 'خدماتي'\n✅ الوصول إلى آلاف العملاء المحتملين\n✅ إدارة إعلاناتك بسهولة\n\n🔹 اضغط على أيقونة **📢 خدمة الإعلانات** لبدء النشر\n🔹 أو اكتب 'القوانين' لمعرفة شروط النشر\n🔹 أو اكتب 'سعر' لمعرفة تكلفة الخدمة\n\nكيف أقدر أساعدك اليوم؟";
+        }
+
         function buildIcons() {
             const grid = document.createElement('div');
             grid.className = 'icon-grid';
-            services.forEach(s => {
-                const item = document.createElement('div');
-                item.className = 'icon-item';
-                const img = document.createElement('img');
-                img.src = s.img;
-                img.onerror = () => img.src = 'https://via.placeholder.com/55';
-                const span = document.createElement('span');
-                span.innerText = s.name;
-                item.appendChild(img);
-                item.appendChild(span);
-                item.onclick = () => {
-                    if (!getSubscription().active) {
-                        addMessage(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً سنوياً (365 دج)`, false);
-                        return;
-                    }
-                    let msg = `📌 ${s.name}\n${s.benefit}\n${s.requirements}\n${s.steps}\n❓ جاهز لفتح الرابط؟ (نعم/لا)`;
-                    addMessage(msg, false);
-                    pendingService = s;
-                };
-                grid.appendChild(item);
-            });
+            
+            // أيقونة خدمة الإعلانات
+            const adItem = document.createElement('div');
+            adItem.className = 'icon-item';
+            adItem.innerHTML = `
+                <div class="icon-emoji">📢</div>
+                <span>خدمة الإعلانات</span>
+                <div class="sub-text">انشر إعلانك الآن</div>
+            `;
+            adItem.onclick = async () => {
+                const sub = getSubscription();
+                if (!sub.active) {
+                    addMessage(`⚠️ **لا يوجد اشتراك نشط**\n\nللاشتراك والتسجيل في خدمة الإعلانات، يرجى التواصل مع المطور.\n\n💰 سعر الاشتراك السنوي: 365 دج\n📢 بعد التفعيل، يمكنك نشر إعلانات غير محدودة.`, false);
+                    return;
+                }
+                await startAdFlow();
+            };
+            grid.appendChild(adItem);
+            
             return grid;
         }
 
         async function initChat() {
             messagesDiv.innerHTML = '';
-            addMessage(`✨ أهلاً بك! ✨\n💰 الاشتراك: 365 دج سنوياً\n📱 الخدمات: شحن الجوال، فواتير، قسيمة السيارات`, false);
+            const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى - خدمة الإعلانات التجارية** ✨
+
+أنا هنا لمساعدتك في نشر إعلاناتك التجارية على صفحة **"خدماتي"** في Facebook. 📢
+
+**ماذا أقدم لك؟**
+✅ نشر إعلاناتك بسرعة وسهولة
+✅ الوصول إلى جمهور واسع
+✅ إدارة احترافية للإعلانات
+
+**كيف تبدأ؟**
+1️⃣ تأكد من أن حسابك مفعل (اشتراك سنوي)
+2️⃣ اضغط على أيقونة **📢 خدمة الإعلانات**
+3️⃣ أوافق على القوانين
+4️⃣ أرسل رابط إعلانك
+5️⃣ أضف وصفاً (اختياري)
+6️⃣ أكد النشر
+
+**القوانين:** اكتب 'القوانين' لمعرفة شروط النشر
+**الأسعار:** اكتب 'سعر' لمعرفة تكلفة الخدمة
+
+اضغط على الأيقونة أدناه لبدء نشر إعلانك! 🚀`;
+
+            addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
         }
 
         sendBtn.onclick = async () => {
+            if (isBotTyping) return;
             const text = chatInput.value.trim();
             if (!text) return;
+            
             addMessage(text, true);
             chatInput.value = '';
-            if (pendingService && (text === 'نعم' || text === 'لا')) {
-                if (text === 'نعم') {
-                    window.open(pendingService.url, '_blank');
-                    addMessage(`✅ تم فتح رابط ${pendingService.name}`, false);
-                } else {
-                    addMessage("🙂 لا مشكلة! اختر خدمة أخرى", false);
-                }
-                pendingService = null;
+            
+            // معالجة تدفق الإعلان أولاً
+            if (pendingAd.step) {
+                isBotTyping = true;
+                showTypingIndicator();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                removeTypingIndicator();
+                await handleAdFlow(text);
+                isBotTyping = false;
                 return;
             }
-            addMessage("🤖 أنا بوت مصطفى! اشترك أولاً (365 دج) ثم اختر خدمة من الأيقونات 👆", false);
+            
+            isBotTyping = true;
+            showTypingIndicator();
+            await new Promise(resolve => setTimeout(resolve, 800));
+            removeTypingIndicator();
+            
+            const response = await handleGeneralMessage(text);
+            addMessage(response, false);
+            isBotTyping = false;
         };
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+        });
+
+        function checkPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const days = urlParams.get('days');
+            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
+                const expiry = Date.now() + (parseInt(days) * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, expiry);
+                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً! يمكنك الآن نشر الإعلانات.`);
+                updateUI();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+        checkPayment();
     </script>
 </body>
 </html>
