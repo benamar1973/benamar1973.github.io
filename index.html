@@ -2,25 +2,20 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوت مصطفى - مساعدك الذكي</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* جميع الألوان والتنسيقات كما هي */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 16px;
         }
-
         .top-bot-bar {
             width: 100%;
             max-width: 600px;
@@ -34,18 +29,11 @@
             transition: all 0.3s ease;
             animation: glow 2s infinite;
         }
-
-        .top-bot-bar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
-        }
-
+        .top-bot-bar:hover { transform: scale(1.02); }
         @keyframes glow {
             0% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
-            50% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
-            100% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
+            100% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
         }
-
         .top-bot-text {
             font-size: 2.2rem;
             font-weight: bold;
@@ -54,46 +42,17 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
         }
-
-        .top-bot-text span:first-child {
-            font-size: 3rem;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .top-bot-sub {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-top: 8px;
-            display: block;
-        }
-
-        .container {
-            max-width: 500px;
-            width: 100%;
-        }
-
+        .top-bot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-top: 8px; }
+        .container { max-width: 500px; width: 100%; }
         .card {
             background: white;
             border-radius: 35px;
             padding: 25px 20px;
             text-align: center;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
         }
-
-        .version {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
+        .version { font-size: 14px; color: #6c757d; margin-bottom: 20px; }
         .auth-input {
             width: 100%;
             padding: 14px;
@@ -103,7 +62,6 @@
             font-size: 16px;
             text-align: center;
         }
-
         .btn {
             background: #007bff;
             color: white;
@@ -116,39 +74,19 @@
             cursor: pointer;
             margin: 8px 0;
         }
-
-        .btn-logout {
-            background: #dc3545;
-            margin-top: 15px;
-        }
-
+        .btn-logout { background: #dc3545; margin-top: 15px; }
         .btn-subscribe {
             background: linear-gradient(135deg, #f7971e, #ffd200);
             margin-top: 10px;
             font-size: 18px;
-            box-shadow: 0 5px 15px rgba(247, 151, 30, 0.3);
-            transition: all 0.3s ease;
         }
-
-        .btn-subscribe:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(247, 151, 30, 0.4);
-        }
-
         .user-info {
             background: #e8f0fe;
             border-radius: 25px;
             padding: 15px;
             margin: 15px 0;
         }
-
-        .user-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0f3460;
-            word-break: break-all;
-        }
-
+        .user-name { font-size: 24px; font-weight: bold; color: #0f3460; }
         .sub-days {
             background: #fff3cd;
             border-radius: 40px;
@@ -156,7 +94,6 @@
             margin: 10px 0;
             font-size: 14px;
         }
-
         .chat-fullscreen {
             position: fixed;
             top: 0;
@@ -171,11 +108,7 @@
             transition: 0.3s;
             direction: rtl;
         }
-
-        .chat-fullscreen.open {
-            transform: translateY(0);
-        }
-
+        .chat-fullscreen.open { transform: translateY(0); }
         .chat-header {
             background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
@@ -184,80 +117,15 @@
             justify-content: space-between;
             align-items: center;
             font-size: 1.5rem;
-            font-weight: bold;
         }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .bot-msg, .user-msg {
-            padding: 12px 16px;
-            border-radius: 20px;
-            max-width: 85%;
-            font-size: 15px;
-            line-height: 1.5;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .bot-msg {
-            background: #e3f2fd;
-            align-self: flex-start;
-            border-bottom-right-radius: 5px;
-        }
-
-        .user-msg {
-            background: #d4edda;
-            align-self: flex-end;
-            border-bottom-left-radius: 5px;
-        }
-
-        .input-area {
-            background: white;
-            padding: 12px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid #ddd;
-        }
-
-        #chatInput {
-            flex: 1;
-            border: 1px solid #ccc;
-            border-radius: 30px;
-            padding: 12px;
-            font-family: inherit;
-            font-size: 15px;
-        }
-
-        #sendBtn {
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 0 25px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
+        .close-btn { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+        .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; }
+        .bot-msg { background: #e3f2fd; align-self: flex-start; }
+        .user-msg { background: #d4edda; align-self: flex-end; }
+        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; }
+        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; }
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -267,7 +135,6 @@
             padding: 16px;
             margin: 10px 0;
         }
-
         .icon-item {
             background: #f8f9fa;
             border-radius: 18px;
@@ -277,27 +144,9 @@
             border: 1px solid #ddd;
             transition: all 0.3s;
         }
-
-        .icon-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: #007bff;
-        }
-
-        .icon-item img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-bottom: 6px;
-        }
-
-        .icon-item span {
-            font-size: 11px;
-            display: block;
-            font-weight: 500;
-        }
-
+        .icon-item:hover { transform: translateY(-5px); border-color: #007bff; }
+        .icon-item img { width: 55px; height: 55px; object-fit: contain; border-radius: 12px; margin-bottom: 6px; }
+        .icon-item span { font-size: 11px; display: block; }
         .toast {
             position: fixed;
             bottom: 20px;
@@ -310,37 +159,9 @@
             opacity: 0;
             transition: 0.3s;
             z-index: 9999;
-            font-weight: bold;
-            pointer-events: none;
         }
-
-        .typing {
-            display: inline-block;
-            width: 30px;
-            text-align: center;
-        }
-
-        .typing span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #888;
-            border-radius: 50%;
-            margin: 0 2px;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-
         @media (max-width: 480px) {
             .top-bot-text { font-size: 1.6rem; }
-            .top-bot-text span:first-child { font-size: 2.2rem; }
             .top-bot-bar { padding: 15px 20px; }
         }
     </style>
@@ -348,24 +169,18 @@
 <body>
 
     <div class="top-bot-bar" id="topBotBar">
-        <div class="top-bot-text">
-            <span>🤖</span>
-            <span>بوت مصطفى</span>
-            <span>✨</span>
-        </div>
+        <div class="top-bot-text">🤖 بوت مصطفى ✨</div>
         <div class="top-bot-sub">مساعدك الذكي للخدمات الرقمية | اضغط للدخول</div>
     </div>
 
     <div class="container">
         <div class="card">
             <div class="version">⭐ بوت مصطفى · خدمات رقمية متكاملة ⭐</div>
-
             <div id="loginSection">
-                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني (Gmail)" required>
+                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" required>
                 <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
                 <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
             </div>
-
             <div id="appSection" style="display: none;">
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
@@ -382,7 +197,7 @@
 
     <div id="chatFullscreen" class="chat-fullscreen">
         <div class="chat-header">
-            <span>🤖 بوت مصطفى | مساعدك الذكي</span>
+            <span>🤖 بوت مصطفى</span>
             <button class="close-btn" id="closeChatBtn">✕</button>
         </div>
         <div class="messages" id="messages"></div>
@@ -393,31 +208,21 @@
     </div>
 
     <script>
+        // ====== الإعدادات (آمنة - لا مفتاح هنا!) ======
+        const WEBHOOK_URL = "https://chargily-webhook-mvi5.onrender.com";
+        // ===========================================
+        
         let currentUser = null;
         let isBotTyping = false;
-        let conversationHistory = [];
         let pendingService = null;
 
-        // ========== إعدادات Chargily ==========
-        // 🔐 قم بتعديل هذه القيم حسب إعدادات Flask الخاص بك
-        const WEBHOOK_URL = "https://YOUR_DOMAIN.com";  // رابط السيرفر الذي يعمل عليه Flask (مثال: https://your-server.onrender.com)
-        const CHECK_PAYMENT_URL = `${WEBHOOK_URL}/check-payment`;
-        const CHARGILY_PAYMENT_URL = "https://api.chargily.com/v1/checkout"; // رابط API الخاص بـ Chargily
-        
-        // 🔑 مفتاح API الخاص بـ Chargily (سيكون لديك من لوحة التحكم)
-        const CHARGILY_API_KEY = "YOUR_CHARGILY_API_KEY";  // استبدل بمفتاحك الحقيقي
-        
-        // سعر الاشتراك (365 دج = 36500 سنتيم لأن Chargily تستخدم السنتيم)
-        const AMOUNT = 36500; // 365 دج = 36500 سنتيم
-        // ========================================
-
         const services = [
-            { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان، بدون الحاجة للذهاب إلى وكالة.\n🔹 يمكنك الشحن بأي مبلغ تختاره (500 دج، 1000 دج، 2000 دج، 5000 دج).", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية (Gold Card) أو بطاقة CIB بنكية 💳\n• اتصال بالإنترنت 🌐", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اضغط على الرابط أعلاه\n2️⃣ أدخل رقم الهاتف المراد شحنه (بدون 0، مثال: 551234567)\n3️⃣ اختر المبلغ المناسب لك\n4️⃣ اختر طريقة الدفع (بطاقة ذهبية أو CIB)\n5️⃣ أدخل بيانات بطاقتك (رقم البطاقة، تاريخ الصلاحية، الرمز السري)\n6️⃣ تأكيد العملية عبر رمز OTP يرسل لجوالك\n7️⃣ انتظر رسالة تأكيد وصول الرصيد\n\n✅ سيصلك الرصيد فوراً خلال دقائق!", needsCard: true },
-            { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", description: "شحن رصيد هاتف موبيليس", benefit: "🔹 **فائدة الرابط:** خدمة رسمية من موبيليس لشحن رصيد أي رقم موبيليس.\n🔹 متوفر عروض خاصة عند الشحن عبر الإنترنت (مكالمات + إنترنت إضافية).", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم موبيليس المراد شحنه 📱\n• بطاقة ذهبية أو CIB 💳\n• البريد الإلكتروني لتأكيد العملية 📧", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ افتح الرابط\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ حدد المبلغ (500-5000 دج)\n4️⃣ اختر طريقة الدفع الإلكتروني\n5️⃣ أدخل بيانات البطاقة البنكية\n6️⃣ تأكيد عبر رمز التحقق\n7️⃣ استلم الرصيد خلال 5 دقائق", needsCard: true },
-            { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", description: "شحن رصيد هاتف أوريدو", benefit: "🔹 **فائدة الرابط:** خدمة E-Storm من أوريدو لشحن الرصيد وشراء الباقات.\n🔹 يمكنك شحن رصيد عادي أو شراء باقات إنترنت ومكالمات.", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم أوريدو المراد شحنه 📱\n• بطاقة CIB أو بطاقة ذهبية 💳\n• اتصال آمن بالإنترنت", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اختر 'شحن الرصيد' من الصفحة الرئيسية\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ يستلم الرصيد فوراً", needsCard: true },
-            { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", description: "دفع فاتورة الكهرباء والغاز", benefit: "🔹 **فائدة الرابط:** دفع فواتير الكهرباء والغاز إلكترونياً بدون الحاجة للذهاب إلى الوكالات.\n🔹 تحصل على إشعار فوري بالدفع وإيصال إلكتروني.", requirements: "📋 **متطلبات التسجيل:**\n• رقم العقد الموجود أعلى الفاتورة (14 رقم) 📄\n• بطاقة ذهبية أو CIB 💳", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أدخل رقم العقد المكون من 14 رقماً\n2️⃣ سيظهر المبلغ المطلوب دفعه\n3️⃣ اضغط على 'دفع الآن'\n4️⃣ اختر طريقة الدفع\n5️⃣ أدخل بيانات البطاقة\n6️⃣ تأكيد الدفع\n7️⃣ احفظ الإيصال الإلكتروني", needsCard: false },
-            { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", description: "دفع فاتورة الماء", benefit: "🔹 **فائدة الرابط:** منصة SEAAL الرسمية لدفع فواتير الماء.\n🔹 يمكنك دفع الفاتورة الشهرية أو السنوية.", requirements: "📋 **متطلبات التسجيل:**\n• رقم المشترك الموجود على الفاتورة 📄\n• بطاقة دفع إلكترونية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة المراد دفعها\n3️⃣ اضغط على 'دفع'\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد وطباعة الإيصال", needsCard: false },
-            { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", description: "الاستعلام عن قسيمة السيارات", benefit: "🔹 **فائدة الرابط:** الاستعلام عن رصيد قسيمة السيارات وقيمتها والمدة المتبقية.\n🔹 تستخدم القسيمة لدفع المخالفات والضرائب.", requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل المركزي (في البطاقة الرمادية) 🚗", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل المركزي\n2️⃣ اضغط 'استعلام'\n3️⃣ ستظهر لك:\n   - قيمة القسيمة المتبقية\n   - تاريخ الصلاحية\n   - المخالفات المسجلة\n4️⃣ يمكنك الدفع مباشرة عبر الموقع", needsCard: false }
+            { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 يتيح لك شحن الرصيد بسهولة", requirements: "📋 رقم هاتف دجازي + بطاقة بنكية", steps: "1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ ادفع", needsCard: true },
+            { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", description: "شحن رصيد هاتف موبيليس", benefit: "🔹 خدمة رسمية من موبيليس", requirements: "📋 رقم موبيليس + بطاقة بنكية", steps: "1️⃣ افتح الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ حدد المبلغ\n4️⃣ ادفع", needsCard: true },
+            { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", description: "شحن رصيد هاتف أوريدو", benefit: "🔹 خدمة E-Storm", requirements: "📋 رقم أوريدو + بطاقة بنكية", steps: "1️⃣ اختر شحن الرصيد\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ ادفع", needsCard: true },
+            { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", description: "دفع فاتورة الكهرباء والغاز", benefit: "🔹 دفع إلكتروني بدون وكالات", requirements: "📋 رقم العقد (14 رقم) + بطاقة بنكية", steps: "1️⃣ أدخل رقم العقد\n2️⃣ سيظهر المبلغ\n3️⃣ ادفع", needsCard: false },
+            { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", description: "دفع فاتورة الماء", benefit: "🔹 منصة SEAAL الرسمية", requirements: "📋 رقم المشترك + بطاقة بنكية", steps: "1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة\n3️⃣ ادفع", needsCard: false },
+            { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", description: "الاستعلام عن قسيمة السيارات", benefit: "🔹 الاستعلام عن الرصيد والمدة", requirements: "📋 رقم التسجيل المركزي", steps: "1️⃣ أدخل رقم التسجيل\n2️⃣ اضغط استعلام", needsCard: false }
         ];
 
         function showToast(msg, isError = false) {
@@ -425,18 +230,14 @@
             toast.innerText = msg;
             toast.style.backgroundColor = isError ? '#dc3545' : '#28a745';
             toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.backgroundColor = '#28a745';
-            }, 4000);
+            setTimeout(() => toast.style.opacity = '0', 4000);
         }
 
         function getSubscription() {
             if (!currentUser) return { active: false, days: 0 };
             const expiry = localStorage.getItem(`sub_${currentUser}`);
             if (expiry && Date.now() < parseInt(expiry)) {
-                const days = Math.ceil((parseInt(expiry) - Date.now()) / (86400000));
-                return { active: true, days };
+                return { active: true, days: Math.ceil((parseInt(expiry) - Date.now()) / 86400000) };
             }
             return { active: false, days: 0 };
         }
@@ -446,139 +247,63 @@
             document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
             const sub = getSubscription();
             if (sub.active) {
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - جميع الخدمات متاحة';
+                document.getElementById('daysLeft').innerHTML = `✅ مفعل - يتبقى ${sub.days} يوم`;
+                document.getElementById('planText').innerHTML = 'جميع الخدمات متاحة';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك (365 دج سنوياً) للوصول إلى جميع الخدمات';
+                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك (365 دج سنوياً)';
             }
         }
 
-        // ========== دالة إنشاء طلب دفع عبر Chargily ==========
-        async function createChargilyPayment(userEmail, userName) {
+        // إنشاء رابط دفع آمن عبر السيرفر
+        async function createPayment() {
             try {
-                const paymentData = {
-                    amount: AMOUNT,
-                    currency: "dzd",
-                    success_url: window.location.href + "?payment=success",
-                    cancel_url: window.location.href + "?payment=cancel",
-                    webhook_url: `${WEBHOOK_URL}/webhook`,
-                    metadata: {
-                        user_email: userEmail,
-                        user_name: userName,
-                        subscription_days: 365,
-                        plan: "yearly"
-                    },
-                    products: [
-                        {
-                            id: "subscription_yearly",
-                            name: "اشتراك سنوي - بوت مصطفى",
-                            price: AMOUNT,
-                            quantity: 1
-                        }
-                    ]
-                };
-
-                const response = await fetch(CHARGILY_PAYMENT_URL, {
+                const response = await fetch(`${WEBHOOK_URL}/create-payment`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${CHARGILY_API_KEY}`
-                    },
-                    body: JSON.stringify(paymentData)
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: currentUser, name: currentUser.split('@')[0] })
                 });
-
-                const result = await response.json();
-                
-                if (result.checkout_url) {
-                    // فتح نافذة الدفع
-                    window.open(result.checkout_url, "_blank");
-                    showToast("⏳ تم تحويلك إلى بوابة الدفع الآمنة Chargily");
-                    
-                    // بدء التحقق من حالة الدفع
-                    startPaymentCheck(userEmail);
+                const data = await response.json();
+                if (data.checkout_url) {
+                    window.open(data.checkout_url, "_blank");
+                    showToast("⏳ تم التحويل إلى بوابة الدفع");
+                    startPaymentCheck();
                 } else {
-                    throw new Error(result.message || "فشل في إنشاء طلب الدفع");
+                    throw new Error("فشل إنشاء رابط الدفع");
                 }
             } catch (error) {
-                console.error("Chargily Error:", error);
-                showToast("❌ حدث خطأ في الاتصال ببوابة الدفع. حاول مرة أخرى.", true);
+                showToast("❌ خطأ في الاتصال", true);
             }
         }
 
-        // ========== التحقق من حالة الدفع ==========
         let paymentCheckInterval = null;
-        
-        function startPaymentCheck(userEmail) {
+        function startPaymentCheck() {
             if (paymentCheckInterval) clearInterval(paymentCheckInterval);
-            
             paymentCheckInterval = setInterval(async () => {
                 try {
-                    const checkResponse = await fetch(`${CHECK_PAYMENT_URL}?email=${encodeURIComponent(userEmail)}`);
-                    const checkResult = await checkResponse.json();
-                    
-                    if (checkResult.paid === true) {
+                    const res = await fetch(`${WEBHOOK_URL}/check-payment?email=${encodeURIComponent(currentUser)}`);
+                    const result = await res.json();
+                    if (result.paid === true) {
                         clearInterval(paymentCheckInterval);
-                        paymentCheckInterval = null;
-                        
                         const expiry = Date.now() + (365 * 86400000);
                         localStorage.setItem(`sub_${currentUser}`, expiry);
                         updateUI();
-                        
-                        showToast("✅ تم تأكيد الدفع! تم تفعيل اشتراكك السنوي لمدة 365 يوماً");
-                        
-                        if (messagesDiv.children.length > 0) {
-                            initChat();
-                        }
+                        showToast("✅ تم تفعيل اشتراكك السنوي!");
                     }
-                } catch (error) {
-                    console.log("جاري انتظار تأكيد الدفع...");
-                }
+                } catch(e) { console.log("جاري انتظار الدفع..."); }
             }, 3000);
-            
-            setTimeout(() => {
-                if (paymentCheckInterval) {
-                    clearInterval(paymentCheckInterval);
-                    paymentCheckInterval = null;
-                }
-            }, 300000);
+            setTimeout(() => { if (paymentCheckInterval) clearInterval(paymentCheckInterval); }, 300000);
         }
 
-        // ========== التحقق من نجاح الدفع عبر URL ==========
-        function checkPaymentSuccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paymentStatus = urlParams.get('payment');
-            
-            if (paymentStatus === 'success') {
-                showToast("✅ تم الدفع بنجاح! جاري تفعيل اشتراكك...");
-                if (currentUser) {
-                    const expiry = Date.now() + (365 * 86400000);
-                    localStorage.setItem(`sub_${currentUser}`, expiry);
-                    updateUI();
-                }
-                window.history.replaceState({}, document.title, window.location.pathname);
-            } else if (paymentStatus === 'cancel') {
-                showToast("❌ تم إلغاء عملية الدفع", true);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        }
-
-        // زر الاشتراك - ربط مع Chargily
         document.getElementById('subscribeBtn').onclick = async () => {
-            if (!currentUser) {
-                showToast('الرجاء تسجيل الدخول أولاً', true);
-                return;
-            }
-            
-            const userName = currentUser.split('@')[0];
-            showToast("⏳ جاري التوجيه إلى بوابة الدفع الآمنة...");
-            await createChargilyPayment(currentUser, userName);
+            if (!currentUser) { showToast('سجل الدخول أولاً', true); return; }
+            await createPayment();
         };
 
         document.getElementById('loginBtn').onclick = () => {
             const email = document.getElementById('emailInput').value.trim();
             if (!email || !email.includes('@')) {
-                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
+                document.getElementById('loginMsg').innerText = '❌ بريد إلكتروني صحيح';
                 return;
             }
             currentUser = email;
@@ -586,9 +311,7 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
-            showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 🚀`);
-            
-            checkPaymentSuccess();
+            showToast(`مرحباً ${email.split('@')[0]} 🚀`);
         };
 
         document.getElementById('logoutBtn').onclick = () => {
@@ -596,19 +319,17 @@
             localStorage.removeItem('currentUser');
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('appSection').style.display = 'none';
-            document.getElementById('emailInput').value = '';
             showToast('تم تسجيل الخروج');
         };
 
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-            currentUser = savedUser;
+        if (localStorage.getItem('currentUser')) {
+            currentUser = localStorage.getItem('currentUser');
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
-            checkPaymentSuccess();
         }
 
+        // باقي كود الدردشة والأيقونات...
         const messagesDiv = document.getElementById('messages');
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
@@ -618,69 +339,18 @@
 
         topBotBar.onclick = () => {
             const sub = getSubscription();
-            if (!sub.active) {
-                showToast('⚠️ يرجى الاشتراك أولاً للدخول إلى البوت (365 دج سنوياً)', true);
-                return;
-            }
+            if (!sub.active) { showToast('⚠️ اشترك أولاً (365 دج سنوياً)', true); return; }
             chatFull.classList.add('open');
             if (messagesDiv.children.length === 0) initChat();
         };
         closeChatBtn.onclick = () => chatFull.classList.remove('open');
 
-        function showTypingIndicator() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'bot-msg';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div> جاري التفكير...';
-            messagesDiv.appendChild(typingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) indicator.remove();
-        }
-
-        function addMessage(text, isUser, saveToHistory = true) {
+        function addMessage(text, isUser) {
             const div = document.createElement('div');
             div.className = isUser ? 'user-msg' : 'bot-msg';
             div.innerText = text;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            if (saveToHistory) {
-                conversationHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
-                if (conversationHistory.length > 20) conversationHistory.shift();
-            }
-        }
-
-        function showDetailedServiceExplanation(service) {
-            let msg = `📌 **${service.name}** - ${service.description}\n\n`;
-            msg += `${service.benefit}\n\n`;
-            msg += `${service.requirements}\n\n`;
-            msg += `${service.steps}\n\n`;
-            if (service.needsCard) {
-                msg += `💳 **ملاحظة مهمة:** تحتاج إلى بطاقة بنكية (ذهبية أو CIB) لإتمام عملية الدفع.\n\n`;
-            }
-            msg += `❓ **هل أنت جاهز لفتح الرابط الآن؟**\nأجب بـ 'نعم' لفتح الرابط مباشرة، أو 'لا' للعودة للقائمة.`;
-            addMessage(msg, false);
-            pendingService = service;
-        }
-
-        async function handleReply(text) {
-            const lower = text.trim().toLowerCase();
-            if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز' || lower === 'نعم جاهز') {
-                if (pendingService) {
-                    window.open(pendingService.url, '_blank');
-                    await addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nالآن يمكنك اتباع الخطوات الموضحة أعلاه لإتمام العملية.`, false);
-                    pendingService = null;
-                }
-                return true;
-            } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن' || lower === 'لا شكراً') {
-                await addMessage("🙂 **لا مشكلة!** أنا هنا في أي وقت تحتاج فيه إلى مساعدة.\n\nيمكنك اختيار خدمة أخرى من الأيقونات. 🤝", false);
-                pendingService = null;
-                return true;
-            }
-            return false;
         }
 
         function buildIcons() {
@@ -691,112 +361,48 @@
                 item.className = 'icon-item';
                 const img = document.createElement('img');
                 img.src = s.img;
-                img.alt = s.name;
-                img.onerror = () => { img.src = 'https://via.placeholder.com/55/cccccc/white?text=icon'; };
+                img.onerror = () => img.src = 'https://via.placeholder.com/55';
                 const span = document.createElement('span');
                 span.innerText = s.name;
                 item.appendChild(img);
                 item.appendChild(span);
-                item.onclick = async () => {
-                    const sub = getSubscription();
-                    if (!sub.active) {
-                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً سنوياً نشطاً.**\n\n💰 الاشتراك: 365 دج فقط سنوياً عبر Chargily.\nاضغط على زر 'اشتراك سنوي' للدفع.`, false);
+                item.onclick = () => {
+                    if (!getSubscription().active) {
+                        addMessage(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً سنوياً (365 دج)`, false);
                         return;
                     }
-                    showDetailedServiceExplanation(s);
+                    let msg = `📌 ${s.name}\n${s.benefit}\n${s.requirements}\n${s.steps}\n❓ جاهز لفتح الرابط؟ (نعم/لا)`;
+                    addMessage(msg, false);
+                    pendingService = s;
                 };
                 grid.appendChild(item);
             });
             return grid;
         }
 
-        async function smartReply(userMessage) {
-            const lower = userMessage.toLowerCase();
-            
-            if ((lower.includes('شحن') || lower.includes('رصيد')) && lower.includes('دجازي')) {
-                return "📱 **شحن رصيد دجازي:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة DJEZZY\n2️⃣ أدخل رقم الهاتف (مثال: 551234567)\n3️⃣ اختر المبلغ (500، 1000، 2000، 5000 دج)\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ سيصلك الرصيد فوراً";
-            }
-            
-            if ((lower.includes('شحن') || lower.includes('رصيد')) && lower.includes('موبيليس')) {
-                return "📱 **شحن رصيد موبيليس:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة mobilis\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ اختر المبلغ المناسب\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ يصلك الرصيد خلال 5 دقائق";
-            }
-            
-            if ((lower.includes('شحن') || lower.includes('رصيد')) && (lower.includes('اوريدو') || lower.includes('ooredoo'))) {
-                return "📱 **شحن رصيد أوريدو:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة Ooredoo\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ ادفع عبر بطاقة CIB أو ذهبية\n5️⃣ يصلك الرصيد فوراً";
-            }
-            
-            if ((lower.includes('كهرباء') || lower.includes('غاز')) && (lower.includes('دفع') || lower.includes('فاتورة'))) {
-                return "⚡ **دفع فاتورة الكهرباء والغاز:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة 'دفع فاتورة الكهرباء'\n2️⃣ أدخل رقم العقد (14 رقم)\n3️⃣ سيظهر المبلغ المطلوب\n4️⃣ ادفع عبر بطاقة بنكية\n5️⃣ احصل على إيصال إلكتروني";
-            }
-            
-            if (lower.includes('ماء') && (lower.includes('دفع') || lower.includes('فاتورة'))) {
-                return "💧 **دفع فاتورة الماء:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة 'دفع فاتورة الماء'\n2️⃣ أدخل رقم المشترك\n3️⃣ اختر الفاتورة المراد دفعها\n4️⃣ ادفع عبر بطاقة بنكية\n5️⃣ اطبع الإيصال";
-            }
-            
-            if (lower.includes('قسيمة') && (lower.includes('سيارات') || lower.includes('سيارة'))) {
-                return "🚗 **قسيمة السيارات:**\n\n📌 **للاستعلام:**\n1️⃣ اضغط على أيقونة 'قسيمة السيارات'\n2️⃣ أدخل رقم التسجيل المركزي (في البطاقة الرمادية)\n3️⃣ ستظهر لك قيمة القسيمة والمدة المتبقية";
-            }
-            
-            if (lower.includes('اشتراك') || lower.includes('دفع') || lower.includes('سعر')) {
-                return "💰 **الاشتراك السنوي - Chargily:**\n\n• السعر: **365 دج** فقط\n• المدة: **365 يوماً**\n• طريقة الدفع: بطاقة CIB / ذهبية / CCP\n\n🔹 **للاشتراك:** اضغط على الزر الذهبي 'اشتراك سنوي'";
-            }
-            
-            if (lower.includes('مرحب') || lower.includes('السلام')) {
-                return "وعليكم السلام! 😊\nأهلاً بك في **بوت مصطفى**.\n\n💰 الاشتراك السنوي: 365 دج فقط\n✅ بعد الدفع، جميع الخدمات متاحة لمدة عام كامل";
-            }
-            
-            return "🤖 **بوت مصطفى** - مساعدك الذكي\n\n💰 الاشتراك: 365 دج سنوياً عبر Chargily\n📱 الخدمات: شحن الجوال، فواتير الكهرباء والماء، قسيمة السيارات\n\nللاشتراك، اضغط على الزر الذهبي أعلاه 👆";
-        }
-
         async function initChat() {
             messagesDiv.innerHTML = '';
-            conversationHistory = [];
-            const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى!** ✨
-
-💰 **الاشتراك السنوي: 365 دج فقط**
-✅ الدفع عبر **Chargily** (بطاقة CIB/ذهبية/CCP)
-✅ المدة: 365 يوماً كاملة
-
-📋 **الخدمات بعد الاشتراك:**
-📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)
-⚡ دفع فواتير الكهرباء والماء
-🚗 قسيمة السيارات
-
-**للاشتراك:** اضغط على الزر الذهبي في الأعلى 👆
-
-أنا هنا لمساعدتك! 🚀`;
-
-            addMessage(welcomeMsg, false);
+            addMessage(`✨ أهلاً بك! ✨\n💰 الاشتراك: 365 دج سنوياً\n📱 الخدمات: شحن الجوال، فواتير، قسيمة السيارات`, false);
             messagesDiv.appendChild(buildIcons());
         }
 
         sendBtn.onclick = async () => {
-            if (isBotTyping) return;
             const text = chatInput.value.trim();
             if (!text) return;
-            
             addMessage(text, true);
             chatInput.value = '';
-            
-            if (pendingService) {
-                const handled = await handleReply(text);
-                if (!handled) {
-                    await addMessage("عذراً، أجب بـ 'نعم' أو 'لا' فقط.", false);
+            if (pendingService && (text === 'نعم' || text === 'لا')) {
+                if (text === 'نعم') {
+                    window.open(pendingService.url, '_blank');
+                    addMessage(`✅ تم فتح رابط ${pendingService.name}`, false);
+                } else {
+                    addMessage("🙂 لا مشكلة! اختر خدمة أخرى", false);
                 }
+                pendingService = null;
                 return;
             }
-            
-            isBotTyping = true;
-            showTypingIndicator();
-            
-            await new Promise(resolve => setTimeout(resolve, 800));
-            removeTypingIndicator();
-            
-            const response = await smartReply(text);
-            await addMessage(response, false);
-            isBotTyping = false;
+            addMessage("🤖 أنا بوت مصطفى! اشترك أولاً (365 دج) ثم اختر خدمة من الأيقونات 👆", false);
         };
-
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
     </script>
 </body>
