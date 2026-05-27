@@ -122,6 +122,19 @@
             margin-top: 15px;
         }
 
+        .btn-subscribe {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            margin-top: 10px;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(247, 151, 30, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-subscribe:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(247, 151, 30, 0.4);
+        }
+
         .user-info {
             background: #e8f0fe;
             border-radius: 25px;
@@ -247,7 +260,7 @@
 
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             background: white;
             border-radius: 20px;
@@ -357,8 +370,9 @@
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
                     <div class="sub-days" id="daysLeft">⚠️ لا يوجد اشتراك نشط</div>
-                    <div style="font-size:13px; color:#856404;" id="planText">يرجى الاشتراك للوصول إلى الخدمات</div>
+                    <div style="font-size:13px; color:#856404;" id="planText">اشترك الآن للوصول إلى جميع الخدمات</div>
                 </div>
+                <button id="subscribeBtn" class="btn btn-subscribe">💰 اشتراك سنوي - 365 يوماً (365 دج) 💰</button>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
             </div>
         </div>
@@ -384,27 +398,37 @@
         let conversationHistory = [];
         let pendingService = null;
 
+        // ========== إعدادات Chargily ==========
+        // 🔐 قم بتعديل هذه القيم حسب إعدادات Flask الخاص بك
+        const WEBHOOK_URL = "https://YOUR_DOMAIN.com";  // رابط السيرفر الذي يعمل عليه Flask (مثال: https://your-server.onrender.com)
+        const CHECK_PAYMENT_URL = `${WEBHOOK_URL}/check-payment`;
+        const CHARGILY_PAYMENT_URL = "https://api.chargily.com/v1/checkout"; // رابط API الخاص بـ Chargily
+        
+        // 🔑 مفتاح API الخاص بـ Chargily (سيكون لديك من لوحة التحكم)
+        const CHARGILY_API_KEY = "YOUR_CHARGILY_API_KEY";  // استبدل بمفتاحك الحقيقي
+        
+        // سعر الاشتراك (365 دج = 36500 سنتيم لأن Chargily تستخدم السنتيم)
+        const AMOUNT = 36500; // 365 دج = 36500 سنتيم
+        // ========================================
+
         const services = [
             { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان، بدون الحاجة للذهاب إلى وكالة.\n🔹 يمكنك الشحن بأي مبلغ تختاره (500 دج، 1000 دج، 2000 دج، 5000 دج).", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية (Gold Card) أو بطاقة CIB بنكية 💳\n• اتصال بالإنترنت 🌐", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اضغط على الرابط أعلاه\n2️⃣ أدخل رقم الهاتف المراد شحنه (بدون 0، مثال: 551234567)\n3️⃣ اختر المبلغ المناسب لك\n4️⃣ اختر طريقة الدفع (بطاقة ذهبية أو CIB)\n5️⃣ أدخل بيانات بطاقتك (رقم البطاقة، تاريخ الصلاحية، الرمز السري)\n6️⃣ تأكيد العملية عبر رمز OTP يرسل لجوالك\n7️⃣ انتظر رسالة تأكيد وصول الرصيد\n\n✅ سيصلك الرصيد فوراً خلال دقائق!", needsCard: true },
             { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", description: "شحن رصيد هاتف موبيليس", benefit: "🔹 **فائدة الرابط:** خدمة رسمية من موبيليس لشحن رصيد أي رقم موبيليس.\n🔹 متوفر عروض خاصة عند الشحن عبر الإنترنت (مكالمات + إنترنت إضافية).", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم موبيليس المراد شحنه 📱\n• بطاقة ذهبية أو CIB 💳\n• البريد الإلكتروني لتأكيد العملية 📧", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ افتح الرابط\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ حدد المبلغ (500-5000 دج)\n4️⃣ اختر طريقة الدفع الإلكتروني\n5️⃣ أدخل بيانات البطاقة البنكية\n6️⃣ تأكيد عبر رمز التحقق\n7️⃣ استلم الرصيد خلال 5 دقائق", needsCard: true },
             { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", description: "شحن رصيد هاتف أوريدو", benefit: "🔹 **فائدة الرابط:** خدمة E-Storm من أوريدو لشحن الرصيد وشراء الباقات.\n🔹 يمكنك شحن رصيد عادي أو شراء باقات إنترنت ومكالمات.", requirements: "📋 **متطلبات التسجيل والدفع:**\n• رقم أوريدو المراد شحنه 📱\n• بطاقة CIB أو بطاقة ذهبية 💳\n• اتصال آمن بالإنترنت", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ اختر 'شحن الرصيد' من الصفحة الرئيسية\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ يستلم الرصيد فوراً", needsCard: true },
             { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", description: "دفع فاتورة الكهرباء والغاز", benefit: "🔹 **فائدة الرابط:** دفع فواتير الكهرباء والغاز إلكترونياً بدون الحاجة للذهاب إلى الوكالات.\n🔹 تحصل على إشعار فوري بالدفع وإيصال إلكتروني.", requirements: "📋 **متطلبات التسجيل:**\n• رقم العقد الموجود أعلى الفاتورة (14 رقم) 📄\n• بطاقة ذهبية أو CIB 💳", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أدخل رقم العقد المكون من 14 رقماً\n2️⃣ سيظهر المبلغ المطلوب دفعه\n3️⃣ اضغط على 'دفع الآن'\n4️⃣ اختر طريقة الدفع\n5️⃣ أدخل بيانات البطاقة\n6️⃣ تأكيد الدفع\n7️⃣ احفظ الإيصال الإلكتروني", needsCard: false },
             { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", description: "دفع فاتورة الماء", benefit: "🔹 **فائدة الرابط:** منصة SEAAL الرسمية لدفع فواتير الماء.\n🔹 يمكنك دفع الفاتورة الشهرية أو السنوية.", requirements: "📋 **متطلبات التسجيل:**\n• رقم المشترك الموجود على الفاتورة 📄\n• بطاقة دفع إلكترونية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة المراد دفعها\n3️⃣ اضغط على 'دفع'\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد وطباعة الإيصال", needsCard: false },
-            { name: "نتائج BEM", img: "ONEC.png", url: "https://bem.onec.dz/", description: "نتائج شهادة التعليم المتوسط (BEM)", benefit: "🔹 **فائدة الرابط:** الاستعلام عن نتائج البيم فور إعلانها رسمياً.\n🔹 النتيجة تظهر مع المعدل والتقدير.", requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل الخاص بالمترشح 📝\n• تاريخ الميلاد 🗓️", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل (8 أرقام)\n2️⃣ أدخل تاريخ الميلاد\n3️⃣ اضغط على 'استعلام'\n4️⃣ ستظهر النتيجة فوراً", needsCard: false },
-            { name: "نتائج BAC", img: "ONEC.png", url: "https://bac.onec.dz/", description: "نتائج الباكالوريا (BAC)", benefit: "🔹 **فائدة الرابط:** الاستعلام عن نتائج الباكالوريا لحظة إعلانها.\n🔹 ظهور النتيجة مع المعدل والشعب.", requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل الخاص بالمترشح 📝\n• تاريخ الميلاد 🗓️", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل\n2️⃣ أدخل تاريخ الميلاد\n3️⃣ اضغط 'استعلام'\n4️⃣ تظهر النتيجة مع المواد والمعدل", needsCard: false },
-            { name: "منحة البطالة", img: "ANEM.png", url: "https://minha.anem.dz/pre_inscription", description: "التسجيل في منحة البطالة ANEM", benefit: "🔹 **فائدة الرابط:** التسجيل في منحة البطالة (دعم مالي للباحثين عن عمل).\n🔹 المنحة تصرف شهرياً بقيمة **18,000 دج**.", requirements: "📋 **متطلبات التسجيل:**\n• شهادة ميلاد رقم 12 📄\n• شهادة مدرسية أو جامعية (مهنية، تقني، ليسانس) 🎓\n• بطاقة تعريف وطنية 🪪\n• رقم الهاتف الشخصي 📱\n• الإقامة الكاملة 🏠", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أنشئ حساباً على المنصة\n2️⃣ أدخل البريد الإلكتروني ورقم الهاتف\n3️⃣ املأ البيانات الشخصية بالكامل\n4️⃣ ارفع الوثائق المطلوبة (شهادة الميلاد، الشهادة، البطاقة)\n5️⃣ اختر أقرب وكالة ANEM لك\n6️⃣ أرسل الطلب وانتظر الرد خلال 15 يوماً\n7️⃣ بعد القبول، تصرف **18,000 دج** شهرياً\n\n⚠️ **ملاحظة:** المنحة مستمرة طالما تستوفي الشروط (تبحث عن عمل، لم تتجاوز السن القانوني، لم تحصل على وظيفة).", needsCard: false },
-            { name: "تجنيد الجيش", img: "الجيش الوطني.png", url: "https://preinscription.mdn.dz/", description: "التسجيل للتجنيد في الجيش الوطني", benefit: "🔹 **فائدة الرابط:** التسجيل المسبق للخدمة الوطنية.\n🔹 يسمح لك بمعرفة موعد استدعائك وتجنب الغرامات.", requirements: "📋 **متطلبات التسجيل:**\n• رقم البطاقة الوطنية 🪪\n• شهادة ميلاد رقم 12 📄\n• شهادة مدرسية أو جامعية 🎓", steps: "📝 **خطوات التسجيل:**\n1️⃣ أنشئ حساباً برقم البطاقة الوطنية\n2️⃣ املأ البيانات الشخصية والعائلية\n3️⃣ أدخل المؤهلات العلمية\n4️⃣ ارفع الوثائق المطلوبة\n5️⃣ اختر مركز التجنيد الأقرب إليك\n6️⃣ أرسل الطلب وانتظر الرد", needsCard: false },
-            { name: "فضاء الأولياء", img: "فضاء الاولياء.png", url: "https://awlyaa.education.dz/login", description: "متابعة أبناءك الدراسة", benefit: "🔹 **فائدة الرابط:** متابعة النقاط والغيابات وجداول الامتحانات لأبنائك.\n🔹 يمكنك دفع المستحقات المدرسية إلكترونياً.", requirements: "📋 **متطلبات التسجيل:**\n• رقم تسجيل التلميذ (12 رقم) 📝\n• كلمة المرور من المدرسة 🔑", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم تسجيل التلميذ\n2️⃣ أدخل كلمة المرور (تحصل عليها من إدارة المدرسة)\n3️⃣ اضغط 'دخول'\n4️⃣ ستظهر لك صفحة التلميذ:\n   - النقاط والتحصيل الدراسي\n   - الغيابات\n   - جداول الامتحانات\n   - دفع المستحقات المدرسية", needsCard: false },
-            { name: "سكنات عدل", img: "AADEL.png", url: "https://www.aadl.dz", description: "التسجيل في سكنات عدل AADL", benefit: "🔹 **فائدة الرابط:** التسجيل في برنامج سكنات عدل (AADL).\n🔹 يمكنك الاكتتاب عند فتح التسجيلات ومتابعة ملفك.", requirements: "📋 **متطلبات التسجيل:**\n• بطاقة تعريف وطنية 🪪\n• شهادة ميلاد رقم 12 📄\n• شهادة سكن (إيجار أو ملك) 🏠\n• كشف راتب لآخر 3 أشهر 💰", steps: "📝 **خطوات التسجيل كاملة:**\n\n1️⃣ أنشئ حساباً على المنصة\n2️⃣ املأ البيانات الشخصية والمهنية\n3️⃣ ارفع الوثائق المطلوبة (بطاقة، شهادة ميلاد، شهادة سكن، كشوف رواتب)\n4️⃣ اختر الولاية التي ترغب بالسكن فيها\n5️⃣ انتظر فتح التسجيلات الرسمية\n6️⃣ عند فتح التسجيل، قدم طلب الاكتتاب\n7️⃣ انتظر القرعة العلنية\n8️⃣ إذا فزت، أكمل إجراءات الدفع والاستلام", needsCard: false },
-            { name: "CCP", img: "CCP.png", url: "https://eccp.poste.dz", description: "خدمات CCP البريدية", benefit: "🔹 **فائدة الرابط:** الاستعلام عن رصيد CCP وتحويل الأموال ودفع الفواتير.\n🔹 يمكنك إجراء كل العمليات البنكية بدون الذهاب للبريد.", requirements: "📋 **متطلبات التسجيل:**\n• رقم CCP (مكون من 7 أرقام) 🔢\n• كلمة المرور الشخصية 🔑\n• رمز التحقق من الهاتف 📱", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم CCP\n2️⃣ أدخل كلمة المرور\n3️⃣ أدخل رمز التحقق المرسل لجوالك\n4️⃣ ستظهر لك الصفحة الرئيسية:\n   - الاستعلام عن الرصيد\n   - تحويل الأموال\n   - دفع الفواتير\n   - سحب الأموال", needsCard: false },
             { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", description: "الاستعلام عن قسيمة السيارات", benefit: "🔹 **فائدة الرابط:** الاستعلام عن رصيد قسيمة السيارات وقيمتها والمدة المتبقية.\n🔹 تستخدم القسيمة لدفع المخالفات والضرائب.", requirements: "📋 **متطلبات التسجيل:**\n• رقم التسجيل المركزي (في البطاقة الرمادية) 🚗", steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم التسجيل المركزي\n2️⃣ اضغط 'استعلام'\n3️⃣ ستظهر لك:\n   - قيمة القسيمة المتبقية\n   - تاريخ الصلاحية\n   - المخالفات المسجلة\n4️⃣ يمكنك الدفع مباشرة عبر الموقع", needsCard: false }
         ];
 
-        function showToast(msg) {
+        function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
             toast.innerText = msg;
+            toast.style.backgroundColor = isError ? '#dc3545' : '#28a745';
             toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 2500);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.backgroundColor = '#28a745';
+            }, 4000);
         }
 
         function getSubscription() {
@@ -423,12 +447,133 @@
             const sub = getSubscription();
             if (sub.active) {
                 document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - خدمات رقمية متكاملة';
+                document.getElementById('planText').innerHTML = 'مرحباً بك في بوت مصطفى - جميع الخدمات متاحة';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
+                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك (365 دج سنوياً) للوصول إلى جميع الخدمات';
             }
         }
+
+        // ========== دالة إنشاء طلب دفع عبر Chargily ==========
+        async function createChargilyPayment(userEmail, userName) {
+            try {
+                const paymentData = {
+                    amount: AMOUNT,
+                    currency: "dzd",
+                    success_url: window.location.href + "?payment=success",
+                    cancel_url: window.location.href + "?payment=cancel",
+                    webhook_url: `${WEBHOOK_URL}/webhook`,
+                    metadata: {
+                        user_email: userEmail,
+                        user_name: userName,
+                        subscription_days: 365,
+                        plan: "yearly"
+                    },
+                    products: [
+                        {
+                            id: "subscription_yearly",
+                            name: "اشتراك سنوي - بوت مصطفى",
+                            price: AMOUNT,
+                            quantity: 1
+                        }
+                    ]
+                };
+
+                const response = await fetch(CHARGILY_PAYMENT_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${CHARGILY_API_KEY}`
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+
+                const result = await response.json();
+                
+                if (result.checkout_url) {
+                    // فتح نافذة الدفع
+                    window.open(result.checkout_url, "_blank");
+                    showToast("⏳ تم تحويلك إلى بوابة الدفع الآمنة Chargily");
+                    
+                    // بدء التحقق من حالة الدفع
+                    startPaymentCheck(userEmail);
+                } else {
+                    throw new Error(result.message || "فشل في إنشاء طلب الدفع");
+                }
+            } catch (error) {
+                console.error("Chargily Error:", error);
+                showToast("❌ حدث خطأ في الاتصال ببوابة الدفع. حاول مرة أخرى.", true);
+            }
+        }
+
+        // ========== التحقق من حالة الدفع ==========
+        let paymentCheckInterval = null;
+        
+        function startPaymentCheck(userEmail) {
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const checkResponse = await fetch(`${CHECK_PAYMENT_URL}?email=${encodeURIComponent(userEmail)}`);
+                    const checkResult = await checkResponse.json();
+                    
+                    if (checkResult.paid === true) {
+                        clearInterval(paymentCheckInterval);
+                        paymentCheckInterval = null;
+                        
+                        const expiry = Date.now() + (365 * 86400000);
+                        localStorage.setItem(`sub_${currentUser}`, expiry);
+                        updateUI();
+                        
+                        showToast("✅ تم تأكيد الدفع! تم تفعيل اشتراكك السنوي لمدة 365 يوماً");
+                        
+                        if (messagesDiv.children.length > 0) {
+                            initChat();
+                        }
+                    }
+                } catch (error) {
+                    console.log("جاري انتظار تأكيد الدفع...");
+                }
+            }, 3000);
+            
+            setTimeout(() => {
+                if (paymentCheckInterval) {
+                    clearInterval(paymentCheckInterval);
+                    paymentCheckInterval = null;
+                }
+            }, 300000);
+        }
+
+        // ========== التحقق من نجاح الدفع عبر URL ==========
+        function checkPaymentSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentStatus = urlParams.get('payment');
+            
+            if (paymentStatus === 'success') {
+                showToast("✅ تم الدفع بنجاح! جاري تفعيل اشتراكك...");
+                if (currentUser) {
+                    const expiry = Date.now() + (365 * 86400000);
+                    localStorage.setItem(`sub_${currentUser}`, expiry);
+                    updateUI();
+                }
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (paymentStatus === 'cancel') {
+                showToast("❌ تم إلغاء عملية الدفع", true);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // زر الاشتراك - ربط مع Chargily
+        document.getElementById('subscribeBtn').onclick = async () => {
+            if (!currentUser) {
+                showToast('الرجاء تسجيل الدخول أولاً', true);
+                return;
+            }
+            
+            const userName = currentUser.split('@')[0];
+            showToast("⏳ جاري التوجيه إلى بوابة الدفع الآمنة...");
+            await createChargilyPayment(currentUser, userName);
+        };
 
         document.getElementById('loginBtn').onclick = () => {
             const email = document.getElementById('emailInput').value.trim();
@@ -442,6 +587,8 @@
             document.getElementById('appSection').style.display = 'block';
             updateUI();
             showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 🚀`);
+            
+            checkPaymentSuccess();
         };
 
         document.getElementById('logoutBtn').onclick = () => {
@@ -459,6 +606,7 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
+            checkPaymentSuccess();
         }
 
         const messagesDiv = document.getElementById('messages');
@@ -469,6 +617,11 @@
         const topBotBar = document.getElementById('topBotBar');
 
         topBotBar.onclick = () => {
+            const sub = getSubscription();
+            if (!sub.active) {
+                showToast('⚠️ يرجى الاشتراك أولاً للدخول إلى البوت (365 دج سنوياً)', true);
+                return;
+            }
             chatFull.classList.add('open');
             if (messagesDiv.children.length === 0) initChat();
         };
@@ -547,7 +700,7 @@
                 item.onclick = async () => {
                     const sub = getSubscription();
                     if (!sub.active) {
-                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: تواصل مع المطور.`, false);
+                        await addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً سنوياً نشطاً.**\n\n💰 الاشتراك: 365 دج فقط سنوياً عبر Chargily.\nاضغط على زر 'اشتراك سنوي' للدفع.`, false);
                         return;
                     }
                     showDetailedServiceExplanation(s);
@@ -557,84 +710,42 @@
             return grid;
         }
 
-        // دالة الرد الذكية على الأسئلة - هذه هي القلب النابض للبوت
         async function smartReply(userMessage) {
             const lower = userMessage.toLowerCase();
             
-            // منحة البطالة
-            if (lower.includes('منحة') && lower.includes('بطالة')) {
-                return "📋 **منحة البطالة ANEM:**\n\n💰 القيمة: **18,000 دج** شهرياً\n\n✅ **الشروط:**\n• العمر بين 19 و 40 سنة\n• حاصل على شهادة مهنية أو جامعية\n• مسجل كباحث عن عمل في ANEM\n• ليس لديك عمل سابق\n\n📝 **الخطوات:**\n1️⃣ سجل في رابط 'منحة البطالة' من الأيقونات\n2️⃣ ارفع شهادة الميلاد + الشهادة + البطاقة\n3️⃣ اختر أقرب وكالة ANEM\n4️⃣ انتظر القبول خلال 15 يوماً\n\n⚠️ المنحة مستمرة طالما تستوفي الشروط.";
-            }
-            
-            // شحن دجازي
             if ((lower.includes('شحن') || lower.includes('رصيد')) && lower.includes('دجازي')) {
-                return "📱 **شحن رصيد دجازي:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة DJEZZY\n2️⃣ أدخل رقم الهاتف (مثال: 551234567)\n3️⃣ اختر المبلغ (500، 1000، 2000، 5000 دج)\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ سيصلك الرصيد فوراً\n\n💳 تحتاج بطاقة بنكية للدفع.\n\nجاهز؟ اضغط على أيقونة DJEZZY 👆";
+                return "📱 **شحن رصيد دجازي:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة DJEZZY\n2️⃣ أدخل رقم الهاتف (مثال: 551234567)\n3️⃣ اختر المبلغ (500، 1000، 2000، 5000 دج)\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ سيصلك الرصيد فوراً";
             }
             
-            // شحن موبيليس
             if ((lower.includes('شحن') || lower.includes('رصيد')) && lower.includes('موبيليس')) {
-                return "📱 **شحن رصيد موبيليس:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة mobilis\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ اختر المبلغ المناسب\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ يصلك الرصيد خلال 5 دقائق\n\n💳 تحتاج بطاقة بنكية للدفع.\n\nجاهز؟ اضغط على أيقونة mobilis 👆";
+                return "📱 **شحن رصيد موبيليس:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة mobilis\n2️⃣ أدخل رقم الهاتف (10 أرقام)\n3️⃣ اختر المبلغ المناسب\n4️⃣ ادفع عبر بطاقة ذهبية أو CIB\n5️⃣ يصلك الرصيد خلال 5 دقائق";
             }
             
-            // شحن اوريدو
             if ((lower.includes('شحن') || lower.includes('رصيد')) && (lower.includes('اوريدو') || lower.includes('ooredoo'))) {
-                return "📱 **شحن رصيد أوريدو:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة Ooredoo\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ ادفع عبر بطاقة CIB أو ذهبية\n5️⃣ يصلك الرصيد فوراً\n\n💳 تحتاج بطاقة بنكية للدفع.\n\nجاهز؟ اضغط على أيقونة Ooredoo 👆";
+                return "📱 **شحن رصيد أوريدو:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة Ooredoo\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ أو الباقة المناسبة\n4️⃣ ادفع عبر بطاقة CIB أو ذهبية\n5️⃣ يصلك الرصيد فوراً";
             }
             
-            // نتائج BAC
-            if (lower.includes('نتائج') && (lower.includes('باك') || lower.includes('bac'))) {
-                return "🎓 **نتائج الباكالوريا (BAC):**\n\n📅 تظهر النتائج في شهر يوليو.\n\n🔍 **للاستعلام:**\n1️⃣ اضغط على أيقونة 'نتائج BAC'\n2️⃣ أدخل رقم التسجيل\n3️⃣ أدخل تاريخ الميلاد\n4️⃣ اضغط 'استعلام'\n\n⭐ بالتوفيق للجميع!";
+            if ((lower.includes('كهرباء') || lower.includes('غاز')) && (lower.includes('دفع') || lower.includes('فاتورة'))) {
+                return "⚡ **دفع فاتورة الكهرباء والغاز:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة 'دفع فاتورة الكهرباء'\n2️⃣ أدخل رقم العقد (14 رقم)\n3️⃣ سيظهر المبلغ المطلوب\n4️⃣ ادفع عبر بطاقة بنكية\n5️⃣ احصل على إيصال إلكتروني";
             }
             
-            // نتائج BEM
-            if (lower.includes('نتائج') && (lower.includes('بيم') || lower.includes('bem'))) {
-                return "📚 **نتائج BEM (البيام):**\n\n📅 تظهر النتائج في شهر يونيو.\n\n🔍 **للاستعلام:**\n1️⃣ اضغط على أيقونة 'نتائج BEM'\n2️⃣ أدخل رقم التسجيل\n3️⃣ أدخل تاريخ الميلاد\n4️⃣ اضغط 'استعلام'\n\n🌟 نتمنى لك النجاح!";
+            if (lower.includes('ماء') && (lower.includes('دفع') || lower.includes('فاتورة'))) {
+                return "💧 **دفع فاتورة الماء:**\n\n🔹 **الخطوات:**\n1️⃣ اضغط على أيقونة 'دفع فاتورة الماء'\n2️⃣ أدخل رقم المشترك\n3️⃣ اختر الفاتورة المراد دفعها\n4️⃣ ادفع عبر بطاقة بنكية\n5️⃣ اطبع الإيصال";
             }
             
-            // فضاء الأولياء
-            if (lower.includes('فضاء') && lower.includes('أولياء')) {
-                return "👨‍👩‍👧 **فضاء الأولياء:**\n\n📌 **الخطوات:**\n1️⃣ اضغط على أيقونة 'فضاء الأولياء'\n2️⃣ اسم المستخدم: رقم تسجيل التلميذ (12 رقم)\n3️⃣ كلمة المرور: تحصل عليها من المدرسة\n4️⃣ بعد الدخول يمكنك متابعة النقاط والغيابات\n\n⚠️ إذا نسيت كلمة المرور، اطلبها من إدارة المدرسة.";
-            }
-            
-            // سكنات عدل
-            if (lower.includes('سكنات') && lower.includes('عدل')) {
-                return "🏠 **سكنات عدل (AADL):**\n\n📌 **الخطوات:**\n1️⃣ سجل في الموقع (أيقونة 'سكنات عدل')\n2️⃣ املأ البيانات الشخصية والمهنية\n3️⃣ ارفع الوثائق (بطاقة، شهادة ميلاد، شهادة سكن، كشوف رواتب)\n4️⃣ انتظر فتح التسجيلات الرسمية\n5️⃣ قدم طلب الاكتتاب وانتظر القرعة";
-            }
-            
-            // قسيمة السيارات
             if (lower.includes('قسيمة') && (lower.includes('سيارات') || lower.includes('سيارة'))) {
-                return "🚗 **قسيمة السيارات:**\n\n📌 **للاستعلام:**\n1️⃣ اضغط على أيقونة 'قسيمة السيارات'\n2️⃣ أدخل رقم التسجيل المركزي (في البطاقة الرمادية)\n3️⃣ ستظهر لك قيمة القسيمة والمدة المتبقية\n\n✅ تستخدم القسيمة لدفع المخالفات والضرائب.";
+                return "🚗 **قسيمة السيارات:**\n\n📌 **للاستعلام:**\n1️⃣ اضغط على أيقونة 'قسيمة السيارات'\n2️⃣ أدخل رقم التسجيل المركزي (في البطاقة الرمادية)\n3️⃣ ستظهر لك قيمة القسيمة والمدة المتبقية";
             }
             
-            // CCP
-            if (lower.includes('ccp')) {
-                return "💳 **خدمات CCP:**\n\n📌 **الخدمات المتاحة:**\n• الاستعلام عن الرصيد\n• تحويل الأموال\n• دفع الفواتير\n\n📝 **الدخول:**\n1️⃣ اضغط على أيقونة CCP\n2️⃣ أدخل رقم CCP (7 أرقام)\n3️⃣ أدخل كلمة المرور\n4️⃣ أدخل رمز التحقق المرسل لجوالك";
+            if (lower.includes('اشتراك') || lower.includes('دفع') || lower.includes('سعر')) {
+                return "💰 **الاشتراك السنوي - Chargily:**\n\n• السعر: **365 دج** فقط\n• المدة: **365 يوماً**\n• طريقة الدفع: بطاقة CIB / ذهبية / CCP\n\n🔹 **للاشتراك:** اضغط على الزر الذهبي 'اشتراك سنوي'";
             }
             
-            // تجنيد الجيش
-            if (lower.includes('تجنيد') || (lower.includes('جيش') && lower.includes('خدمة'))) {
-                return "🎖️ **التجنيد في الجيش الوطني:**\n\n📌 **الخطوات:**\n1️⃣ اضغط على أيقونة 'تجنيد الجيش'\n2️⃣ أنشئ حساباً برقم البطاقة الوطنية\n3️⃣ املأ البيانات الشخصية والعائلية\n4️⃣ ارفع الوثائق المطلوبة\n5️⃣ اختر مركز التجنيد الأقرب إليك\n6️⃣ أرسل الطلب وانتظر الرد";
+            if (lower.includes('مرحب') || lower.includes('السلام')) {
+                return "وعليكم السلام! 😊\nأهلاً بك في **بوت مصطفى**.\n\n💰 الاشتراك السنوي: 365 دج فقط\n✅ بعد الدفع، جميع الخدمات متاحة لمدة عام كامل";
             }
             
-            // أسئلة عامة
-            if (lower.includes('مرحب') || lower.includes('السلام') || lower.includes('اهلا')) {
-                return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\nكيف أقدر أساعدك اليوم؟\n• اسأل عن أي خدمة (مثال: 'منحة البطالة')\n• أو اضغط على أيقونة الخدمة من القائمة\n\nأنا هنا لخدمتك 24 ساعة! 🌟";
-            }
-            
-            if (lower.includes('شكر')) {
-                return "العفو على الرحب والسعة! 🤍\nأتمنى أكون عند حسن ظنك. لو احتجت أي مساعدة، أنا موجود.";
-            }
-            
-            if (lower.includes('الخدمات') || lower.includes('ماذا تقدم')) {
-                return "📋 **الخدمات المتاحة (13 خدمة):**\n\n📱 شحن الجوال: Djezzy, Mobilis, Ooredoo\n⚡ دفع الفواتير: كهرباء + ماء\n🎓 النتائج: BAC + BEM\n🏦 منحة البطالة (18,000 دج)\n👨‍👩‍👧 فضاء الأولياء\n🏠 سكنات عدل\n💳 CCP\n🚗 قسيمة السيارات\n🎖️ تجنيد الجيش\n\nاسألني عن أي خدمة وسأشرحها بالتفصيل!";
-            }
-            
-            if (lower.includes('مساعدة') || lower.includes('كيف استخدم')) {
-                return "🆘 **كيف تستخدم بوت مصطفى؟**\n\n1️⃣ **طريقة 1:** اكتب سؤالك مباشرة مثل:\n   • 'منحة البطالة'\n   • 'كيف أشحن دجازي؟'\n   • 'نتائج BAC'\n\n2️⃣ **طريقة 2:** اضغط على أيقونة الخدمة من القائمة\n\n3️⃣ **بعد اختيار الخدمة:** سأشرح لك الخطوات ثم أسألك 'هل أنت جاهز لفتح الرابط؟'\n   أجب بـ 'نعم' لفتح الرابط\n\nأنا هنا لمساعدتك! 🚀";
-            }
-            
-            // رد عام إذا لم يفهم السؤال
-            return "🤔 **أهلاً بك!**\n\nأنا **بوت مصطفى** - مساعدك الذكي.\n\nيمكنني مساعدتك في:\n📱 شحن الجوال (دجازي، موبيليس، أوريدو)\n⚡ دفع فواتير الكهرباء والماء\n🎓 نتائج BAC و BEM\n🏦 منحة البطالة (18,000 دج)\n👨‍👩‍👧 فضاء الأولياء\n🏠 سكنات عدل\n💳 CCP وقسيمة السيارات\n\n**جرب تسألني:** 'منحة البطالة' أو 'كيف أشحن دجازي؟'\n\nأو اضغط على أيقونة الخدمة من القائمة 👆";
+            return "🤖 **بوت مصطفى** - مساعدك الذكي\n\n💰 الاشتراك: 365 دج سنوياً عبر Chargily\n📱 الخدمات: شحن الجوال، فواتير الكهرباء والماء، قسيمة السيارات\n\nللاشتراك، اضغط على الزر الذهبي أعلاه 👆";
         }
 
         async function initChat() {
@@ -642,20 +753,16 @@
             conversationHistory = [];
             const welcomeMsg = `✨ **أهلاً بك في بوت مصطفى!** ✨
 
-أنا مساعدك الذكي للخدمات الرقمية في الجزائر. 🇩🇿
+💰 **الاشتراك السنوي: 365 دج فقط**
+✅ الدفع عبر **Chargily** (بطاقة CIB/ذهبية/CCP)
+✅ المدة: 365 يوماً كاملة
 
-**ماذا يمكنني أن أقدم لك؟**
+📋 **الخدمات بعد الاشتراك:**
 📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)
 ⚡ دفع فواتير الكهرباء والماء
-📚 نتائج BEM و BAC
-🏦 منحة البطالة (18,000 دج)
-👨‍👩‍👧 فضاء الأولياء
-🏠 سكنات عدل
-💳 CCP وقسيمة السيارات
+🚗 قسيمة السيارات
 
-**كيف تبدأ؟**
-• اكتب سؤالك مباشرة (مثال: 'منحة البطالة')
-• أو اضغط على أيقونة الخدمة
+**للاشتراك:** اضغط على الزر الذهبي في الأعلى 👆
 
 أنا هنا لمساعدتك! 🚀`;
 
@@ -671,7 +778,6 @@
             addMessage(text, true);
             chatInput.value = '';
             
-            // التحقق من الرد على طلب فتح الرابط
             if (pendingService) {
                 const handled = await handleReply(text);
                 if (!handled) {
@@ -686,27 +792,12 @@
             await new Promise(resolve => setTimeout(resolve, 800));
             removeTypingIndicator();
             
-            // الرد الذكي على السؤال
             const response = await smartReply(text);
             await addMessage(response, false);
             isBotTyping = false;
         };
 
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
-
-        function checkPayment() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const days = urlParams.get('days');
-            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
-                const expiry = Date.now() + (parseInt(days) * 86400000);
-                localStorage.setItem(`sub_${currentUser}`, expiry);
-                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
-                updateUI();
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        }
-        checkPayment();
     </script>
 </body>
 </html>
