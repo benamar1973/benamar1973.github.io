@@ -156,8 +156,8 @@
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
@@ -269,6 +269,7 @@
             font-size: 16px;
         }
 
+        /* الأيقونات العادية للخدمات الأخرى */
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -316,7 +317,7 @@
             color: #333;
         }
 
-        /* الأيقونة الرئيسية */
+        /* الأيقونة الرئيسية لخدمة الإعلانات - شكل مستطيل وأكبر */
         .main-ad-icon {
             background: linear-gradient(135deg, #ff6b35, #f7931e);
             border-radius: 20px;
@@ -336,14 +337,14 @@
         }
 
         .main-ad-icon img {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             object-fit: contain;
             margin-bottom: 12px;
         }
 
         .main-ad-icon .main-icon-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             color: white;
             display: block;
@@ -395,21 +396,12 @@
             30% { transform: translateY(-10px); }
         }
 
-        .benefits-box {
-            background: #d4edda;
-            border-right: 4px solid #28a745;
-            padding: 15px;
-            border-radius: 15px;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
         @media (max-width: 480px) {
             .top-bot-text { font-size: 1.6rem; }
             .top-bot-text span:first-child { font-size: 2.2rem; }
             .top-bot-bar { padding: 15px 20px; }
-            .main-ad-icon img { width: 90px; height: 90px; }
-            .main-ad-icon .main-icon-title { font-size: 18px; }
+            .main-ad-icon img { width: 100px; height: 100px; }
+            .main-ad-icon .main-icon-title { font-size: 20px; }
         }
     </style>
 </head>
@@ -464,14 +456,9 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
-        let pendingAd = { 
-            step: null, 
-            fullName: null,
-            phone: null,
-            fbLink: null,
-            description: null 
-        };
+        let pendingAd = { step: null, link: null, description: null };
 
+        // جميع الخدمات (شحن الجوال + فواتير الكهرباء والماء + شحن الانترنت)
         const services = [
             { 
                 name: "📱 DJEZZY", 
@@ -508,9 +495,9 @@
                 img: "SONELGAZ.png", 
                 url: "https://epayement.elit.dz/payementFacture.xhtml",
                 description: "دفع فاتورة الكهرباء والغاز",
-                benefit: "🔹 **فائدة الرابط:** دفع فواتير الكهرباء والغاز إلكترونياً.",
-                requirements: "📋 **متطلبات الدفع:**\n• رقم العقد (14 رقم) 📄\n• بطاقة ذهبية أو CIB 💳",
-                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم العقد\n2️⃣ سيظهر المبلغ\n3️⃣ اضغط على 'دفع الآن'\n4️⃣ أدخل بيانات البطاقة\n5️⃣ تأكيد الدفع",
+                benefit: "🔹 **فائدة الرابط:** دفع فواتير الكهرباء والغاز إلكترونياً بدون الحاجة للذهاب إلى الوكالات.\n🔹 تحصل على إشعار فوري بالدفع وإيصال إلكتروني.",
+                requirements: "📋 **متطلبات الدفع:**\n• رقم العقد الموجود أعلى الفاتورة (14 رقم) 📄\n• بطاقة ذهبية أو CIB 💳",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم العقد المكون من 14 رقماً\n2️⃣ سيظهر المبلغ المطلوب دفعه\n3️⃣ اضغط على 'دفع الآن'\n4️⃣ اختر طريقة الدفع\n5️⃣ أدخل بيانات البطاقة\n6️⃣ تأكيد الدفع\n7️⃣ احفظ الإيصال الإلكتروني",
                 needsCard: false
             },
             { 
@@ -518,9 +505,9 @@
                 img: "SEAAL.png", 
                 url: "https://fatourati.seaal.dz/",
                 description: "دفع فاتورة الماء",
-                benefit: "🔹 **فائدة الرابط:** منصة SEAAL الرسمية لدفع فواتير الماء.",
-                requirements: "📋 **متطلبات الدفع:**\n• رقم المشترك 📄\n• بطاقة دفع إلكترونية 💳",
-                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة\n3️⃣ اضغط على 'دفع'\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد",
+                benefit: "🔹 **فائدة الرابط:** منصة SEAAL الرسمية لدفع فواتير الماء.\n🔹 يمكنك دفع الفاتورة الشهرية أو السنوية.",
+                requirements: "📋 **متطلبات الدفع:**\n• رقم المشترك الموجود على الفاتورة 📄\n• بطاقة دفع إلكترونية 💳",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ أدخل رقم المشترك\n2️⃣ اختر الفاتورة المراد دفعها\n3️⃣ اضغط على 'دفع'\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد وطباعة الإيصال",
                 needsCard: false
             },
             { 
@@ -528,24 +515,12 @@
                 img: "ALGERIE TELECOM.png", 
                 url: "https://paiement.at.dz/index.php?p=internet_recharge&pr=in",
                 description: "شحن رصيد الانترنت (Algerie Telecom)",
-                benefit: "🔹 **فائدة الرابط:** شحن رصيد الانترنت من منزلك.",
+                benefit: "🔹 **فائدة الرابط:** شحن رصيد الانترنت الخاص بك من منزلك.\n🔹 خدمة سريعة وآمنة من اتصالات الجزائر.",
                 requirements: "📋 **متطلبات الدفع:**\n• رقم الهاتف الثابت أو حساب الانترنت 📡\n• بطاقة ذهبية أو CIB 💳",
-                steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل بيانات حسابك\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد",
+                steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل بيانات حسابك\n3️⃣ اختر المبلغ المناسب\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ سيصلك الرصيد فوراً",
                 needsCard: true
             }
         ];
-
-        // فوائد وامتيازات خدمة الإعلانات
-        const AD_BENEFITS = `🎁 **فوائد وامتيازات خدمة الإعلانات:**
-
-✅ **وصول فوري** إلى آلاف العملاء المحتملين
-✅ **نشر سريع** خلال دقائق على صفحة "خدماتي"
-✅ **تأثير قوي** لعلامتك التجارية
-✅ **دعم كامل** من فريقنا
-✅ **تقارير الأداء** المتاحة عند الطلب
-✅ **أسعار تنافسية** تناسب الجميع
-
-📈 انشر إعلانك اليوم وحقق أرباحاً مضاعفة!`;
 
         const AD_RULES = `📜 **قوانين نشر الإعلانات:**
 
@@ -587,15 +562,18 @@
             
             if (sub.active) {
                 daysLeftSpan.innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                planTextSpan.innerHTML = '✨ جميع الخدمات متاحة لك ✨';
-                paymentSection.innerHTML = '';
+                planTextSpan.innerHTML = '✨ صفحة خدماتي SPONSSORE على طول السنة ✨';
+                paymentSection.innerHTML = ''; // إخفاء زر الدفع للمشتركين النشطين
             } else {
                 daysLeftSpan.innerHTML = '⚠️ لا يوجد اشتراك نشط';
                 planTextSpan.innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
+                // عرض زر الاشتراك السنوي فقط للمستخدم الجديد
                 paymentSection.innerHTML = `
                     <div class="payment-buttons">
-                        <button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz', '_blank')">📅 اشتراك شهري 100 دج</button>
-                        <button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 365 دج</button>
+                        <button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 1000 دج</button>
+                    </div>
+                    <div style="font-size:12px; color:#666; margin-top:8px;">
+                        💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج
                     </div>
                 `;
             }
@@ -621,7 +599,7 @@
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('appSection').style.display = 'none';
             document.getElementById('emailInput').value = '';
-            pendingAd = { step: null, fullName: null, phone: null, fbLink: null, description: null };
+            pendingAd = { step: null, link: null, description: null };
             pendingService = null;
             showToast('تم تسجيل الخروج');
         };
@@ -699,60 +677,30 @@
             return false;
         }
 
-        // خدمة الإعلانات المطورة
+        // خدمة الإعلانات - الأساسية
         async function startAdFlow() {
-            // عرض القوانين أولاً
             addMessage(AD_RULES, false);
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // عرض فوائد وامتيازات الخدمة
-            addMessage(AD_BENEFITS, false);
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            // بدء جمع المعلومات
-            addMessage("📢 **مرحباً بك في خدمة الإعلانات الاحترافية!**\n\n✨ لنبدأ عملية النشر على صفحة 'خدماتي'.\n\n👤 **ما هو اسمك الكامل؟** (الاسم واللقب)", false);
-            pendingAd.step = 'fullName';
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n🔗 من فضلك أرسل رابط الإعلان (مثال: https://example.com/product)", false);
+            pendingAd.step = 'link';
         }
 
         async function handleAdFlow(userMessage) {
-            if (pendingAd.step === 'fullName') {
-                if (userMessage.trim().length < 3) {
-                    addMessage("❌ يرجى إدخال اسمك الكامل (الاسم واللقب) بشكل صحيح.", false);
-                    return false;
-                }
-                pendingAd.fullName = userMessage.trim();
-                addMessage(`✅ مرحباً ${pendingAd.fullName}!\n\n📱 **الرجاء إدخال رقم هاتفك** (للتواصل معك بخصوص الإعلان)`, false);
-                pendingAd.step = 'phone';
-                return true;
-            }
-            
-            if (pendingAd.step === 'phone') {
-                const phoneRegex = /^(0|\+213|00213)?[5-7][0-9]{8}$/;
-                if (!phoneRegex.test(userMessage.replace(/\s/g, ''))) {
-                    addMessage("❌ رقم الهاتف غير صحيح. يرجى إدخال رقم هاتف جزائري صالح (مثال: 0555123456 أو +213555123456)", false);
-                    return false;
-                }
-                pendingAd.phone = userMessage.trim();
-                addMessage("✅ تم استلام رقم هاتفك.\n\n🔗 **الرجاء إدخال رابط حملتك الإعلانية على فيسبوك**\n(مثال: https://www.facebook.com/ads/... أو رابط صفحتك/منتجك)", false);
-                pendingAd.step = 'fbLink';
-                return true;
-            }
-            
-            if (pendingAd.step === 'fbLink') {
+            if (pendingAd.step === 'link') {
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
                 const match = userMessage.match(urlRegex);
-                if (!match || !userMessage.includes('facebook.com')) {
-                    addMessage("❌ الرابط غير صحيح. يرجى إدخال رابط صحيح من فيسبوك (يحتوي على facebook.com)", false);
+                if (!match) {
+                    addMessage("❌ الرابط غير صحيح. يرجى إرسال رابط صحيح يبدأ بـ http:// أو https://", false);
                     return false;
                 }
-                pendingAd.fbLink = match[0];
-                addMessage("✅ تم استلام رابط الحملة!\n\n📝 **الآن، هل تريد إضافة وصف قصير للإعلان؟**\n(أرسل الوصف أو اكتب 'لا' لتخطي هذه الخطوة)", false);
+                pendingAd.link = match[0];
+                addMessage("✅ تم استلام الرابط بنجاح!\n\n📝 هل تريد إضافة وصف للإعلان؟\n(أرسل الوصف أو اكتب 'لا' لتخطي)", false);
                 pendingAd.step = 'description';
                 return true;
             }
             
             if (pendingAd.step === 'description') {
-                if (userMessage.toLowerCase() !== 'لا' && userMessage.toLowerCase() !== 'تخطي') {
+                if (userMessage.toLowerCase() !== 'لا') {
                     pendingAd.description = userMessage;
                     addMessage("✅ تم استلام الوصف.", false);
                 } else {
@@ -760,38 +708,27 @@
                     addMessage("✅ تم تخطي الوصف.", false);
                 }
                 
-                // عرض ملخص الإعلان
-                let summary = `📋 **ملخص إعلانك:**\n\n`;
-                summary += `👤 الاسم: ${pendingAd.fullName}\n`;
-                summary += `📱 الهاتف: ${pendingAd.phone}\n`;
-                summary += `🔗 رابط الحملة: ${pendingAd.fbLink}\n`;
+                let summary = `📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n`;
                 summary += `📝 الوصف: ${pendingAd.description}\n\n`;
-                summary += `✅ **الموافقة على القوانين:**\n`;
-                summary += `• أوافق على أن إعلاني لا يخالف القوانين المذكورة أعلاه.\n\n`;
-                summary += `❓ **هل تريد تأكيد نشر هذا الإعلان على صفحة "خدماتي"؟**\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
+                summary += `❓ هل تريد تأكيد النشر على صفحة "خدماتي"؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
                 addMessage(summary, false);
                 pendingAd.step = 'confirm';
                 return true;
             }
             
             if (pendingAd.step === 'confirm') {
-                if (userMessage.toLowerCase() === 'نعم' || userMessage.toLowerCase() === 'yes') {
+                if (userMessage.toLowerCase() === 'نعم') {
                     addMessage("🚀 جاري نشر إعلانك على صفحة خدماتي...", false);
                     showTypingIndicator();
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                     removeTypingIndicator();
-                    
-                    // هنا سيتم إضافة كود النشر الفعلي على Facebook لاحقاً
-                    // مؤقتاً محاكاة نجاح النشر
-                    addMessage(`✅ **تم نشر إعلانك بنجاح!** 🎉\n\n${'-'.repeat(40)}\n📢 **الإعلان المنشور:**\n👤 الناشر: ${pendingAd.fullName}\n📱 للتواصل: ${pendingAd.phone}\n🔗 رابط الحملة: ${pendingAd.fbLink}\n📝 الوصف: ${pendingAd.description}\n${'-'.repeat(40)}\n\nشكراً لاستخدامك بوت مصطفى! سيظهر إعلانك على صفحة 'خدماتي' فوراً.\n\nيمكنك نشر إعلان آخر بالضغط على الأيقونة الرئيسية مرة أخرى.`, false);
-                    
-                    // إعادة تعيين
-                    pendingAd = { step: null, fullName: null, phone: null, fbLink: null, description: null };
-                } else if (userMessage.toLowerCase() === 'لا' || userMessage.toLowerCase() === 'لأ') {
-                    addMessage("🙂 **تم إلغاء نشر الإعلان.**\n\nيمكنك البدء من جديد بالضغط على أيقونة 'خدمة الإعلانات'.", false);
-                    pendingAd = { step: null, fullName: null, phone: null, fbLink: null, description: null };
+                    addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك نشر إعلان آخر بالضغط على الأيقونة الرئيسية مرة أخرى.", false);
+                    pendingAd = { step: null, link: null, description: null };
+                } else if (userMessage.toLowerCase() === 'لا') {
+                    addMessage("🙂 تم إلغاء نشر الإعلان. يمكنك البدء من جديد.", false);
+                    pendingAd = { step: null, link: null, description: null };
                 } else {
-                    addMessage("❓ أرجو الإجابة بـ 'نعم' للتأكيد أو 'لا' للإلغاء.", false);
+                    addMessage("❓ أجب بـ 'نعم' للتأكيد أو 'لا' للإلغاء.", false);
                 }
                 return true;
             }
@@ -809,32 +746,32 @@
             if (lower.includes('القوانين')) {
                 return AD_RULES;
             }
-            if (lower.includes('فوائد') || lower.includes('امتيازات')) {
-                return AD_BENEFITS;
-            }
             return "📢 **بوت مصطفى - خدمة الإعلانات هي الأساس**\n\n📢 للإعلانات: اضغط على الأيقونة الرئيسية (مستطيلة برتقالية)\n\n✅ الخدمات الأخرى المتاحة:\n• شحن الجوال (Djezzy, Mobilis, Ooredoo)\n• دفع فواتير الكهرباء والماء\n• شحن الانترنت (Algerie Telecom)\n\nاختر الخدمة من الأيقونات.";
         }
 
+        // بناء الأيقونات - مع أيقونة رئيسية مميزة لخدمة الإعلانات
         function buildIcons() {
             const container = document.createElement('div');
             
+            // الأيقونة الرئيسية - مستطيلة وأكبر - خدمة الإعلانات
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
             mainAdDiv.innerHTML = `
-                <img src="facebook-ads-logo.png" alt="خدمة الإعلانات" onerror="this.src='https://via.placeholder.com/120/ffffff/ff6b35?text=ADS'">
+                <img src="facebook-ads-logo.png" alt="خدمة الإعلانات" onerror="this.src='https://via.placeholder.com/140/ffffff/ff6b35?text=ADS'">
                 <span class="main-icon-title">📢 خدمة الإعلانات</span>
-                <span class="main-icon-sub">انشر إعلانك على صفحة خدماتي</span>
+                <span class="main-icon-sub">انشر إعلانك على صفحة خدماتي SPONSSORE</span>
             `;
             mainAdDiv.onclick = async () => {
                 const sub = getSubscription();
                 if (!sub.active) {
-                    addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم أزرار الدفع أعلاه.\n💰 الاشتراك السنوي: 365 دج\n\nبعد التفعيل، سيتمكن من نشر إعلاناته على صفحتنا.`, false);
+                    addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).\n💰 أقل من 4 دج إشتراك يومياً - يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج`, false);
                     return;
                 }
                 await startAdFlow();
             };
             container.appendChild(mainAdDiv);
             
+            // باقي الخدمات (شحن الجوال + فواتير)
             const grid = document.createElement('div');
             grid.className = 'icon-grid';
             
@@ -852,7 +789,7 @@
                 item.onclick = async () => {
                     const sub = getSubscription();
                     if (!sub.active) {
-                        addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم أزرار الدفع أعلاه.`, false);
+                        addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه.`, false);
                         return;
                     }
                     showDetailedServiceExplanation(s);
@@ -880,12 +817,21 @@
 • للإعلانات: اضغط على الأيقونة الرئيسية الكبيرة
 • للخدمات الأخرى: اضغط على الأيقونات العادية`;
 
+            // إضافة رسالة الاشتراك فقط للمستخدمين غير المفعلين
             if (!sub.active && currentUser) {
-                welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم أزرار الدفع أعلاه (اشتراك شهري 100 دج أو سنوي 365 دج) للوصول إلى جميع الخدمات.`;
+                welcomeMsg += `
+
+⚠️ **ملاحظة:** ليس لديك اشتراك نشط.
+💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.
+💡 أقل من 4 دج إشتراك يومياً - يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج`;
             } else if (!currentUser) {
-                welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
+                welcomeMsg += `
+
+🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
             } else if (sub.active) {
-                welcomeMsg += `\n\n✅ اشتراكك مفعل - يمكنك استخدام جميع الخدمات فوراً.`;
+                welcomeMsg += `
+
+✅ اشتراكك مفعل - صفحة خدماتي SPONSSORE على طول السنة`;
             }
 
             addMessage(welcomeMsg, false);
@@ -900,6 +846,7 @@
             addMessage(text, true);
             chatInput.value = '';
             
+            // معالجة خدمة الإعلانات أولاً
             if (pendingAd.step) {
                 isBotTyping = true;
                 showTypingIndicator();
@@ -910,6 +857,7 @@
                 return;
             }
             
+            // معالجة رد الخدمات الأخرى
             if (pendingService) {
                 isBotTyping = true;
                 showTypingIndicator();
@@ -943,7 +891,7 @@
                 localStorage.setItem(`sub_${currentUser}`, expiry);
                 showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
                 updateUI();
-                window.history.replaceState({}, document.title, window.location.pathname);
+                // إعادة تهيئة الشات لإزالة رسالة الاشتراك
                 if (messagesDiv.children.length > 0) {
                     initChat();
                 }
