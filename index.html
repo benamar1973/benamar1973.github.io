@@ -59,9 +59,15 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
         .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
-        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; }
+        .user-msg-img { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; padding: 8px 12px; max-width: 85%; }
+        .user-msg-img img { max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 5px; }
+        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; min-width: 120px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #imageUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #imageInput { display: none; }
+        .image-preview { margin-top: 8px; display: inline-block; }
+        .image-preview img { max-width: 150px; max-height: 150px; border-radius: 12px; }
         .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
         @media (min-width: 550px) { .icon-grid { grid-template-columns: repeat(3, 1fr); } }
         .icon-item { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 20px; padding: 12px 8px; cursor: pointer; text-align: center; border: 2px solid #dee2e6; transition: all 0.3s; }
@@ -160,6 +166,8 @@
         <div class="messages" id="messages"></div>
         <div class="input-area">
             <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+            <button id="imageUploadBtn">📷 صورة</button>
+            <input type="file" id="imageInput" accept="image/*">
             <button id="sendBtn">إرسال</button>
         </div>
     </div>
@@ -168,7 +176,7 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
-        let pendingAd = { step: null, link: null, description: null };
+        let pendingAd = { step: null, link: null, description: null, image: null };
 
         const services = [
             { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان.\n🔹 يمكنك الشحن بأي مبلغ (500, 1000, 2000, 5000 دج).", requirements: "📋 **متطلبات الدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية أو CIB بنكية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية", needsCard: true },
@@ -179,7 +187,6 @@
             { name: "🌐 شحن الانترنت", img: "ALGERIE TELECOM.png", url: "https://paiement.at.dz/index.php?p=internet_recharge&pr=in", description: "شحن رصيد الانترنت (Algerie Telecom)", benefit: "🔹 **فائدة الرابط:** شحن رصيد الانترنت الخاص بك من منزلك.\n🔹 خدمة سريعة وآمنة من اتصالات الجزائر.", requirements: "📋 **متطلبات الدفع:**\n• رقم الهاتف الثابت أو حساب الانترنت 📡\n• بطاقة ذهبية أو CIB 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل بيانات حسابك\n3️⃣ اختر المبلغ المناسب\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ سيصلك الرصيد فوراً", needsCard: true }
         ];
 
-        // قوانين نشر الإعلانات + فوائد البوت (بدون خدمات الشحن والدفع)
         const AD_RULES = `📜 **قوانين نشر الإعلانات:**
 
 ❌ لا إعلانات مخلة بالآداب
@@ -221,7 +228,7 @@
         }
 
         document.getElementById('loginBtn').onclick = () => { const email = document.getElementById('emailInput').value.trim(); if (!email || !email.includes('@')) { document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً'; return; } currentUser = email; localStorage.setItem('currentUser', currentUser); document.getElementById('loginSection').style.display = 'none'; document.getElementById('appSection').style.display = 'block'; updateUI(); showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 🚀`); };
-        document.getElementById('logoutBtn').onclick = () => { currentUser = null; localStorage.removeItem('currentUser'); document.getElementById('loginSection').style.display = 'block'; document.getElementById('appSection').style.display = 'none'; document.getElementById('emailInput').value = ''; pendingAd = { step: null, link: null, description: null }; pendingService = null; showToast('تم تسجيل الخروج'); };
+        document.getElementById('logoutBtn').onclick = () => { currentUser = null; localStorage.removeItem('currentUser'); document.getElementById('loginSection').style.display = 'block'; document.getElementById('appSection').style.display = 'none'; document.getElementById('emailInput').value = ''; pendingAd = { step: null, link: null, description: null, image: null }; pendingService = null; showToast('تم تسجيل الخروج'); };
         
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) { currentUser = savedUser; document.getElementById('loginSection').style.display = 'none'; document.getElementById('appSection').style.display = 'block'; updateUI(); }
@@ -232,13 +239,35 @@
         const chatFull = document.getElementById('chatFullscreen');
         const closeChatBtn = document.getElementById('closeChatBtn');
         const topBotBar = document.getElementById('topBotBar');
+        const imageUploadBtn = document.getElementById('imageUploadBtn');
+        const imageInput = document.getElementById('imageInput');
 
         topBotBar.onclick = () => { chatFull.classList.add('open'); if (messagesDiv.children.length === 0) initChat(); };
         closeChatBtn.onclick = () => chatFull.classList.remove('open');
 
         function showTypingIndicator() { const typingDiv = document.createElement('div'); typingDiv.className = 'bot-msg'; typingDiv.id = 'typingIndicator'; typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>'; messagesDiv.appendChild(typingDiv); messagesDiv.scrollTop = messagesDiv.scrollHeight; }
         function removeTypingIndicator() { const indicator = document.getElementById('typingIndicator'); if (indicator) indicator.remove(); }
-        function addMessage(text, isUser) { const div = document.createElement('div'); div.className = isUser ? 'user-msg' : 'bot-msg'; div.innerText = text; messagesDiv.appendChild(div); messagesDiv.scrollTop = messagesDiv.scrollHeight; }
+        
+        function addMessage(text, isUser) { 
+            const div = document.createElement('div'); 
+            div.className = isUser ? 'user-msg' : 'bot-msg'; 
+            div.innerText = text; 
+            messagesDiv.appendChild(div); 
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
+        }
+        
+        function addImageMessage(imageDataUrl, isUser) {
+            const div = document.createElement('div');
+            div.className = isUser ? 'user-msg-img' : 'bot-msg';
+            const img = document.createElement('img');
+            img.src = imageDataUrl;
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
+            img.style.borderRadius = '12px';
+            div.appendChild(img);
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
 
         function showDetailedServiceExplanation(service) {
             let msg = `📌 **${service.name}** - ${service.description}\n\n${service.benefit}\n\n${service.requirements}\n\n${service.steps}\n\n`;
@@ -269,8 +298,26 @@
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n🔗 من فضلك أرسل رابط الإعلان (مثال: https://example.com/product)", false);
-            pendingAd.step = 'link';
+            pendingAd = { step: 'link', link: null, description: null, image: null };
         }
+
+        // رفع الصورة
+        imageUploadBtn.onclick = () => { imageInput.click(); };
+        imageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    pendingAd.image = event.target.result;
+                    addImageMessage(pendingAd.image, true);
+                    addMessage("✅ تم استلام الصورة بنجاح!", false);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showToast("❌ يرجى اختيار صورة صالحة");
+            }
+            imageInput.value = '';
+        };
 
         async function handleAdFlow(userMessage) {
             if (pendingAd.step === 'link') {
@@ -281,29 +328,46 @@
                     return false;
                 }
                 pendingAd.link = match[0];
-                addMessage("✅ تم استلام الرابط بنجاح!\n\n📝 هل تريد إضافة وصف للإعلان؟\n(أرسل الوصف أو اكتب 'لا' لتخطي)", false);
+                addMessage("✅ تم استلام الرابط بنجاح!\n\n📝 الآن أرسل الوصف الإعلاني (نص توضيحي عن منتجك/خدمتك)\n🖼️ يمكنك أيضاً إرسال صورة بالضغط على زر 📷", false);
                 pendingAd.step = 'description';
                 return true;
             }
+            
             if (pendingAd.step === 'description') {
-                if (userMessage.toLowerCase() !== 'لا') { pendingAd.description = userMessage; addMessage("✅ تم استلام الوصف.", false); } 
-                else { pendingAd.description = "📢 إعلان جديد من أحد عملائنا"; addMessage("✅ تم تخطي الوصف.", false); }
-                addMessage(`📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n📝 الوصف: ${pendingAd.description}\n\n❓ هل تريد تأكيد النشر؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`, false);
+                if (userMessage.toLowerCase() !== 'تخطي' && userMessage.trim() !== '') {
+                    pendingAd.description = userMessage;
+                    addMessage("✅ تم استلام الوصف.", false);
+                } else {
+                    pendingAd.description = "📢 إعلان جديد من أحد عملائنا";
+                    addMessage("✅ تم تخطي الوصف.", false);
+                }
+                
+                let summary = `📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n📝 الوصف: ${pendingAd.description}\n`;
+                if (pendingAd.image) summary += `🖼️ الصورة: ✅ مرفقة\n`;
+                else summary += `🖼️ الصورة: ❌ غير مرفقة (يمكنك إضافة صورة الآن بالضغط على زر 📷)\n`;
+                summary += `\n❓ هل تريد تأكيد النشر؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
+                addMessage(summary, false);
                 pendingAd.step = 'confirm';
                 return true;
             }
+            
             if (pendingAd.step === 'confirm') {
                 if (userMessage.toLowerCase() === 'نعم') {
                     addMessage("🚀 جاري نشر إعلانك...", false);
+                    if (pendingAd.image) {
+                        addMessage("🖼️ سيتم نشر الإعلان مع الصورة المرفقة", false);
+                    }
                     showTypingIndicator();
-                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                     removeTypingIndicator();
                     addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك نشر إعلان آخر بالضغط على الأيقونة الرئيسية مرة أخرى.", false);
-                    pendingAd = { step: null, link: null, description: null };
+                    pendingAd = { step: null, link: null, description: null, image: null };
                 } else if (userMessage.toLowerCase() === 'لا') {
                     addMessage("🙂 تم إلغاء نشر الإعلان. يمكنك البدء من جديد.", false);
-                    pendingAd = { step: null, link: null, description: null };
-                } else { addMessage("❓ أجب بـ 'نعم' للتأكيد أو 'لا' للإلغاء.", false); }
+                    pendingAd = { step: null, link: null, description: null, image: null };
+                } else {
+                    addMessage("❓ أجب بـ 'نعم' للتأكيد أو 'لا' للإلغاء.", false);
+                }
                 return true;
             }
             return false;
@@ -358,13 +422,41 @@
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
             const text = chatInput.value.trim();
-            if (!text) return;
-            addMessage(text, true);
-            chatInput.value = '';
-            if (pendingAd.step) { isBotTyping = true; showTypingIndicator(); await new Promise(resolve => setTimeout(resolve, 500)); removeTypingIndicator(); await handleAdFlow(text); isBotTyping = false; return; }
-            if (pendingService) { isBotTyping = true; showTypingIndicator(); await new Promise(resolve => setTimeout(resolve, 500)); removeTypingIndicator(); await handleServiceReply(text); isBotTyping = false; return; }
-            isBotTyping = true; showTypingIndicator(); await new Promise(resolve => setTimeout(resolve, 800)); removeTypingIndicator();
-            const response = await handleGeneralMessage(text); addMessage(response, false); isBotTyping = false;
+            if (!text && !pendingAd.image) return;
+            
+            if (text) {
+                addMessage(text, true);
+                chatInput.value = '';
+            }
+            
+            if (pendingAd.step) {
+                isBotTyping = true;
+                showTypingIndicator();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                removeTypingIndicator();
+                await handleAdFlow(text);
+                isBotTyping = false;
+                return;
+            }
+            
+            if (pendingService) {
+                isBotTyping = true;
+                showTypingIndicator();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                removeTypingIndicator();
+                await handleServiceReply(text);
+                isBotTyping = false;
+                return;
+            }
+            
+            isBotTyping = true;
+            showTypingIndicator();
+            await new Promise(resolve => setTimeout(resolve, 800));
+            removeTypingIndicator();
+            
+            const response = await handleGeneralMessage(text);
+            addMessage(response, false);
+            isBotTyping = false;
         };
 
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
