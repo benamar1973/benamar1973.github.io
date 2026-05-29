@@ -165,9 +165,11 @@
             gap: 10px;
             margin: 10px 0;
             justify-content: center;
+            flex-wrap: wrap;
         }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
         @media (min-width: 550px) { .icon-grid { grid-template-columns: repeat(3, 1fr); } }
         .icon-item { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 20px; padding: 12px 8px; cursor: pointer; text-align: center; border: 2px solid #dee2e6; transition: all 0.3s; }
@@ -276,6 +278,9 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
+        let editMode = false;
+        let editField = null;
+        
         let pendingAd = { 
             step: null, 
             fullName: null, 
@@ -368,10 +373,16 @@
             document.getElementById('loginSection').style.display = 'block'; 
             document.getElementById('appSection').style.display = 'none'; 
             document.getElementById('emailInput').value = ''; 
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null }; 
+            resetAd();
             pendingService = null; 
             showToast('تم تسجيل الخروج'); 
         };
+        
+        function resetAd() {
+            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+            editMode = false;
+            editField = null;
+        }
         
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) { 
@@ -427,7 +438,166 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // عرض معاينة الإعلان كما سيظهر على فيسبوك - تظهر مباشرة للمستخدم
+        // عرض ملخص المعلومات مع إمكانية التعديل
+        function showSummaryWithEditOptions() {
+            let contactText = '';
+            let contactIcon = '';
+            if (pendingAd.contactMethod === 'whatsapp') {
+                contactText = `واتساب: ${pendingAd.phone}`;
+                contactIcon = '💚';
+            } else if (pendingAd.contactMethod === 'messenger') {
+                contactText = `مسنجر: ${pendingAd.phone}`;
+                contactIcon = '💬';
+            } else {
+                contactText = `هاتف: ${pendingAd.phone}`;
+                contactIcon = '📱';
+            }
+            
+            const summaryContainer = document.createElement('div');
+            summaryContainer.style.margin = '10px 0';
+            
+            const summaryTitle = document.createElement('div');
+            summaryTitle.className = 'bot-msg';
+            summaryTitle.innerText = '📋 **مراجعة معلومات الإعلان:**';
+            summaryContainer.appendChild(summaryTitle);
+            
+            // عرض المعلومات مع أزرار تعديل لكل منها
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'bot-msg';
+            infoDiv.style.direction = 'rtl';
+            infoDiv.style.textAlign = 'right';
+            infoDiv.innerHTML = `
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>👤 الاسم الكامل:</strong> ${pendingAd.fullName}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('fullName')">تعديل</button>
+                </div>
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>📞 رقم الهاتف:</strong> ${pendingAd.phone}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('phone')">تعديل</button>
+                </div>
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>📝 الوصف:</strong> ${pendingAd.description}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('description')">تعديل</button>
+                </div>
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>💬 وسيلة التواصل:</strong> ${contactIcon} ${contactText}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('contactMethod')">تعديل</button>
+                </div>
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>🖼️ نوع العرض:</strong> ${pendingAd.showType === 'image' ? 'صورة' : 'فيديو'}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('showType')">تعديل</button>
+                </div>
+                <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
+                    <strong>📎 الملف:</strong> ✅ مرفق
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('media')">تغيير الملف</button>
+                </div>
+            `;
+            summaryContainer.appendChild(infoDiv);
+            
+            const confirmDiv = document.createElement('div');
+            confirmDiv.className = 'confirm-buttons';
+            confirmDiv.innerHTML = `
+                <button class="confirm-yes" onclick="window.proceedToPreview()">✅ متابعة إلى المعاينة</button>
+                <button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء الإعلان</button>
+            `;
+            summaryContainer.appendChild(confirmDiv);
+            
+            messagesDiv.appendChild(summaryContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        // وظائف التعديل
+        window.editField = (field) => {
+            editMode = true;
+            editField = field;
+            let promptMessage = '';
+            switch(field) {
+                case 'fullName':
+                    promptMessage = 'أدخل الاسم الكامل الجديد:';
+                    break;
+                case 'phone':
+                    promptMessage = 'أدخل رقم الهاتف الجديد:';
+                    break;
+                case 'description':
+                    promptMessage = 'أدخل الوصف الجديد:';
+                    break;
+                case 'contactMethod':
+                    addMessage("📞 اختر وسيلة التواصل الجديدة:", false);
+                    showContactButtonsForEdit();
+                    return;
+                case 'showType':
+                    addMessage("📸 اختر نوع العرض الجديد:", false);
+                    const typeDiv = document.createElement('div');
+                    typeDiv.className = 'contact-buttons';
+                    typeDiv.innerHTML = `
+                        <button class="contact-btn" onclick="window.selectShowTypeForEdit('image')">🖼️ صورة</button>
+                        <button class="contact-btn messenger" onclick="window.selectShowTypeForEdit('video')">🎬 فيديو</button>
+                    `;
+                    messagesDiv.appendChild(typeDiv);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    return;
+                case 'media':
+                    addMessage("🖼️ الرجاء رفع ملف جديد (صورة أو فيديو):", false);
+                    pendingAd.step = 'editingMedia';
+                    return;
+            }
+            addMessage(promptMessage, false);
+            pendingAd.step = `editing_${field}`;
+        };
+        
+        window.selectShowTypeForEdit = (type) => {
+            pendingAd.showType = type;
+            addMessage(`✅ تم تغيير نوع العرض إلى ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
+            addMessage("🖼️ الرجاء رفع ملف جديد مطابق للنوع:", false);
+            pendingAd.step = 'editingMedia';
+            pendingAd.media = null;
+            pendingAd.mediaType = null;
+        };
+        
+        window.selectContactMethodForEdit = (method) => {
+            pendingAd.contactMethod = method;
+            let methodName = '';
+            if (method === 'whatsapp') methodName = 'واتساب';
+            else if (method === 'messenger') methodName = 'مسنجر';
+            else methodName = 'هاتف';
+            addMessage(`✅ تم تغيير وسيلة التواصل إلى: ${methodName}`, false);
+            editMode = false;
+            editField = null;
+            // إعادة عرض الملخص بعد التعديل
+            setTimeout(() => {
+                showSummaryWithEditOptions();
+            }, 500);
+        };
+        
+        function showContactButtonsForEdit() {
+            const div = document.createElement('div');
+            div.className = 'bot-msg';
+            div.innerHTML = `
+                <div class="contact-buttons">
+                    <button class="contact-btn" onclick="window.selectContactMethodForEdit('whatsapp')">💚 واتساب</button>
+                    <button class="contact-btn messenger" onclick="window.selectContactMethodForEdit('messenger')">💬 مسنجر</button>
+                    <button class="contact-btn phone" onclick="window.selectContactMethodForEdit('phone')">📱 هاتف</button>
+                </div>
+            `;
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        window.proceedToPreview = () => {
+            // التأكد من اكتمال جميع البيانات
+            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.showType || !pendingAd.media) {
+                addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات قبل المتابعة", false);
+                return;
+            }
+            showFacebookPreview();
+        };
+        
+        window.cancelAd = () => {
+            addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
+            resetAd();
+        };
+
+        // عرض معاينة الإعلان كما سيظهر على فيسبوك
         function showFacebookPreview() {
             let contactText = '';
             let contactIcon = '';
@@ -458,8 +628,6 @@
                 mediaHtml = `<img class="fb-media" src="${pendingAd.media}" alt="صورة الإعلان">`;
             } else if (pendingAd.media && pendingAd.mediaType === 'video') {
                 mediaHtml = `<video class="fb-media-video" src="${pendingAd.media}" controls style="width:100%; max-height:400px;"></video>`;
-            } else {
-                mediaHtml = `<div style="background:#f0f2f5; height:200px; display:flex; align-items:center; justify-content:center; color:#65676B;">🖼️ بدون صورة</div>`;
             }
             
             previewDiv.innerHTML = `
@@ -486,37 +654,41 @@
             
             previewContainer.appendChild(previewDiv);
             
-            // إضافة أزرار التأكيد
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'confirm-buttons';
-            buttonsDiv.innerHTML = `
-                <button class="confirm-yes" onclick="window.confirmPublish(true)">✅ نعم، أنشر الإعلان</button>
-                <button class="confirm-no" onclick="window.confirmPublish(false)">❌ لا، إلغاء</button>
+            // أزرار تأكيد نهائي
+            const finalButtons = document.createElement('div');
+            finalButtons.className = 'confirm-buttons';
+            finalButtons.innerHTML = `
+                <button class="confirm-yes" onclick="window.finalPublish()">✅ تأكيد النشر نهائياً</button>
+                <button class="edit-btn" onclick="window.backToEdit()">✏️ العودة للتعديل</button>
+                <button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء</button>
             `;
-            previewContainer.appendChild(buttonsDiv);
+            previewContainer.appendChild(finalButtons);
             
             messagesDiv.appendChild(previewContainer);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
-        window.confirmPublish = async (confirmed) => {
-            if (confirmed) {
-                addMessage("🚀 جاري نشر إعلانك على صفحة فيسبوك...", false);
-                showTypingIndicator();
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                removeTypingIndicator();
-                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nسيظهر إعلانك بهذه الطريقة لمئات العملاء يومياً.\nشكراً لاستخدامك بوت مصطفى.", false);
-            } else {
-                addMessage("🙂 تم إلغاء نشر الإعلان. يمكنك البدء من جديد.", false);
-            }
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+        window.backToEdit = () => {
+            // إزالة آخر معاينة
+            const lastMsg = messagesDiv.lastChild;
+            if (lastMsg) messagesDiv.removeChild(lastMsg);
+            showSummaryWithEditOptions();
+        };
+        
+        window.finalPublish = async () => {
+            addMessage("🚀 جاري نشر إعلانك على صفحة فيسبوك...", false);
+            showTypingIndicator();
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            removeTypingIndicator();
+            addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nسيظهر إعلانك بهذه الطريقة لمئات العملاء يومياً.\nشكراً لاستخدامك بوت مصطفى.", false);
+            resetAd();
         };
 
         function showContactButtons() {
             const div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
-                <div>📞 **اختر وسيلة التواصل التي ستظهر في الإعلان:**</div>
+                <div>📞 **اختر وسيلة التواصل التي ستظهر في الإعلان (إجباري):**</div>
                 <div class="contact-buttons">
                     <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')">💚 واتساب</button>
                     <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')">💬 مسنجر</button>
@@ -535,7 +707,7 @@
             else methodName = '📱 هاتف';
             addMessage(`✅ تم اختيار: ${methodName}`, false);
             
-            addMessage("📸 **كيف سيظهر منتجك أو خدمتك في الإعلان؟**\n\nاختر نوع العرض:", false);
+            addMessage("📸 **كيف سيظهر منتجك أو خدمتك في الإعلان؟ (إجباري)**\n\nاختر نوع العرض:", false);
             
             const typeDiv = document.createElement('div');
             typeDiv.className = 'contact-buttons';
@@ -551,15 +723,16 @@
         window.selectShowType = (type) => {
             pendingAd.showType = type;
             addMessage(`✅ تم اختيار العرض كـ ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
-            addMessage(`🖼️ الآن قم برفع ${type === 'image' ? 'الصورة' : 'الفيديو'} بالضغط على زر "📷 صورة / فيديو"`, false);
+            addMessage(`🖼️ الآن قم برفع ${type === 'image' ? 'الصورة' : 'الفيديو'} بالضغط على زر "📷 صورة / فيديو" (إجباري)`, false);
             pendingAd.step = 'media';
         };
 
         async function startAdFlow() {
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            addMessage("📢 **لنبدأ عملية نشر إعلانك على فيسبوك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان:", false);
-            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+            addMessage("📢 **لنبدأ عملية نشر إعلانك على فيسبوك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
+            resetAd();
+            pendingAd.step = 'fullName';
         }
 
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
@@ -589,17 +762,59 @@
                 pendingAd.mediaType = mediaType;
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
-                addMessage("🔄 جاري إنشاء معاينة الإعلان كما سيظهر على فيسبوك...", false);
-                // عرض المعاينة للمستخدم
-                setTimeout(() => {
-                    showFacebookPreview();
-                }, 500);
+                
+                // بعد رفع الملف، ننتقل إلى مراجعة المعلومات
+                if (pendingAd.step === 'media' || pendingAd.step === 'editingMedia') {
+                    addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
+                    setTimeout(() => {
+                        showSummaryWithEditOptions();
+                        pendingAd.step = 'review';
+                    }, 500);
+                }
             };
             reader.readAsDataURL(file);
             mediaInput.value = '';
         };
 
         async function handleAdFlow(userMessage) {
+            // معالجة التعديلات
+            if (pendingAd.step && pendingAd.step.startsWith('editing_')) {
+                const field = pendingAd.step.replace('editing_', '');
+                switch(field) {
+                    case 'fullName':
+                        if (userMessage.trim().length < 3) {
+                            addMessage("❌ يرجى إدخال الاسم الكامل بشكل صحيح (3 أحرف على الأقل)", false);
+                            return false;
+                        }
+                        pendingAd.fullName = userMessage.trim();
+                        addMessage(`✅ تم تحديث الاسم إلى: ${pendingAd.fullName}`, false);
+                        break;
+                    case 'phone':
+                        if (userMessage.length < 9) {
+                            addMessage("❌ يرجى إدخال رقم هاتف صحيح (مثال: 0555123456)", false);
+                            return false;
+                        }
+                        pendingAd.phone = userMessage.trim();
+                        addMessage(`✅ تم تحديث رقم الهاتف إلى: ${pendingAd.phone}`, false);
+                        break;
+                    case 'description':
+                        if (userMessage.trim().length < 5) {
+                            addMessage("❌ يرجى كتابة وصف أطول (5 أحرف على الأقل)", false);
+                            return false;
+                        }
+                        pendingAd.description = userMessage.trim();
+                        addMessage(`✅ تم تحديث الوصف`, false);
+                        break;
+                }
+                editMode = false;
+                editField = null;
+                pendingAd.step = 'review';
+                setTimeout(() => {
+                    showSummaryWithEditOptions();
+                }, 500);
+                return true;
+            }
+            
             if (pendingAd.step === 'fullName') {
                 if (userMessage.trim().length < 3) {
                     addMessage("❌ يرجى إدخال الاسم الكامل بشكل صحيح (3 أحرف على الأقل)", false);
@@ -607,7 +822,7 @@
                 }
                 pendingAd.fullName = userMessage.trim();
                 addMessage(`✅ تم تسجيل الاسم: ${pendingAd.fullName}`, false);
-                addMessage("📱 **رقم الهاتف (للتواصل):**\nأرسل رقم هاتفك الذي سيتواصل معك العملاء عليه:", false);
+                addMessage("📱 **رقم الهاتف (للتواصل):**\nأرسل رقم هاتفك الذي سيتواصل معك العملاء عليه (إجباري):", false);
                 pendingAd.step = 'phone';
                 return true;
             }
@@ -619,7 +834,7 @@
                 }
                 pendingAd.phone = userMessage.trim();
                 addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`, false);
-                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (سيظهر في الإعلان):", false);
+                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (سيظهر في الإعلان) (إجباري):", false);
                 pendingAd.step = 'description';
                 return true;
             }
@@ -636,7 +851,7 @@
                 return true;
             }
             
-            if (pendingAd.step === 'waitingForContact' || pendingAd.step === 'waitingForShowType') {
+            if (pendingAd.step === 'waitingForContact' || pendingAd.step === 'waitingForShowType' || pendingAd.step === 'review') {
                 return true;
             }
             
@@ -723,8 +938,8 @@
                 chatInput.value = '';
             }
             
-            if (pendingAd.step && pendingAd.step !== 'waitingForContact' && pendingAd.step !== 'waitingForShowType') {
-                if (!text && pendingAd.step !== 'media') return;
+            if (pendingAd.step && pendingAd.step !== 'waitingForContact' && pendingAd.step !== 'waitingForShowType' && pendingAd.step !== 'review') {
+                if (!text && !pendingAd.step.startsWith('editing_')) return;
                 isBotTyping = true;
                 showTypingIndicator();
                 await new Promise(resolve => setTimeout(resolve, 500));
