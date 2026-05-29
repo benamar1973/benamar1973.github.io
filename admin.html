@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - مدير سوق مصطفى</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+        }
+        .header p {
+            color: rgba(255,255,255,0.8);
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .login-card {
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .login-card button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .stat-box h3 {
+            font-size: 28px;
+        }
+        .ads-table {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #0f3460;
+            color: white;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .clear-all {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 9999;
+        }
+        .ad-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        @media (max-width: 700px) {
+            th, td { font-size: 12px; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginSection" style="display: block;">
+            <div class="login-card card">
+                <h2>🔐 لوحة تحكم المدير</h2>
+                <p>أدخل كلمة المرور للدخول</p>
+                <input type="password" id="adminPassword" placeholder="كلمة المرور">
+                <button onclick="checkLogin()">دخول</button>
+                <div id="loginError" style="color: red; margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <div id="adminSection" style="display: none;">
+            <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+            <a href="marketplace.html" class="back-link">← الذهاب إلى السوق</a>
+            
+            <div class="header">
+                <h1>👑 لوحة تحكم المدير - سوق مصطفى</h1>
+                <p>إدارة جميع الإعلانات في السوق</p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <h3 id="totalAds">0</h3>
+                    <p>إجمالي الإعلانات</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="totalImages">0</h3>
+                    <p>إعلانات بصور</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="totalVideos">0</h3>
+                    <p>إعلانات بفيديو</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 15px;">📋 قائمة الإعلانات</h2>
+                <div class="ads-table">
+                    <table id="adsTable">
+                        <thead>
+                            <tr><th>#</th><th>صورة</th><th>الناشر</th><th>رقم الهاتف</th><th>الوصف</th><th>التاريخ</th><th>حذف</th></tr>
+                        </thead>
+                        <tbody id="adsList"></tbody>
+                    </table>
+                </div>
+                <button class="clear-all" onclick="deleteAllAds()">🗑️ حذف جميع الإعلانات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // كلمة المرور - تم تغييرها إلى 19Mascara73
+        const ADMIN_PASSWORD = "19Mascara73";
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 2500);
+        }
+        
+        function checkLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminSection').style.display = 'block';
+                loadAds();
+            } else {
+                document.getElementById('loginError').innerText = '❌ كلمة المرور غير صحيحة';
+            }
+        }
+        
+        function loadAds() {
+            const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+            renderStats(ads);
+            renderAdsTable(ads);
+        }
+        
+        function renderStats(ads) {
+            document.getElementById('totalAds').innerText = ads.length;
+            const imagesCount = ads.filter(ad => ad.imageType === 'image').length;
+            const videosCount = ads.filter(ad => ad.imageType === 'video').length;
+            document.getElementById('totalImages').innerText = imagesCount;
+            document.getElementById('totalVideos').innerText = videosCount;
+        }
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ar') + ' ' + date.toLocaleTimeString('ar', {hour:'2-digit', minute:'2-digit'});
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function renderAdsTable(ads) {
+            const tbody = document.getElementById('adsList');
+            if (ads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">📭 لا توجد إعلانات</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = ads.map((ad, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>
+                        ${ad.image && ad.imageType === 'image' ? 
+                            `<img class="ad-img" src="${ad.image}" alt="صورة">` : 
+                            (ad.image && ad.imageType === 'video' ? 
+                                '🎬 فيديو' : '🖼️ لا توجد')
+                        }
+                    </td>
+                    <td>${escapeHtml(ad.name)}</td>
+                    <td>${escapeHtml(ad.phone)}</td>
+                    <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(ad.description.substring(0, 50))}${ad.description.length > 50 ? '...' : ''}</td>
+                    <td>${formatDate(ad.date)}</td>
+                    <td><button class="delete-btn" onclick="deleteAd(${index})">🗑️ حذف</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        function deleteAd(index) {
+            let ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+            const deletedAd = ads[index];
+            ads.splice(index, 1);
+            localStorage.setItem('marketplace_ads', JSON.stringify(ads));
+            
+            renderStats(ads);
+            renderAdsTable(ads);
+            
+            showToast(`✅ تم حذف إعلان ${deletedAd.name}`);
+            
+            window.localStorage.setItem('marketplace_ads_updated', Date.now().toString());
+        }
+        
+        function deleteAllAds() {
+            if (confirm('⚠️ هل أنت متأكد؟ هذا سيحذف جميع الإعلانات نهائياً!')) {
+                localStorage.setItem('marketplace_ads', '[]');
+                loadAds();
+                showToast('✅ تم حذف جميع الإعلانات');
+                window.localStorage.setItem('marketplace_ads_updated', Date.now().toString());
+            }
+        }
+        
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'marketplace_ads_updated') {
+                loadAds();
+            }
+        });
+        
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkLogin();
+        });
+    </script>
+</body>
+</html>
