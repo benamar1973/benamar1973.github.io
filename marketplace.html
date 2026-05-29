@@ -117,6 +117,17 @@
             padding: 8px 20px;
             border-radius: 50px;
         }
+        .refresh-btn {
+            display: inline-block;
+            margin-right: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
         @media (max-width: 700px) {
             .marketplace-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.8rem; }
@@ -127,8 +138,9 @@
     <div style="max-width: 1400px; margin: 0 auto;">
         <div class="header">
             <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+            <button class="refresh-btn" onclick="loadAds()">🔄 تحديث الإعلانات</button>
             <h1>🛒 السوق الخاص - بوت مصطفى</h1>
-            <p>أول سوق إعلانات جزائري 100% | جميع الإعلانات المعروضة</p>
+            <p>أول سوق إعلانات جزائري 100% | جميع الإعلانات المعروضة (مرئية للجميع)</p>
         </div>
         
         <div class="marketplace-grid" id="marketplaceGrid">
@@ -136,11 +148,14 @@
         </div>
         
         <div class="footer">
-            <p>© 2025 بوت مصطفى - خدمة الإعلانات</p>
+            <p>© 2025 بوت مصطفى - خدمة الإعلانات | لنشر إعلانك: <a href="index.html" style="color:#28a745;">اضغط هنا</a></p>
         </div>
     </div>
 
     <script>
+        const JSONBIN_BIN_ID = '67b8b1e1ad19ca34f80b8a5c';
+        const JSONBIN_API_KEY = '$2a$10$M3MsngMW3rjptLOnJvN4XuMvwa.g83rXhSRt8shb4NFtABM3LzR0O';
+        
         function getContactHtml(method, phone) {
             if (method === 'whatsapp') {
                 return `
@@ -202,7 +217,25 @@
             `).join('');
         }
         
-        function loadAds() {
+        async function loadAds() {
+            const grid = document.getElementById('marketplaceGrid');
+            grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
+            
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const ads = data.record || [];
+                    if (ads.length > 0) {
+                        renderAds(ads);
+                        localStorage.setItem('marketplace_ads', JSON.stringify(ads));
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log('⚠️ لا يمكن الاتصال بالسحاب');
+            }
+            
             const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             renderAds(ads);
         }
