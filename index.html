@@ -70,7 +70,8 @@
         .icon-item span { font-size: 12px; display: block; font-weight: bold; color: #333; }
         .main-ad-icon { background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 20px; padding: 25px 15px; cursor: pointer; text-align: center; margin: 15px 0; border: 3px solid #ffd700; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
         .main-ad-icon:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4); border-color: #fff; }
-        .main-ad-icon img { width: 140px; height: 140px; object-fit: contain; margin-bottom: 12px; }
+        /* تكبير الصورة */
+        .main-ad-icon img { width: 180px; height: 180px; object-fit: contain; margin-bottom: 12px; }
         .main-ad-icon .main-icon-title { font-size: 24px; font-weight: bold; color: white; display: block; margin-bottom: 6px; }
         .main-ad-icon .main-icon-sub { font-size: 14px; color: rgba(255, 255, 255, 0.9); display: block; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
@@ -79,7 +80,7 @@
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingAnim { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-        @media (max-width: 480px) { .top-bot-text { font-size: 1.6rem; } .top-bot-text span:first-child { font-size: 2.2rem; } .top-bot-bar { padding: 15px 20px; } .main-ad-icon img { width: 100px; height: 100px; } .main-ad-icon .main-icon-title { font-size: 20px; } }
+        @media (max-width: 480px) { .top-bot-text { font-size: 1.6rem; } .top-bot-text span:first-child { font-size: 2.2rem; } .top-bot-bar { padding: 15px 20px; } .main-ad-icon img { width: 120px; height: 120px; } .main-ad-icon .main-icon-title { font-size: 20px; } }
     </style>
 </head>
 <body>
@@ -144,16 +145,8 @@
             { name: "🌐 شحن الانترنت", img: "ALGERIE TELECOM.png", url: "https://paiement.at.dz/index.php?p=internet_recharge&pr=in", description: "شحن رصيد الانترنت (Algerie Telecom)", benefit: "🔹 **فائدة الرابط:** شحن رصيد الانترنت الخاص بك من منزلك.\n🔹 خدمة سريعة وآمنة من اتصالات الجزائر.", requirements: "📋 **متطلبات الدفع:**\n• رقم الهاتف الثابت أو حساب الانترنت 📡\n• بطاقة ذهبية أو CIB 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل بيانات حسابك\n3️⃣ اختر المبلغ المناسب\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ سيصلك الرصيد فوراً", needsCard: true }
         ];
 
-        const AD_RULES = `📜 **قوانين نشر الإعلانات:**
-
-❌ لا إعلانات مخلة بالآداب
-❌ لا عنف أو كراهية
-❌ لا منتجات ممنوعة أو احتيال
-❌ لا إعلانات سياسية أو دينية
-✅ الإعلان يكون حلالاً ومفيداً
-✅ يحترم قوانين النشر في الجزائر
-
-⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.`;
+        // تم تعديل قوانين النشر لتشمل فوائد البوت
+        const AD_RULES = `📢 **فوائد بوت مصطفى:**\n✅ نشر إعلاناتك على صفحة خدماتي.\n✅ وصول لأكبر عدد من العملاء.\n✅ خدمات شحن ودفع فواتير موثوقة.\n✅ دعم فني متواصل.\n\n📜 **قوانين نشر الإعلانات:**\n❌ لا إعلانات مخلة بالآداب.\n❌ لا عنف أو كراهية.\n❌ لا منتجات ممنوعة أو احتيال.\n❌ لا إعلانات سياسية أو دينية.\n✅ الإعلان يكون حلالاً ومفيداً.\n✅ يحترم قوانين النشر في الجزائر.\n\n⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.`;
 
         function showToast(msg) { const toast = document.getElementById('toast'); toast.innerText = msg; toast.style.opacity = '1'; setTimeout(() => toast.style.opacity = '0', 2500); }
         function getSubscription() { if (!currentUser) return { active: false, days: 0 }; const expiry = localStorage.getItem(`sub_${currentUser}`); if (expiry && Date.now() < parseInt(expiry)) { const days = Math.ceil((parseInt(expiry) - Date.now()) / 86400000); return { active: true, days }; } return { active: false, days: 0 }; }
@@ -164,7 +157,7 @@
             const sub = getSubscription();
             if (sub.active) {
                 document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = '✨ صفحة خدماتي على طول السنة ✨';
+                document.getElementById('planText').innerHTML = ''; // تم إزالة الجملة نهائياً
                 document.getElementById('paymentSection').innerHTML = '';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
@@ -219,7 +212,7 @@
         }
 
         async function startAdFlow() {
-            addMessage(AD_RULES, false);
+            addMessage(AD_RULES, false); // القوانين والفوائد المعدلة
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n🔗 من فضلك أرسل رابط الإعلان (مثال: https://example.com/product)", false);
             pendingAd.step = 'link';
@@ -241,13 +234,13 @@
             if (pendingAd.step === 'description') {
                 if (userMessage.toLowerCase() !== 'لا') { pendingAd.description = userMessage; addMessage("✅ تم استلام الوصف.", false); } 
                 else { pendingAd.description = "📢 إعلان جديد من أحد عملائنا"; addMessage("✅ تم تخطي الوصف.", false); }
-                addMessage(`📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n📝 الوصف: ${pendingAd.description}\n\n❓ هل تريد تأكيد النشر على صفحة "خدماتي"؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`, false);
+                addMessage(`📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n📝 الوصف: ${pendingAd.description}\n\n❓ هل تريد تأكيد النشر؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`, false);
                 pendingAd.step = 'confirm';
                 return true;
             }
             if (pendingAd.step === 'confirm') {
                 if (userMessage.toLowerCase() === 'نعم') {
-                    addMessage("🚀 جاري نشر إعلانك على صفحة خدماتي...", false);
+                    addMessage("🚀 جاري نشر إعلانك...", false);
                     showTypingIndicator();
                     await new Promise(resolve => setTimeout(resolve, 1500));
                     removeTypingIndicator();
@@ -274,7 +267,8 @@
             const container = document.createElement('div');
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
-            mainAdDiv.innerHTML = `<img src="facebook-ads-logo.png" alt="خدمة الإعلانات" onerror="this.src='https://via.placeholder.com/140/ffffff/ff6b35?text=ADS'"><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك على صفحة خدماتي</span>`;
+            // تكبير الصورة يتم عبر CSS
+            mainAdDiv.innerHTML = `<img src="facebook-ads-logo.png" alt="خدمة الإعلانات" onerror="this.src='https://via.placeholder.com/180/ffffff/ff6b35?text=ADS'"><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك مع بوت مصطفى</span>`;
             mainAdDiv.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).\n💰 أقل من 4 دج إشتراك يومياً - يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج`, false); return; } await startAdFlow(); };
             container.appendChild(mainAdDiv);
             const grid = document.createElement('div'); grid.className = 'icon-grid';
@@ -286,7 +280,6 @@
         async function initChat() {
             messagesDiv.innerHTML = '';
             const sub = getSubscription();
-            // إصلاح التكرار: رسالة ترحيب واحدة فقط
             let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨
 
 📢 **خدمة الإعلانات هي خدمتنا الأساسية**
@@ -302,7 +295,7 @@
 
             if (!sub.active && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.`;
             else if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
-            else if (sub.active) welcomeMsg += `\n\n✅ اشتراكك مفعل - صفحة خدماتي على طول السنة`;
+            // تم إزالة شرط الاشتراك المفعل وجملة "صفحة خدماتي على طول السنة"
 
             addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
