@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -264,7 +267,7 @@
                     <div id="paymentSection" style="margin-top: 10px;"></div>
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
-                <button id="marketplaceBtn" class="marketplace-link-btn" style="display:none;">🛒 دخول إلى السوق الخاص</button>
+                <button id="marketplaceBtn" class="marketplace-link-btn" style="display:none;">🛒 دخول إلى سوق مصطفى</button>
             </div>
         </div>
     </div>
@@ -341,7 +344,7 @@
             const sub = getSubscription();
             if (sub.active) {
                 document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = '✨ صفحة خدماتي على طول السنة ✨';
+                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
                 document.getElementById('paymentSection').innerHTML = '';
                 document.getElementById('marketplaceBtn').style.display = 'block';
             } else {
@@ -738,9 +741,29 @@
         window.finalPublish = async () => {
             addMessage("🚀 جاري نشر إعلانك...", false);
             showTypingIndicator();
+            
+            // حفظ الإعلان في localStorage
+            let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+            const newAd = {
+                id: Date.now(),
+                name: pendingAd.fullName,
+                phone: pendingAd.phone,
+                description: pendingAd.description,
+                contactMethod: pendingAd.contactMethod,
+                image: pendingAd.media,
+                imageType: pendingAd.mediaType,
+                userId: currentUser,
+                date: Date.now()
+            };
+            existingAds.unshift(newAd);
+            localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
+            
             await new Promise(resolve => setTimeout(resolve, 1500));
             removeTypingIndicator();
-            addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك نشر إعلان آخر بالضغط على الأيقونة الرئيسية مرة أخرى.", false);
+            
+            addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
+            addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+            
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
         };
 
@@ -868,7 +891,6 @@
             messagesDiv.appendChild(buildIcons());
         }
 
-        // ========== معالجة رفع الملف - الجزء الأهم المصحح ==========
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = (e) => {
             const file = e.target.files[0];
@@ -897,7 +919,6 @@
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 
-                // الخطوة المصححة: بعد رفع الملف، ننتقل إلى مراجعة المعلومات
                 if (pendingAd.step === 'media' || pendingAd.step === 'editingMedia') {
                     addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
                     setTimeout(() => {
@@ -909,7 +930,6 @@
             reader.readAsDataURL(file);
             mediaInput.value = '';
         };
-        // ==========================================================
 
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
