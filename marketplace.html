@@ -55,6 +55,7 @@
         .ad-card-video {
             width: 100%;
             max-height: 220px;
+            background: #000;
         }
         .ad-card-content {
             padding: 18px;
@@ -137,126 +138,51 @@
             font-size: 14px;
         }
         
-        /* نافذة المعاينة - فيديو يملأ الصفحة */
-        .modal {
+        /* نافذة ملء الشاشة للفيديو */
+        .fullscreen-video-container {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
+            background: black;
+            z-index: 20000;
             justify-content: center;
             align-items: center;
-            direction: rtl;
+            direction: ltr;
         }
-        .modal-content {
-            background: white;
-            border-radius: 25px;
-            max-width: 95%;
-            width: 95%;
-            max-height: 95%;
-            overflow-y: auto;
-            position: relative;
-            animation: modalFadeIn 0.3s;
+        .fullscreen-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .modal-close {
+        .fullscreen-close {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #dc3545;
+            top: 20px;
+            left: 20px;
+            background: rgba(220, 53, 69, 0.9);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            font-size: 28px;
             cursor: pointer;
-            z-index: 10;
+            z-index: 20001;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: 0.3s;
         }
-        /* الفيديو يملأ الصفحة */
-        .modal-video-full {
-            width: 100%;
-            max-height: 60vh;
-            background: #000;
-            object-fit: contain;
+        .fullscreen-close:hover {
+            background: #dc3545;
+            transform: scale(1.1);
         }
-        .modal-img-full {
-            width: 100%;
-            max-height: 60vh;
-            object-fit: contain;
-            background: #0f3460;
-        }
-        .modal-content-inner {
-            padding: 20px;
-        }
-        .modal-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0f3460;
-            margin-bottom: 5px;
-        }
-        .modal-date {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 15px;
-        }
-        .modal-desc {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        .modal-contact {
-            background: #e8f0fe;
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 10px;
-        }
-        .modal-contact-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .modal-whatsapp {
-            background: #25D366;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .modal-phone {
-            background: #34b7f1;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+        
         @media (max-width: 700px) {
             .marketplace-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.8rem; }
-            .modal-content { width: 98%; }
-            .modal-video-full { max-height: 50vh; }
-            .modal-img-full { max-height: 50vh; }
         }
     </style>
 </head>
@@ -278,12 +204,10 @@
         </div>
     </div>
 
-    <!-- نافذة المعاينة -->
-    <div id="adModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modalContent"></div>
-        </div>
+    <!-- نافذة ملء الشاشة للفيديو -->
+    <div id="fullscreenVideoContainer" class="fullscreen-video-container">
+        <button class="fullscreen-close" onclick="closeFullscreenVideo()">✕</button>
+        <video id="fullscreenVideo" class="fullscreen-video" controls autoplay></video>
     </div>
 
     <script>
@@ -301,20 +225,52 @@
             return div.innerHTML;
         }
         
-        // دالة فتح المعاينة مع فيديو يملأ الصفحة
+        // دالة فتح الفيديو بملء الشاشة
+        function openFullscreenVideo(videoUrl) {
+            const container = document.getElementById('fullscreenVideoContainer');
+            const video = document.getElementById('fullscreenVideo');
+            video.src = videoUrl;
+            video.play();
+            container.style.display = 'flex';
+        }
+        
+        function closeFullscreenVideo() {
+            const container = document.getElementById('fullscreenVideoContainer');
+            const video = document.getElementById('fullscreenVideo');
+            video.pause();
+            video.src = '';
+            container.style.display = 'none';
+        }
+        
+        // دالة فتح نافذة التفاصيل (للإعلانات التي تحتوي على صور)
         function openModal(ad) {
-            console.log("فتح المعاينة للإعلان:", ad);
-            const modal = document.getElementById('adModal');
-            const modalContent = document.getElementById('modalContent');
-            
-            let mediaHtml = '';
-            if (ad.image && ad.imageType === 'image') {
-                mediaHtml = `<img class="modal-img-full" src="${ad.image}" alt="${ad.name}">`;
-            } else if (ad.image && ad.imageType === 'video') {
-                mediaHtml = `<video class="modal-video-full" src="${ad.image}" controls autoplay></video>`;
-            } else {
-                mediaHtml = `<div style="background:#f0f2f5; height:200px; display:flex; align-items:center; justify-content:center; color:#65676B;">🖼️ لا توجد صورة</div>`;
+            // إذا كان الإعلان يحتوي على فيديو، نفتحه في وضع ملء الشاشة مباشرة
+            if (ad.image && ad.imageType === 'video') {
+                openFullscreenVideo(ad.image);
+                return;
             }
+            
+            // للصور، نعرض نافذة منبثقة عادية
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.background = 'rgba(0,0,0,0.9)';
+            modal.style.zIndex = '30000';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.direction = 'rtl';
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.background = 'white';
+            modalContent.style.borderRadius = '20px';
+            modalContent.style.maxWidth = '90%';
+            modalContent.style.maxHeight = '90%';
+            modalContent.style.overflow = 'auto';
+            modalContent.style.position = 'relative';
             
             let contactMethodText = '';
             let contactIcon = '';
@@ -323,7 +279,7 @@
             if (ad.contactMethod === 'whatsapp') {
                 contactMethodText = `واتساب: ${ad.phone}`;
                 contactIcon = '💚';
-                contactButtons = `<a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" class="modal-whatsapp">💚 تواصل عبر واتساب</a>`;
+                contactButtons = `<a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" style="background:#25D366; color:white; padding:12px 25px; border-radius:50px; text-decoration:none; font-weight:bold; display:inline-flex; align-items:center; gap:8px;">💚 تواصل عبر واتساب</a>`;
             } else if (ad.contactMethod === 'messenger') {
                 contactMethodText = `مسنجر: ${ad.phone}`;
                 contactIcon = '💬';
@@ -331,42 +287,33 @@
             } else {
                 contactMethodText = `هاتف: ${ad.phone}`;
                 contactIcon = '📱';
-                contactButtons = `<a href="tel:${ad.phone}" class="modal-phone">📞 اتصل الآن</a>`;
+                contactButtons = `<a href="tel:${ad.phone}" style="background:#34b7f1; color:white; padding:12px 25px; border-radius:50px; text-decoration:none; font-weight:bold; display:inline-flex; align-items:center; gap:8px;">📞 اتصل الآن</a>`;
             }
             
             modalContent.innerHTML = `
-                ${mediaHtml}
-                <div class="modal-content-inner">
-                    <div class="modal-name">${escapeHtml(ad.name)}</div>
-                    <div class="modal-date">📅 ${formatDate(ad.date)}</div>
-                    <div class="modal-desc">${escapeHtml(ad.description)}</div>
-                    <div class="modal-contact">
+                <button onclick="this.closest('div').remove()" style="position:absolute; top:15px; left:15px; background:#dc3545; color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:24px; cursor:pointer; z-index:10;">✕</button>
+                <img class="modal-img" src="${ad.image}" alt="${ad.name}" style="width:100%; max-height:400px; object-fit:contain; background:#0f3460;">
+                <div style="padding:20px;">
+                    <div style="font-size:24px; font-weight:bold; color:#0f3460; margin-bottom:5px;">${escapeHtml(ad.name)}</div>
+                    <div style="font-size:12px; color:#999; margin-bottom:15px;">📅 ${formatDate(ad.date)}</div>
+                    <div style="font-size:16px; color:#333; line-height:1.6; margin-bottom:20px;">${escapeHtml(ad.description)}</div>
+                    <div style="background:#e8f0fe; padding:15px; border-radius:15px; text-align:center;">
                         <div style="font-size:16px; margin-bottom:10px;">${contactIcon} ${contactMethodText}</div>
-                        <div class="modal-contact-buttons">
+                        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
                             ${contactButtons}
                         </div>
                     </div>
                 </div>
             `;
             
-            modal.style.display = 'flex';
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('adModal');
-            modal.style.display = 'none';
-            const modalContent = document.getElementById('modalContent');
-            const video = modalContent.querySelector('video');
-            if (video) {
-                video.pause();
-            }
-        }
-        
-        window.onclick = (event) => {
-            const modal = document.getElementById('adModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            };
         }
         
         function renderAds(ads) {
@@ -384,14 +331,21 @@
                 const adCard = document.createElement('div');
                 adCard.className = 'ad-card';
                 adCard.onclick = (function(index) {
-                    return function() { openModal(currentAds[index]); };
+                    return function() { 
+                        const currentAd = currentAds[index];
+                        if (currentAd.image && currentAd.imageType === 'video') {
+                            openFullscreenVideo(currentAd.image);
+                        } else {
+                            openModal(currentAd);
+                        }
+                    };
                 })(i);
                 
                 let mediaHtml = '';
                 if (ad.image && ad.imageType === 'image') {
                     mediaHtml = `<img class="ad-card-img" src="${ad.image}" alt="${ad.name}">`;
                 } else if (ad.image && ad.imageType === 'video') {
-                    mediaHtml = `<video class="ad-card-video" src="${ad.image}" controls onclick="event.stopPropagation()"></video>`;
+                    mediaHtml = `<video class="ad-card-video" src="${ad.image}" muted onclick="event.stopPropagation(); openFullscreenVideo('${ad.image}')"></video>`;
                 } else {
                     mediaHtml = '<div class="ad-card-img" style="display:flex;align-items:center;justify-content:center;">🖼️ لا توجد صورة</div>';
                 }
@@ -439,7 +393,6 @@
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
             const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-            console.log("تم تحميل الإعلانات:", ads.length);
             renderAds(ads);
         }
         
