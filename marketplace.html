@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>سوق مصطفى - بوت مصطفى</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -134,7 +137,6 @@
             font-size: 14px;
         }
         
-        /* النافذة المنبثقة */
         .modal {
             display: none;
             position: fixed;
@@ -265,7 +267,6 @@
         </div>
     </div>
 
-    <!-- النافذة المنبثقة -->
     <div id="adModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">✕</button>
@@ -312,7 +313,6 @@
             return div.innerHTML;
         }
         
-        // فتح النافذة المنبثقة
         function openModal(ad) {
             const modal = document.getElementById('adModal');
             const modalContent = document.getElementById('modalContent');
@@ -365,7 +365,6 @@
         function closeModal() {
             const modal = document.getElementById('adModal');
             modal.style.display = 'none';
-            // إيقاف الفيديو إذا كان يعمل
             const modalContent = document.getElementById('modalContent');
             const video = modalContent.querySelector('video');
             if (video) {
@@ -373,7 +372,6 @@
             }
         }
         
-        // إغلاق النافذة عند الضغط خارجها
         window.onclick = (event) => {
             const modal = document.getElementById('adModal');
             if (event.target === modal) {
@@ -412,7 +410,6 @@
             const grid = document.getElementById('marketplaceGrid');
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
-            // تحميل من localStorage
             const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             renderAds(ads);
         }
