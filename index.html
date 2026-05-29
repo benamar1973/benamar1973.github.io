@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>بوت مصطفى - خدمة الإعلانات</title>
-    <!-- سياسة أمان المحتوى (CSP) خفيفة - لا تمنع الروابط الخارجية -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-src https:;">
     <style>
         * {
             margin: 0;
@@ -453,31 +451,6 @@
     </div>
 
     <script>
-        // ========== التحسينات الأمنية المضافة فقط ==========
-        
-        // 1. تنقية النصوص (Sanitize) - حماية من XSS
-        function sanitizeInput(text) {
-            if (!text) return '';
-            // إزالة HTML tags وترميز الأحرف الخطرة
-            return text.replace(/[<>]/g, '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').substring(0, 2000);
-        }
-        
-        // 2. التحقق من صحة الروابط
-        function validateUrl(url) {
-            try {
-                const parsed = new URL(url);
-                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-            } catch {
-                return false;
-            }
-        }
-        
-        // 3. Rate Limiting - منع إغراق البوت
-        let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 1500; // 1.5 ثانية بين الرسائل
-        
-        // ========== باقي الكود الأصلي محفوظ بالكامل ==========
-        
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
@@ -559,7 +532,7 @@
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.innerText = sanitizeInput(msg);
+            toast.innerText = msg;
             toast.style.opacity = '1';
             setTimeout(() => toast.style.opacity = '0', 2500);
         }
@@ -581,7 +554,7 @@
             const planTextSpan = document.getElementById('planText');
             const paymentSection = document.getElementById('paymentSection');
             
-            userNameSpan.innerHTML = `👤 ${sanitizeInput(currentUser.split('@')[0])}`;
+            userNameSpan.innerHTML = `👤 ${currentUser.split('@')[0]}`;
             const sub = getSubscription();
             
             if (sub.active) {
@@ -608,12 +581,12 @@
                 document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
                 return;
             }
-            currentUser = sanitizeInput(email);
+            currentUser = email;
             localStorage.setItem('currentUser', currentUser);
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
-            showToast(`مرحباً ${sanitizeInput(email.split('@')[0])} في بوت مصطفى 🚀`);
+            showToast(`مرحباً ${email.split('@')[0]} في بوت مصطفى 🚀`);
         };
 
         document.getElementById('logoutBtn').onclick = () => {
@@ -629,7 +602,7 @@
 
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
-            currentUser = sanitizeInput(savedUser);
+            currentUser = savedUser;
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             updateUI();
@@ -665,7 +638,7 @@
         function addMessage(text, isUser) {
             const div = document.createElement('div');
             div.className = isUser ? 'user-msg' : 'bot-msg';
-            div.innerText = text; // innerText آمن من XSS
+            div.innerText = text;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
@@ -687,13 +660,14 @@
             const lower = text.trim().toLowerCase();
             if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز') {
                 if (pendingService) {
+                    // فتح الرابط في نافذة جديدة
                     window.open(pendingService.url, '_blank');
-                    await addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nيمكنك الآن اتباع الخطوات لإتمام العملية.`, false);
+                    addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nيمكنك الآن اتباع الخطوات لإتمام العملية.`, false);
                     pendingService = null;
                 }
                 return true;
             } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن') {
-                await addMessage("🙂 **لا مشكلة!** يمكنك اختيار خدمة أخرى من الأيقونات.", false);
+                addMessage("🙂 **لا مشكلة!** يمكنك اختيار خدمة أخرى من الأيقونات.", false);
                 pendingService = null;
                 return true;
             }
@@ -708,12 +682,10 @@
         }
 
         async function handleAdFlow(userMessage) {
-            const sanitizedMsg = sanitizeInput(userMessage);
-            
             if (pendingAd.step === 'link') {
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
-                const match = sanitizedMsg.match(urlRegex);
-                if (!match || !validateUrl(match[0])) {
+                const match = userMessage.match(urlRegex);
+                if (!match) {
                     addMessage("❌ الرابط غير صحيح. يرجى إرسال رابط صحيح يبدأ بـ http:// أو https://", false);
                     return false;
                 }
@@ -724,8 +696,8 @@
             }
             
             if (pendingAd.step === 'description') {
-                if (sanitizedMsg.toLowerCase() !== 'لا') {
-                    pendingAd.description = sanitizedMsg.substring(0, 500);
+                if (userMessage.toLowerCase() !== 'لا') {
+                    pendingAd.description = userMessage;
                     addMessage("✅ تم استلام الوصف.", false);
                 } else {
                     pendingAd.description = "📢 إعلان جديد من أحد عملائنا";
@@ -734,21 +706,21 @@
                 
                 let summary = `📋 **ملخص إعلانك:**\n\n🔗 الرابط: ${pendingAd.link}\n`;
                 summary += `📝 الوصف: ${pendingAd.description}\n\n`;
-                summary += `❓ هل تريد تأكيد النشر على صفحة "خدماتي"؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
+                summary += `❓ هل تريد تأكيد النشر على صفحة "خدماتي SPONSSORE"؟\n(أجب بـ 'نعم' للنشر، أو 'لا' للإلغاء)`;
                 addMessage(summary, false);
                 pendingAd.step = 'confirm';
                 return true;
             }
             
             if (pendingAd.step === 'confirm') {
-                if (sanitizedMsg.toLowerCase() === 'نعم') {
-                    addMessage("🚀 جاري نشر إعلانك على صفحة خدماتي...", false);
+                if (userMessage.toLowerCase() === 'نعم') {
+                    addMessage("🚀 جاري نشر إعلانك على صفحة خدماتي SPONSSORE...", false);
                     showTypingIndicator();
                     await new Promise(resolve => setTimeout(resolve, 1500));
                     removeTypingIndicator();
                     addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك نشر إعلان آخر بالضغط على الأيقونة الرئيسية مرة أخرى.", false);
                     pendingAd = { step: null, link: null, description: null };
-                } else if (sanitizedMsg.toLowerCase() === 'لا') {
+                } else if (userMessage.toLowerCase() === 'لا') {
                     addMessage("🙂 تم إلغاء نشر الإعلان. يمكنك البدء من جديد.", false);
                     pendingAd = { step: null, link: null, description: null };
                 } else {
@@ -780,7 +752,7 @@
             mainAdDiv.className = 'main-ad-icon';
             mainAdDiv.innerHTML = `
                 <img src="facebook-ads-logo.png" alt="خدمة الإعلانات" onerror="this.src='https://via.placeholder.com/140/ffffff/ff6b35?text=ADS'">
-                <span class="main-icon-title">📢 خدمة الإعلانات</span>
+                <span class="main-icon-title">📢 خدمة الإعلانات - SPONSSORE</span>
                 <span class="main-icon-sub">انشر إعلانك على صفحة خدماتي SPONSSORE</span>
             `;
             mainAdDiv.onclick = async () => {
@@ -858,18 +830,8 @@
             messagesDiv.appendChild(buildIcons());
         }
 
-        // معالج الإرسال مع Rate Limiting
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
-            
-            // Rate limiting - منع الإغراق
-            const now = Date.now();
-            if (now - lastMessageTime < MESSAGE_COOLDOWN) {
-                showToast("⚠️ الرجاء الانتظار قليلاً قبل إرسال رسالة جديدة");
-                return;
-            }
-            lastMessageTime = now;
-            
             const text = chatInput.value.trim();
             if (!text) return;
             
@@ -910,7 +872,6 @@
             if (e.key === 'Enter') sendBtn.click();
         });
 
-        // نظام تفعيل الاشتراك من رابط Chargily (نفس الكود الأصلي)
         function checkPayment() {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
