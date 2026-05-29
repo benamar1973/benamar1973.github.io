@@ -406,7 +406,6 @@
         }
         
         async function addAdToCloud(adData) {
-            // تحميل الإعلانات الحالية
             let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             const newAd = {
                 id: Date.now(),
@@ -415,8 +414,6 @@
             };
             existingAds.unshift(newAd);
             localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-            
-            // محاولة الحفظ في السحاب
             await saveAllAdsToCloud(existingAds);
             return true;
         }
@@ -577,27 +574,27 @@
             infoDiv.innerHTML = `
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>👤 الاسم الكامل:</strong> ${pendingAd.fullName}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('fullName')">تعديل</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('fullName')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>📞 رقم الهاتف:</strong> ${pendingAd.phone}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('phone')">تعديل</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('phone')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>📝 الوصف:</strong> ${pendingAd.description}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('description')">تعديل</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('description')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>💬 وسيلة التواصل:</strong> ${contactIcon} ${contactText}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('contactMethod')">تعديل</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('contactMethod')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>🖼️ نوع العرض:</strong> ${pendingAd.showType === 'image' ? 'صورة' : 'فيديو'}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('showType')">تعديل</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('showType')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>📎 الملف:</strong> ✅ مرفق
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('media')">تغيير الملف</button>
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="editField('media')">تغيير الملف</button>
                 </div>
             `;
             summaryContainer.appendChild(infoDiv);
@@ -605,8 +602,8 @@
             const confirmDiv = document.createElement('div');
             confirmDiv.className = 'confirm-buttons';
             confirmDiv.innerHTML = `
-                <button class="confirm-yes" onclick="window.proceedToPreview()">✅ متابعة إلى المعاينة</button>
-                <button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء الإعلان</button>
+                <button class="confirm-yes" onclick="proceedToPreview()">✅ متابعة إلى المعاينة</button>
+                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء الإعلان</button>
             `;
             summaryContainer.appendChild(confirmDiv);
             
@@ -614,7 +611,7 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
-        window.editField = (field) => {
+        function editField(field) {
             editMode = true;
             editField = field;
             let promptMessage = '';
@@ -637,8 +634,8 @@
                     const typeDiv = document.createElement('div');
                     typeDiv.className = 'contact-buttons';
                     typeDiv.innerHTML = `
-                        <button class="contact-btn" onclick="window.selectShowTypeForEdit('image')">🖼️ صورة</button>
-                        <button class="contact-btn messenger" onclick="window.selectShowTypeForEdit('video')">🎬 فيديو</button>
+                        <button class="contact-btn" onclick="selectShowTypeForEdit('image')">🖼️ صورة</button>
+                        <button class="contact-btn messenger" onclick="selectShowTypeForEdit('video')">🎬 فيديو</button>
                     `;
                     messagesDiv.appendChild(typeDiv);
                     messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -650,18 +647,18 @@
             }
             addMessage(promptMessage, false);
             pendingAd.step = `editing_${field}`;
-        };
+        }
         
-        window.selectShowTypeForEdit = (type) => {
+        function selectShowTypeForEdit(type) {
             pendingAd.showType = type;
             addMessage(`✅ تم تغيير نوع العرض إلى ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
             addMessage("🖼️ الرجاء رفع ملف جديد مطابق للنوع:", false);
             pendingAd.step = 'editingMedia';
             pendingAd.media = null;
             pendingAd.mediaType = null;
-        };
+        }
         
-        window.selectContactMethodForEdit = (method) => {
+        function selectContactMethodForEdit(method) {
             pendingAd.contactMethod = method;
             let methodName = '';
             if (method === 'whatsapp') methodName = 'واتساب';
@@ -673,34 +670,34 @@
             setTimeout(() => {
                 showSummaryWithEditOptions();
             }, 500);
-        };
+        }
         
         function showContactButtonsForEdit() {
             const div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectContactMethodForEdit('whatsapp')">💚 واتساب</button>
-                    <button class="contact-btn messenger" onclick="window.selectContactMethodForEdit('messenger')">💬 مسنجر</button>
-                    <button class="contact-btn phone" onclick="window.selectContactMethodForEdit('phone')">📱 هاتف</button>
+                    <button class="contact-btn" onclick="selectContactMethodForEdit('whatsapp')">💚 واتساب</button>
+                    <button class="contact-btn messenger" onclick="selectContactMethodForEdit('messenger')">💬 مسنجر</button>
+                    <button class="contact-btn phone" onclick="selectContactMethodForEdit('phone')">📱 هاتف</button>
                 </div>
             `;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
-        window.proceedToPreview = () => {
+        function proceedToPreview() {
             if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.showType || !pendingAd.media) {
                 addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات قبل المتابعة", false);
                 return;
             }
             showFacebookPreview();
-        };
+        }
         
-        window.cancelAd = () => {
+        function cancelAd() {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
             resetAd();
-        };
+        }
 
         function showFacebookPreview() {
             let contactText = '';
@@ -732,6 +729,8 @@
                 mediaHtml = `<img class="fb-media" src="${pendingAd.media}" alt="صورة الإعلان">`;
             } else if (pendingAd.media && pendingAd.mediaType === 'video') {
                 mediaHtml = `<video class="fb-media-video" src="${pendingAd.media}" controls style="width:100%; max-height:400px;"></video>`;
+            } else {
+                mediaHtml = `<div style="background:#f0f2f5; height:200px; display:flex; align-items:center; justify-content:center; color:#65676B;">🖼️ معاينة الملف</div>`;
             }
             
             previewDiv.innerHTML = `
@@ -761,9 +760,9 @@
             const finalButtons = document.createElement('div');
             finalButtons.className = 'confirm-buttons';
             finalButtons.innerHTML = `
-                <button class="confirm-yes" onclick="window.finalPublish()">✅ تأكيد النشر في السوق</button>
-                <button class="edit-btn" onclick="window.backToEdit()">✏️ العودة للتعديل</button>
-                <button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء</button>
+                <button class="confirm-yes" onclick="finalPublish()">✅ تأكيد النشر في السوق</button>
+                <button class="edit-btn" onclick="backToEdit()">✏️ العودة للتعديل</button>
+                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>
             `;
             previewContainer.appendChild(finalButtons);
             
@@ -771,13 +770,13 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
-        window.backToEdit = () => {
+        function backToEdit() {
             const lastMsg = messagesDiv.lastChild;
             if (lastMsg) messagesDiv.removeChild(lastMsg);
             showSummaryWithEditOptions();
-        };
+        }
         
-        window.finalPublish = async () => {
+        async function finalPublish() {
             addMessage("🚀 جاري نشر إعلانك في السوق...", false);
             showTypingIndicator();
             
@@ -804,7 +803,7 @@
             }
             
             resetAd();
-        };
+        }
 
         function showContactButtons() {
             const div = document.createElement('div');
@@ -812,16 +811,16 @@
             div.innerHTML = `
                 <div>📞 **اختر وسيلة التواصل التي ستظهر في الإعلان (إجباري):**</div>
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')">💚 واتساب</button>
-                    <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')">💬 مسنجر</button>
-                    <button class="contact-btn phone" onclick="window.selectContactMethod('phone')">📱 هاتف</button>
+                    <button class="contact-btn" onclick="selectContactMethod('whatsapp')">💚 واتساب</button>
+                    <button class="contact-btn messenger" onclick="selectContactMethod('messenger')">💬 مسنجر</button>
+                    <button class="contact-btn phone" onclick="selectContactMethod('phone')">📱 هاتف</button>
                 </div>
             `;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        window.selectContactMethod = (method) => {
+        function selectContactMethod(method) {
             pendingAd.contactMethod = method;
             let methodName = '';
             if (method === 'whatsapp') methodName = '💚 واتساب';
@@ -834,20 +833,20 @@
             const typeDiv = document.createElement('div');
             typeDiv.className = 'contact-buttons';
             typeDiv.innerHTML = `
-                <button class="contact-btn" onclick="window.selectShowType('image')">🖼️ صورة</button>
-                <button class="contact-btn messenger" onclick="window.selectShowType('video')">🎬 فيديو</button>
+                <button class="contact-btn" onclick="selectShowType('image')">🖼️ صورة</button>
+                <button class="contact-btn messenger" onclick="selectShowType('video')">🎬 فيديو</button>
             `;
             messagesDiv.appendChild(typeDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             pendingAd.step = 'waitingForShowType';
-        };
+        }
         
-        window.selectShowType = (type) => {
+        function selectShowType(type) {
             pendingAd.showType = type;
             addMessage(`✅ تم اختيار العرض كـ ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
             addMessage(`🖼️ الآن قم برفع ${type === 'image' ? 'الصورة' : 'الفيديو'} بالضغط على زر "📷 صورة / فيديو" (إجباري)`, false);
             pendingAd.step = 'media';
-        };
+        }
 
         async function startAdFlow() {
             addMessage(AD_RULES, false);
