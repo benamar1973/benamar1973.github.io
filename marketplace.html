@@ -37,6 +37,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
         .ad-card:hover {
             transform: translateY(-5px);
@@ -71,6 +72,10 @@
             color: #444;
             line-height: 1.5;
             margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .ad-card-contact {
             background: #e8f0fe;
@@ -128,6 +133,114 @@
             cursor: pointer;
             font-size: 14px;
         }
+        
+        /* النافذة المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            direction: rtl;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85%;
+            overflow-y: auto;
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .modal-img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        .modal-video {
+            width: 100%;
+            max-height: 300px;
+        }
+        .modal-content-inner {
+            padding: 20px;
+        }
+        .modal-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f3460;
+            margin-bottom: 5px;
+        }
+        .modal-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        .modal-desc {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .modal-contact {
+            background: #e8f0fe;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .modal-contact-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .modal-whatsapp {
+            background: #25D366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-phone {
+            background: #34b7f1;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
         @media (max-width: 700px) {
             .marketplace-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.8rem; }
@@ -140,7 +253,7 @@
             <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
             <button class="refresh-btn" onclick="loadAds()">🔄 تحديث الإعلانات</button>
             <h1>🛒 السوق الخاص - بوت مصطفى</h1>
-            <p>أول سوق إعلانات جزائري 100% | جميع الإعلانات المعروضة (مرئية للجميع)</p>
+            <p>أول سوق إعلانات جزائري 100% | اضغط على أي إعلان لمشاهدة التفاصيل</p>
         </div>
         
         <div class="marketplace-grid" id="marketplaceGrid">
@@ -152,9 +265,16 @@
         </div>
     </div>
 
+    <!-- النافذة المنبثقة -->
+    <div id="adModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
     <script>
-        const JSONBIN_BIN_ID = '67b8b1e1ad19ca34f80b8a5c';
-        const JSONBIN_API_KEY = '$2a$10$M3MsngMW3rjptLOnJvN4XuMvwa.g83rXhSRt8shb4NFtABM3LzR0O';
+        let currentAds = [];
         
         function getContactHtml(method, phone) {
             if (method === 'whatsapp') {
@@ -192,15 +312,86 @@
             return div.innerHTML;
         }
         
+        // فتح النافذة المنبثقة
+        function openModal(ad) {
+            const modal = document.getElementById('adModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            let mediaHtml = '';
+            if (ad.image && ad.imageType === 'image') {
+                mediaHtml = `<img class="modal-img" src="${ad.image}" alt="${ad.name}">`;
+            } else if (ad.image && ad.imageType === 'video') {
+                mediaHtml = `<video class="modal-video" src="${ad.image}" controls autoplay></video>`;
+            } else {
+                mediaHtml = `<div style="background:#f0f2f5; height:200px; display:flex; align-items:center; justify-content:center; color:#65676B;">🖼️ لا توجد صورة</div>`;
+            }
+            
+            let contactMethodText = '';
+            let contactIcon = '';
+            let contactButtons = '';
+            
+            if (ad.contactMethod === 'whatsapp') {
+                contactMethodText = `واتساب: ${ad.phone}`;
+                contactIcon = '💚';
+                contactButtons = `<a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" class="modal-whatsapp">💚 تواصل عبر واتساب</a>`;
+            } else if (ad.contactMethod === 'messenger') {
+                contactMethodText = `مسنجر: ${ad.phone}`;
+                contactIcon = '💬';
+                contactButtons = `<span style="font-size:14px; color:#0084ff;">🔍 ابحث عن هذا الرقم في مسنجر: ${ad.phone}</span>`;
+            } else {
+                contactMethodText = `هاتف: ${ad.phone}`;
+                contactIcon = '📱';
+                contactButtons = `<a href="tel:${ad.phone}" class="modal-phone">📞 اتصل الآن</a>`;
+            }
+            
+            modalContent.innerHTML = `
+                ${mediaHtml}
+                <div class="modal-content-inner">
+                    <div class="modal-name">${escapeHtml(ad.name)}</div>
+                    <div class="modal-date">📅 ${formatDate(ad.date)}</div>
+                    <div class="modal-desc">${escapeHtml(ad.description)}</div>
+                    <div class="modal-contact">
+                        <div style="font-size:16px; margin-bottom:10px;">${contactIcon} ${contactMethodText}</div>
+                        <div class="modal-contact-buttons">
+                            ${contactButtons}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('adModal');
+            modal.style.display = 'none';
+            // إيقاف الفيديو إذا كان يعمل
+            const modalContent = document.getElementById('modalContent');
+            const video = modalContent.querySelector('video');
+            if (video) {
+                video.pause();
+            }
+        }
+        
+        // إغلاق النافذة عند الضغط خارجها
+        window.onclick = (event) => {
+            const modal = document.getElementById('adModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
         function renderAds(ads) {
             const grid = document.getElementById('marketplaceGrid');
+            currentAds = ads;
+            
             if (!ads || ads.length === 0) {
                 grid.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات حالياً. كن أول من ينشر إعلاناً! 🚀</div>';
                 return;
             }
             
-            grid.innerHTML = ads.map(ad => `
-                <div class="ad-card">
+            grid.innerHTML = ads.map((ad, index) => `
+                <div class="ad-card" onclick="openModal(currentAds[${index}])">
                     ${ad.image && ad.imageType === 'image' ? 
                         `<img class="ad-card-img" src="${ad.image}" alt="${ad.name}">` : 
                         (ad.image && ad.imageType === 'video' ? 
@@ -221,21 +412,7 @@
             const grid = document.getElementById('marketplaceGrid');
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`);
-                if (response.ok) {
-                    const data = await response.json();
-                    const ads = data.record || [];
-                    if (ads.length > 0) {
-                        renderAds(ads);
-                        localStorage.setItem('marketplace_ads', JSON.stringify(ads));
-                        return;
-                    }
-                }
-            } catch (error) {
-                console.log('⚠️ لا يمكن الاتصال بالسحاب');
-            }
-            
+            // تحميل من localStorage
             const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             renderAds(ads);
         }
