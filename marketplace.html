@@ -277,43 +277,21 @@
     <script>
         let currentAds = [];
         
-        function getContactHtml(method, phone) {
-            if (method === 'whatsapp') {
-                return `
-                    <div class="ad-card-contact">
-                        <span class="contact-whatsapp">💚 واتساب: ${phone}</span><br>
-                        <a href="https://wa.me/${phone.replace(/^0/, '213')}" target="_blank" class="contact-link">📱 تواصل عبر واتساب</a>
-                    </div>
-                `;
-            } else if (method === 'messenger') {
-                return `
-                    <div class="ad-card-contact">
-                        <span class="contact-messenger">💬 مسنجر: ${phone}</span><br>
-                        <span style="font-size:12px;">🔍 ابحث عن هذا الرقم في مسنجر</span>
-                    </div>
-                `;
-            } else {
-                return `
-                    <div class="ad-card-contact">
-                        <span class="contact-phone">📱 هاتف: ${phone}</span><br>
-                        <a href="tel:${phone}" class="contact-link phone">📞 اتصل الآن</a>
-                    </div>
-                `;
-            }
-        }
-        
         function formatDate(timestamp) {
             const date = new Date(timestamp);
             return date.toLocaleDateString('ar') + ' ' + date.toLocaleTimeString('ar', {hour:'2-digit', minute:'2-digit'});
         }
         
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
+        // دالة فتح المعاينة
         function openModal(ad) {
+            console.log("فتح المعاينة للإعلان:", ad);
             const modal = document.getElementById('adModal');
             const modalContent = document.getElementById('modalContent');
             
@@ -388,22 +366,60 @@
                 return;
             }
             
-            grid.innerHTML = ads.map((ad, index) => `
-                <div class="ad-card" onclick="openModal(currentAds[${index}])">
-                    ${ad.image && ad.imageType === 'image' ? 
-                        `<img class="ad-card-img" src="${ad.image}" alt="${ad.name}">` : 
-                        (ad.image && ad.imageType === 'video' ? 
-                            `<video class="ad-card-video" src="${ad.image}" controls></video>` :
-                            '<div class="ad-card-img" style="display:flex;align-items:center;justify-content:center;">🖼️ لا توجد صورة</div>')
-                    }
+            grid.innerHTML = '';
+            for (let i = 0; i < ads.length; i++) {
+                const ad = ads[i];
+                const adCard = document.createElement('div');
+                adCard.className = 'ad-card';
+                adCard.onclick = (function(index) {
+                    return function() { openModal(currentAds[index]); };
+                })(i);
+                
+                let mediaHtml = '';
+                if (ad.image && ad.imageType === 'image') {
+                    mediaHtml = `<img class="ad-card-img" src="${ad.image}" alt="${ad.name}">`;
+                } else if (ad.image && ad.imageType === 'video') {
+                    mediaHtml = `<video class="ad-card-video" src="${ad.image}" controls onclick="event.stopPropagation()"></video>`;
+                } else {
+                    mediaHtml = '<div class="ad-card-img" style="display:flex;align-items:center;justify-content:center;">🖼️ لا توجد صورة</div>';
+                }
+                
+                let contactHtml = '';
+                if (ad.contactMethod === 'whatsapp') {
+                    contactHtml = `
+                        <div class="ad-card-contact">
+                            <span class="contact-whatsapp">💚 واتساب: ${escapeHtml(ad.phone)}</span><br>
+                            <a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" class="contact-link" onclick="event.stopPropagation()">📱 تواصل عبر واتساب</a>
+                        </div>
+                    `;
+                } else if (ad.contactMethod === 'messenger') {
+                    contactHtml = `
+                        <div class="ad-card-contact">
+                            <span class="contact-messenger">💬 مسنجر: ${escapeHtml(ad.phone)}</span><br>
+                            <span style="font-size:12px;" onclick="event.stopPropagation()">🔍 ابحث عن هذا الرقم في مسنجر</span>
+                        </div>
+                    `;
+                } else {
+                    contactHtml = `
+                        <div class="ad-card-contact">
+                            <span class="contact-phone">📱 هاتف: ${escapeHtml(ad.phone)}</span><br>
+                            <a href="tel:${ad.phone}" class="contact-link phone" onclick="event.stopPropagation()">📞 اتصل الآن</a>
+                        </div>
+                    `;
+                }
+                
+                adCard.innerHTML = `
+                    ${mediaHtml}
                     <div class="ad-card-content">
                         <div class="ad-card-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-card-date">📅 ${formatDate(ad.date)}</div>
                         <div class="ad-card-desc">${escapeHtml(ad.description)}</div>
-                        ${getContactHtml(ad.contactMethod, ad.phone)}
+                        ${contactHtml}
                     </div>
-                </div>
-            `).join('');
+                `;
+                
+                grid.appendChild(adCard);
+            }
         }
         
         async function loadAds() {
@@ -411,6 +427,7 @@
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
             const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+            console.log("تم تحميل الإعلانات:", ads.length);
             renderAds(ads);
         }
         
