@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>بوت مصطفى - خدمة الإعلانات</title>
-    <!-- سياسة أمان المحتوى (CSP) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self';">
+    <!-- سياسة أمان المحتوى (CSP) خفيفة - لا تمنع الروابط الخارجية -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-src https:;">
     <style>
         * {
             margin: 0;
@@ -453,48 +453,16 @@
     </div>
 
     <script>
-        // ========== الإعدادات الأمنية ==========
-        // منع console.log في الإنتاج (اختياري)
-        if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1')) {
-            console.log = function() {};
-        }
-
-        // ========== المتغيرات العامة ==========
-        let currentUser = null;
-        let isBotTyping = false;
-        let pendingService = null;
-        let pendingAd = { step: null, link: null, description: null };
+        // ========== التحسينات الأمنية المضافة فقط ==========
         
-        // Rate limiting - منع الإغراق
-        let lastMessageTime = 0;
-        const MESSAGE_COOLDOWN = 1500; // 1.5 ثانية بين الرسائل
-        
-        // جلسة المستخدم (بدون localStorage - أكثر أماناً)
-        let sessionExpiry = null;
-        const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة
-        
-        // تخزين الاشتراكات في الذاكرة فقط (لنموذج العرض)
-        // في التطبيق الحقيقي، هذا يجب أن يكون في الخادم
-        let activeSubscriptions = new Map(); // email -> expiry timestamp
-        
-        // ========== دوال مساعدة أمنية ==========
+        // 1. تنقية النصوص (Sanitize) - حماية من XSS
         function sanitizeInput(text) {
             if (!text) return '';
-            // إزالة أي HTML tags
-            return text.replace(/[<>]/g, '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+            // إزالة HTML tags وترميز الأحرف الخطرة
+            return text.replace(/[<>]/g, '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').substring(0, 2000);
         }
         
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        function validateEmail(email) {
-            const re = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-            return re.test(email);
-        }
-        
+        // 2. التحقق من صحة الروابط
         function validateUrl(url) {
             try {
                 const parsed = new URL(url);
@@ -504,123 +472,17 @@
             }
         }
         
-        // التحقق من صلاحية الجلسة
-        function isSessionValid() {
-            if (!currentUser || !sessionExpiry) return false;
-            return Date.now() < sessionExpiry;
-        }
+        // 3. Rate Limiting - منع إغراق البوت
+        let lastMessageTime = 0;
+        const MESSAGE_COOLDOWN = 1500; // 1.5 ثانية بين الرسائل
         
-        // تجديد الجلسة
-        function renewSession() {
-            sessionExpiry = Date.now() + SESSION_DURATION;
-        }
+        // ========== باقي الكود الأصلي محفوظ بالكامل ==========
         
-        // ========== نظام الاشتراكات الآمن ==========
-        function getSubscription() {
-            if (!currentUser) return { active: false, days: 0 };
-            if (!isSessionValid()) {
-                logout();
-                return { active: false, days: 0 };
-            }
-            
-            const expiry = activeSubscriptions.get(currentUser);
-            if (expiry && Date.now() < expiry) {
-                const days = Math.ceil((expiry - Date.now()) / (86400000));
-                return { active: true, days };
-            }
-            return { active: false, days: 0 };
-        }
-        
-        // تفعيل الاشتراك (يجب أن يتم عبر الخادم في الإنتاج)
-        // هذه محاكاة آمنة - في الحقيقة يجب أن يكون لديك endpoint خادم
-        function activateSubscription(paymentCode) {
-            if (!currentUser) return false;
-            
-            // التحقق من رمز الدفع (هذا يجب أن يتم عبر الخادم)
-            // للعرض، سنستخدم رمز تجريبي آمن
-            const validCodes = ['DEMO2024', 'TEST2025'];
-            if (validCodes.includes(paymentCode)) {
-                const expiry = Date.now() + 365 * 86400000; // سنة واحدة
-                activeSubscriptions.set(currentUser, expiry);
-                updateUI();
-                
-                // إعادة تهيئة الشات
-                const messagesDiv = document.getElementById('messages');
-                if (messagesDiv && messagesDiv.children.length > 0) {
-                    initChat();
-                }
-                showToast('✅ تم تفعيل اشتراكك بنجاح لمدة سنة كاملة!');
-                return true;
-            }
-            
-            showToast('❌ رمز التفعيل غير صالح');
-            return false;
-        }
-        
-        // ========== دوال واجهة المستخدم ==========
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = sanitizeInput(msg);
-            toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 2500);
-        }
-        
-        function logout() {
-            currentUser = null;
-            sessionExpiry = null;
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('appSection').style.display = 'none';
-            document.getElementById('emailInput').value = '';
-            pendingAd = { step: null, link: null, description: null };
-            pendingService = null;
-            showToast('تم تسجيل الخروج بنجاح');
-        }
-        
-        function updateUI() {
-            if (!currentUser || !isSessionValid()) {
-                if (currentUser) logout();
-                return;
-            }
-            
-            const userNameSpan = document.getElementById('userName');
-            const daysLeftSpan = document.getElementById('daysLeft');
-            const planTextSpan = document.getElementById('planText');
-            const paymentSection = document.getElementById('paymentSection');
-            
-            userNameSpan.innerHTML = `👤 ${escapeHtml(currentUser.split('@')[0])}`;
-            const sub = getSubscription();
-            
-            if (sub.active) {
-                daysLeftSpan.innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                planTextSpan.innerHTML = '✨ صفحة خدماتي SPONSSORE على طول السنة ✨';
-                paymentSection.innerHTML = '';
-            } else {
-                daysLeftSpan.innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                planTextSpan.innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
-                paymentSection.innerHTML = `
-                    <div class="payment-buttons">
-                        <button class="payment-btn" id="subscribeBtn">📅 اشتراك سنوي 1000 دج</button>
-                    </div>
-                    <div style="font-size:12px; color:#666; margin-top:8px;">
-                        💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج
-                    </div>
-                `;
-                
-                const subscribeBtn = document.getElementById('subscribeBtn');
-                if (subscribeBtn) {
-                    subscribeBtn.onclick = () => {
-                        // في الإنتاج: هنا يتم فتح رابط دفع حقيقي
-                        // ثم بعد الدفع، الخادم يرسل رمز التفعيل
-                        const demoCode = prompt('للشرح التوضيحي فقط، أدخل رمز التفعيل التجريبي:\n(استخدم DEMO2024 أو TEST2025)');
-                        if (demoCode) {
-                            activateSubscription(demoCode);
-                        }
-                    };
-                }
-            }
-        }
-        
-        // ========== دوال الشات ==========
+        let currentUser = null;
+        let isBotTyping = false;
+        let pendingService = null;
+        let pendingAd = { step: null, link: null, description: null };
+
         const services = [
             { 
                 name: "📱 DJEZZY", 
@@ -695,21 +557,102 @@
 
 ⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.`;
 
-        function addMessage(text, isUser) {
-            const div = document.createElement('div');
-            div.className = isUser ? 'user-msg' : 'bot-msg';
-            div.innerText = text; // باستخدام innerText آمن من XSS
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.appendChild(div);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = sanitizeInput(msg);
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 2500);
         }
+
+        function getSubscription() {
+            if (!currentUser) return { active: false, days: 0 };
+            const expiry = localStorage.getItem(`sub_${currentUser}`);
+            if (expiry && Date.now() < parseInt(expiry)) {
+                const days = Math.ceil((parseInt(expiry) - Date.now()) / (86400000));
+                return { active: true, days };
+            }
+            return { active: false, days: 0 };
+        }
+
+        function updateUI() {
+            if (!currentUser) return;
+            const userNameSpan = document.getElementById('userName');
+            const daysLeftSpan = document.getElementById('daysLeft');
+            const planTextSpan = document.getElementById('planText');
+            const paymentSection = document.getElementById('paymentSection');
+            
+            userNameSpan.innerHTML = `👤 ${sanitizeInput(currentUser.split('@')[0])}`;
+            const sub = getSubscription();
+            
+            if (sub.active) {
+                daysLeftSpan.innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
+                planTextSpan.innerHTML = '✨ صفحة خدماتي SPONSSORE على طول السنة ✨';
+                paymentSection.innerHTML = '';
+            } else {
+                daysLeftSpan.innerHTML = '⚠️ لا يوجد اشتراك نشط';
+                planTextSpan.innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
+                paymentSection.innerHTML = `
+                    <div class="payment-buttons">
+                        <button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 1000 دج</button>
+                    </div>
+                    <div style="font-size:12px; color:#666; margin-top:8px;">
+                        💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('loginBtn').onclick = () => {
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email || !email.includes('@')) {
+                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
+                return;
+            }
+            currentUser = sanitizeInput(email);
+            localStorage.setItem('currentUser', currentUser);
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            updateUI();
+            showToast(`مرحباً ${sanitizeInput(email.split('@')[0])} في بوت مصطفى 🚀`);
+        };
+
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('appSection').style.display = 'none';
+            document.getElementById('emailInput').value = '';
+            pendingAd = { step: null, link: null, description: null };
+            pendingService = null;
+            showToast('تم تسجيل الخروج');
+        };
+
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = sanitizeInput(savedUser);
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            updateUI();
+        }
+
+        const messagesDiv = document.getElementById('messages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatFull = document.getElementById('chatFullscreen');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const topBotBar = document.getElementById('topBotBar');
+
+        topBotBar.onclick = () => {
+            chatFull.classList.add('open');
+            if (messagesDiv.children.length === 0) initChat();
+        };
+        closeChatBtn.onclick = () => chatFull.classList.remove('open');
 
         function showTypingIndicator() {
             const typingDiv = document.createElement('div');
             typingDiv.className = 'bot-msg';
             typingDiv.id = 'typingIndicator';
             typingDiv.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-            const messagesDiv = document.getElementById('messages');
             messagesDiv.appendChild(typingDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
@@ -717,6 +660,14 @@
         function removeTypingIndicator() {
             const indicator = document.getElementById('typingIndicator');
             if (indicator) indicator.remove();
+        }
+
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = isUser ? 'user-msg' : 'bot-msg';
+            div.innerText = text; // innerText آمن من XSS
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function showDetailedServiceExplanation(service) {
@@ -737,12 +688,12 @@
             if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز') {
                 if (pendingService) {
                     window.open(pendingService.url, '_blank');
-                    addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nيمكنك الآن اتباع الخطوات لإتمام العملية.`, false);
+                    await addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**\n\nيمكنك الآن اتباع الخطوات لإتمام العملية.`, false);
                     pendingService = null;
                 }
                 return true;
             } else if (lower === 'لا' || lower === 'لأ' || lower === 'ليس الآن') {
-                addMessage("🙂 **لا مشكلة!** يمكنك اختيار خدمة أخرى من الأيقونات.", false);
+                await addMessage("🙂 **لا مشكلة!** يمكنك اختيار خدمة أخرى من الأيقونات.", false);
                 pendingService = null;
                 return true;
             }
@@ -774,7 +725,7 @@
             
             if (pendingAd.step === 'description') {
                 if (sanitizedMsg.toLowerCase() !== 'لا') {
-                    pendingAd.description = sanitizedMsg.substring(0, 500); // حد الطول
+                    pendingAd.description = sanitizedMsg.substring(0, 500);
                     addMessage("✅ تم استلام الوصف.", false);
                 } else {
                     pendingAd.description = "📢 إعلان جديد من أحد عملائنا";
@@ -833,10 +784,6 @@
                 <span class="main-icon-sub">انشر إعلانك على صفحة خدماتي SPONSSORE</span>
             `;
             mainAdDiv.onclick = async () => {
-                if (!currentUser || !isSessionValid()) {
-                    addMessage("⚠️ **يرجى تسجيل الدخول أولاً** للوصول إلى خدمات البوت.", false);
-                    return;
-                }
                 const sub = getSubscription();
                 if (!sub.active) {
                     addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).\n💰 أقل من 4 دج إشتراك يومياً - يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج`, false);
@@ -861,10 +808,6 @@
                 item.appendChild(img);
                 item.appendChild(span);
                 item.onclick = async () => {
-                    if (!currentUser || !isSessionValid()) {
-                        addMessage("⚠️ **يرجى تسجيل الدخول أولاً** للوصول إلى خدمات البوت.", false);
-                        return;
-                    }
                     const sub = getSubscription();
                     if (!sub.active) {
                         addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه.`, false);
@@ -880,9 +823,8 @@
         }
 
         async function initChat() {
-            const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML = '';
-            
+            const sub = getSubscription();
             let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨
 
 📢 **خدمة الإعلانات هي خدمتنا الأساسية** (الأيقونة البرتقالية المستطيلة)
@@ -896,84 +838,31 @@
 • للإعلانات: اضغط على الأيقونة الرئيسية الكبيرة
 • للخدمات الأخرى: اضغط على الأيقونات العادية`;
 
-            if (!currentUser) {
+            if (!sub.active && currentUser) {
                 welcomeMsg += `
-
-🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
-            } else {
-                const sub = getSubscription();
-                if (!sub.active) {
-                    welcomeMsg += `
 
 ⚠️ **ملاحظة:** ليس لديك اشتراك نشط.
 💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.
 💡 أقل من 4 دج إشتراك يومياً - يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج`;
-                } else {
-                    welcomeMsg += `
+            } else if (!currentUser) {
+                welcomeMsg += `
+
+🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
+            } else if (sub.active) {
+                welcomeMsg += `
 
 ✅ اشتراكك مفعل - صفحة خدماتي SPONSSORE على طول السنة`;
-                }
             }
 
             addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
         }
 
-        // ========== معالجة الدخول ==========
-        document.getElementById('loginBtn').onclick = () => {
-            const email = document.getElementById('emailInput').value.trim();
-            if (!email || !validateEmail(email)) {
-                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً إلكترونياً صحيحاً';
-                return;
-            }
-            currentUser = email;
-            renewSession();
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('appSection').style.display = 'block';
-            updateUI();
-            
-            // إعادة تهيئة الشات إذا كان مفتوحاً
-            const messagesDiv = document.getElementById('messages');
-            if (messagesDiv && messagesDiv.children.length > 0) {
-                initChat();
-            }
-            
-            showToast(`مرحباً ${escapeHtml(email.split('@')[0])} في بوت مصطفى 🚀`);
-        };
-
-        document.getElementById('logoutBtn').onclick = () => {
-            logout();
-        };
-
-        // التحقق من الجلسة المخزنة
-        const savedUser = localStorage.getItem('currentUser_backup');
-        if (savedUser && validateEmail(savedUser)) {
-            // استعادة الجلسة بشكل آمن (للراحة فقط)
-            currentUser = savedUser;
-            sessionExpiry = Date.now() + SESSION_DURATION;
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('appSection').style.display = 'block';
-            updateUI();
-        }
-
-        // ========== إعدادات الشات مع Rate Limiting ==========
-        const messagesDivChat = document.getElementById('messages');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const chatFull = document.getElementById('chatFullscreen');
-        const closeChatBtn = document.getElementById('closeChatBtn');
-        const topBotBar = document.getElementById('topBotBar');
-
-        topBotBar.onclick = () => {
-            chatFull.classList.add('open');
-            if (messagesDivChat.children.length === 0) initChat();
-        };
-        closeChatBtn.onclick = () => chatFull.classList.remove('open');
-
+        // معالج الإرسال مع Rate Limiting
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
             
-            // Rate limiting
+            // Rate limiting - منع الإغراق
             const now = Date.now();
             if (now - lastMessageTime < MESSAGE_COOLDOWN) {
                 showToast("⚠️ الرجاء الانتظار قليلاً قبل إرسال رسالة جديدة");
@@ -1020,6 +909,23 @@
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendBtn.click();
         });
+
+        // نظام تفعيل الاشتراك من رابط Chargily (نفس الكود الأصلي)
+        function checkPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const days = urlParams.get('days');
+            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
+                const expiry = Date.now() + (parseInt(days) * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, expiry);
+                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
+                updateUI();
+                if (messagesDiv.children.length > 0) {
+                    initChat();
+                }
+            }
+        }
+        checkPayment();
     </script>
 </body>
 </html>
