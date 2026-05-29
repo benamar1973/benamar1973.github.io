@@ -296,6 +296,7 @@
             { name: "🌐 شحن الانترنت", img: "ALGERIE TELECOM.png", url: "https://paiement.at.dz/index.php?p=internet_recharge&pr=in", description: "شحن رصيد الانترنت (Algerie Telecom)", benefit: "🔹 **فائدة الرابط:** شحن رصيد الانترنت الخاص بك من منزلك.\n🔹 خدمة سريعة وآمنة من اتصالات الجزائر.", requirements: "📋 **متطلبات الدفع:**\n• رقم الهاتف الثابت أو حساب الانترنت 📡\n• بطاقة ذهبية أو CIB 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل بيانات حسابك\n3️⃣ اختر المبلغ المناسب\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية\n6️⃣ سيصلك الرصيد فوراً", needsCard: true }
         ];
 
+        // قوانين نشر الإعلانات + فوائد البوت
         const AD_RULES = `📜 **قوانين نشر الإعلانات:**
 
 ❌ لا إعلانات مخلة بالآداب
@@ -305,7 +306,19 @@
 ✅ الإعلان يكون حلالاً ومفيداً
 ✅ يحترم قوانين النشر في الجزائر
 
-⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.`;
+⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.
+
+━━━━━━━━━━━━━━━━━━━
+🎯 **فوائد بوت مصطفى:**
+
+💰 وصول لأكثر من 5000 عميل يومياً
+📢 نشر إعلانك على صفحتنا بقوة
+⚡ زيادة مبيعاتك بنسبة تصل إلى 70%
+🖼️ دعم الصور والفيديوهات
+📱 وسائل تواصل متعددة (واتساب - مسنجر - هاتف)
+🛡️ أمان تام وحماية خصوصيتك
+⏰ دعم فني على مدار الساعة
+🎁 عروض وخصومات حصرية للمشتركين`;
 
         function showToast(msg) { const toast = document.getElementById('toast'); toast.innerText = msg; toast.style.opacity = '1'; setTimeout(() => toast.style.opacity = '0', 2500); }
         
@@ -414,12 +427,28 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // عرض معاينة الإعلان كما سيظهر على فيسبوك
+        // عرض معاينة الإعلان كما سيظهر على فيسبوك - تظهر مباشرة للمستخدم
         function showFacebookPreview() {
             let contactText = '';
-            if (pendingAd.contactMethod === 'whatsapp') contactText = `💚 واتساب: ${pendingAd.phone}`;
-            else if (pendingAd.contactMethod === 'messenger') contactText = `💬 مسنجر: ${pendingAd.phone}`;
-            else contactText = `📱 هاتف: ${pendingAd.phone}`;
+            let contactIcon = '';
+            if (pendingAd.contactMethod === 'whatsapp') {
+                contactText = `واتساب: ${pendingAd.phone}`;
+                contactIcon = '💚';
+            } else if (pendingAd.contactMethod === 'messenger') {
+                contactText = `مسنجر: ${pendingAd.phone}`;
+                contactIcon = '💬';
+            } else {
+                contactText = `هاتف: ${pendingAd.phone}`;
+                contactIcon = '📱';
+            }
+            
+            const previewContainer = document.createElement('div');
+            previewContainer.style.margin = '10px 0';
+            
+            const previewTitle = document.createElement('div');
+            previewTitle.className = 'bot-msg';
+            previewTitle.innerText = '🔍 **معاينة الإعلان كما سيظهر على فيسبوك:**';
+            previewContainer.appendChild(previewTitle);
             
             const previewDiv = document.createElement('div');
             previewDiv.className = 'facebook-preview';
@@ -435,9 +464,9 @@
             
             previewDiv.innerHTML = `
                 <div class="fb-header">
-                    <div class="fb-avatar">${pendingAd.fullName.charAt(0)}</div>
+                    <div class="fb-avatar">${pendingAd.fullName ? pendingAd.fullName.charAt(0).toUpperCase() : 'م'}</div>
                     <div>
-                        <div class="fb-name">${pendingAd.fullName}</div>
+                        <div class="fb-name">${pendingAd.fullName || 'اسم المستخدم'}</div>
                         <div class="fb-time">الآن · 🌍</div>
                     </div>
                 </div>
@@ -446,7 +475,7 @@
                 </div>
                 ${mediaHtml}
                 <div class="fb-contact">
-                    📞 ${contactText}
+                    ${contactIcon} ${contactText}
                 </div>
                 <div class="fb-buttons">
                     <span>👍 أعجبني</span>
@@ -455,8 +484,7 @@
                 </div>
             `;
             
-            messagesDiv.appendChild(previewDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            previewContainer.appendChild(previewDiv);
             
             // إضافة أزرار التأكيد
             const buttonsDiv = document.createElement('div');
@@ -465,7 +493,9 @@
                 <button class="confirm-yes" onclick="window.confirmPublish(true)">✅ نعم، أنشر الإعلان</button>
                 <button class="confirm-no" onclick="window.confirmPublish(false)">❌ لا، إلغاء</button>
             `;
-            messagesDiv.appendChild(buttonsDiv);
+            previewContainer.appendChild(buttonsDiv);
+            
+            messagesDiv.appendChild(previewContainer);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
@@ -560,7 +590,10 @@
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 addMessage("🔄 جاري إنشاء معاينة الإعلان كما سيظهر على فيسبوك...", false);
-                showFacebookPreview();
+                // عرض المعاينة للمستخدم
+                setTimeout(() => {
+                    showFacebookPreview();
+                }, 500);
             };
             reader.readAsDataURL(file);
             mediaInput.value = '';
@@ -615,6 +648,7 @@
             if (lower.includes('مرحب') || lower.includes('السلام')) return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى (شحن الجوال، فواتير، إنترنت) اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان على فيسبوك: اضغط على الأيقونة البرتقالية الكبيرة";
             if (lower.includes('شكر')) return "العفو! 🤍 أنا هنا لخدمتك دائماً.";
             if (lower.includes('القوانين')) return AD_RULES;
+            if (lower.includes('فوائد')) return AD_RULES;
             return "📢 **بوت مصطفى - خدمة الإعلانات**\n\n📢 لنشر إعلان على فيسبوك: اضغط على الأيقونة البرتقالية الكبيرة\n\n✅ للخدمات الأخرى: اضغط على الأيقونات العادية";
         }
 
