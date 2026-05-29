@@ -742,7 +742,6 @@
             addMessage("🚀 جاري نشر إعلانك...", false);
             showTypingIndicator();
             
-            // حفظ الإعلان في localStorage
             let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             const newAd = {
                 id: Date.now(),
@@ -891,6 +890,7 @@
             messagesDiv.appendChild(buildIcons());
         }
 
+        // ========== الجزء المصحح (معالجة رفع الملف) ==========
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = (e) => {
             const file = e.target.files[0];
@@ -919,17 +919,17 @@
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 
-                if (pendingAd.step === 'media' || pendingAd.step === 'editingMedia') {
+                // التصحيح: ننتقل مباشرة إلى مراجعة المعلومات
+                setTimeout(() => {
                     addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
-                    setTimeout(() => {
-                        showSummaryWithEditOptions();
-                        pendingAd.step = 'review';
-                    }, 500);
-                }
+                    showSummaryWithEditOptions();
+                    pendingAd.step = 'review';
+                }, 500);
             };
             reader.readAsDataURL(file);
             mediaInput.value = '';
         };
+        // ====================================================
 
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
