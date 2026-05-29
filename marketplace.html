@@ -27,6 +27,32 @@
             color: rgba(255,255,255,0.8);
             margin-top: 10px;
         }
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .filter-btn.active {
+            background: #007bff;
+            color: white;
+        }
+        .filter-btn:hover {
+            background: #007bff;
+            transform: scale(1.05);
+        }
         .marketplace-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -41,10 +67,33 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            position: relative;
         }
         .ad-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .delete-my-ad {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .delete-my-ad:hover {
+            background: #c82333;
+            transform: scale(1.1);
         }
         .ad-card-img {
             width: 100%;
@@ -213,7 +262,6 @@
             transform: scale(1.1);
         }
         
-        /* مؤقت */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -244,6 +292,11 @@
             <p>أول سوق إعلانات جزائري 100% | 👁️ مشاهدات حقيقية | 👍 إعجابات حقيقية</p>
         </div>
         
+        <div class="filter-buttons">
+            <button id="filterAllBtn" class="filter-btn active" onclick="filterAds('all')">🌍 جميع الإعلانات</button>
+            <button id="filterMyBtn" class="filter-btn" onclick="filterAds('my')">📋 إعلاناتي</button>
+        </div>
+        
         <div class="marketplace-grid" id="marketplaceGrid">
             <div class="no-ads">📭 جاري تحميل الإعلانات...</div>
         </div>
@@ -268,11 +321,15 @@
         const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
         
         let currentAds = [];
+        let currentFilter = 'all';
         let currentUserId = localStorage.getItem('marketplace_user_id');
         if (!currentUserId) {
             currentUserId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('marketplace_user_id', currentUserId);
         }
+        
+        // معرفة المستخدم الحالي من البوت
+        let currentUserEmail = localStorage.getItem('currentUser') || 'guest_' + currentUserId;
         
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -334,6 +391,28 @@
             return div.innerHTML;
         }
         
+        // حذف إعلان
+        async function deleteMyAd(adId, event) {
+            event.stopPropagation();
+            
+            if (confirm('⚠️ هل أنت متأكد من حذف هذا الإعلان؟')) {
+                const adIndex = currentAds.findIndex(ad => ad.id === adId);
+                if (adIndex !== -1) {
+                    currentAds.splice(adIndex, 1);
+                    
+                    // حفظ في localStorage
+                    localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
+                    // حفظ في السحاب
+                    await saveAdsToCloud(currentAds);
+                    
+                    showToast('✅ تم حذف إعلانك بنجاح');
+                    
+                    // إعادة تحميل الإعلانات
+                    await loadAds();
+                }
+            }
+        }
+        
         // زيادة عدد المشاهدات
         async function incrementViews(adId, adIndex) {
             if (!currentAds[adIndex]) return;
@@ -344,12 +423,9 @@
             currentAds[adIndex].views = (currentAds[adIndex].views || 0) + 1;
             localStorage.setItem(viewedKey, 'true');
             
-            // حفظ في localStorage
             localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
-            // حفظ في السحاب
             await saveAdsToCloud(currentAds);
             
-            // تحديث العرض
             const viewsSpan = document.getElementById(`views_${adId}`);
             if (viewsSpan) {
                 viewsSpan.innerText = currentAds[adIndex].views;
@@ -366,23 +442,18 @@
             const isLiked = localStorage.getItem(likedKey) === 'true';
             
             if (isLiked) {
-                // إلغاء الإعجاب
                 currentAds[adIndex].likes = (currentAds[adIndex].likes || 0) - 1;
                 localStorage.removeItem(likedKey);
                 showToast('👍 تم إلغاء الإعجاب');
             } else {
-                // إضافة إعجاب
                 currentAds[adIndex].likes = (currentAds[adIndex].likes || 0) + 1;
                 localStorage.setItem(likedKey, 'true');
                 showToast('❤️ تم الإعجاب! شكراً لك');
             }
             
-            // حفظ في localStorage
             localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
-            // حفظ في السحاب
             await saveAdsToCloud(currentAds);
             
-            // تحديث العرض
             const likesSpan = document.getElementById(`likes_${adId}`);
             const likeBtn = document.getElementById(`like_btn_${adId}`);
             if (likesSpan) {
@@ -397,7 +468,6 @@
             }
         }
         
-        // فتح الفيديو بملء الشاشة مع زيادة المشاهدة
         function openFullscreenVideo(videoUrl, adId, adIndex) {
             incrementViews(adId, adIndex);
             const container = document.getElementById('fullscreenVideoContainer');
@@ -415,7 +485,6 @@
             container.style.display = 'none';
         }
         
-        // فتح نافذة التفاصيل للصور
         function openImageModal(ad, adId, adIndex) {
             incrementViews(adId, adIndex);
             
@@ -490,10 +559,13 @@
         
         function renderAds(ads) {
             const grid = document.getElementById('marketplaceGrid');
-            currentAds = ads;
             
             if (!ads || ads.length === 0) {
-                grid.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات حالياً. كن أول من ينشر إعلاناً! 🚀</div>';
+                if (currentFilter === 'my') {
+                    grid.innerHTML = '<div class="no-ads">📭 لم تنشر أي إعلان بعد. اضغط <a href="index.html" style="color:#007bff;">هنا</a> لنشر إعلانك الأول! 🚀</div>';
+                } else {
+                    grid.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات حالياً. كن أول من ينشر إعلاناً! 🚀</div>';
+                }
                 return;
             }
             
@@ -502,6 +574,7 @@
                 const ad = ads[i];
                 const adId = ad.id;
                 const isLiked = localStorage.getItem(`liked_${adId}_${currentUserId}`) === 'true';
+                const isMyAd = (ad.userId === currentUserEmail);
                 
                 const adCard = document.createElement('div');
                 adCard.className = 'ad-card';
@@ -546,6 +619,7 @@
                 }
                 
                 adCard.innerHTML = `
+                    ${isMyAd ? `<button class="delete-my-ad" onclick="deleteMyAd(${adId}, event)">🗑️</button>` : ''}
                     ${mediaHtml}
                     <div class="ad-card-content">
                         <div class="ad-card-name">${escapeHtml(ad.name)}</div>
@@ -565,26 +639,44 @@
             }
         }
         
+        function filterAds(filter) {
+            currentFilter = filter;
+            
+            // تحديث حالة الأزرار
+            document.getElementById('filterAllBtn').classList.toggle('active', filter === 'all');
+            document.getElementById('filterMyBtn').classList.toggle('active', filter === 'my');
+            
+            let filteredAds = [...currentAds];
+            if (filter === 'my') {
+                filteredAds = currentAds.filter(ad => ad.userId === currentUserEmail);
+            }
+            
+            renderAds(filteredAds);
+        }
+        
         async function loadAds() {
             const grid = document.getElementById('marketplaceGrid');
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
-            // محاولة تحميل من السحاب أولاً
             let ads = await loadAdsFromCloud();
-            
             if (!ads) {
-                // الرجوع إلى localStorage
                 ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             }
             
-            // التأكد من وجود حقول views و likes لكل إعلان
             for (let i = 0; i < ads.length; i++) {
                 if (ads[i].views === undefined) ads[i].views = 0;
                 if (ads[i].likes === undefined) ads[i].likes = 0;
             }
             
             currentAds = ads;
-            renderAds(currentAds);
+            
+            // تحديث currentUserEmail من البوت
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUserEmail = savedUser;
+            }
+            
+            filterAds(currentFilter);
         }
         
         loadAds();
