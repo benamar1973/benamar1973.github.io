@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -103,7 +103,8 @@
         }
         .ad-card-video {
             width: 100%;
-            max-height: 220px;
+            height: 220px;
+            object-fit: cover;
             background: #000;
         }
         .ad-card-content {
@@ -257,7 +258,6 @@
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        /* الصورة الرئيسية الكبيرة */
         .main-media {
             width: 100%;
             max-height: 400px;
@@ -269,7 +269,6 @@
             max-height: 400px;
             background: #000;
         }
-        /* معرض الصور المصغرة */
         .thumbnail-gallery {
             display: flex;
             gap: 10px;
@@ -364,6 +363,21 @@
             align-items: center;
             gap: 8px;
         }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 30000;
+            font-weight: bold;
+            pointer-events: none;
+        }
         @media (max-width: 700px) {
             .marketplace-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 1.8rem; }
@@ -400,7 +414,7 @@
         <div id="modalContent"></div>
     </div>
 
-    <div id="toast" class="toast" style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#28a745; color:white; padding:12px 24px; border-radius:30px; opacity:0; transition:0.3s; z-index:30000; font-weight:bold;"></div>
+    <div id="toast" class="toast"></div>
 
     <script>
         let currentAds = [];
@@ -448,6 +462,20 @@
                     filterAds(currentFilter);
                 }
             }
+        }
+        
+        // الحصول على قائمة الوسائط من الإعلان (تدعم الصيغتين القديمة والجديدة)
+        function getMediaList(ad) {
+            if (ad.mediaItems && ad.mediaItems.length > 0) {
+                return ad.mediaItems;
+            }
+            if (ad.mediaList && ad.mediaList.length > 0) {
+                return ad.mediaList;
+            }
+            if (ad.image && ad.imageType) {
+                return [{ data: ad.image, type: ad.imageType }];
+            }
+            return [];
         }
         
         async function incrementViews(adId, adIndex) {
@@ -500,50 +528,56 @@
             }
         }
         
-        // فتح النافذة مثل AliExpress
+        // فتح النافذة المنبثقة مع المعرض التفاعلي
         function openModal(ad, adId, adIndex) {
             incrementViews(adId, adIndex);
             
             const modal = document.getElementById('adModal');
             const modalContent = document.getElementById('modalContent');
             
-            // تحضير قائمة الوسائط
-            let mediaList = [];
-            if (ad.mediaList && ad.mediaList.length > 0) {
-                mediaList = ad.mediaList;
-            } else if (ad.image && ad.imageType) {
-                mediaList = [{ data: ad.image, type: ad.imageType }];
-            }
+            const mediaList = getMediaList(ad);
             
-            let currentIndex = ad.mainMediaIndex || 0;
+            let currentIndex = 0;
+            let currentVideo = null;
             
             function renderMedia(index) {
                 const media = mediaList[index];
-                let mediaHtml = '';
+                const mediaArea = document.getElementById('modalMediaArea');
+                if (!mediaArea) return;
+                
                 if (media.type === 'image') {
-                    mediaHtml = `<img class="main-media" src="${media.data}" alt="${ad.name}">`;
+                    mediaArea.innerHTML = `<img class="main-media" src="${media.data}" alt="${ad.name}">`;
+                    if (currentVideo) {
+                        currentVideo.pause();
+                        currentVideo = null;
+                    }
                 } else {
-                    mediaHtml = `<video class="main-video" src="${media.data}" controls autoplay></video>`;
+                    mediaArea.innerHTML = `<video id="modalVideo" class="main-video" src="${media.data}" controls autoplay></video>`;
+                    currentVideo = document.getElementById('modalVideo');
                 }
+            }
+            
+            function renderThumbnails() {
+                const thumbnailsArea = document.getElementById('modalThumbnails');
+                if (!thumbnailsArea) return;
                 
                 let thumbnailsHtml = '<div class="thumbnail-gallery">';
                 for (let i = 0; i < mediaList.length; i++) {
                     const m = mediaList[i];
                     if (m.type === 'image') {
-                        thumbnailsHtml += `<img class="thumbnail ${i === index ? 'active' : ''}" src="${m.data}" alt="صورة ${i+1}" onclick="event.stopPropagation(); switchMedia(${i})">`;
+                        thumbnailsHtml += `<img class="thumbnail ${i === currentIndex ? 'active' : ''}" src="${m.data}" alt="صورة ${i+1}" onclick="window.switchMedia(${i})">`;
                     } else {
-                        thumbnailsHtml += `<div class="thumbnail-video ${i === index ? 'active' : ''}" onclick="event.stopPropagation(); switchMedia(${i})">🎬</div>`;
+                        thumbnailsHtml += `<div class="thumbnail-video ${i === currentIndex ? 'active' : ''}" onclick="window.switchMedia(${i})">▶️</div>`;
                     }
                 }
                 thumbnailsHtml += '</div>';
-                
-                document.getElementById('modalMediaArea').innerHTML = mediaHtml;
-                document.getElementById('modalThumbnails').innerHTML = thumbnailsHtml;
+                thumbnailsArea.innerHTML = thumbnailsHtml;
             }
             
             window.switchMedia = (index) => {
                 currentIndex = index;
                 renderMedia(currentIndex);
+                renderThumbnails();
             };
             
             let contactMethodText = '';
@@ -565,7 +599,7 @@
             }
             
             modalContent.innerHTML = `
-                <div id="modalMediaArea"></div>
+                <div id="modalMediaArea" style="min-height: 300px; display: flex; align-items: center; justify-content: center; background: #f5f5f5;"></div>
                 <div id="modalThumbnails"></div>
                 <div class="modal-content-inner">
                     <div class="modal-name">${escapeHtml(ad.name)}</div>
@@ -584,7 +618,8 @@
                 </div>
             `;
             
-            renderMedia(currentIndex);
+            renderMedia(0);
+            renderThumbnails();
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
@@ -593,13 +628,12 @@
             const modal = document.getElementById('adModal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            const videos = modal.querySelectorAll('video');
-            videos.forEach(video => video.pause());
+            const video = document.getElementById('modalVideo');
+            if (video) video.pause();
         }
         
         function renderAds(ads) {
             const grid = document.getElementById('marketplaceGrid');
-            currentAds = ads;
             
             if (!ads || ads.length === 0) {
                 if (currentFilter === 'my') {
@@ -617,29 +651,19 @@
                 const isLiked = localStorage.getItem(`liked_${adId}_${currentUserId}`) === 'true';
                 const isMyAd = (ad.userId === currentUserEmail);
                 
+                const mediaList = getMediaList(ad);
+                const mainMedia = mediaList[0];
+                
                 const adCard = document.createElement('div');
                 adCard.className = 'ad-card';
-                
-                // الحصول على الوسائط
-                let mediaList = [];
-                if (ad.mediaList && ad.mediaList.length > 0) {
-                    mediaList = ad.mediaList;
-                } else if (ad.image && ad.imageType) {
-                    mediaList = [{ data: ad.image, type: ad.imageType }];
-                }
-                
-                const mainMedia = mediaList[ad.mainMediaIndex || 0];
                 
                 let mediaHtml = '';
                 if (mainMedia && mainMedia.type === 'image') {
                     mediaHtml = `<img class="ad-card-img" src="${mainMedia.data}" alt="${ad.name}" loading="lazy">`;
                     adCard.onclick = () => openModal(ad, adId, i);
                 } else if (mainMedia && mainMedia.type === 'video') {
-                    mediaHtml = `<video class="ad-card-video" src="${mainMedia.data}" muted onclick="event.stopPropagation(); openModal(ad, ${adId}, ${i})"></video>`;
-                    adCard.onclick = (e) => {
-                        e.stopPropagation();
-                        openModal(ad, adId, i);
-                    };
+                    mediaHtml = `<video class="ad-card-video" src="${mainMedia.data}" muted></video>`;
+                    adCard.onclick = () => openModal(ad, adId, i);
                 } else {
                     mediaHtml = '<div class="ad-card-img" style="display:flex;align-items:center;justify-content:center;">🖼️ لا توجد صورة</div>';
                     adCard.onclick = () => openModal(ad, adId, i);
@@ -712,10 +736,6 @@
             for (let i = 0; i < ads.length; i++) {
                 if (ads[i].views === undefined) ads[i].views = 0;
                 if (ads[i].likes === undefined) ads[i].likes = 0;
-                if (ads[i].mediaList === undefined && ads[i].image) {
-                    ads[i].mediaList = [{ data: ads[i].image, type: ads[i].imageType }];
-                    ads[i].mainMediaIndex = 0;
-                }
             }
             
             currentAds = ads;
