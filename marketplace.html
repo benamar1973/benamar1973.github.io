@@ -34,10 +34,6 @@
         .modal-content{max-width:800px;margin:0 auto;background:white}
         .modal-close{position:fixed;top:15px;left:15px;background:#dc3545;color:white;border:none;border-radius:50%;width:45px;height:45px;font-size:28px;cursor:pointer;z-index:10001}
         .main-media,.main-video{width:100%;max-height:400px;object-fit:contain;background:#f0f2f5}
-        .thumbnail-gallery{display:flex;gap:10px;padding:15px;overflow-x:auto}
-        .thumbnail{width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
-        .thumbnail.active,.thumbnail-video.active{border-color:#007bff}
-        .thumbnail-video{width:80px;height:80px;background:#000;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;cursor:pointer}
         .modal-content-inner{padding:20px}
         .modal-name{font-size:24px;font-weight:bold;color:#0f3460}
         .modal-date{font-size:12px;color:#999;margin:10px 0}
@@ -46,6 +42,10 @@
         .modal-phone{background:#34b7f1}
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#28a745;color:white;padding:12px 24px;border-radius:30px;opacity:0;transition:0.3s;z-index:30000}
     </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div style="max-width:1400px;margin:0 auto">
@@ -63,11 +63,8 @@
     </div>
     <div id="adModal" class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div id="modalContent"></div></div>
     <div id="toast" class="toast"></div>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-        
+    <script>
+        // Firebase configuration (نفس الذي في index.html)
         const firebaseConfig = {
             apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
             authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -76,19 +73,24 @@
             messagingSenderId: "689071750342",
             appId: "1:689071750342:web:7eafee1d6e372e285dabc7"
         };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
         let currentUser = null, allAds = [], currentFilter = 'all';
         
-        onAuthStateChanged(auth, (user) => { currentUser = user; loadAds(); });
+        auth.onAuthStateChanged((user) => { currentUser = user; loadAds(); });
         
         async function loadAds() {
             document.getElementById('marketplaceGrid').innerHTML = '<div class="no-ads">📭 جاري التحميل...</div>';
-            let q = query(collection(db, 'ads'), orderBy('date', 'desc'));
-            let snap = await getDocs(q);
-            allAds = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            filterAds(currentFilter);
+            try {
+                const snapshot = await db.collection('ads').orderBy('date', 'desc').get();
+                allAds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                filterAds(currentFilter);
+            } catch(e) {
+                console.error(e);
+                document.getElementById('marketplaceGrid').innerHTML = '<div class="no-ads">⚠️ خطأ في تحميل الإعلانات</div>';
+            }
         }
         
         function formatDate(ts) { return new Date(ts).toLocaleDateString('ar'); }
@@ -97,69 +99,65 @@
         
         async function deleteAd(id, e) {
             e.stopPropagation();
-            if(confirm('حذف الإعلان؟')) { await deleteDoc(doc(db,'ads',id)); showToast('تم الحذف'); loadAds(); }
+            if(!currentUser) { showToast('سجل دخول أولاً'); return; }
+            if(confirm('حذف الإعلان؟')) { 
+                await db.collection('ads').doc(id).delete(); 
+                showToast('تم الحذف'); 
+                loadAds(); 
+            }
         }
         
         async function handleLike(id, likesArr, e) {
             e.stopPropagation();
             if(!currentUser) { showToast('سجل دخول أولاً'); return; }
-            let ref = doc(db,'ads',id);
-            if(likesArr && likesArr.includes(currentUser.uid)) {
-                await updateDoc(ref, { likes: arrayRemove(currentUser.uid) });
+            const ref = db.collection('ads').doc(id);
+            const docSnap = await ref.get();
+            const currentLikes = docSnap.data().likes || [];
+            if(currentLikes.includes(currentUser.uid)) {
+                await ref.update({ likes: firebase.firestore.FieldValue.arrayRemove(currentUser.uid) });
                 showToast('👍 تم إلغاء الإعجاب');
             } else {
-                await updateDoc(ref, { likes: arrayUnion(currentUser.uid) });
+                await ref.update({ likes: firebase.firestore.FieldValue.arrayUnion(currentUser.uid) });
                 showToast('❤️ تم الإعجاب');
             }
             loadAds();
         }
         
         function openModal(ad) {
-            let modal = document.getElementById('adModal');
-            let content = document.getElementById('modalContent');
-            let media = ad.mediaItems || [];
-            let idx = 0, currVideo = null;
-            function renderMain(i) {
-                let m = media[i];
-                let area = document.getElementById('modalMediaArea');
-                if(!area) return;
-                area.innerHTML = '';
-                if(m.type === 'image') {
-                    let img = document.createElement('img'); img.src = m.data; img.className = 'main-media';
-                    area.appendChild(img);
-                    if(currVideo) { currVideo.pause(); currVideo=null; }
-                } else {
-                    let vid = document.createElement('video'); vid.src = m.data; vid.controls = true; vid.className = 'main-video';
-                    area.appendChild(vid); currVideo = vid;
-                }
+            let mediaHtml = '';
+            if (ad.imageUrl) {
+                if (ad.imageType === 'image') mediaHtml = `<img class="main-media" src="${ad.imageUrl}">`;
+                else mediaHtml = `<video class="main-video" src="${ad.imageUrl}" controls></video>`;
+            } else {
+                mediaHtml = '<div style="padding:50px; text-align:center">📷 لا توجد وسائط</div>';
             }
-            function renderThumbs() {
-                let area = document.getElementById('modalThumbnails');
-                if(!area) return;
-                let html = '<div class="thumbnail-gallery">';
-                media.forEach((m,i) => {
-                    if(m.type==='image') html += `<img class="thumbnail ${i===idx?'active':''}" src="${m.data}" onclick="window.switchMedia(${i})">`;
-                    else html += `<div class="thumbnail-video ${i===idx?'active':''}" onclick="window.switchMedia(${i})">▶️</div>`;
-                });
-                html += '</div>';
-                area.innerHTML = html;
-            }
-            window.switchMedia = (i) => { idx=i; renderMain(idx); renderThumbs(); };
+            
             let contactBtn = '';
             if(ad.contactMethod === 'whatsapp') contactBtn = `<a href="https://wa.me/${ad.phone.replace(/^0/,'213')}" target="_blank" class="modal-whatsapp">💚 واتساب</a>`;
             else if(ad.contactMethod === 'messenger') contactBtn = `<span style="color:#0084ff">🔍 مسنجر: ${ad.phone}</span>`;
             else contactBtn = `<a href="tel:${ad.phone}" class="modal-phone">📞 اتصل</a>`;
-            content.innerHTML = `<div id="modalMediaArea" style="min-height:300px;background:#f5f5f5;display:flex;align-items:center;justify-content:center"></div><div id="modalThumbnails"></div><div class="modal-content-inner"><div class="modal-name">${escapeHtml(ad.name)}</div><div class="modal-date">📅 ${formatDate(ad.date)}</div><div class="modal-desc">${escapeHtml(ad.description)}</div><div style="display:flex;gap:20px;margin:15px 0"><div>👁️ ${ad.views||0}</div><div>❤️ ${ad.likes?ad.likes.length:0}</div></div><div class="modal-contact"><div>${ad.contactMethod==='whatsapp'?'💚':(ad.contactMethod==='messenger'?'💬':'📱')} ${ad.contactMethod==='whatsapp'?'واتساب':(ad.contactMethod==='messenger'?'مسنجر':'هاتف')}: ${ad.phone}</div><div class="modal-contact-buttons">${contactBtn}</div></div></div>`;
-            renderMain(0); renderThumbs();
-            modal.style.display = 'block';
+            
+            document.getElementById('modalContent').innerHTML = `
+                <div id="modalMediaArea" style="min-height:300px;background:#f5f5f5;display:flex;align-items:center;justify-content:center">${mediaHtml}</div>
+                <div class="modal-content-inner">
+                    <div class="modal-name">${escapeHtml(ad.name)}</div>
+                    <div class="modal-date">📅 ${formatDate(ad.date)}</div>
+                    <div class="modal-desc">${escapeHtml(ad.description)}</div>
+                    <div style="display:flex;gap:20px;margin:15px 0"><div>👁️ ${ad.views||0}</div><div>❤️ ${ad.likes ? ad.likes.length : 0}</div></div>
+                    <div class="modal-contact">
+                        <div>${ad.contactMethod==='whatsapp'?'💚':(ad.contactMethod==='messenger'?'💬':'📱')} ${ad.contactMethod==='whatsapp'?'واتساب':(ad.contactMethod==='messenger'?'مسنجر':'هاتف')}: ${ad.phone}</div>
+                        <div class="modal-contact-buttons">${contactBtn}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('adModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
         
         window.closeModal = () => {
-            let modal = document.getElementById('adModal');
-            modal.style.display = 'none';
+            document.getElementById('adModal').style.display = 'none';
             document.body.style.overflow = 'auto';
-            let vid = document.getElementById('modalVideo');
+            const vid = document.getElementById('modalVideo');
             if(vid) vid.pause();
         };
         
@@ -170,12 +168,18 @@
             for(let ad of ads) {
                 let isMy = currentUser && ad.userId === currentUser.uid;
                 let isLiked = currentUser && ad.likes && ad.likes.includes(currentUser.uid);
-                let main = ad.mediaItems?.[0] || null;
-                let mediaHtml = main ? (main.type==='image' ? `<img class="ad-card-img" src="${main.data}">` : `<video class="ad-card-video" src="${main.data}" muted></video>`) : '<div class="ad-card-img">📷</div>';
+                let mediaHtml = '';
+                if (ad.imageUrl) {
+                    if (ad.imageType === 'image') mediaHtml = `<img class="ad-card-img" src="${ad.imageUrl}">`;
+                    else mediaHtml = `<video class="ad-card-video" src="${ad.imageUrl}" muted></video>`;
+                } else {
+                    mediaHtml = '<div class="ad-card-img">📷</div>';
+                }
                 let contactHtml = '';
                 if(ad.contactMethod==='whatsapp') contactHtml = `<div class="ad-card-contact">💚 ${ad.phone}<br><a href="https://wa.me/${ad.phone.replace(/^0/,'213')}" target="_blank" class="contact-link" onclick="event.stopPropagation()">واتساب</a></div>`;
                 else if(ad.contactMethod==='messenger') contactHtml = `<div class="ad-card-contact">💬 ${ad.phone}<br><span style="font-size:12px">🔍 ابحث في مسنجر</span></div>`;
                 else contactHtml = `<div class="ad-card-contact">📱 ${ad.phone}<br><a href="tel:${ad.phone}" class="contact-link" onclick="event.stopPropagation()">اتصل</a></div>`;
+                
                 let card = document.createElement('div'); card.className = 'ad-card';
                 card.onclick = () => openModal(ad);
                 card.innerHTML = `${isMy ? `<button class="delete-my-ad" onclick="deleteAd('${ad.id}', event)">🗑️</button>` : ''}
@@ -186,7 +190,7 @@
                         <div class="ad-card-desc">${escapeHtml(ad.description)}</div>
                         <div class="ad-card-stats">
                             <span>👁️ ${ad.views||0}</span>
-                            <button id="like_${ad.id}" class="like-btn ${isLiked?'liked':''}" onclick="event.stopPropagation(); handleLike('${ad.id}', ${JSON.stringify(ad.likes||[])}, event)">❤️ ${ad.likes?ad.likes.length:0}</button>
+                            <button id="like_${ad.id}" class="like-btn ${isLiked?'liked':''}" onclick="event.stopPropagation(); handleLike('${ad.id}', ${JSON.stringify(ad.likes||[])}, event)">❤️ ${ad.likes ? ad.likes.length : 0}</button>
                         </div>
                         ${contactHtml}
                     </div>`;
