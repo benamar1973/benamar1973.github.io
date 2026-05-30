@@ -731,42 +731,66 @@
             showSummaryWithEditOptions();
         };
         
-        // ========== الدالة المصححة ==========
+        // ========== الدالة النهائية المصححة ==========
         window.finalPublish = async () => {
-            // منع التكرار
             if (window.isPublishing) return;
             window.isPublishing = true;
             
-            addMessage("🚀 جاري نشر إعلانك...", false);
-            showTypingIndicator();
-            
-            let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-            const newAd = {
-                id: Date.now(),
-                name: pendingAd.fullName,
-                phone: pendingAd.phone,
-                description: pendingAd.description,
-                contactMethod: pendingAd.contactMethod,
-                image: pendingAd.media,
-                imageType: pendingAd.mediaType,
-                userId: currentUser,
-                date: Date.now(),
-                views: 0,
-                likes: 0
-            };
-            existingAds.unshift(newAd);
-            localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-            
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            removeTypingIndicator();
-            
-            addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
-            addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
-            
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
-            window.isPublishing = false;
+            try {
+                addMessage("🚀 جاري نشر إعلانك...", false);
+                showTypingIndicator();
+                
+                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.showType || !pendingAd.media) {
+                    addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى المحاولة مرة أخرى.", false);
+                    removeTypingIndicator();
+                    window.isPublishing = false;
+                    return;
+                }
+                
+                let existingAds = [];
+                const stored = localStorage.getItem('marketplace_ads');
+                if (stored) {
+                    try {
+                        existingAds = JSON.parse(stored);
+                    } catch(e) {
+                        existingAds = [];
+                    }
+                }
+                
+                const newAd = {
+                    id: Date.now(),
+                    name: pendingAd.fullName,
+                    phone: pendingAd.phone,
+                    description: pendingAd.description,
+                    contactMethod: pendingAd.contactMethod,
+                    image: pendingAd.media,
+                    imageType: pendingAd.mediaType,
+                    userId: currentUser,
+                    date: Date.now(),
+                    views: 0,
+                    likes: 0
+                };
+                
+                existingAds.unshift(newAd);
+                localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
+                
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                removeTypingIndicator();
+                
+                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+                
+                pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+                
+            } catch (error) {
+                console.error("خطأ في النشر:", error);
+                removeTypingIndicator();
+                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان. يرجى المحاولة مرة أخرى.", false);
+            } finally {
+                window.isPublishing = false;
+            }
         };
-        // =================================
+        // =====================================
 
         async function handleAdFlow(userMessage) {
             if (pendingAd.step && pendingAd.step.startsWith('editing_')) {
