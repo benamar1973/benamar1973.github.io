@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -223,11 +224,30 @@
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingAnim { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
+        .footer-links {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            max-width: 550px;
+            width: 100%;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 8px;
+            font-size: 13px;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
         @media (max-width: 480px) {
             .top-bot-text { font-size: 1.6rem; }
             .top-bot-text span:first-child { font-size: 2.2rem; }
             .top-bot-bar { padding: 15px 20px; }
             .main-ad-icon .main-icon-title { font-size: 20px; }
+            .footer-links a { font-size: 11px; margin: 0 5px; }
         }
     </style>
 </head>
@@ -263,6 +283,14 @@
                 <button id="marketplaceBtn" class="marketplace-link-btn" style="display:none;">🛒 دخول إلى سوق مصطفى</button>
             </div>
         </div>
+    </div>
+
+    <!-- روابط الصفحات الإضافية -->
+    <div class="footer-links">
+        <a href="about.html">📖 من نحن</a> |
+        <a href="contact.html">📞 اتصل بنا</a> |
+        <a href="privacy.html">🔒 سياسة الخصوصية</a> |
+        <a href="terms.html">📜 الشروط والأحكام</a>
     </div>
 
     <div id="toast" class="toast"></div>
