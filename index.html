@@ -205,12 +205,6 @@
             box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4);
             border-color: #fff;
         }
-        .main-ad-icon img {
-            width: 180px;
-            height: 180px;
-            object-fit: contain;
-            margin-bottom: 12px;
-        }
         .main-ad-icon .main-icon-title {
             font-size: 24px;
             font-weight: bold;
@@ -737,7 +731,12 @@
             showSummaryWithEditOptions();
         };
         
+        // ========== الدالة المصححة ==========
         window.finalPublish = async () => {
+            // منع التكرار
+            if (window.isPublishing) return;
+            window.isPublishing = true;
+            
             addMessage("🚀 جاري نشر إعلانك...", false);
             showTypingIndicator();
             
@@ -765,7 +764,9 @@
             addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
             
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+            window.isPublishing = false;
         };
+        // =================================
 
         async function handleAdFlow(userMessage) {
             if (pendingAd.step && pendingAd.step.startsWith('editing_')) {
@@ -858,7 +859,6 @@
             const container = document.createElement('div');
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
-            // التعديل هنا - حذف الصورة وإضافة نص mustapha market
             mainAdDiv.innerHTML = `<div style="font-size: 42px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
             mainAdDiv.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).\n💰 أقل من 4 دج إشتراك يومياً`, false); return; } await startAdFlow(); };
             container.appendChild(mainAdDiv);
