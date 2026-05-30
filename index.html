@@ -169,10 +169,19 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
         .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
         .contact-btn:hover { transform: scale(1.05); }
+        .contact-btn img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
         .confirm-buttons {
             display: flex;
             gap: 10px;
@@ -247,6 +256,7 @@
             .top-bot-bar { padding: 15px 20px; }
             .main-ad-icon .main-icon-title { font-size: 20px; }
             .footer-links a { font-size: 11px; margin: 0 5px; }
+            .contact-btn img { width: 20px; height: 20px; }
         }
     </style>
 </head>
@@ -405,7 +415,6 @@
             document.getElementById('emailInput').value = ''; 
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
             pendingService = null; 
-            // إخفاء زر رفع الصورة/الفيديو عند تسجيل الخروج
             document.getElementById('mediaUploadBtn').style.display = 'none';
             showToast('تم تسجيل الخروج'); 
         };
@@ -494,7 +503,6 @@
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
             pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
-            // إظهار زر رفع الصورة/الفيديو
             document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
@@ -504,8 +512,8 @@
             div.innerHTML = `
                 <div>📞 **اختر وسيلة التواصل التي ستظهر في الإعلان (إجباري):**</div>
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')">💚 واتساب</button>
-                    <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')">💬 مسنجر</button>
+                    <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')"><img src="whatsapp.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> واتساب</button>
+                    <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')"><img src="Messenger.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> مسنجر</button>
                     <button class="contact-btn phone" onclick="window.selectContactMethod('phone')">📱 هاتف</button>
                 </div>
             `;
@@ -516,9 +524,9 @@
         window.selectContactMethod = (method) => {
             pendingAd.contactMethod = method;
             let methodName = '';
-            if (method === 'whatsapp') methodName = '💚 واتساب';
-            else if (method === 'messenger') methodName = '💬 مسنجر';
-            else methodName = '📱 هاتف';
+            if (method === 'whatsapp') methodName = 'واتساب';
+            else if (method === 'messenger') methodName = 'مسنجر';
+            else methodName = 'هاتف';
             addMessage(`✅ تم اختيار: ${methodName}`, false);
             
             addMessage("📸 **كيف سيظهر منتجك أو خدمتك في الإعلان؟ (إجباري)**\n\nاختر نوع العرض:", false);
@@ -669,8 +677,8 @@
             div.className = 'bot-msg';
             div.innerHTML = `
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectContactMethodForEdit('whatsapp')">💚 واتساب</button>
-                    <button class="contact-btn messenger" onclick="window.selectContactMethodForEdit('messenger')">💬 مسنجر</button>
+                    <button class="contact-btn" onclick="window.selectContactMethodForEdit('whatsapp')"><img src="whatsapp.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> واتساب</button>
+                    <button class="contact-btn messenger" onclick="window.selectContactMethodForEdit('messenger')"><img src="Messenger.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> مسنجر</button>
                     <button class="contact-btn phone" onclick="window.selectContactMethodForEdit('phone')">📱 هاتف</button>
                 </div>
             `;
@@ -689,7 +697,6 @@
         window.cancelAd = () => {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
-            // إخفاء زر رفع الصورة/الفيديو
             document.getElementById('mediaUploadBtn').style.display = 'none';
         };
 
@@ -768,7 +775,7 @@
             showSummaryWithEditOptions();
         };
         
-        // ========== دالة ضغط الصور ==========
+        // دالة ضغط الصور
         function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -804,9 +811,8 @@
                 reader.readAsDataURL(file);
             });
         }
-        // ====================================
         
-        // ========== معالجة رفع الملف مع ضغط الصور ==========
+        // معالجة رفع الملف مع ضغط الصور
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = async (e) => {
             const file = e.target.files[0];
@@ -849,17 +855,15 @@
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 
                 setTimeout(() => {
-                    addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
-                    showSummaryWithEditOptions();
-                    pendingAd.step = 'review';
+                    addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
+                    pendingAd.step = 'description';
                 }, 500);
             };
             reader.readAsDataURL(processedFile);
             mediaInput.value = '';
         };
-        // ====================================================
 
-        // ========== الدالة النهائية للنشر ==========
+        // الدالة النهائية للنشر
         window.finalPublish = async () => {
             if (window.isPublishing) return;
             window.isPublishing = true;
@@ -908,7 +912,6 @@
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
                 addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
                 
-                // إخفاء زر رفع الصورة/الفيديو
                 document.getElementById('mediaUploadBtn').style.display = 'none';
                 
                 pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
@@ -921,7 +924,6 @@
                 window.isPublishing = false;
             }
         };
-        // =====================================
 
         async function handleAdFlow(userMessage) {
             if (pendingAd.step && pendingAd.step.startsWith('editing_')) {
@@ -978,8 +980,8 @@
                 }
                 pendingAd.phone = userMessage.trim();
                 addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`, false);
-                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
-                pendingAd.step = 'description';
+                addMessage("🖼️ **الآن قم برفع الصورة أو الفيديو** بالضغط على زر \"📷 صورة / فيديو\" (إجباري)", false);
+                pendingAd.step = 'media';
                 return true;
             }
             
