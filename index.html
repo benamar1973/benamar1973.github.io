@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,10 +71,12 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
         .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
-        .media-gallery { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
-        .media-item { display: flex; align-items: center; gap: 10px; background: #f0f2f5; padding: 8px; border-radius: 12px; }
-        .media-item img, .media-item video { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
-        .main-badge { background: #ffc107; color: #333; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .media-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+        .media-item { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; }
+        .media-item.active { border-color: #007bff; }
+        .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+        .media-item .delete-media { position: absolute; top: 2px; right: 2px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .main-badge { position: absolute; bottom: 2px; left: 2px; background: #ffc107; color: #333; padding: 2px 5px; border-radius: 10px; font-size: 9px; font-weight: bold; }
         .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
         #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; min-width: 120px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
@@ -100,7 +100,7 @@
         .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
         .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
         .contact-btn:hover { transform: scale(1.05); }
-        .contact-btn img { width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; }
+        .contact-btn img { width: 24px; height: 24px; border-radius: 50%; }
         .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
@@ -145,6 +145,79 @@
             .main-ad-icon .main-icon-title { font-size: 20px; }
             .footer-links a { font-size: 11px; margin: 0 5px; }
             .contact-btn img { width: 20px; height: 20px; }
+            .media-item { width: 60px; height: 60px; }
+        }
+        
+        /* معاينة AliExpress */
+        .preview-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 10px 0;
+        }
+        .preview-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 10px;
+        }
+        .preview-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
+        .preview-time { font-size: 11px; color: #65676B; }
+        .preview-content { padding: 0 12px 8px 12px; font-size: 14px; color: #050505; }
+        .preview-media { width: 100%; max-height: 400px; object-fit: cover; background: #f0f2f5; }
+        .preview-video { width: 100%; max-height: 400px; background: #000; }
+        .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
+        .preview-thumb {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .preview-thumb.active { border-color: #007bff; }
+        .preview-thumb-video {
+            width: 70px;
+            height: 70px;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .preview-thumb-video.active { border-color: #007bff; }
+        .preview-contact {
+            padding: 10px 12px;
+            background: #f0f2f5;
+            margin: 8px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .preview-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 12px;
+            border-top: 1px solid #e4e6eb;
+            color: #65676B;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -179,6 +252,7 @@
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
+                <button id="adBtn" class="btn" style="background:#ff6b35; margin-top:10px;">📢 خدمة الإعلانات</button>
             </div>
         </div>
     </div>
@@ -210,7 +284,18 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
-        let pendingAd = { step: 'start', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
+        
+        // بيانات الإعلان
+        let adData = {
+            step: null,
+            fullName: null,
+            phone: null,
+            description: null,
+            contactMethod: null,
+            mediaType: null,
+            mediaList: [],
+            mainMediaIndex: 0
+        };
 
         const services = [
             { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان.\n🔹 يمكنك الشحن بأي مبلغ (500,1000,2000,5000 دج).", requirements: "📋 **متطلبات الدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية أو CIB بنكية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية", needsCard: true },
@@ -267,12 +352,13 @@
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
                 document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 1000 دج</button></div><div style="font-size:12px; color:#666; margin-top:8px;">💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج</div>`;
+                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 1000 دج</button></div><div style="font-size:12px; color:#666; margin-top:8px;">💡 أقل من 4 دج إشتراك يومياً</div>`;
             }
         }
 
         document.getElementById('marketplaceGuestBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
         document.getElementById('marketplaceBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
+        document.getElementById('adBtn').onclick = () => { startAdFlow(); };
 
         document.getElementById('loginBtn').onclick = () => { 
             const email = document.getElementById('emailInput').value.trim(); 
@@ -294,9 +380,7 @@
             document.getElementById('loginSection').style.display = 'block'; 
             document.getElementById('appSection').style.display = 'none'; 
             document.getElementById('emailInput').value = ''; 
-            pendingAd = { step: 'start', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
-            pendingService = null; 
-            document.getElementById('mediaUploadBtn').style.display = 'none';
+            resetAdData();
             showToast('تم تسجيل الخروج'); 
         };
         
@@ -331,6 +415,20 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight; 
         }
 
+        function resetAdData() {
+            adData = {
+                step: null,
+                fullName: null,
+                phone: null,
+                description: null,
+                contactMethod: null,
+                mediaType: null,
+                mediaList: [],
+                mainMediaIndex: 0
+            };
+            document.getElementById('mediaUploadBtn').style.display = 'none';
+        }
+
         function showDetailedServiceExplanation(service) {
             let msg = `📌 **${service.name}** - ${service.description}\n\n${service.benefit}\n\n${service.requirements}\n\n${service.steps}\n\n`;
             if (service.needsCard) msg += `💳 **ملاحظة مهمة:** تحتاج إلى بطاقة بنكية (ذهبية أو CIB) لإتمام عملية الدفع.\n\n`;
@@ -357,213 +455,230 @@
         }
 
         async function startAdFlow() {
+            const sub = getSubscription();
+            if (!sub.active) {
+                addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).`, false);
+                return;
+            }
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) (إجباري):", false);
-            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
+            resetAdData();
+            adData.step = 'fullName';
             document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
         function showMediaTypeChoice() {
             const div = document.createElement('div');
-            div.className = 'bot-msg';
+            div.className = 'contact-buttons';
             div.innerHTML = `
-                <div>📸 **اختر نوع الملفات التي تريد رفعها (إجباري):**</div>
-                <div class="contact-buttons">
-                    <button class="contact-btn" onclick="selectMediaType('image')">🖼️ صور فقط</button>
-                    <button class="contact-btn messenger" onclick="selectMediaType('video')">🎬 فيديوهات فقط</button>
-                    <button class="contact-btn phone" onclick="selectMediaType('mixed')">🖼️🎬 صور وفيديوهات</button>
-                </div>
+                <button class="contact-btn" onclick="selectMediaType('image')">🖼️ صور فقط</button>
+                <button class="contact-btn messenger" onclick="selectMediaType('video')">🎬 فيديوهات فقط</button>
+                <button class="contact-btn phone" onclick="selectMediaType('mixed')">🖼️🎬 صور وفيديوهات</button>
             `;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function selectMediaType(type) {
-            pendingAd.mediaType = type;
+            adData.mediaType = type;
             let typeName = type === 'image' ? 'صور' : (type === 'video' ? 'فيديوهات' : 'صور وفيديوهات');
             addMessage(`✅ تم اختيار ${typeName}`, false);
-            addMessage(`🖼️ **الآن قم برفع ${typeName}** (يمكنك رفع عدة ملفات مرة واحدة)`, false);
-            pendingAd.step = 'media';
+            addMessage(`🖼️ **الآن قم برفع ${typeName}** (يمكنك رفع عدة ملفات مرة واحدة بالضغط على زر "📷 رفع ملفات")`, false);
+            adData.step = 'media';
         }
 
-        function displayUploadedMedia() {
-            if (pendingAd.mediaList.length === 0) return;
+        function displayMediaGallery() {
+            if (adData.mediaList.length === 0) return;
+            
             const galleryDiv = document.createElement('div');
             galleryDiv.className = 'media-gallery';
-            for (let i = 0; i < pendingAd.mediaList.length; i++) {
-                const media = pendingAd.mediaList[i];
-                const isMain = (i === pendingAd.mainMediaIndex);
+            
+            for (let i = 0; i < adData.mediaList.length; i++) {
+                const media = adData.mediaList[i];
+                const isMain = (i === adData.mainMediaIndex);
                 const mediaDiv = document.createElement('div');
-                mediaDiv.className = 'media-item';
-                let mediaHtml = media.type === 'image' ? `<img src="${media.data}" alt="صورة ${i+1}">` : `<video src="${media.data}" style="width:60px; height:60px; object-fit:cover;"></video>`;
-                mediaDiv.innerHTML = `
-                    ${mediaHtml}
-                    <div style="flex:1;">
-                        <div>${media.type === 'image' ? '🖼️ صورة' : '🎬 فيديو'} ${i+1} ${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}</div>
-                        ${!isMain ? `<button class="edit-btn" style="padding:2px 8px; font-size:11px;" onclick="setMainMedia(${i})">⭐ جعل رئيسي</button>` : ''}
-                        <button class="edit-btn" style="padding:2px 8px; font-size:11px; background:#dc3545; color:white;" onclick="removeMedia(${i})">🗑️ حذف</button>
-                    </div>
-                `;
+                mediaDiv.className = `media-item ${isMain ? 'active' : ''}`;
+                mediaDiv.onclick = () => { adData.mainMediaIndex = i; displayMediaGallery(); };
+                
+                if (media.type === 'image') {
+                    mediaDiv.innerHTML = `<img src="${media.data}" alt="صورة"><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}`;
+                } else {
+                    mediaDiv.innerHTML = `<video src="${media.data}"></video><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}`;
+                }
                 galleryDiv.appendChild(mediaDiv);
             }
+            
+            // إضافة زر مسح الكل
+            const clearBtn = document.createElement('button');
+            clearBtn.innerText = '🗑️ مسح الكل';
+            clearBtn.style.background = '#dc3545';
+            clearBtn.style.color = 'white';
+            clearBtn.style.border = 'none';
+            clearBtn.style.borderRadius = '20px';
+            clearBtn.style.padding = '5px 15px';
+            clearBtn.style.cursor = 'pointer';
+            clearBtn.onclick = () => { adData.mediaList = []; adData.mainMediaIndex = 0; displayMediaGallery(); showToast("تم مسح جميع الملفات"); };
+            galleryDiv.appendChild(clearBtn);
+            
+            const oldGallery = document.querySelector('.media-gallery');
+            if (oldGallery) oldGallery.remove();
             messagesDiv.appendChild(galleryDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function setMainMedia(index) {
-            pendingAd.mainMediaIndex = index;
-            showToast(`✅ تم تعيين الملف رقم ${index+1} كرئيسي`);
-            const lastMsg = messagesDiv.lastChild;
-            if (lastMsg && lastMsg.className === 'media-gallery') messagesDiv.removeChild(lastMsg);
-            displayUploadedMedia();
-        }
-
         function removeMedia(index) {
-            pendingAd.mediaList.splice(index, 1);
-            if (pendingAd.mainMediaIndex >= pendingAd.mediaList.length) pendingAd.mainMediaIndex = Math.max(0, pendingAd.mediaList.length - 1);
+            adData.mediaList.splice(index, 1);
+            if (adData.mainMediaIndex >= adData.mediaList.length) {
+                adData.mainMediaIndex = Math.max(0, adData.mediaList.length - 1);
+            }
+            displayMediaGallery();
             showToast(`🗑️ تم حذف الملف`);
-            const lastMsg = messagesDiv.lastChild;
-            if (lastMsg && lastMsg.className === 'media-gallery') messagesDiv.removeChild(lastMsg);
-            if (pendingAd.mediaList.length > 0) displayUploadedMedia();
         }
 
         function showContactButtons() {
             const div = document.createElement('div');
-            div.className = 'bot-msg';
+            div.className = 'contact-buttons';
             div.innerHTML = `
-                <div>📞 **اختر وسيلة التواصل (إجباري):**</div>
-                <div class="contact-buttons">
-                    <button class="contact-btn" onclick="selectContactMethod('whatsapp')"><img src="whatsapp.png" style="width:24px; height:24px;"> واتساب</button>
-                    <button class="contact-btn messenger" onclick="selectContactMethod('messenger')"><img src="Messenger.png" style="width:24px; height:24px;"> مسنجر</button>
-                    <button class="contact-btn phone" onclick="selectContactMethod('phone')">📱 هاتف</button>
-                </div>
+                <button class="contact-btn" onclick="selectContactMethod('whatsapp')"><img src="whatsapp.png"> واتساب</button>
+                <button class="contact-btn messenger" onclick="selectContactMethod('messenger')"><img src="Messenger.png"> مسنجر</button>
+                <button class="contact-btn phone" onclick="selectContactMethod('phone')">📱 هاتف</button>
             `;
             messagesDiv.appendChild(div);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function selectContactMethod(method) {
-            pendingAd.contactMethod = method;
-            addMessage(`✅ تم اختيار: ${method === 'whatsapp' ? 'واتساب' : (method === 'messenger' ? 'مسنجر' : 'هاتف')}`, false);
-            setTimeout(() => {
-                addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
-                showSummaryWithEditOptions();
-                pendingAd.step = 'review';
-            }, 500);
+            adData.contactMethod = method;
+            let methodName = method === 'whatsapp' ? 'واتساب' : (method === 'messenger' ? 'مسنجر' : 'هاتف');
+            addMessage(`✅ تم اختيار: ${methodName}`, false);
+            showSummaryWithEditOptions();
+            adData.step = 'review';
         }
 
         function showSummaryWithEditOptions() {
-            const contactText = `${pendingAd.contactMethod === 'whatsapp' ? '💚' : (pendingAd.contactMethod === 'messenger' ? '💬' : '📱')} ${pendingAd.contactMethod === 'whatsapp' ? 'واتساب' : (pendingAd.contactMethod === 'messenger' ? 'مسنجر' : 'هاتف')}: ${pendingAd.phone}`;
-            const summaryContainer = document.createElement('div');
-            summaryContainer.style.margin = '10px 0';
-            const summaryTitle = document.createElement('div');
-            summaryTitle.className = 'bot-msg';
-            summaryTitle.innerText = '📋 **مراجعة معلومات الإعلان:**';
-            summaryContainer.appendChild(summaryTitle);
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'bot-msg';
-            infoDiv.style.direction = 'rtl';
-            infoDiv.style.textAlign = 'right';
-            infoDiv.innerHTML = `
-                <div style="margin:8px 0; padding:8px; background:white; border-radius:12px;"><strong>👤 الاسم:</strong> ${pendingAd.fullName}<button class="edit-btn" style="padding:4px 12px; font-size:12px; margin-right:10px;" onclick="editField('fullName')">تعديل</button></div>
-                <div style="margin:8px 0; padding:8px; background:white; border-radius:12px;"><strong>📞 رقم الهاتف:</strong> ${pendingAd.phone}<button class="edit-btn" style="padding:4px 12px; font-size:12px; margin-right:10px;" onclick="editField('phone')">تعديل</button></div>
-                <div style="margin:8px 0; padding:8px; background:white; border-radius:12px;"><strong>📝 الوصف:</strong> ${pendingAd.description}<button class="edit-btn" style="padding:4px 12px; font-size:12px; margin-right:10px;" onclick="editField('description')">تعديل</button></div>
-                <div style="margin:8px 0; padding:8px; background:white; border-radius:12px;"><strong>🖼️ الملفات:</strong> ${pendingAd.mediaList.length} ملف (الرئيسي: ${pendingAd.mainMediaIndex+1})<button class="edit-btn" style="padding:4px 12px; font-size:12px; margin-right:10px;" onclick="editField('media')">تعديل</button></div>
-                <div style="margin:8px 0; padding:8px; background:white; border-radius:12px;"><strong>💬 وسيلة التواصل:</strong> ${contactText}<button class="edit-btn" style="padding:4px 12px; font-size:12px; margin-right:10px;" onclick="editField('contactMethod')">تعديل</button></div>
+            const contactText = `${adData.contactMethod === 'whatsapp' ? '💚' : (adData.contactMethod === 'messenger' ? '💬' : '📱')} ${adData.contactMethod === 'whatsapp' ? 'واتساب' : (adData.contactMethod === 'messenger' ? 'مسنجر' : 'هاتف')}: ${adData.phone}`;
+            
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'bot-msg';
+            summaryDiv.style.direction = 'rtl';
+            summaryDiv.style.textAlign = 'right';
+            summaryDiv.innerHTML = `
+                <div style="margin:5px 0;"><strong>📋 مراجعة معلومات الإعلان:</strong></div>
+                <div style="margin:5px 0;">👤 الاسم: ${adData.fullName} <button class="edit-btn" style="padding:2px 10px; font-size:12px;" onclick="editField('fullName')">تعديل</button></div>
+                <div style="margin:5px 0;">📞 رقم الهاتف: ${adData.phone} <button class="edit-btn" style="padding:2px 10px; font-size:12px;" onclick="editField('phone')">تعديل</button></div>
+                <div style="margin:5px 0;">📝 الوصف: ${adData.description} <button class="edit-btn" style="padding:2px 10px; font-size:12px;" onclick="editField('description')">تعديل</button></div>
+                <div style="margin:5px 0;">🖼️ الملفات: ${adData.mediaList.length} ملف (الرئيسي: ${adData.mainMediaIndex+1}) <button class="edit-btn" style="padding:2px 10px; font-size:12px;" onclick="editField('media')">تعديل</button></div>
+                <div style="margin:5px 0;">💬 وسيلة التواصل: ${contactText} <button class="edit-btn" style="padding:2px 10px; font-size:12px;" onclick="editField('contactMethod')">تعديل</button></div>
             `;
-            summaryContainer.appendChild(infoDiv);
-            const confirmDiv = document.createElement('div');
-            confirmDiv.className = 'confirm-buttons';
-            confirmDiv.innerHTML = `<button class="confirm-yes" onclick="proceedToPreview()">✅ متابعة إلى المعاينة</button><button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>`;
-            summaryContainer.appendChild(confirmDiv);
-            messagesDiv.appendChild(summaryContainer);
+            messagesDiv.appendChild(summaryDiv);
+            
+            const btnsDiv = document.createElement('div');
+            btnsDiv.className = 'confirm-buttons';
+            btnsDiv.innerHTML = `<button class="confirm-yes" onclick="proceedToPreview()">✅ متابعة إلى المعاينة</button><button class="confirm-no" onclick="cancelAd()">❌ إلغاء الإعلان</button>`;
+            messagesDiv.appendChild(btnsDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function editField(field) {
-            if (field === 'fullName') { addMessage("أدخل الاسم الكامل الجديد:", false); pendingAd.step = 'edit_fullName'; }
-            else if (field === 'phone') { addMessage("أدخل رقم الهاتف الجديد:", false); pendingAd.step = 'edit_phone'; }
-            else if (field === 'description') { addMessage("أدخل الوصف الجديد:", false); pendingAd.step = 'edit_description'; }
-            else if (field === 'media') { addMessage("🖼️ الرجاء رفع ملفات جديدة:", false); pendingAd.step = 'edit_media'; }
-            else if (field === 'contactMethod') { showContactButtons(); pendingAd.step = 'edit_contact'; }
+            if (field === 'fullName') {
+                addMessage("أدخل الاسم الكامل الجديد:", false);
+                adData.step = 'edit_fullName';
+            } else if (field === 'phone') {
+                addMessage("أدخل رقم الهاتف الجديد:", false);
+                adData.step = 'edit_phone';
+            } else if (field === 'description') {
+                addMessage("أدخل الوصف الجديد:", false);
+                adData.step = 'edit_description';
+            } else if (field === 'media') {
+                addMessage("🖼️ الرجاء رفع ملفات جديدة (اختر عدة ملفات مرة واحدة):", false);
+                adData.step = 'edit_media';
+            } else if (field === 'contactMethod') {
+                showContactButtons();
+                adData.step = 'edit_contact';
+            }
         }
 
         function proceedToPreview() {
-            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || pendingAd.mediaList.length === 0) {
-                addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات", false);
+            if (!adData.fullName || !adData.phone || !adData.description || !adData.contactMethod || adData.mediaList.length === 0) {
+                addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات قبل المتابعة", false);
                 return;
             }
             showFacebookPreview();
         }
 
         function cancelAd() {
-            addMessage("🙂 تم إلغاء الإعلان.", false);
-            pendingAd = { step: 'start', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
-            document.getElementById('mediaUploadBtn').style.display = 'none';
+            addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد.", false);
+            resetAdData();
         }
 
         function showFacebookPreview() {
-            const mainMedia = pendingAd.mediaList[pendingAd.mainMediaIndex];
-            let mainHtml = mainMedia.type === 'image' ? `<img src="${mainMedia.data}" style="width:100%; max-height:400px; object-fit:cover;">` : `<video src="${mainMedia.data}" controls style="width:100%; max-height:400px;"></video>`;
-            let thumbnails = '';
-            if (pendingAd.mediaList.length > 1) {
-                thumbnails = '<div style="display:flex; gap:8px; padding:12px; overflow-x:auto;">';
-                for (let i = 0; i < pendingAd.mediaList.length; i++) {
-                    const m = pendingAd.mediaList[i];
-                    const isActive = i === pendingAd.mainMediaIndex;
-                    const border = isActive ? 'border:3px solid #007bff;' : 'border:2px solid transparent;';
+            const mainMedia = adData.mediaList[adData.mainMediaIndex];
+            const contactSymbol = adData.contactMethod === 'whatsapp' ? '💚' : (adData.contactMethod === 'messenger' ? '💬' : '📱');
+            const contactName = adData.contactMethod === 'whatsapp' ? 'واتساب' : (adData.contactMethod === 'messenger' ? 'مسنجر' : 'هاتف');
+            
+            let mainHtml = '';
+            if (mainMedia.type === 'image') {
+                mainHtml = `<img class="preview-media" src="${mainMedia.data}" alt="صورة الإعلان">`;
+            } else {
+                mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
+            }
+            
+            let thumbnailsHtml = '';
+            if (adData.mediaList.length > 1) {
+                thumbnailsHtml = '<div class="preview-thumbnails">';
+                for (let i = 0; i < adData.mediaList.length; i++) {
+                    const m = adData.mediaList[i];
+                    const isActive = i === adData.mainMediaIndex;
+                    const activeClass = isActive ? 'active' : '';
                     if (m.type === 'image') {
-                        thumbnails += `<img src="${m.data}" style="width:70px; height:70px; object-fit:cover; border-radius:8px; cursor:pointer; ${border}" onclick="previewSetMain(${i})">`;
+                        thumbnailsHtml += `<img src="${m.data}" class="preview-thumb ${activeClass}" onclick="changeMainMedia(${i})">`;
                     } else {
-                        thumbnails += `<div style="width:70px; height:70px; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; cursor:pointer; ${border}" onclick="previewSetMain(${i})">🎬</div>`;
+                        thumbnailsHtml += `<div class="preview-thumb-video ${activeClass}" onclick="changeMainMedia(${i})">🎬</div>`;
                     }
                 }
-                thumbnails += '</div>';
+                thumbnailsHtml += '</div>';
             }
-            const contactSymbol = pendingAd.contactMethod === 'whatsapp' ? '💚' : (pendingAd.contactMethod === 'messenger' ? '💬' : '📱');
-            const contactName = pendingAd.contactMethod === 'whatsapp' ? 'واتساب' : (pendingAd.contactMethod === 'messenger' ? 'مسنجر' : 'هاتف');
+            
             const previewDiv = document.createElement('div');
-            previewDiv.style.margin = '10px 0';
-            previewDiv.style.background = 'white';
-            previewDiv.style.borderRadius = '12px';
-            previewDiv.style.overflow = 'hidden';
-            previewDiv.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            previewDiv.className = 'preview-card';
             previewDiv.innerHTML = `
-                <div style="display:flex; align-items:center; padding:12px; gap:10px;">
-                    <div style="width:40px; height:40px; background:linear-gradient(135deg,#007bff,#00c6ff); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">${pendingAd.fullName.charAt(0).toUpperCase()}</div>
-                    <div><div style="font-weight:bold;">${pendingAd.fullName}</div><div style="font-size:11px; color:#65676B;">الآن · 🌍</div></div>
+                <div class="preview-header">
+                    <div class="preview-avatar">${adData.fullName.charAt(0).toUpperCase()}</div>
+                    <div><div class="preview-name">${adData.fullName}</div><div class="preview-time">الآن · 🌍</div></div>
                 </div>
-                <div style="padding:0 12px 8px 12px;">${pendingAd.description}</div>
+                <div class="preview-content">${adData.description}</div>
                 ${mainHtml}
-                ${thumbnails}
-                <div style="padding:10px 12px; background:#f0f2f5; margin:8px; border-radius:8px; text-align:center;">${contactSymbol} ${contactName}: ${pendingAd.phone}</div>
-                <div style="display:flex; justify-content:space-around; padding:8px 12px; border-top:1px solid #e4e6eb; color:#65676B;"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
+                ${thumbnailsHtml}
+                <div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone}</div>
+                <div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
             `;
             messagesDiv.appendChild(previewDiv);
-            const btns = document.createElement('div');
-            btns.className = 'confirm-buttons';
-            btns.innerHTML = `<button class="confirm-yes" onclick="finalPublish()">✅ تأكيد النشر</button><button class="edit-btn" onclick="backToEdit()">✏️ العودة للتعديل</button><button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>`;
-            messagesDiv.appendChild(btns);
+            
+            const btnsDiv = document.createElement('div');
+            btnsDiv.className = 'confirm-buttons';
+            btnsDiv.innerHTML = `<button class="confirm-yes" onclick="finalPublish()">✅ تأكيد النشر</button><button class="edit-btn" onclick="backToSummary()">✏️ العودة للتعديل</button><button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>`;
+            messagesDiv.appendChild(btnsDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        function previewSetMain(index) {
-            pendingAd.mainMediaIndex = index;
-            const lastMsg = messagesDiv.lastChild;
-            if (lastMsg && lastMsg.classList && lastMsg.classList.contains('confirm-buttons')) messagesDiv.removeChild(lastMsg);
-            const previewDiv = messagesDiv.lastChild;
-            if (previewDiv && previewDiv.style && previewDiv.style.margin === '10px 0') messagesDiv.removeChild(previewDiv);
+        window.changeMainMedia = function(index) {
+            adData.mainMediaIndex = index;
+            // إزالة المعاينة السابقة
+            const preview = document.querySelector('.preview-card');
+            if (preview) preview.remove();
+            const btns = document.querySelectorAll('.confirm-buttons');
+            if (btns.length) btns[btns.length-1].remove();
             showFacebookPreview();
-        }
+        };
 
-        function backToEdit() {
-            const lastMsg = messagesDiv.lastChild;
-            if (lastMsg && lastMsg.classList && lastMsg.classList.contains('confirm-buttons')) messagesDiv.removeChild(lastMsg);
-            const previewDiv = messagesDiv.lastChild;
-            if (previewDiv && previewDiv.style && previewDiv.style.margin === '10px 0') messagesDiv.removeChild(previewDiv);
+        function backToSummary() {
+            const preview = document.querySelector('.preview-card');
+            if (preview) preview.remove();
+            const btns = document.querySelectorAll('.confirm-buttons');
+            if (btns.length) btns[btns.length-1].remove();
             showSummaryWithEditOptions();
-            pendingAd.step = 'review';
+            adData.step = 'review';
         }
 
         function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
@@ -588,43 +703,60 @@
             });
         }
 
+        // معالجة رفع الملفات
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = async (e) => {
             const files = Array.from(e.target.files);
             if (files.length === 0) return;
+            
             for (const file of files) {
                 const fileType = file.type;
                 let mediaItemType = null;
                 let processedFile = file;
+                
                 if (fileType.startsWith('image/')) {
                     mediaItemType = 'image';
-                    if (pendingAd.mediaType === 'video') { showToast("❌ يرجى رفع فيديوهات فقط"); mediaInput.value = ''; return; }
+                    if (adData.mediaType === 'video') {
+                        showToast(`❌ لقد اخترت رفع فيديوهات فقط، لكنك رفعت صورة`);
+                        mediaInput.value = '';
+                        return;
+                    }
                     const compressedBlob = await compressImage(file, 800, 800, 0.7);
                     processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
                 } else if (fileType.startsWith('video/')) {
                     mediaItemType = 'video';
-                    if (pendingAd.mediaType === 'image') { showToast("❌ يرجى رفع صور فقط"); mediaInput.value = ''; return; }
-                } else { showToast(`❌ الملف ${file.name} ليس صورة ولا فيديو`); continue; }
+                    if (adData.mediaType === 'image') {
+                        showToast(`❌ لقد اخترت رفع صور فقط، لكنك رفعت فيديو`);
+                        mediaInput.value = '';
+                        return;
+                    }
+                } else {
+                    showToast(`❌ الملف ${file.name} ليس صورة ولا فيديو`);
+                    continue;
+                }
+                
                 const reader = new FileReader();
                 await new Promise((resolve) => {
                     reader.onload = (event) => {
-                        pendingAd.mediaList.push({ data: event.target.result, type: mediaItemType, name: file.name });
+                        adData.mediaList.push({ data: event.target.result, type: mediaItemType, name: file.name });
                         resolve();
                     };
                     reader.readAsDataURL(processedFile);
                 });
             }
+            
             addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
-            displayUploadedMedia();
-            if (pendingAd.step === 'media') {
+            displayMediaGallery();
+            
+            if (adData.step === 'media') {
                 setTimeout(() => {
-                    addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً (إجباري):", false);
-                    pendingAd.step = 'description';
+                    addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
+                    adData.step = 'description';
                 }, 500);
-            } else if (pendingAd.step === 'edit_media') {
+            } else if (adData.step === 'edit_media') {
                 setTimeout(() => {
                     showSummaryWithEditOptions();
-                    pendingAd.step = 'review';
+                    adData.step = 'review';
                 }, 500);
             }
             mediaInput.value = '';
@@ -633,88 +765,116 @@
         window.finalPublish = async () => {
             if (window.isPublishing) return;
             window.isPublishing = true;
+            
             addMessage("🚀 جاري نشر إعلانك...", false);
             showTypingIndicator();
+            
             try {
                 let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
                 const newAd = {
-                    id: Date.now(), name: pendingAd.fullName, phone: pendingAd.phone,
-                    description: pendingAd.description, contactMethod: pendingAd.contactMethod,
-                    mediaList: pendingAd.mediaList, mainMediaIndex: pendingAd.mainMediaIndex,
-                    mediaType: pendingAd.mediaType, userId: currentUser, date: Date.now(), views: 0, likes: 0
+                    id: Date.now(),
+                    name: adData.fullName,
+                    phone: adData.phone,
+                    description: adData.description,
+                    contactMethod: adData.contactMethod,
+                    mediaList: adData.mediaList,
+                    mainMediaIndex: adData.mainMediaIndex,
+                    mediaType: adData.mediaType,
+                    userId: currentUser,
+                    date: Date.now(),
+                    views: 0,
+                    likes: 0
                 };
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
+                
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 removeTypingIndicator();
-                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉", false);
+                
+                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
                 addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
-                document.getElementById('mediaUploadBtn').style.display = 'none';
-                pendingAd = { step: 'start', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
+                
+                resetAdData();
+                
             } catch (error) {
+                console.error("خطأ في النشر:", error);
                 removeTypingIndicator();
-                addMessage("⚠️ حدث خطأ، يرجى المحاولة مرة أخرى.", false);
-            } finally { window.isPublishing = false; }
+                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان. يرجى المحاولة مرة أخرى.", false);
+            } finally {
+                window.isPublishing = false;
+            }
         };
 
         async function handleAdFlow(userMessage) {
-            if (pendingAd.step === 'fullName') {
+            // معالجة التعديلات
+            if (adData.step === 'edit_fullName') {
                 if (userMessage.trim().length < 3) { addMessage("❌ الاسم قصير جداً", false); return false; }
-                pendingAd.fullName = userMessage.trim();
-                addMessage(`✅ تم تسجيل الاسم: ${pendingAd.fullName}`, false);
-                addMessage("📱 **رقم الهاتف:**\nأرسل رقم هاتفك (إجباري):", false);
-                pendingAd.step = 'phone';
+                adData.fullName = userMessage.trim();
+                addMessage(`✅ تم تحديث الاسم إلى: ${adData.fullName}`, false);
+                showSummaryWithEditOptions();
+                adData.step = 'review';
                 return true;
             }
-            if (pendingAd.step === 'phone') {
+            if (adData.step === 'edit_phone') {
                 if (userMessage.length < 9) { addMessage("❌ رقم هاتف غير صحيح", false); return false; }
-                pendingAd.phone = userMessage.trim();
-                addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`, false);
-                showMediaTypeChoice();
-                pendingAd.step = 'waitingMediaType';
-                return true;
-            }
-            if (pendingAd.step === 'description') {
-                if (userMessage.trim().length < 5) { addMessage("❌ وصف قصير جداً", false); return false; }
-                pendingAd.description = userMessage.trim();
-                addMessage(`✅ تم تسجيل الوصف`, false);
-                showContactButtons();
-                pendingAd.step = 'waitingContact';
-                return true;
-            }
-            if (pendingAd.step === 'edit_fullName') {
-                if (userMessage.trim().length < 3) { addMessage("❌ الاسم قصير جداً", false); return false; }
-                pendingAd.fullName = userMessage.trim();
-                addMessage(`✅ تم تحديث الاسم`, false);
+                adData.phone = userMessage.trim();
+                addMessage(`✅ تم تحديث رقم الهاتف إلى: ${adData.phone}`, false);
                 showSummaryWithEditOptions();
-                pendingAd.step = 'review';
+                adData.step = 'review';
                 return true;
             }
-            if (pendingAd.step === 'edit_phone') {
-                if (userMessage.length < 9) { addMessage("❌ رقم غير صحيح", false); return false; }
-                pendingAd.phone = userMessage.trim();
-                addMessage(`✅ تم تحديث رقم الهاتف`, false);
-                showSummaryWithEditOptions();
-                pendingAd.step = 'review';
-                return true;
-            }
-            if (pendingAd.step === 'edit_description') {
+            if (adData.step === 'edit_description') {
                 if (userMessage.trim().length < 5) { addMessage("❌ وصف قصير جداً", false); return false; }
-                pendingAd.description = userMessage.trim();
+                adData.description = userMessage.trim();
                 addMessage(`✅ تم تحديث الوصف`, false);
                 showSummaryWithEditOptions();
-                pendingAd.step = 'review';
+                adData.step = 'review';
                 return true;
             }
-            if (pendingAd.step === 'waitingMediaType' || pendingAd.step === 'waitingContact') return true;
+            
+            // الخطوات الأساسية
+            if (adData.step === 'fullName') {
+                if (userMessage.trim().length < 3) { addMessage("❌ الاسم قصير جداً", false); return false; }
+                adData.fullName = userMessage.trim();
+                addMessage(`✅ تم تسجيل الاسم: ${adData.fullName}`, false);
+                addMessage("📱 **رقم الهاتف:**\nأرسل رقم هاتفك (إجباري):", false);
+                adData.step = 'phone';
+                return true;
+            }
+            
+            if (adData.step === 'phone') {
+                if (userMessage.length < 9) { addMessage("❌ رقم هاتف غير صحيح", false); return false; }
+                adData.phone = userMessage.trim();
+                addMessage(`✅ تم تسجيل رقم الهاتف: ${adData.phone}`, false);
+                showMediaTypeChoice();
+                adData.step = 'waitingMediaType';
+                return true;
+            }
+            
+            if (adData.step === 'description') {
+                if (userMessage.trim().length < 5) { addMessage("❌ وصف قصير جداً", false); return false; }
+                adData.description = userMessage.trim();
+                addMessage(`✅ تم تسجيل الوصف`, false);
+                showContactButtons();
+                adData.step = 'waitingContact';
+                return true;
+            }
+            
+            if (adData.step === 'waitingMediaType' || adData.step === 'waitingContact' || adData.step === 'review') {
+                return true;
+            }
+            
             return false;
         }
 
         async function handleGeneralMessage(message) {
             const lower = message.toLowerCase();
-            if (lower.includes('مرحب') || lower.includes('السلام')) return "وعليكم السلام! 😊 أهلاً بك في بوت مصطفى.\n📢 لنشر إعلان: اضغط على الأيقونة البرتقالية";
-            if (lower.includes('شكر')) return "العفو! 🤍";
-            return "📢 لنشر إعلان: اضغط على الأيقونة البرتقالية الكبيرة";
+            if (lower.includes('مرحب') || lower.includes('السلام')) {
+                return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان: اضغط على زر '📢 خدمة الإعلانات'";
+            }
+            if (lower.includes('شكر')) return "العفو! 🤍 أنا هنا لخدمتك دائماً.";
+            if (lower.includes('القوانين')) return AD_RULES;
+            return "📢 **بوت مصطفى - خدمة الإعلانات**\n\n📢 لنشر إعلان: اضغط على زر '📢 خدمة الإعلانات'";
         }
 
         function buildIcons() {
@@ -722,10 +882,21 @@
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
             mainAdDiv.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
-            mainAdDiv.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ اشتراك سنوي 1000 دج`, false); return; } await startAdFlow(); };
             container.appendChild(mainAdDiv);
             const grid = document.createElement('div'); grid.className = 'icon-grid';
-            services.forEach(s => { const item = document.createElement('div'); item.className = 'icon-item'; const img = document.createElement('img'); img.src = s.img; img.alt = s.name; img.onerror = () => { img.style.display = 'none'; }; const span = document.createElement('span'); span.innerText = s.name; item.appendChild(img); item.appendChild(span); item.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ اشتراك سنوي 1000 دج`, false); return; } showDetailedServiceExplanation(s); }; grid.appendChild(item); });
+            services.forEach(s => { 
+                const item = document.createElement('div'); item.className = 'icon-item'; 
+                const img = document.createElement('img'); img.src = s.img; img.alt = s.name; 
+                img.onerror = () => { img.style.display = 'none'; }; 
+                const span = document.createElement('span'); span.innerText = s.name; 
+                item.appendChild(img); item.appendChild(span); 
+                item.onclick = async () => { 
+                    const sub = getSubscription(); 
+                    if (!sub.active) { addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**`, false); return; } 
+                    showDetailedServiceExplanation(s); 
+                }; 
+                grid.appendChild(item); 
+            });
             container.appendChild(grid);
             return container;
         }
@@ -733,10 +904,23 @@
         async function initChat() {
             messagesDiv.innerHTML = '';
             const sub = getSubscription();
-            let welcomeMsg = `✨ أهلاً بك في بوت مصطفى ✨\n📢 خدمة الإعلانات\n• للإعلانات: اضغط على الأيقونة البرتقالية`;
-            if (!sub.active && currentUser) welcomeMsg += `\n⚠️ ليس لديك اشتراك نشط.\n💰 اشتراك سنوي 1000 دج`;
-            else if (!currentUser) welcomeMsg += `\n🔐 يرجى تسجيل الدخول أولاً`;
-            else if (sub.active) welcomeMsg += `\n✅ اشتراكك مفعل`;
+            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨
+
+📢 **خدمة الإعلانات هي خدمتنا الأساسية**
+
+**الخدمات الأخرى المتاحة:**
+📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)
+⚡ دفع فواتير الكهرباء والغاز والماء
+🌐 شحن الانترنت (Algerie Telecom)
+
+**كيف تبدأ؟**
+• للإعلانات: اضغط على زر "📢 خدمة الإعلانات"
+• للخدمات الأخرى: اضغط على الأيقونات أدناه`;
+
+            if (!sub.active && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج)`;
+            else if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً`;
+            else if (sub.active) welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك`;
+
             addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
         }
@@ -744,35 +928,58 @@
         sendBtn.onclick = async () => {
             if (isBotTyping) return;
             const text = chatInput.value.trim();
-            if (text) { addMessage(text, true); chatInput.value = ''; }
-            if (pendingAd.step && !['waitingMediaType', 'waitingContact', 'review'].includes(pendingAd.step)) {
+            
+            if (text) {
+                addMessage(text, true);
+                chatInput.value = '';
+            }
+            
+            if (adData.step && !['waitingMediaType', 'waitingContact', 'review'].includes(adData.step)) {
                 if (!text) return;
-                isBotTyping = true; showTypingIndicator();
+                isBotTyping = true;
+                showTypingIndicator();
                 await new Promise(resolve => setTimeout(resolve, 500));
                 removeTypingIndicator();
                 await handleAdFlow(text);
                 isBotTyping = false;
                 return;
             }
+            
             if (pendingService) {
-                isBotTyping = true; showTypingIndicator();
+                isBotTyping = true;
+                showTypingIndicator();
                 await new Promise(resolve => setTimeout(resolve, 500));
                 removeTypingIndicator();
                 await handleServiceReply(text);
                 isBotTyping = false;
                 return;
             }
+            
             if (!text) return;
-            isBotTyping = true; showTypingIndicator();
+            
+            isBotTyping = true;
+            showTypingIndicator();
             await new Promise(resolve => setTimeout(resolve, 800));
             removeTypingIndicator();
-            addMessage(await handleGeneralMessage(text), false);
+            const response = await handleGeneralMessage(text);
+            addMessage(response, false);
             isBotTyping = false;
         };
 
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendBtn.click(); });
 
-        function checkPayment() { const urlParams = new URLSearchParams(window.location.search); const code = urlParams.get('code'); const days = urlParams.get('days'); if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) { const expiry = Date.now() + (parseInt(days) * 86400000); localStorage.setItem(`sub_${currentUser}`, expiry); showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`); updateUI(); if (messagesDiv.children.length > 0) initChat(); } }
+        function checkPayment() { 
+            const urlParams = new URLSearchParams(window.location.search); 
+            const code = urlParams.get('code'); 
+            const days = urlParams.get('days'); 
+            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) { 
+                const expiry = Date.now() + (parseInt(days) * 86400000); 
+                localStorage.setItem(`sub_${currentUser}`, expiry); 
+                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`); 
+                updateUI(); 
+                if (messagesDiv.children.length > 0) initChat(); 
+            } 
+        }
         checkPayment();
     </script>
 </body>
