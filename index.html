@@ -67,8 +67,7 @@
         .chat-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.5rem; font-weight: bold; }
         .close-btn { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
         .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.5; animation: fadeIn 0.3s; white-space: pre-wrap; word-wrap: break-word; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
         .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
         .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
         .media-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
@@ -78,7 +77,7 @@
         .media-item .delete-media { position: absolute; top: 2px; right: 2px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .main-badge { position: absolute; bottom: 2px; left: 2px; background: #ffc107; color: #333; padding: 2px 5px; border-radius: 10px; font-size: 9px; font-weight: bold; }
         .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; min-width: 120px; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
         #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
@@ -92,14 +91,12 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
         .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
         .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
-        .contact-btn:hover { transform: scale(1.05); }
         .contact-btn img { width: 24px; height: 24px; border-radius: 50%; }
         .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
@@ -137,18 +134,13 @@
         @keyframes typingAnim { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
         .footer-links { text-align: center; margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px; max-width: 550px; width: 100%; }
         .footer-links a { color: white; text-decoration: none; margin: 0 8px; font-size: 13px; }
-        .footer-links a:hover { text-decoration: underline; }
         @media (max-width: 480px) {
             .top-bot-text { font-size: 1.6rem; }
-            .top-bot-text span:first-child { font-size: 2.2rem; }
-            .top-bot-bar { padding: 15px 20px; }
             .main-ad-icon .main-icon-title { font-size: 20px; }
-            .footer-links a { font-size: 11px; margin: 0 5px; }
             .contact-btn img { width: 20px; height: 20px; }
             .media-item { width: 60px; height: 60px; }
         }
         
-        /* معاينة AliExpress */
         .preview-card {
             background: white;
             border-radius: 12px;
@@ -156,79 +148,26 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin: 10px 0;
         }
-        .preview-header {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            gap: 10px;
-        }
-        .preview-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-        }
+        .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; }
+        .preview-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
         .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
         .preview-time { font-size: 11px; color: #65676B; }
         .preview-content { padding: 0 12px 8px 12px; font-size: 14px; color: #050505; }
-        .preview-media { width: 100%; max-height: 400px; object-fit: cover; background: #f0f2f5; }
+        .preview-media { width: 100%; max-height: 400px; object-fit: cover; }
         .preview-video { width: 100%; max-height: 400px; background: #000; }
         .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
-        .preview-thumb {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
+        .preview-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
         .preview-thumb.active { border-color: #007bff; }
-        .preview-thumb-video {
-            width: 70px;
-            height: 70px;
-            background: #000;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
+        .preview-thumb-video { width: 70px; height: 70px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; border: 2px solid transparent; }
         .preview-thumb-video.active { border-color: #007bff; }
-        .preview-contact {
-            padding: 10px 12px;
-            background: #f0f2f5;
-            margin: 8px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: center;
-        }
-        .preview-buttons {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 12px;
-            border-top: 1px solid #e4e6eb;
-            color: #65676B;
-            font-size: 13px;
-        }
+        .preview-contact { padding: 10px 12px; background: #f0f2f5; margin: 8px; border-radius: 8px; font-size: 13px; text-align: center; }
+        .preview-buttons { display: flex; justify-content: space-around; padding: 8px 12px; border-top: 1px solid #e4e6eb; color: #65676B; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div class="top-bot-bar" id="topBotBar">
-        <div class="top-bot-text">
-            <span>🤖</span>
-            <span>بوت مصطفى</span>
-            <span>✨</span>
-        </div>
+        <div class="top-bot-text"><span>🤖</span><span>بوت مصطفى</span><span>✨</span></div>
         <div class="top-bot-sub">خدمة الإعلانات · شحن · فواتير</div>
     </div>
 
@@ -252,7 +191,7 @@
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
-                <button id="adBtn" class="btn" style="background:#ff6b35; margin-top:10px;">📢 خدمة الإعلانات</button>
+                <!-- تم حذف زر "خدمة الإعلانات" من هنا -->
             </div>
         </div>
     </div>
@@ -285,7 +224,6 @@
         let isBotTyping = false;
         let pendingService = null;
         
-        // بيانات الإعلان
         let adData = {
             step: null,
             fullName: null,
@@ -358,7 +296,6 @@
 
         document.getElementById('marketplaceGuestBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
         document.getElementById('marketplaceBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
-        document.getElementById('adBtn').onclick = () => { startAdFlow(); };
 
         document.getElementById('loginBtn').onclick = () => { 
             const email = document.getElementById('emailInput').value.trim(); 
@@ -380,7 +317,9 @@
             document.getElementById('loginSection').style.display = 'block'; 
             document.getElementById('appSection').style.display = 'none'; 
             document.getElementById('emailInput').value = ''; 
-            resetAdData();
+            adData = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaType: null, mediaList: [], mainMediaIndex: 0 };
+            pendingService = null; 
+            document.getElementById('mediaUploadBtn').style.display = 'none';
             showToast('تم تسجيل الخروج'); 
         };
         
@@ -413,20 +352,6 @@
             div.innerText = text; 
             messagesDiv.appendChild(div); 
             messagesDiv.scrollTop = messagesDiv.scrollHeight; 
-        }
-
-        function resetAdData() {
-            adData = {
-                step: null,
-                fullName: null,
-                phone: null,
-                description: null,
-                contactMethod: null,
-                mediaType: null,
-                mediaList: [],
-                mainMediaIndex: 0
-            };
-            document.getElementById('mediaUploadBtn').style.display = 'none';
         }
 
         function showDetailedServiceExplanation(service) {
@@ -463,8 +388,7 @@
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) (إجباري):", false);
-            resetAdData();
-            adData.step = 'fullName';
+            adData = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaType: null, mediaList: [], mainMediaIndex: 0 };
             document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
@@ -509,7 +433,6 @@
                 galleryDiv.appendChild(mediaDiv);
             }
             
-            // إضافة زر مسح الكل
             const clearBtn = document.createElement('button');
             clearBtn.innerText = '🗑️ مسح الكل';
             clearBtn.style.background = '#dc3545';
@@ -591,7 +514,7 @@
                 addMessage("أدخل الوصف الجديد:", false);
                 adData.step = 'edit_description';
             } else if (field === 'media') {
-                addMessage("🖼️ الرجاء رفع ملفات جديدة (اختر عدة ملفات مرة واحدة):", false);
+                addMessage("🖼️ الرجاء رفع ملفات جديدة:", false);
                 adData.step = 'edit_media';
             } else if (field === 'contactMethod') {
                 showContactButtons();
@@ -609,7 +532,8 @@
 
         function cancelAd() {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد.", false);
-            resetAdData();
+            adData = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaType: null, mediaList: [], mainMediaIndex: 0 };
+            document.getElementById('mediaUploadBtn').style.display = 'none';
         }
 
         function showFacebookPreview() {
@@ -664,7 +588,6 @@
 
         window.changeMainMedia = function(index) {
             adData.mainMediaIndex = index;
-            // إزالة المعاينة السابقة
             const preview = document.querySelector('.preview-card');
             if (preview) preview.remove();
             const btns = document.querySelectorAll('.confirm-buttons');
@@ -703,7 +626,6 @@
             });
         }
 
-        // معالجة رفع الملفات
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = async (e) => {
             const files = Array.from(e.target.files);
@@ -794,7 +716,8 @@
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
                 addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
                 
-                resetAdData();
+                adData = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaType: null, mediaList: [], mainMediaIndex: 0 };
+                document.getElementById('mediaUploadBtn').style.display = 'none';
                 
             } catch (error) {
                 console.error("خطأ في النشر:", error);
@@ -806,7 +729,6 @@
         };
 
         async function handleAdFlow(userMessage) {
-            // معالجة التعديلات
             if (adData.step === 'edit_fullName') {
                 if (userMessage.trim().length < 3) { addMessage("❌ الاسم قصير جداً", false); return false; }
                 adData.fullName = userMessage.trim();
@@ -832,7 +754,6 @@
                 return true;
             }
             
-            // الخطوات الأساسية
             if (adData.step === 'fullName') {
                 if (userMessage.trim().length < 3) { addMessage("❌ الاسم قصير جداً", false); return false; }
                 adData.fullName = userMessage.trim();
@@ -870,11 +791,11 @@
         async function handleGeneralMessage(message) {
             const lower = message.toLowerCase();
             if (lower.includes('مرحب') || lower.includes('السلام')) {
-                return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان: اضغط على زر '📢 خدمة الإعلانات'";
+                return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان: اضغط على الأيقونة البرتقالية";
             }
             if (lower.includes('شكر')) return "العفو! 🤍 أنا هنا لخدمتك دائماً.";
             if (lower.includes('القوانين')) return AD_RULES;
-            return "📢 **بوت مصطفى - خدمة الإعلانات**\n\n📢 لنشر إعلان: اضغط على زر '📢 خدمة الإعلانات'";
+            return "📢 **بوت مصطفى - خدمة الإعلانات**\n\n📢 لنشر إعلان: اضغط على الأيقونة البرتقالية";
         }
 
         function buildIcons() {
@@ -882,6 +803,7 @@
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
             mainAdDiv.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
+            mainAdDiv.onclick = async () => { await startAdFlow(); };
             container.appendChild(mainAdDiv);
             const grid = document.createElement('div'); grid.className = 'icon-grid';
             services.forEach(s => { 
@@ -914,7 +836,7 @@
 🌐 شحن الانترنت (Algerie Telecom)
 
 **كيف تبدأ؟**
-• للإعلانات: اضغط على زر "📢 خدمة الإعلانات"
+• للإعلانات: اضغط على الأيقونة البرتقالية
 • للخدمات الأخرى: اضغط على الأيقونات أدناه`;
 
             if (!sub.active && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج)`;
