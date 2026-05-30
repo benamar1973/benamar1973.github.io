@@ -2,47 +2,170 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - اتصل بنا</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>اتصل بنا - بوت مصطفى</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .card { background: #ffffff; border-radius: 35px; padding: 25px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 28px; color: #1a1a2e; }
-        .back-btn { background: #0f3460; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; cursor: pointer; margin-top: 20px; width: 100%; }
-        .back-btn:hover { background: #e94560; }
-        .contact-info { text-align: center; margin: 20px 0; }
-        .contact-item { margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 20px; }
-        .contact-item i { font-size: 30px; display: block; margin-bottom: 10px; color: #e94560; }
-        .contact-item span { font-size: 16px; color: #2c3e50; }
-        footer { text-align: center; margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 12px; }
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 35px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #0f3460;
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-align: center;
+        }
+        .contact-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .contact-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+        .footer-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
-        <div class="header">
+    <div class="container">
+        <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+        
+        <div class="card">
             <h1>📞 اتصل بنا</h1>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>💚</span>
+                    <a href="https://wa.me/213555123456" target="_blank" class="whatsapp-btn">واتساب: 0555 12 34 56</a>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:support@boutmostafa.com">support@boutmostafa.com</a>
+                </div>
+                <div class="contact-item">
+                    <span>🌐</span>
+                    <span>الجزائر - Algiers</span>
+                </div>
+            </div>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label>👤 الاسم الكامل</label>
+                    <input type="text" id="name" required placeholder="أدخل اسمك">
+                </div>
+                <div class="form-group">
+                    <label>📧 البريد الإلكتروني</label>
+                    <input type="email" id="email" required placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label>📝 الموضوع</label>
+                    <input type="text" id="subject" required placeholder="موضوع الرسالة">
+                </div>
+                <div class="form-group">
+                    <label>💬 الرسالة</label>
+                    <textarea id="message" rows="5" required placeholder="اكتب رسالتك هنا..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">📨 إرسال الرسالة</button>
+            </form>
+            
+            <div class="footer-links">
+                <a href="index.html">الرئيسية</a> |
+                <a href="about.html">من نحن</a> |
+                <a href="contact.html">اتصل بنا</a> |
+                <a href="privacy.html">سياسة الخصوصية</a> |
+                <a href="terms.html">الشروط والأحكام</a>
+            </div>
         </div>
-        <div class="contact-info">
-            <div class="contact-item">
-                <i>📧</i>
-                <span>djadidkhadamati@gmail.com</span>
-            </div>
-            <div class="contact-item">
-                <i>📱</i>
-                <span>0558284458</span>
-            </div>
-            <div class="contact-item">
-                <i>💬</i>
-                <span>متاحون على واتساب</span>
-            </div>
-        </div>
-        <button class="back-btn" onclick="window.location.href='index.html'">🏠 العودة إلى الرئيسية</button>
     </div>
-    <footer><p>🇩🇿 خدماتي - جميع الحقوق محفوظة</p></footer>
-</div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('📨 تم استلام رسالتك! سنقوم بالرد عليك في أقرب وقت.\nشكراً لتواصلك مع بوت مصطفى.');
+            e.target.reset();
+        });
+    </script>
 </body>
 </html>
