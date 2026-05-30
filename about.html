@@ -2,37 +2,101 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>خدماتي - من نحن</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>من نحن - بوت مصطفى</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; min-height: 100vh; }
-        .container { max-width: 500px; margin: 0 auto; }
-        .card { background: #ffffff; border-radius: 35px; padding: 25px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 28px; color: #1a1a2e; }
-        .back-btn { background: #0f3460; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; cursor: pointer; margin-top: 20px; width: 100%; }
-        .back-btn:hover { background: #e94560; }
-        .content { line-height: 1.8; color: #2c3e50; }
-        .content p { margin-bottom: 15px; }
-        footer { text-align: center; margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 12px; }
+        body {
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 35px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #0f3460;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        h2 {
+            color: #0f3460;
+            margin: 25px 0 10px 0;
+            font-size: 22px;
+        }
+        p {
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+        .footer-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 20px; }
+            h1 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="card">
-        <div class="header">
-            <h1>📱 من نحن</h1>
+    <div class="container">
+        <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+        
+        <div class="card">
+            <h1>📖 من نحن</h1>
+            
+            <p>بوت مصطفى هو منصة إعلانات جزائرية 100%، تأسست بهدف تسهيل عملية نشر الإعلانات وربط البائعين بالمشترين في السوق الجزائري.</p>
+            
+            <h2>🎯 رؤيتنا</h2>
+            <p>نسعى لأن نكون المنصة الأولى في الجزائر لنشر الإعلانات المبوبة، مع توفير بيئة آمنة وموثوقة للمستخدمين.</p>
+            
+            <h2>💡 رسالتنا</h2>
+            <p>تقديم خدمة إعلانية متميزة، سهلة الاستخدام، وآمنة، تساعد التجار وأصحاب الأعمال على الوصول إلى عملائهم بكل يسر.</p>
+            
+            <h2>✅ مميزاتنا</h2>
+            <p>✓ وصول لأكثر من 5000 عميل يومياً<br>
+            ✓ دعم الصور والفيديوهات في الإعلانات<br>
+            ✓ وسائل تواصل متعددة (واتساب - مسنجر - هاتف)<br>
+            ✓ أمان تام وحماية للخصوصية<br>
+            ✓ دعم فني على مدار الساعة</p>
+            
+            <h2>📞 تواصل معنا</h2>
+            <p>للاستفسارات أو الاقتراحات، يمكنك التواصل معنا عبر صفحة <a href="contact.html" style="color:#007bff;">اتصل بنا</a>.</p>
+            
+            <div class="footer-links">
+                <a href="index.html">الرئيسية</a> |
+                <a href="about.html">من نحن</a> |
+                <a href="contact.html">اتصل بنا</a> |
+                <a href="privacy.html">سياسة الخصوصية</a> |
+                <a href="terms.html">الشروط والأحكام</a>
+            </div>
         </div>
-        <div class="content">
-            <p>موقع <strong>خدماتي</strong> هو منصة إلكترونية جزائرية تهدف إلى تسهيل حياة المواطن الجزائري من خلال جمع جميع الخدمات الرقمية والإدارية في مكان واحد.</p>
-            <p>نحن نؤمن بأن التكنولوجيا يجب أن تكون في خدمة الجميع، لذلك قمنا بتطوير هذه المنصة لتكون جسراً بين المواطن والخدمات الحكومية والخاصة.</p>
-            <p>نقدم لكم خدمات مثل: دفع الفواتير (كهرباء، غاز، ماء)، شحن رصيد الهاتف، التسجيل في منحة البطالة، متابعة نتائج الامتحانات، وغيرها الكثير.</p>
-            <p>فريق <strong>خدماتي</strong> يعمل باستمرار على تحديث المنصة وإضافة خدمات جديدة لتلبية احتياجاتكم.</p>
-        </div>
-        <button class="back-btn" onclick="window.location.href='index.html'">🏠 العودة إلى الرئيسية</button>
     </div>
-    <footer><p>🇩🇿 خدماتي - جميع الحقوق محفوظة</p></footer>
-</div>
 </body>
 </html>
