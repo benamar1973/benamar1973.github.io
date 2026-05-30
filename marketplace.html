@@ -220,7 +220,6 @@
             font-size: 14px;
         }
         
-        /* نافذة ملء الشاشة للفيديو */
         .fullscreen-video-container {
             display: none;
             position: fixed;
@@ -306,7 +305,6 @@
         </div>
     </div>
 
-    <!-- نافذة ملء الشاشة للفيديو -->
     <div id="fullscreenVideoContainer" class="fullscreen-video-container">
         <button class="fullscreen-close" onclick="closeFullscreenVideo()">✕</button>
         <video id="fullscreenVideo" class="fullscreen-video" controls autoplay></video>
@@ -315,11 +313,6 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // إعدادات JSONBin.io
-        const JSONBIN_BIN_ID = '67b8b1e1ad19ca34f80b8a5c';
-        const JSONBIN_API_KEY = '$2a$10$M3MsngMW3rjptLOnJvN4XuMvwa.g83rXhSRt8shb4NFtABM3LzR0O';
-        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-        
         let currentAds = [];
         let currentFilter = 'all';
         let currentUserId = localStorage.getItem('marketplace_user_id');
@@ -328,7 +321,6 @@
             localStorage.setItem('marketplace_user_id', currentUserId);
         }
         
-        // معرفة المستخدم الحالي من البوت
         let currentUserEmail = localStorage.getItem('currentUser') || 'guest_' + currentUserId;
         
         function showToast(msg) {
@@ -336,47 +328,6 @@
             toast.innerText = msg;
             toast.style.opacity = '1';
             setTimeout(() => toast.style.opacity = '0', 2000);
-        }
-        
-        // حفظ الإعلانات في السحاب
-        async function saveAdsToCloud(ads) {
-            try {
-                const response = await fetch(JSONBIN_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(ads)
-                });
-                if (response.ok) {
-                    console.log('✅ تم حفظ الإعلانات في السحاب');
-                    return true;
-                }
-            } catch (error) {
-                console.error('خطأ في حفظ السحاب:', error);
-            }
-            return false;
-        }
-        
-        // تحميل الإعلانات من السحاب
-        async function loadAdsFromCloud() {
-            try {
-                const response = await fetch(`${JSONBIN_URL}/latest`, {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    const ads = data.record || [];
-                    if (Array.isArray(ads) && ads.length > 0) {
-                        localStorage.setItem('marketplace_ads', JSON.stringify(ads));
-                        return ads;
-                    }
-                }
-            } catch (error) {
-                console.log('⚠️ لا يمكن الاتصال بالسحاب');
-            }
-            return null;
         }
         
         function formatDate(timestamp) {
@@ -391,7 +342,6 @@
             return div.innerHTML;
         }
         
-        // حذف إعلان
         async function deleteMyAd(adId, event) {
             event.stopPropagation();
             
@@ -399,21 +349,18 @@
                 const adIndex = currentAds.findIndex(ad => ad.id === adId);
                 if (adIndex !== -1) {
                     currentAds.splice(adIndex, 1);
-                    
-                    // حفظ في localStorage
                     localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
-                    // حفظ في السحاب
-                    await saveAdsToCloud(currentAds);
-                    
                     showToast('✅ تم حذف إعلانك بنجاح');
                     
-                    // إعادة تحميل الإعلانات
-                    await loadAds();
+                    const savedUser = localStorage.getItem('currentUser');
+                    if (savedUser) {
+                        currentUserEmail = savedUser;
+                    }
+                    filterAds(currentFilter);
                 }
             }
         }
         
-        // زيادة عدد المشاهدات
         async function incrementViews(adId, adIndex) {
             if (!currentAds[adIndex]) return;
             
@@ -422,9 +369,7 @@
             
             currentAds[adIndex].views = (currentAds[adIndex].views || 0) + 1;
             localStorage.setItem(viewedKey, 'true');
-            
             localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
-            await saveAdsToCloud(currentAds);
             
             const viewsSpan = document.getElementById(`views_${adId}`);
             if (viewsSpan) {
@@ -432,7 +377,6 @@
             }
         }
         
-        // معالجة الإعجاب
         async function handleLike(adId, adIndex, event) {
             event.stopPropagation();
             
@@ -452,7 +396,6 @@
             }
             
             localStorage.setItem('marketplace_ads', JSON.stringify(currentAds));
-            await saveAdsToCloud(currentAds);
             
             const likesSpan = document.getElementById(`likes_${adId}`);
             const likeBtn = document.getElementById(`like_btn_${adId}`);
@@ -540,7 +483,7 @@
                     </div>
                     <div style="background:#e8f0fe; padding:15px; border-radius:15px; text-align:center;">
                         <div style="font-size:16px; margin-bottom:10px;">${contactIcon} ${contactMethodText}</div>
-                        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
+                        <div class="modal-contact-buttons" style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
                             ${contactButtons}
                         </div>
                     </div>
@@ -557,8 +500,10 @@
             };
         }
         
+        // ========== دالة العرض مع Lazy Loading ==========
         function renderAds(ads) {
             const grid = document.getElementById('marketplaceGrid');
+            currentAds = ads;
             
             if (!ads || ads.length === 0) {
                 if (currentFilter === 'my') {
@@ -581,10 +526,11 @@
                 
                 let mediaHtml = '';
                 if (ad.image && ad.imageType === 'image') {
-                    mediaHtml = `<img class="ad-card-img" src="${ad.image}" alt="${ad.name}">`;
+                    // Lazy Loading للصور
+                    mediaHtml = `<img class="ad-card-img" loading="lazy" src="${ad.image}" alt="${ad.name}">`;
                     adCard.onclick = () => openImageModal(ad, adId, i);
                 } else if (ad.image && ad.imageType === 'video') {
-                    mediaHtml = `<video class="ad-card-video" src="${ad.image}" muted onclick="event.stopPropagation(); openFullscreenVideo('${ad.image}', ${adId}, ${i})"></video>`;
+                    mediaHtml = `<video class="ad-card-video" preload="metadata" muted onclick="event.stopPropagation(); openFullscreenVideo('${ad.image}', ${adId}, ${i})"><source src="${ad.image}" type="video/mp4"></video>`;
                     adCard.onclick = (e) => {
                         e.stopPropagation();
                         openFullscreenVideo(ad.image, adId, i);
@@ -638,11 +584,11 @@
                 grid.appendChild(adCard);
             }
         }
+        // ===========================================
         
         function filterAds(filter) {
             currentFilter = filter;
             
-            // تحديث حالة الأزرار
             document.getElementById('filterAllBtn').classList.toggle('active', filter === 'all');
             document.getElementById('filterMyBtn').classList.toggle('active', filter === 'my');
             
@@ -658,11 +604,7 @@
             const grid = document.getElementById('marketplaceGrid');
             grid.innerHTML = '<div class="no-ads">📭 جاري تحميل الإعلانات...</div>';
             
-            let ads = await loadAdsFromCloud();
-            if (!ads) {
-                ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-            }
-            
+            const ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
             for (let i = 0; i < ads.length; i++) {
                 if (ads[i].views === undefined) ads[i].views = 0;
                 if (ads[i].likes === undefined) ads[i].likes = 0;
@@ -670,7 +612,6 @@
             
             currentAds = ads;
             
-            // تحديث currentUserEmail من البوت
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
                 currentUserEmail = savedUser;
