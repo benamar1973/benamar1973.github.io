@@ -529,7 +529,6 @@
             else methodName = 'هاتف';
             addMessage(`✅ تم اختيار: ${methodName}`, false);
             
-            // بعد اختيار وسيلة التواصل، ننتقل إلى مراجعة المعلومات
             setTimeout(() => {
                 addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
                 showSummaryWithEditOptions();
@@ -836,7 +835,6 @@
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 
-                // بعد رفع الملف، نطلب الوصف
                 setTimeout(() => {
                     addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
                     pendingAd.step = 'description';
