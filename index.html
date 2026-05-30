@@ -3,41 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
-        /* جميع الأنماط كما هي - لم يتم تغييرها */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px;
-        }
-        .top-bot-bar {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto 20px auto;
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 80px;
-            padding: 20px 30px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            animation: glow 2s infinite;
-        }
-        .top-bot-bar:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4); }
-        @keyframes glow {
-            0% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
-            50% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); }
-            100% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); }
-        }
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', 'Tahoma', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 16px; }
+        .top-bot-bar { width: 100%; max-width: 650px; margin: 0 auto 20px auto; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 80px; padding: 20px 30px; text-align: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; animation: glow 2s infinite; }
+        @keyframes glow { 0% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); } 50% { box-shadow: 0 10px 40px rgba(0, 123, 255, 0.6); } 100% { box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3); } }
         .top-bot-text { font-size: 2.2rem; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .top-bot-text span:first-child { font-size: 3rem; animation: bounce 1s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -48,17 +19,7 @@
         .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; }
         .btn-logout { background: #dc3545; margin-top: 15px; }
-        .marketplace-link-btn {
-            background: linear-gradient(135deg, #6f42c1, #8b5cf6);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
+        .marketplace-link-btn { background: linear-gradient(135deg, #6f42c1, #8b5cf6); color: white; border: none; border-radius: 50px; padding: 12px 20px; margin-top: 10px; cursor: pointer; font-weight: bold; width: 100%; }
         .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
         .user-name { font-size: 24px; font-weight: bold; color: #0f3460; word-break: break-all; }
         .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
@@ -80,43 +41,13 @@
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
         #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
-        .contact-buttons {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .contact-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .contact-buttons { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; justify-content: center; }
+        .contact-btn { background: linear-gradient(135deg, #25D366, #128C7E); color: white; border: none; border-radius: 50px; padding: 10px 20px; font-size: 14px; font-weight: bold; cursor: pointer; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
         .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
         .contact-btn:hover { transform: scale(1.05); }
-        .contact-btn img {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-        .confirm-buttons {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .contact-btn img { width: 24px; height: 24px; border-radius: 50%; vertical-align: middle; }
+        .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
@@ -126,58 +57,19 @@
         .icon-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); border-color: #007bff; }
         .icon-item img { width: 55px; height: 55px; object-fit: contain; border-radius: 12px; margin-bottom: 6px; }
         .icon-item span { font-size: 12px; display: block; font-weight: bold; color: #333; }
-        .main-ad-icon {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            border-radius: 20px;
-            padding: 25px 15px;
-            cursor: pointer;
-            text-align: center;
-            margin: 15px 0;
-            border: 3px solid #ffd700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        .main-ad-icon:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4);
-            border-color: #fff;
-        }
-        .main-ad-icon .main-icon-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .main-ad-icon .main-icon-sub {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            display: block;
-        }
+        .main-ad-icon { background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 20px; padding: 25px 15px; cursor: pointer; text-align: center; margin: 15px 0; border: 3px solid #ffd700; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+        .main-ad-icon:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4); border-color: #fff; }
+        .main-ad-icon .main-icon-title { font-size: 24px; font-weight: bold; color: white; display: block; margin-bottom: 6px; }
+        .main-ad-icon .main-icon-sub { font-size: 14px; color: rgba(255, 255, 255, 0.9); display: block; }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
         .typing { display: flex; gap: 4px; align-items: center; }
         .typing span { width: 8px; height: 8px; background: #888; border-radius: 50%; display: inline-block; animation: typingAnim 1.4s infinite; }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingAnim { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-        .footer-links {
-            text-align: center;
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            max-width: 550px;
-            width: 100%;
-        }
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            margin: 0 8px;
-            font-size: 13px;
-        }
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
+        .footer-links { text-align: center; margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px; max-width: 550px; width: 100%; }
+        .footer-links a { color: white; text-decoration: none; margin: 0 8px; font-size: 13px; }
+        .footer-links a:hover { text-decoration: underline; }
         @media (max-width: 480px) {
             .top-bot-text { font-size: 1.6rem; }
             .top-bot-text span:first-child { font-size: 2.2rem; }
@@ -186,122 +78,23 @@
             .footer-links a { font-size: 11px; margin: 0 5px; }
             .contact-btn img { width: 20px; height: 20px; }
         }
-
-        .alice-preview {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            margin: 10px 0;
-            direction: ltr;
-            text-align: left;
-        }
-        .alice-main-media {
-            width: 100%;
-            background: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            position: relative;
-        }
-        .alice-main-media img, .alice-main-media video {
-            width: 100%;
-            max-height: 350px;
-            object-fit: contain;
-        }
-        .alice-thumbnails {
-            display: flex;
-            gap: 8px;
-            padding: 12px;
-            overflow-x: auto;
-            background: white;
-            border-top: 1px solid #eee;
-        }
-        .alice-thumb {
-            width: 70px;
-            height: 70px;
-            border-radius: 8px;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            background: #f0f0f0;
-        }
-        .alice-thumb.active {
-            border-color: #ff6b35;
-            box-shadow: 0 0 0 2px rgba(255,107,53,0.3);
-        }
-        .alice-info {
-            padding: 16px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .alice-description {
-            font-size: 14px;
-            color: #333;
-            line-height: 1.5;
-            margin-bottom: 16px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-        .alice-contact-btn {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s;
-        }
-        .alice-contact-btn:hover {
-            transform: scale(1.02);
-        }
-        .media-preview-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .media-preview-item {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid #ddd;
-        }
-        .media-preview-item img, .media-preview-item video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .remove-media-btn {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: rgba(220,53,69,0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .selected-media-info {
-            background: #e8f0fe;
-            border-radius: 12px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 14px;
-        }
+        .alice-preview { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15); margin: 10px 0; direction: ltr; text-align: left; }
+        .alice-main-media { width: 100%; background: #f5f5f5; display: flex; align-items: center; justify-content: center; min-height: 300px; position: relative; }
+        .alice-main-media img, .alice-main-media video { width: 100%; max-height: 350px; object-fit: contain; }
+        .alice-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; background: white; border-top: 1px solid #eee; }
+        .alice-thumb { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; background: #f0f0f0; }
+        .alice-thumb.active { border-color: #ff6b35; box-shadow: 0 0 0 2px rgba(255,107,53,0.3); }
+        .alice-info { padding: 16px; border-top: 1px solid #f0f0f0; }
+        .alice-description { font-size: 14px; color: #333; line-height: 1.5; margin-bottom: 16px; padding: 12px; background: #f8f9fa; border-radius: 12px; }
+        .alice-contact-btn { background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; border: none; border-radius: 50px; padding: 12px 20px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.2s; }
+        .alice-contact-btn:hover { transform: scale(1.02); }
+        .media-preview-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+        .media-preview-item { position: relative; width: 80px; height: 80px; border-radius: 12px; overflow: hidden; border: 2px solid #ddd; }
+        .media-preview-item img, .media-preview-item video { width: 100%; height: 100%; object-fit: cover; }
+        .remove-media-btn { position: absolute; top: 2px; right: 2px; background: rgba(220,53,69,0.9); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .selected-media-info { background: #e8f0fe; border-radius: 12px; padding: 10px; margin: 10px 0; font-size: 14px; }
+        .clear-storage-btn { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 8px 15px; font-size: 12px; cursor: pointer; margin-top: 10px; }
+        .storage-warning { background: #fff3cd; border-radius: 12px; padding: 8px; margin: 5px 0; font-size: 12px; color: #856404; }
     </style>
 </head>
 <body>
@@ -335,6 +128,7 @@
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
+                <button id="clearStorageBtn" class="btn" style="background:#dc3545; margin-top:10px;">🗑️ مسح الإعلانات القديمة (لحل مشكلة المساحة)</button>
             </div>
         </div>
     </div>
@@ -461,6 +255,16 @@
             showToast('تم تسجيل الخروج'); 
         };
         
+        // زر مسح الإعلانات القديمة
+        document.getElementById('clearStorageBtn').onclick = () => {
+            if (confirm('⚠️ هل أنت متأكد؟ هذا سيحذف جميع الإعلانات المخزنة في المتصفح الخاص بك فقط. لا يؤثر على إعلانات الآخرين.')) {
+                localStorage.removeItem('marketplace_ads');
+                showToast('✅ تم مسح الإعلانات القديمة. يمكنك الآن نشر إعلان جديد.');
+                // إعادة تحميل الصفحة لتنظيف الذاكرة
+                setTimeout(() => location.reload(), 1500);
+            }
+        };
+        
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) { 
             currentUser = savedUser; 
@@ -541,6 +345,16 @@
         }
 
         async function startAdFlow() {
+            // التحقق من المساحة قبل البدء
+            try {
+                const testKey = 'test_storage';
+                localStorage.setItem(testKey, 'x'.repeat(1024 * 100)); // 100KB
+                localStorage.removeItem(testKey);
+            } catch (e) {
+                addMessage("⚠️ **مساحة التخزين ممتلئة!** يرجى الضغط على زر 'مسح الإعلانات القديمة' في الواجهة الرئيسية ثم المحاولة مرة أخرى.", false);
+                return;
+            }
+            
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
@@ -606,7 +420,8 @@
             pendingAd.step = 'waitingForMedia';
         }
         
-        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+        // ضغط أقوى للصور (400px، جودة 35%)
+        function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.35) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
@@ -660,8 +475,8 @@
                 return;
             }
             
-            if (pendingAd.mediaItems.length + files.length > 10) {
-                showToast("⚠️ لا يمكنك رفع أكثر من 10 ملفات إجمالاً");
+            if (pendingAd.mediaItems.length + files.length > 5) {
+                showToast("⚠️ يمكنك رفع 5 ملفات كحد أقصى للحفاظ على المساحة");
                 mediaInput.value = '';
                 return;
             }
@@ -676,7 +491,7 @@
                 if (fileType.startsWith('image/')) {
                     mediaType = 'image';
                     try {
-                        const compressedBlob = await compressImage(file, 800, 800, 0.7);
+                        const compressedBlob = await compressImage(file, 400, 400, 0.35);
                         processedData = await new Promise((resolve) => {
                             const reader = new FileReader();
                             reader.onload = (e) => resolve(e.target.result);
@@ -1015,12 +830,8 @@
             showSummaryWithEditOptions();
         };
         
-        // ========== دالة النشر النهائية - تم إصلاحها بالكامل ==========
         window.finalPublish = async () => {
-            if (window.isPublishing) {
-                addMessage("⚠️ عملية نشر جارية بالفعل، يرجى الانتظار...", false);
-                return;
-            }
+            if (window.isPublishing) return;
             window.isPublishing = true;
             
             try {
@@ -1028,38 +839,14 @@
                 showTypingIndicator();
                 
                 // التحقق من صحة البيانات
-                if (!pendingAd.fullName || pendingAd.fullName.trim() === "") {
-                    addMessage("⚠️ خطأ: الاسم الكامل مطلوب", false);
-                    removeTypingIndicator();
-                    window.isPublishing = false;
-                    return;
-                }
-                if (!pendingAd.phone || pendingAd.phone.trim() === "") {
-                    addMessage("⚠️ خطأ: رقم الهاتف مطلوب", false);
-                    removeTypingIndicator();
-                    window.isPublishing = false;
-                    return;
-                }
-                if (!pendingAd.description || pendingAd.description.trim() === "") {
-                    addMessage("⚠️ خطأ: وصف الإعلان مطلوب", false);
-                    removeTypingIndicator();
-                    window.isPublishing = false;
-                    return;
-                }
-                if (!pendingAd.contactMethod) {
-                    addMessage("⚠️ خطأ: وسيلة التواصل مطلوبة", false);
-                    removeTypingIndicator();
-                    window.isPublishing = false;
-                    return;
-                }
-                if (pendingAd.mediaItems.length === 0) {
-                    addMessage("⚠️ خطأ: يجب رفع صورة أو فيديو واحد على الأقل", false);
+                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || pendingAd.mediaItems.length === 0) {
+                    addMessage("⚠️ خطأ: البيانات غير مكتملة.", false);
                     removeTypingIndicator();
                     window.isPublishing = false;
                     return;
                 }
                 
-                // جلب الإعلانات الموجودة من localStorage
+                // تجربة حفظ الإعلان مع التحقق من المساحة
                 let existingAds = [];
                 const stored = localStorage.getItem('marketplace_ads');
                 if (stored) {
@@ -1067,50 +854,50 @@
                         existingAds = JSON.parse(stored);
                         if (!Array.isArray(existingAds)) existingAds = [];
                     } catch(e) {
-                        console.error("خطأ في قراءة الإعلانات:", e);
                         existingAds = [];
                     }
                 }
                 
-                // إنشاء إعلان جديد بنفس الصيغة التي يفهمها marketplace.html
+                // الاحتفاظ بآخر 10 إعلانات فقط لتوفير المساحة
+                if (existingAds.length >= 10) {
+                    existingAds = existingAds.slice(0, 9);
+                }
+                
                 const newAd = {
                     id: Date.now(),
                     name: pendingAd.fullName.trim(),
                     phone: pendingAd.phone.trim(),
                     description: pendingAd.description.trim(),
                     contactMethod: pendingAd.contactMethod,
-                    mediaItems: pendingAd.mediaItems,  // المصفوفة الجديدة
-                    mediaList: pendingAd.mediaItems,   // للتوافق مع marketplace القديم
+                    mediaItems: pendingAd.mediaItems,
                     userId: currentUser || localStorage.getItem('currentUser') || 'guest',
                     date: Date.now(),
                     views: 0,
                     likes: 0
                 };
                 
-                // إضافة الإعلان الجديد في البداية
                 existingAds.unshift(newAd);
                 
-                // حفظ في localStorage
+                // محاولة الحفظ
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-                
-                // تجربة قراءة للتأكد من الحفظ
-                const testRead = localStorage.getItem('marketplace_ads');
-                console.log("تم حفظ الإعلان، عدد الإعلانات:", existingAds.length);
                 
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 removeTypingIndicator();
                 
-                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
+                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
                 addMessage("🛒 **رابط سوق مصطفى:**\nmarketplace.html", false);
                 
-                // إعادة تعيين حالة الإعلان
                 document.getElementById('mediaUploadBtn').style.display = 'none';
                 pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
                 
             } catch (error) {
                 console.error("خطأ في النشر:", error);
                 removeTypingIndicator();
-                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان: " + error.message, false);
+                if (error.message && error.message.includes('quota')) {
+                    addMessage("⚠️ **مساحة التخزين ممتلئة!** الرجاء الضغط على زر 'مسح الإعلانات القديمة' في الواجهة الرئيسية ثم المحاولة مرة أخرى.", false);
+                } else {
+                    addMessage("⚠️ حدث خطأ أثناء نشر الإعلان: " + error.message, false);
+                }
             } finally {
                 window.isPublishing = false;
             }
