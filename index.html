@@ -73,6 +73,34 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
         .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
+        .media-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .media-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f0f2f5;
+            padding: 8px;
+            border-radius: 12px;
+        }
+        .media-item img, .media-item video {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .main-badge {
+            background: #ffc107;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
         .user-msg-img, .user-msg-video { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; padding: 8px 12px; max-width: 85%; }
         .user-msg-img img { max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 5px; }
         .user-msg-video video { max-width: 220px; max-height: 220px; border-radius: 12px; margin-top: 5px; }
@@ -313,8 +341,8 @@
         <div class="messages" id="messages"></div>
         <div class="input-area">
             <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
-            <button id="mediaUploadBtn">📷 صورة / فيديو</button>
-            <input type="file" id="mediaInput" accept="image/*,video/*">
+            <button id="mediaUploadBtn">📷 رفع ملفات</button>
+            <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
             <button id="sendBtn">إرسال</button>
         </div>
     </div>
@@ -323,7 +351,16 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
-        let pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+        let pendingAd = { 
+            step: null, 
+            fullName: null, 
+            phone: null, 
+            description: null, 
+            contactMethod: null, 
+            mediaList: [], 
+            mainMediaIndex: 0,
+            mediaType: null
+        };
 
         const services = [
             { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان.\n🔹 يمكنك الشحن بأي مبلغ (500, 1000, 2000, 5000 دج).", requirements: "📋 **متطلبات الدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية أو CIB بنكية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية", needsCard: true },
@@ -413,7 +450,7 @@
             document.getElementById('loginSection').style.display = 'block'; 
             document.getElementById('appSection').style.display = 'none'; 
             document.getElementById('emailInput').value = ''; 
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
             pendingService = null; 
             document.getElementById('mediaUploadBtn').style.display = 'none';
             showToast('تم تسجيل الخروج'); 
@@ -449,29 +486,6 @@
             messagesDiv.appendChild(div); 
             messagesDiv.scrollTop = messagesDiv.scrollHeight; 
         }
-        
-        function addMediaMessage(mediaDataUrl, type, isUser) {
-            const div = document.createElement('div');
-            div.className = isUser ? (type === 'image' ? 'user-msg-img' : 'user-msg-video') : 'bot-msg';
-            if (type === 'image') {
-                const img = document.createElement('img');
-                img.src = mediaDataUrl;
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '200px';
-                img.style.borderRadius = '12px';
-                div.appendChild(img);
-            } else {
-                const video = document.createElement('video');
-                video.src = mediaDataUrl;
-                video.controls = true;
-                video.style.maxWidth = '220px';
-                video.style.maxHeight = '220px';
-                video.style.borderRadius = '12px';
-                div.appendChild(video);
-            }
-            messagesDiv.appendChild(div);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
 
         function showDetailedServiceExplanation(service) {
             let msg = `📌 **${service.name}** - ${service.description}\n\n${service.benefit}\n\n${service.requirements}\n\n${service.steps}\n\n`;
@@ -502,7 +516,7 @@
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
-            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
             document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
@@ -510,10 +524,11 @@
             const div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
-                <div>📸 **اختر نوع الملف الذي تريد رفعه (إجباري):**</div>
+                <div>📸 **اختر نوع الملفات التي تريد رفعها (إجباري):**</div>
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectMediaType('image')">🖼️ صورة</button>
-                    <button class="contact-btn messenger" onclick="window.selectMediaType('video')">🎬 فيديو</button>
+                    <button class="contact-btn" onclick="window.selectMediaType('image')">🖼️ صور</button>
+                    <button class="contact-btn messenger" onclick="window.selectMediaType('video')">🎬 فيديوهات</button>
+                    <button class="contact-btn phone" onclick="window.selectMediaType('mixed')">🖼️🎬 صور وفيديوهات</button>
                 </div>
             `;
             messagesDiv.appendChild(div);
@@ -521,9 +536,13 @@
         }
 
         window.selectMediaType = (type) => {
-            pendingAd.mediaTypeChoice = type;
-            addMessage(`✅ تم اختيار ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
-            addMessage(`🖼️ **الآن قم برفع ${type === 'image' ? 'الصورة' : 'الفيديو'}** بالضغط على زر "📷 صورة / فيديو" (إجباري)`, false);
+            pendingAd.mediaType = type;
+            let typeName = '';
+            if (type === 'image') typeName = 'صور';
+            else if (type === 'video') typeName = 'فيديوهات';
+            else typeName = 'صور وفيديوهات';
+            addMessage(`✅ تم اختيار ${typeName}`, false);
+            addMessage(`🖼️ **الآن قم برفع ${typeName}** بالضغط على زر "📷 رفع ملفات" (يمكنك رفع عدة ملفات مرة واحدة)`, false);
             pendingAd.step = 'media';
         };
 
@@ -557,6 +576,67 @@
             }, 500);
         };
 
+        // عرض الملفات المرفوعة في الشات
+        function displayUploadedMedia() {
+            if (pendingAd.mediaList.length === 0) return;
+            
+            const galleryDiv = document.createElement('div');
+            galleryDiv.className = 'media-gallery';
+            
+            for (let i = 0; i < pendingAd.mediaList.length; i++) {
+                const media = pendingAd.mediaList[i];
+                const isMain = (i === pendingAd.mainMediaIndex);
+                const mediaDiv = document.createElement('div');
+                mediaDiv.className = 'media-item';
+                
+                let mediaHtml = '';
+                if (media.type === 'image') {
+                    mediaHtml = `<img src="${media.data}" alt="صورة ${i+1}">`;
+                } else {
+                    mediaHtml = `<video src="${media.data}" style="width:60px; height:60px; object-fit:cover;"></video>`;
+                }
+                
+                mediaDiv.innerHTML = `
+                    ${mediaHtml}
+                    <div style="flex:1;">
+                        <div>${media.type === 'image' ? '🖼️ صورة' : '🎬 فيديو'} ${i+1} ${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}</div>
+                        ${!isMain ? `<button class="edit-btn" style="padding:2px 8px; font-size:11px;" onclick="window.setMainMedia(${i})">⭐ جعل رئيسي</button>` : ''}
+                        <button class="edit-btn" style="padding:2px 8px; font-size:11px; background:#dc3545; color:white;" onclick="window.removeMedia(${i})">🗑️ حذف</button>
+                    </div>
+                `;
+                galleryDiv.appendChild(mediaDiv);
+            }
+            
+            messagesDiv.appendChild(galleryDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        window.setMainMedia = (index) => {
+            pendingAd.mainMediaIndex = index;
+            showToast(`✅ تم تعيين الملف رقم ${index+1} كرئيسي للإعلان`);
+            // إعادة عرض المعرض
+            const lastMsg = messagesDiv.lastChild;
+            if (lastMsg && lastMsg.className === 'media-gallery') {
+                messagesDiv.removeChild(lastMsg);
+            }
+            displayUploadedMedia();
+        };
+        
+        window.removeMedia = (index) => {
+            pendingAd.mediaList.splice(index, 1);
+            if (pendingAd.mainMediaIndex >= pendingAd.mediaList.length) {
+                pendingAd.mainMediaIndex = Math.max(0, pendingAd.mediaList.length - 1);
+            }
+            showToast(`🗑️ تم حذف الملف`);
+            const lastMsg = messagesDiv.lastChild;
+            if (lastMsg && lastMsg.className === 'media-gallery') {
+                messagesDiv.removeChild(lastMsg);
+            }
+            if (pendingAd.mediaList.length > 0) {
+                displayUploadedMedia();
+            }
+        };
+
         function showSummaryWithEditOptions() {
             let contactText = '';
             let contactIcon = '';
@@ -570,6 +650,11 @@
                 contactText = `هاتف: ${pendingAd.phone}`;
                 contactIcon = '📱';
             }
+            
+            let mediaTypeName = '';
+            if (pendingAd.mediaType === 'image') mediaTypeName = 'صور';
+            else if (pendingAd.mediaType === 'video') mediaTypeName = 'فيديوهات';
+            else mediaTypeName = 'صور وفيديوهات';
             
             const summaryContainer = document.createElement('div');
             summaryContainer.style.margin = '10px 0';
@@ -597,12 +682,12 @@
                     <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('description')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
-                    <strong>🖼️ نوع الملف:</strong> ${pendingAd.mediaTypeChoice === 'image' ? 'صورة' : 'فيديو'}
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('mediaTypeChoice')">تعديل</button>
+                    <strong>🖼️ نوع الملفات:</strong> ${mediaTypeName}
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('mediaType')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
-                    <strong>📎 الملف:</strong> ✅ مرفق
-                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('media')">تغيير الملف</button>
+                    <strong>📎 الملفات:</strong> ${pendingAd.mediaList.length} ملف مرفق (الرئيسي: ${pendingAd.mainMediaIndex+1})
+                    <button class="edit-btn" style="padding: 4px 12px; font-size: 12px; margin-right: 10px;" onclick="window.editField('media')">تعديل</button>
                 </div>
                 <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 12px;">
                     <strong>💬 وسيلة التواصل:</strong> ${contactIcon} ${contactText}
@@ -635,12 +720,12 @@
                 case 'description':
                     promptMessage = 'أدخل الوصف الجديد:';
                     break;
-                case 'mediaTypeChoice':
+                case 'mediaType':
                     showMediaTypeChoice();
                     pendingAd.step = 'waitingForMediaTypeChoice';
                     return;
                 case 'media':
-                    addMessage("🖼️ الرجاء رفع ملف جديد:", false);
+                    addMessage("🖼️ الرجاء رفع ملفات جديدة (يمكنك اختيار عدة ملفات مرة واحدة):", false);
                     pendingAd.step = 'editingMedia';
                     return;
                 case 'contactMethod':
@@ -679,7 +764,7 @@
         }
         
         window.proceedToPreview = () => {
-            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaTypeChoice || !pendingAd.media) {
+            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaType || pendingAd.mediaList.length === 0) {
                 addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات قبل المتابعة", false);
                 return;
             }
@@ -688,7 +773,7 @@
         
         window.cancelAd = () => {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
             document.getElementById('mediaUploadBtn').style.display = 'none';
         };
 
@@ -706,6 +791,8 @@
                 contactIcon = '📱';
             }
             
+            const mainMedia = pendingAd.mediaList[pendingAd.mainMediaIndex];
+            
             const previewContainer = document.createElement('div');
             previewContainer.style.margin = '10px 0';
             
@@ -718,10 +805,10 @@
             previewDiv.className = 'facebook-preview';
             
             let mediaHtml = '';
-            if (pendingAd.media && pendingAd.mediaType === 'image') {
-                mediaHtml = `<img class="fb-media" src="${pendingAd.media}" alt="صورة الإعلان">`;
-            } else if (pendingAd.media && pendingAd.mediaType === 'video') {
-                mediaHtml = `<video class="fb-media-video" src="${pendingAd.media}" controls style="width:100%; max-height:400px;"></video>`;
+            if (mainMedia && mainMedia.type === 'image') {
+                mediaHtml = `<img class="fb-media" src="${mainMedia.data}" alt="صورة الإعلان">`;
+            } else if (mainMedia && mainMedia.type === 'video') {
+                mediaHtml = `<video class="fb-media-video" src="${mainMedia.data}" controls style="width:100%; max-height:400px;"></video>`;
             }
             
             previewDiv.innerHTML = `
@@ -736,6 +823,9 @@
                     ${pendingAd.description || '📢 إعلان جديد'}
                 </div>
                 ${mediaHtml}
+                <div style="padding: 8px 12px; font-size:12px; color:#666; text-align:center;">
+                    📸 +${pendingAd.mediaList.length - 1} ملف إضافي
+                </div>
                 <div class="fb-contact">
                     ${contactIcon} ${contactText}
                 </div>
@@ -804,58 +894,67 @@
             });
         }
         
-        // معالجة رفع الملف مع ضغط الصور
+        // معالجة رفع الملفات المتعددة
         mediaUploadBtn.onclick = () => { mediaInput.click(); };
         mediaInput.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
             
-            const fileType = file.type;
-            let mediaType = null;
-            let processedFile = file;
-            
-            if (fileType.startsWith('image/')) {
-                mediaType = 'image';
-                if (pendingAd.mediaTypeChoice !== 'image') {
-                    showToast(`❌ لقد اخترت رفع صورة ولكنك اخترت سابقاً ${pendingAd.mediaTypeChoice === 'image' ? 'صورة' : 'فيديو'}. يرجى اختيار الملف الصحيح`);
-                    mediaInput.value = '';
-                    return;
+            for (const file of files) {
+                const fileType = file.type;
+                let mediaItemType = null;
+                let processedFile = file;
+                
+                if (fileType.startsWith('image/')) {
+                    mediaItemType = 'image';
+                    if (pendingAd.mediaType === 'video') {
+                        showToast(`❌ لقد اخترت رفع فيديوهات فقط، لكنك رفعت صورة. يرجى رفع فيديوهات فقط`);
+                        mediaInput.value = '';
+                        return;
+                    }
+                    try {
+                        const compressedBlob = await compressImage(file, 800, 800, 0.7);
+                        processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
+                    } catch(e) {
+                        console.error("خطأ في الضغط:", e);
+                    }
+                } else if (fileType.startsWith('video/')) {
+                    mediaItemType = 'video';
+                    if (pendingAd.mediaType === 'image') {
+                        showToast(`❌ لقد اخترت رفع صور فقط، لكنك رفعت فيديو. يرجى رفع صور فقط`);
+                        mediaInput.value = '';
+                        return;
+                    }
+                } else {
+                    showToast(`❌ الملف ${file.name} ليس صورة ولا فيديو`);
+                    continue;
                 }
-                try {
-                    showToast("🔄 جاري ضغط الصورة...");
-                    const compressedBlob = await compressImage(file, 800, 800, 0.7);
-                    processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
-                    showToast("✅ تم ضغط الصورة بنجاح!");
-                } catch(e) {
-                    console.error("خطأ في الضغط:", e);
-                }
-            } else if (fileType.startsWith('video/')) {
-                mediaType = 'video';
-                if (pendingAd.mediaTypeChoice !== 'video') {
-                    showToast(`❌ لقد اخترت رفع فيديو ولكنك اخترت سابقاً ${pendingAd.mediaTypeChoice === 'image' ? 'صورة' : 'فيديو'}. يرجى اختيار الملف الصحيح`);
-                    mediaInput.value = '';
-                    return;
-                }
-                showToast("🎬 جاري تجهيز الفيديو...");
-            } else {
-                showToast("❌ يرجى اختيار صورة أو فيديو فقط");
-                mediaInput.value = '';
-                return;
+                
+                const reader = new FileReader();
+                await new Promise((resolve) => {
+                    reader.onload = (event) => {
+                        pendingAd.mediaList.push({
+                            data: event.target.result,
+                            type: mediaItemType,
+                            name: file.name
+                        });
+                        resolve();
+                    };
+                    reader.readAsDataURL(processedFile);
+                });
             }
             
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                pendingAd.media = event.target.result;
-                pendingAd.mediaType = mediaType;
-                addMediaMessage(pendingAd.media, mediaType, true);
-                addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
-                
+            addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
+            
+            // عرض المعرض
+            displayUploadedMedia();
+            
+            if (pendingAd.step === 'media' || pendingAd.step === 'editingMedia') {
                 setTimeout(() => {
                     addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
                     pendingAd.step = 'description';
                 }, 500);
-            };
-            reader.readAsDataURL(processedFile);
+            }
             mediaInput.value = '';
         };
 
@@ -868,7 +967,7 @@
                 addMessage("🚀 جاري نشر إعلانك...", false);
                 showTypingIndicator();
                 
-                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaTypeChoice || !pendingAd.media) {
+                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaType || pendingAd.mediaList.length === 0) {
                     addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى المحاولة مرة أخرى.", false);
                     removeTypingIndicator();
                     window.isPublishing = false;
@@ -891,8 +990,9 @@
                     phone: pendingAd.phone,
                     description: pendingAd.description,
                     contactMethod: pendingAd.contactMethod,
-                    image: pendingAd.media,
-                    imageType: pendingAd.mediaType,
+                    mediaList: pendingAd.mediaList,
+                    mainMediaIndex: pendingAd.mainMediaIndex,
+                    mediaType: pendingAd.mediaType,
                     userId: currentUser,
                     date: Date.now(),
                     views: 0,
@@ -910,7 +1010,7 @@
                 
                 document.getElementById('mediaUploadBtn').style.display = 'none';
                 
-                pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+                pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaList: [], mainMediaIndex: 0, mediaType: null };
                 
             } catch (error) {
                 console.error("خطأ في النشر:", error);
