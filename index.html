@@ -47,6 +47,17 @@
         .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; }
         .btn-logout { background: #dc3545; margin-top: 15px; }
+        .marketplace-link-btn {
+            background: linear-gradient(135deg, #6f42c1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
         .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
         .user-name { font-size: 24px; font-weight: bold; color: #0f3460; word-break: break-all; }
         .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
@@ -139,7 +150,7 @@
         .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
         #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; min-width: 120px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
         .contact-buttons {
             display: flex;
@@ -172,17 +183,6 @@
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .marketplace-link-btn {
-            background: linear-gradient(135deg, #6f42c1, #8b5cf6);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
         .icon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
         @media (min-width: 550px) { .icon-grid { grid-template-columns: repeat(3, 1fr); } }
         .icon-item { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 20px; padding: 12px 8px; cursor: pointer; text-align: center; border: 2px solid #dee2e6; transition: all 0.3s; }
@@ -268,6 +268,7 @@
             <div id="loginSection">
                 <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" required>
                 <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
+                <button id="marketplaceGuestBtn" class="marketplace-link-btn" style="margin-top:10px;">🛒 دخول إلى سوق مصطفى (بدون تسجيل)</button>
                 <div id="loginMsg" style="color:#e94560; margin-top:8px; font-size:13px;"></div>
             </div>
 
@@ -279,7 +280,7 @@
                     <div id="paymentSection" style="margin-top: 10px;"></div>
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
-                <button id="marketplaceBtn" class="marketplace-link-btn" style="display:none;">🛒 دخول إلى سوق مصطفى</button>
+                <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
             </div>
         </div>
     </div>
@@ -366,15 +367,18 @@
                 document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
                 document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
                 document.getElementById('paymentSection').innerHTML = '';
-                document.getElementById('marketplaceBtn').style.display = 'block';
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
                 document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
                 document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8', '_blank')">📅 اشتراك سنوي 1000 دج</button></div><div style="font-size:12px; color:#666; margin-top:8px;">💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج</div>`;
-                document.getElementById('marketplaceBtn').style.display = 'none';
             }
         }
 
+        // أزرار دخول السوق
+        document.getElementById('marketplaceGuestBtn').onclick = () => {
+            window.open('marketplace.html', '_blank');
+        };
+        
         document.getElementById('marketplaceBtn').onclick = () => {
             window.open('marketplace.html', '_blank');
         };
@@ -401,6 +405,8 @@
             document.getElementById('emailInput').value = ''; 
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
             pendingService = null; 
+            // إخفاء زر رفع الصورة/الفيديو عند تسجيل الخروج
+            document.getElementById('mediaUploadBtn').style.display = 'none';
             showToast('تم تسجيل الخروج'); 
         };
         
@@ -488,6 +494,8 @@
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
             pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+            // إظهار زر رفع الصورة/الفيديو
+            document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
         function showContactButtons() {
@@ -681,6 +689,8 @@
         window.cancelAd = () => {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
             pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
+            // إخفاء زر رفع الصورة/الفيديو
+            document.getElementById('mediaUploadBtn').style.display = 'none';
         };
 
         function showFacebookPreview() {
@@ -897,6 +907,9 @@
                 
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
                 addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+                
+                // إخفاء زر رفع الصورة/الفيديو
+                document.getElementById('mediaUploadBtn').style.display = 'none';
                 
                 pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, showType: null, media: null, mediaType: null };
                 
