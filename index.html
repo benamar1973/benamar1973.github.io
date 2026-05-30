@@ -101,80 +101,6 @@
             font-size: 11px;
             font-weight: bold;
         }
-        .user-msg-img, .user-msg-video { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; padding: 8px 12px; max-width: 85%; }
-        .user-msg-img img { max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 5px; }
-        .user-msg-video video { max-width: 220px; max-height: 220px; border-radius: 12px; margin-top: 5px; }
-        
-        .facebook-preview {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 100%;
-            margin: 10px 0;
-            direction: ltr;
-            text-align: left;
-        }
-        .fb-header {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            gap: 10px;
-        }
-        .fb-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .fb-name {
-            font-weight: bold;
-            font-size: 14px;
-            color: #050505;
-        }
-        .fb-time {
-            font-size: 11px;
-            color: #65676B;
-        }
-        .fb-content {
-            padding: 0 12px 8px 12px;
-            font-size: 14px;
-            color: #050505;
-        }
-        .fb-media {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            background: #f0f2f5;
-        }
-        .fb-media-video {
-            width: 100%;
-            max-height: 400px;
-            background: #000;
-        }
-        .fb-contact {
-            padding: 10px 12px;
-            background: #f0f2f5;
-            margin: 8px;
-            border-radius: 8px;
-            font-size: 13px;
-            direction: rtl;
-            text-align: center;
-        }
-        .fb-buttons {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 12px;
-            border-top: 1px solid #e4e6eb;
-            color: #65676B;
-            font-size: 13px;
-        }
         .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
         #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; font-size: 15px; min-width: 120px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
@@ -421,7 +347,6 @@
             }
         }
 
-        // أزرار دخول السوق
         document.getElementById('marketplaceGuestBtn').onclick = () => {
             window.open('marketplace.html', '_blank');
         };
@@ -576,7 +501,6 @@
             }, 500);
         };
 
-        // عرض الملفات المرفوعة في الشات
         function displayUploadedMedia() {
             if (pendingAd.mediaList.length === 0) return;
             
@@ -614,7 +538,6 @@
         window.setMainMedia = (index) => {
             pendingAd.mainMediaIndex = index;
             showToast(`✅ تم تعيين الملف رقم ${index+1} كرئيسي للإعلان`);
-            // إعادة عرض المعرض
             const lastMsg = messagesDiv.lastChild;
             if (lastMsg && lastMsg.className === 'media-gallery') {
                 messagesDiv.removeChild(lastMsg);
@@ -777,6 +700,22 @@
             document.getElementById('mediaUploadBtn').style.display = 'none';
         };
 
+        // ========== معاينة AliExpress ==========
+        window.previewSetMain = (index) => {
+            pendingAd.mainMediaIndex = index;
+            // إزالة آخر معاينة وأزرارها
+            const lastMsg = messagesDiv.lastChild;
+            if (lastMsg && lastMsg.classList && lastMsg.classList.contains('confirm-buttons')) {
+                messagesDiv.removeChild(lastMsg);
+            }
+            const previewDiv = messagesDiv.lastChild;
+            if (previewDiv && previewDiv.style && previewDiv.style.margin === '10px 0') {
+                messagesDiv.removeChild(previewDiv);
+            }
+            // إعادة عرض المعاينة
+            showFacebookPreview();
+        };
+
         function showFacebookPreview() {
             let contactText = '';
             let contactIcon = '';
@@ -791,69 +730,94 @@
                 contactIcon = '📱';
             }
             
-            const mainMedia = pendingAd.mediaList[pendingAd.mainMediaIndex];
-            
             const previewContainer = document.createElement('div');
             previewContainer.style.margin = '10px 0';
+            previewContainer.style.background = 'white';
+            previewContainer.style.borderRadius = '12px';
+            previewContainer.style.overflow = 'hidden';
+            previewContainer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            previewContainer.style.direction = 'ltr';
+            previewContainer.style.textAlign = 'left';
             
-            const previewTitle = document.createElement('div');
-            previewTitle.className = 'bot-msg';
-            previewTitle.innerText = '🔍 **معاينة الإعلان كما سيظهر:**';
-            previewContainer.appendChild(previewTitle);
-            
-            const previewDiv = document.createElement('div');
-            previewDiv.className = 'facebook-preview';
-            
-            let mediaHtml = '';
+            // الصورة الرئيسية
+            const mainMedia = pendingAd.mediaList[pendingAd.mainMediaIndex];
+            let mainMediaHtml = '';
             if (mainMedia && mainMedia.type === 'image') {
-                mediaHtml = `<img class="fb-media" src="${mainMedia.data}" alt="صورة الإعلان">`;
+                mainMediaHtml = `<img src="${mainMedia.data}" style="width:100%; max-height:400px; object-fit:cover;">`;
             } else if (mainMedia && mainMedia.type === 'video') {
-                mediaHtml = `<video class="fb-media-video" src="${mainMedia.data}" controls style="width:100%; max-height:400px;"></video>`;
+                mainMediaHtml = `<video src="${mainMedia.data}" controls style="width:100%; max-height:400px;"></video>`;
             }
             
-            previewDiv.innerHTML = `
-                <div class="fb-header">
-                    <div class="fb-avatar">${pendingAd.fullName ? pendingAd.fullName.charAt(0).toUpperCase() : 'م'}</div>
+            // الصور المصغرة
+            let thumbnailsHtml = '';
+            if (pendingAd.mediaList.length > 1) {
+                thumbnailsHtml = '<div style="display:flex; gap:8px; padding:12px; overflow-x:auto;">';
+                for (let i = 0; i < pendingAd.mediaList.length; i++) {
+                    const media = pendingAd.mediaList[i];
+                    const isActive = (i === pendingAd.mainMediaIndex);
+                    const borderStyle = isActive ? 'border:3px solid #007bff;' : 'border:2px solid transparent;';
+                    
+                    if (media.type === 'image') {
+                        thumbnailsHtml += `<img src="${media.data}" style="width:70px; height:70px; object-fit:cover; border-radius:8px; cursor:pointer; ${borderStyle}" onclick="window.previewSetMain(${i})">`;
+                    } else {
+                        thumbnailsHtml += `<div style="width:70px; height:70px; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; cursor:pointer; ${borderStyle}" onclick="window.previewSetMain(${i})">🎬</div>`;
+                    }
+                }
+                thumbnailsHtml += '</div>';
+            }
+            
+            previewContainer.innerHTML = `
+                <div style="display:flex; align-items:center; padding:12px; gap:10px;">
+                    <div style="width:40px; height:40px; background:linear-gradient(135deg, #007bff, #00c6ff); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:18px;">${pendingAd.fullName ? pendingAd.fullName.charAt(0).toUpperCase() : 'م'}</div>
                     <div>
-                        <div class="fb-name">${pendingAd.fullName || 'اسم المستخدم'}</div>
-                        <div class="fb-time">الآن · 🌍</div>
+                        <div style="font-weight:bold; font-size:14px; color:#050505;">${pendingAd.fullName || 'اسم المستخدم'}</div>
+                        <div style="font-size:11px; color:#65676B;">الآن · 🌍</div>
                     </div>
                 </div>
-                <div class="fb-content">
+                <div style="padding:0 12px 8px 12px; font-size:14px; color:#050505;">
                     ${pendingAd.description || '📢 إعلان جديد'}
                 </div>
-                ${mediaHtml}
-                <div style="padding: 8px 12px; font-size:12px; color:#666; text-align:center;">
-                    📸 +${pendingAd.mediaList.length - 1} ملف إضافي
-                </div>
-                <div class="fb-contact">
+                ${mainMediaHtml}
+                ${thumbnailsHtml}
+                <div style="padding:10px 12px; background:#f0f2f5; margin:8px; border-radius:8px; font-size:13px; text-align:center;">
                     ${contactIcon} ${contactText}
                 </div>
-                <div class="fb-buttons">
+                <div style="display:flex; justify-content:space-around; padding:8px 12px; border-top:1px solid #e4e6eb; color:#65676B; font-size:13px;">
                     <span>👍 أعجبني</span>
                     <span>💬 تعليق</span>
                     <span>📤 مشاركة</span>
                 </div>
             `;
             
-            previewContainer.appendChild(previewDiv);
+            messagesDiv.appendChild(previewContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
+            // أزرار التأكيد
             const finalButtons = document.createElement('div');
             finalButtons.className = 'confirm-buttons';
+            finalButtons.style.margin = '10px 0';
+            finalButtons.style.display = 'flex';
+            finalButtons.style.gap = '10px';
+            finalButtons.style.justifyContent = 'center';
+            finalButtons.style.flexWrap = 'wrap';
             finalButtons.innerHTML = `
                 <button class="confirm-yes" onclick="window.finalPublish()">✅ تأكيد النشر</button>
                 <button class="edit-btn" onclick="window.backToEdit()">✏️ العودة للتعديل</button>
                 <button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء</button>
             `;
-            previewContainer.appendChild(finalButtons);
-            
-            messagesDiv.appendChild(previewContainer);
+            messagesDiv.appendChild(finalButtons);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
         
         window.backToEdit = () => {
             const lastMsg = messagesDiv.lastChild;
-            if (lastMsg) messagesDiv.removeChild(lastMsg);
+            if (lastMsg && lastMsg.classList && lastMsg.classList.contains('confirm-buttons')) {
+                messagesDiv.removeChild(lastMsg);
+            }
+            const previewDiv = messagesDiv.lastChild;
+            if (previewDiv && previewDiv.style && previewDiv.style.margin === '10px 0') {
+                messagesDiv.removeChild(previewDiv);
+            }
             showSummaryWithEditOptions();
         };
         
@@ -946,7 +910,6 @@
             
             addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
             
-            // عرض المعرض
             displayUploadedMedia();
             
             if (pendingAd.step === 'media' || pendingAd.step === 'editingMedia') {
