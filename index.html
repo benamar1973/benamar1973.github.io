@@ -227,55 +227,9 @@
             border-color: #ff6b35;
             box-shadow: 0 0 0 2px rgba(255,107,53,0.3);
         }
-        .alice-thumb-video {
-            position: relative;
-        }
-        .alice-thumb-video::after {
-            content: "▶";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            background: rgba(0,0,0,0.6);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
         .alice-info {
             padding: 16px;
             border-top: 1px solid #f0f0f0;
-        }
-        .alice-price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff6b35;
-            margin-bottom: 8px;
-        }
-        .alice-price small {
-            font-size: 14px;
-            font-weight: normal;
-            color: #999;
-        }
-        .alice-rating {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .stars {
-            color: #ffc107;
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-        .alice-shipping {
-            font-size: 13px;
-            color: #28a745;
-            margin-bottom: 12px;
         }
         .alice-description {
             font-size: 14px;
@@ -397,7 +351,7 @@
         <div class="messages" id="messages"></div>
         <div class="input-area">
             <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
-            <button id="mediaUploadBtn">📷 رفع صور/فيديو</button>
+            <button id="mediaUploadBtn">📷 صورة / فيديو</button>
             <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
             <button id="sendBtn">إرسال</button>
         </div>
@@ -407,7 +361,7 @@
         let currentUser = null;
         let isBotTyping = false;
         let pendingService = null;
-        let pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [], price: null };
+        let pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
 
         const services = [
             { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان.\n🔹 يمكنك الشحن بأي مبلغ (500, 1000, 2000, 5000 دج).", requirements: "📋 **متطلبات الدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية أو CIB بنكية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية", needsCard: true },
@@ -496,7 +450,7 @@
             document.getElementById('loginSection').style.display = 'block'; 
             document.getElementById('appSection').style.display = 'none'; 
             document.getElementById('emailInput').value = ''; 
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [], price: null };
+            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
             pendingService = null; 
             document.getElementById('mediaUploadBtn').style.display = 'none';
             showToast('تم تسجيل الخروج'); 
@@ -585,11 +539,11 @@
             addMessage(AD_RULES, false);
             await new Promise(resolve => setTimeout(resolve, 1000));
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
-            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [], price: null };
+            pendingAd = { step: 'fullName', fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
             document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
 
-        function showMediaTypeAndUpload() {
+        function showMediaUploadInterface() {
             const div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
@@ -634,6 +588,9 @@
                         removeBtn.onclick = () => {
                             pendingAd.mediaItems.splice(index, 1);
                             window.updateMediaPreview();
+                            if (pendingAd.mediaItems.length === 0) {
+                                addMessage("⚠️ تم حذف جميع الملفات. يرجى رفع ملفات جديدة.", false);
+                            }
                         };
                         itemDiv.appendChild(removeBtn);
                         previewDiv.appendChild(itemDiv);
@@ -869,7 +826,7 @@
                     addMessage("🖼️ يمكنك الآن إضافة المزيد من الملفات (اختر عدة ملفات دفعة واحدة):", false);
                     pendingAd.step = 'waitingForMedia';
                     mediaUploadBtn.style.display = 'inline-block';
-                    showMediaTypeAndUpload();
+                    showMediaUploadInterface();
                     return;
                 case 'contactMethod':
                     addMessage("📞 اختر وسيلة التواصل الجديدة:", false);
@@ -890,7 +847,7 @@
         
         window.cancelAd = () => {
             addMessage("🙂 تم إلغاء الإعلان. يمكنك البدء من جديد بالضغط على الأيقونة البرتقالية.", false);
-            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [], price: null };
+            pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
             document.getElementById('mediaUploadBtn').style.display = 'none';
         };
 
@@ -918,7 +875,7 @@
             
             const previewTitle = document.createElement('div');
             previewTitle.className = 'bot-msg';
-            previewTitle.innerText = '🔍 **معاينة الإعلان (بنمط AliExpress):**';
+            previewTitle.innerText = '🔍 **معاينة الإعلان:**';
             previewContainer.appendChild(previewTitle);
             
             const previewDiv = document.createElement('div');
@@ -962,14 +919,15 @@
             function renderThumbnails() {
                 thumbnailsDiv.innerHTML = '';
                 pendingAd.mediaItems.forEach((item, idx) => {
-                    const thumb = document.createElement('div');
-                    thumb.style.position = 'relative';
+                    const thumbWrapper = document.createElement('div');
+                    thumbWrapper.style.position = 'relative';
+                    thumbWrapper.style.cursor = 'pointer';
                     
-                    const img = document.createElement('img');
-                    img.src = item.data;
-                    img.className = 'alice-thumb';
+                    const thumb = document.createElement('img');
+                    thumb.src = item.data;
+                    thumb.className = 'alice-thumb';
+                    
                     if (item.type === 'video') {
-                        img.style.position = 'relative';
                         const playIcon = document.createElement('div');
                         playIcon.innerHTML = '▶';
                         playIcon.style.position = 'absolute';
@@ -985,14 +943,14 @@
                         playIcon.style.alignItems = 'center';
                         playIcon.style.justifyContent = 'center';
                         playIcon.style.fontSize = '12px';
-                        thumb.appendChild(playIcon);
+                        thumbWrapper.appendChild(playIcon);
                     }
                     
                     if (idx === currentIndex) {
-                        img.classList.add('active');
+                        thumb.classList.add('active');
                     }
                     
-                    img.onclick = () => {
+                    thumbWrapper.onclick = () => {
                         currentIndex = idx;
                         renderMainMedia(currentIndex);
                         document.querySelectorAll('.alice-thumb').forEach((t, i) => {
@@ -1001,27 +959,18 @@
                         });
                     };
                     
-                    thumb.appendChild(img);
-                    thumbnailsDiv.appendChild(thumb);
+                    thumbWrapper.appendChild(thumb);
+                    thumbnailsDiv.appendChild(thumbWrapper);
                 });
             }
             
             renderMainMedia(0);
             renderThumbnails();
             
-            const priceValue = pendingAd.price || "السعر غير محدد";
-            const priceHtml = priceValue !== "السعر غير محدد" ? `${priceValue} دج` : priceValue;
-            
             previewDiv.innerHTML = `
                 <div id="aliceMainContainer"></div>
                 <div id="aliceThumbnailsContainer"></div>
                 <div class="alice-info">
-                    <div class="alice-price">${priceHtml} <small>توصيل مجاني</small></div>
-                    <div class="alice-rating">
-                        <div class="stars">★★★★★</div>
-                        <span style="color:#666; font-size:12px;">(4.9)</span>
-                    </div>
-                    <div class="alice-shipping">🚚 توصيل سريع • ضمان استرجاع 15 يوم</div>
                     <div class="alice-description">
                         <strong>📝 وصف المنتج:</strong><br>
                         ${pendingAd.description}
@@ -1030,7 +979,7 @@
                         ${contactIcon} <strong>${contactText}</strong>
                     </div>
                     <button class="alice-contact-btn" onclick="window.open('${contactLink}', '_blank')">
-                        📞 اتصل الآن للشراء
+                        📞 اتصل الآن
                     </button>
                 </div>
             `;
@@ -1096,8 +1045,7 @@
                     userId: currentUser,
                     date: Date.now(),
                     views: 0,
-                    likes: 0,
-                    price: pendingAd.price || null
+                    likes: 0
                 };
                 
                 existingAds.unshift(newAd);
@@ -1111,7 +1059,7 @@
                 
                 document.getElementById('mediaUploadBtn').style.display = 'none';
                 
-                pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [], price: null };
+                pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
                 
             } catch (error) {
                 console.error("خطأ في النشر:", error);
@@ -1177,19 +1125,7 @@
                 }
                 pendingAd.phone = userMessage.trim();
                 addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`, false);
-                addMessage("💰 **سعر المنتج (اختياري):**\nيمكنك كتابة السعر أو الضغط على 'تخطي'", false);
-                pendingAd.step = 'price';
-                return true;
-            }
-            
-            if (pendingAd.step === 'price') {
-                if (userMessage.trim().toLowerCase() !== 'تخطي' && userMessage.trim() !== '') {
-                    pendingAd.price = userMessage.trim();
-                    addMessage(`✅ تم تسجيل السعر: ${pendingAd.price} دج`, false);
-                } else {
-                    addMessage(`⏩ تم تخطي السعر`, false);
-                }
-                showMediaTypeAndUpload();
+                showMediaUploadInterface();
                 return true;
             }
             
