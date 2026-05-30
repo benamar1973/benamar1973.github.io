@@ -529,24 +529,12 @@
             else methodName = 'هاتف';
             addMessage(`✅ تم اختيار: ${methodName}`, false);
             
-            addMessage("📸 **كيف سيظهر منتجك أو خدمتك في الإعلان؟ (إجباري)**\n\nاختر نوع العرض:", false);
-            
-            const typeDiv = document.createElement('div');
-            typeDiv.className = 'contact-buttons';
-            typeDiv.innerHTML = `
-                <button class="contact-btn" onclick="window.selectShowType('image')">🖼️ صورة</button>
-                <button class="contact-btn messenger" onclick="window.selectShowType('video')">🎬 فيديو</button>
-            `;
-            messagesDiv.appendChild(typeDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            pendingAd.step = 'waitingForShowType';
-        };
-        
-        window.selectShowType = (type) => {
-            pendingAd.showType = type;
-            addMessage(`✅ تم اختيار العرض كـ ${type === 'image' ? 'صورة' : 'فيديو'}`, false);
-            addMessage(`🖼️ الآن قم برفع ${type === 'image' ? 'الصورة' : 'الفيديو'} بالضغط على زر "📷 صورة / فيديو" (إجباري)`, false);
-            pendingAd.step = 'media';
+            // بعد اختيار وسيلة التواصل، ننتقل إلى مراجعة المعلومات
+            setTimeout(() => {
+                addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false);
+                showSummaryWithEditOptions();
+                pendingAd.step = 'review';
+            }, 500);
         };
 
         function showSummaryWithEditOptions() {
@@ -841,12 +829,6 @@
                 return;
             }
             
-            if (pendingAd.showType && pendingAd.showType !== mediaType) {
-                showToast(`❌ لقد اخترت عرض ${pendingAd.showType === 'image' ? 'صورة' : 'فيديو'} ولكنك رفعت ${mediaType === 'image' ? 'صورة' : 'فيديو'}. يرجى رفع الملف الصحيح`);
-                mediaInput.value = '';
-                return;
-            }
-            
             const reader = new FileReader();
             reader.onload = (event) => {
                 pendingAd.media = event.target.result;
@@ -854,6 +836,7 @@
                 addMediaMessage(pendingAd.media, mediaType, true);
                 addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
                 
+                // بعد رفع الملف، نطلب الوصف
                 setTimeout(() => {
                     addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
                     pendingAd.step = 'description';
@@ -997,7 +980,7 @@
                 return true;
             }
             
-            if (pendingAd.step === 'waitingForContact' || pendingAd.step === 'waitingForShowType') {
+            if (pendingAd.step === 'waitingForContact') {
                 return true;
             }
             
@@ -1058,7 +1041,7 @@
                 chatInput.value = '';
             }
             
-            if (pendingAd.step && pendingAd.step !== 'waitingForContact' && pendingAd.step !== 'waitingForShowType' && pendingAd.step !== 'review') {
+            if (pendingAd.step && pendingAd.step !== 'waitingForContact' && pendingAd.step !== 'review') {
                 if (!text) return;
                 isBotTyping = true;
                 showTypingIndicator();
