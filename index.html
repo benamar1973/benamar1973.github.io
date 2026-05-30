@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
-        /* كل الأنماط الأصلية - لم تتغير */
         *{margin:0;padding:0;box-sizing:border-box}
         body{background:linear-gradient(160deg,#1a1a2e 0%,#16213e 100%);font-family:'Cairo','Segoe UI','Tahoma',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px}
         .top-bot-bar{width:100%;max-width:650px;margin:0 auto 20px auto;background:linear-gradient(135deg,#007bff,#00c6ff);border-radius:80px;padding:20px 30px;text-align:center;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.3);transition:all 0.3s ease;animation:glow 2s infinite}
@@ -32,33 +31,47 @@
         .chat-header{background:linear-gradient(135deg,#007bff,#0056b3);color:white;padding:16px;display:flex;justify-content:space-between;align-items:center;font-size:1.5rem;font-weight:bold}
         .close-btn{background:none;border:none;color:white;font-size:2rem;cursor:pointer}
         .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-        .bot-msg,.user-msg{padding:12px 16px;border-radius:20px;max-width:85%;font-size:15px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+        .bot-msg,.user-msg{padding:12px 16px;border-radius:20px;max-width:85%;font-size:15px;line-height:1.5;animation:fadeIn 0.3s;white-space:pre-wrap;word-wrap:break-word}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         .bot-msg{background:#e3f2fd;align-self:flex-start;border-bottom-right-radius:5px}
         .user-msg{background:#d4edda;align-self:flex-end;border-bottom-left-radius:5px}
         .user-msg-img,.user-msg-video{background:#d4edda;align-self:flex-end;border-bottom-left-radius:5px;padding:8px 12px;max-width:85%}
-        .user-msg-img img,.user-msg-video video{max-width:200px;max-height:200px;border-radius:12px}
+        .user-msg-img img,.user-msg-video video{max-width:200px;max-height:200px;border-radius:12px;margin-top:5px}
+        .facebook-preview{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:100%;margin:10px 0;direction:ltr;text-align:left}
+        .fb-header{display:flex;align-items:center;padding:12px;gap:10px}
+        .fb-avatar{width:40px;height:40px;background:linear-gradient(135deg,#007bff,#00c6ff);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:18px}
+        .fb-name{font-weight:bold;font-size:14px;color:#050505}
+        .fb-time{font-size:11px;color:#65676B}
+        .fb-content{padding:0 12px 8px 12px;font-size:14px;color:#050505}
+        .fb-media{width:100%;max-height:400px;object-fit:cover;background:#f0f2f5}
+        .fb-media-video{width:100%;max-height:400px;background:#000}
+        .fb-contact{padding:10px 12px;background:#f0f2f5;margin:8px;border-radius:8px;font-size:13px;direction:rtl;text-align:center}
+        .fb-buttons{display:flex;justify-content:space-around;padding:8px 12px;border-top:1px solid #e4e6eb;color:#65676B;font-size:13px}
         .input-area{background:white;padding:12px;display:flex;gap:10px;border-top:1px solid #ddd;flex-wrap:wrap}
-        #chatInput{flex:1;border:1px solid #ccc;border-radius:30px;padding:12px;font-size:15px}
-        #sendBtn{background:#28a745;color:white;border:none;border-radius:30px;padding:0 25px;cursor:pointer;font-weight:bold}
-        #mediaUploadBtn{background:#007bff;color:white;border:none;border-radius:30px;padding:0 20px;cursor:pointer;font-weight:bold;display:none}
+        #chatInput{flex:1;border:1px solid #ccc;border-radius:30px;padding:12px;font-family:inherit;font-size:15px;min-width:120px}
+        #sendBtn{background:#28a745;color:white;border:none;border-radius:30px;padding:0 25px;cursor:pointer;font-weight:bold;font-size:16px}
+        #mediaUploadBtn{background:#007bff;color:white;border:none;border-radius:30px;padding:0 20px;cursor:pointer;font-weight:bold;font-size:16px;display:none}
         #mediaInput{display:none}
         .contact-buttons{display:flex;gap:10px;margin:10px 0;flex-wrap:wrap;justify-content:center}
-        .contact-btn{background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:50px;padding:10px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+        .contact-btn{background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:50px;padding:10px 20px;font-size:14px;font-weight:bold;cursor:pointer;transition:transform 0.2s;display:inline-flex;align-items:center;gap:8px}
         .contact-btn.messenger{background:linear-gradient(135deg,#0084ff,#0063d1)}
         .contact-btn.phone{background:linear-gradient(135deg,#34b7f1,#1c8ad9)}
+        .contact-btn:hover{transform:scale(1.05)}
         .confirm-buttons{display:flex;gap:10px;margin:10px 0;justify-content:center;flex-wrap:wrap}
-        .confirm-yes{background:#28a745;color:white;border:none;border-radius:50px;padding:10px 25px;cursor:pointer}
-        .confirm-no{background:#dc3545;color:white;border:none;border-radius:50px;padding:10px 25px;cursor:pointer}
-        .edit-btn{background:#ffc107;color:#333;border:none;border-radius:50px;padding:10px 25px;cursor:pointer}
+        .confirm-yes{background:#28a745;color:white;border:none;border-radius:50px;padding:10px 25px;cursor:pointer;font-weight:bold}
+        .confirm-no{background:#dc3545;color:white;border:none;border-radius:50px;padding:10px 25px;cursor:pointer;font-weight:bold}
+        .edit-btn{background:#ffc107;color:#333;border:none;border-radius:50px;padding:10px 25px;cursor:pointer;font-weight:bold}
         .icon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;background:white;border-radius:20px;padding:16px;margin:10px 0}
         @media(min-width:550px){.icon-grid{grid-template-columns:repeat(3,1fr)}}
         .icon-item{background:linear-gradient(135deg,#f8f9fa,#e9ecef);border-radius:20px;padding:12px 8px;cursor:pointer;text-align:center;border:2px solid #dee2e6;transition:all 0.3s}
-        .icon-item:hover{transform:translateY(-5px);border-color:#007bff}
+        .icon-item:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.1);border-color:#007bff}
         .icon-item img{width:55px;height:55px;object-fit:contain;border-radius:12px;margin-bottom:6px}
-        .main-ad-icon{background:linear-gradient(135deg,#ff6b35,#f7931e);border-radius:20px;padding:25px 15px;cursor:pointer;text-align:center;margin:15px 0;border:3px solid #ffd700;transition:all 0.3s}
-        .main-ad-icon:hover{transform:translateY(-8px) scale(1.02)}
-        .main-ad-icon .main-icon-title{font-size:24px;font-weight:bold;color:white}
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#28a745;color:white;padding:12px 24px;border-radius:30px;opacity:0;transition:0.3s;z-index:9999;pointer-events:none}
+        .icon-item span{font-size:12px;display:block;font-weight:bold;color:#333}
+        .main-ad-icon{background:linear-gradient(135deg,#ff6b35,#f7931e);border-radius:20px;padding:25px 15px;cursor:pointer;text-align:center;margin:15px 0;border:3px solid #ffd700;transition:all 0.3s ease;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
+        .main-ad-icon:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(255,107,53,0.4);border-color:#fff}
+        .main-ad-icon .main-icon-title{font-size:24px;font-weight:bold;color:white;display:block;margin-bottom:6px}
+        .main-ad-icon .main-icon-sub{font-size:14px;color:rgba(255,255,255,0.9);display:block}
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#28a745;color:white;padding:12px 24px;border-radius:30px;opacity:0;transition:0.3s;z-index:9999;font-weight:bold;pointer-events:none}
         .typing{display:flex;gap:4px;align-items:center}
         .typing span{width:8px;height:8px;background:#888;border-radius:50%;display:inline-block;animation:typingAnim 1.4s infinite}
         .typing span:nth-child(2){animation-delay:0.2s}
@@ -66,15 +79,8 @@
         @keyframes typingAnim{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-10px)}}
         .footer-links{text-align:center;margin-top:25px;padding:15px;background:rgba(0,0,0,0.3);border-radius:20px;max-width:550px;width:100%}
         .footer-links a{color:white;text-decoration:none;margin:0 8px;font-size:13px}
-        .facebook-preview{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:100%;margin:10px 0}
-        .fb-header{display:flex;align-items:center;padding:12px;gap:10px}
-        .fb-avatar{width:40px;height:40px;background:linear-gradient(135deg,#007bff,#00c6ff);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold}
-        .fb-name{font-weight:bold;font-size:14px}
-        .fb-time{font-size:11px;color:#65676B}
-        .fb-content{padding:0 12px 8px}
-        .fb-media{width:100%;max-height:300px;object-fit:cover}
-        .fb-media-video{width:100%;max-height:300px}
-        .fb-contact{padding:10px;background:#f0f2f5;margin:8px;border-radius:8px;text-align:center}
+        .footer-links a:hover{text-decoration:underline}
+        @media(max-width:480px){.top-bot-text{font-size:1.6rem}.top-bot-text span:first-child{font-size:2.2rem}.top-bot-bar{padding:15px 20px}.main-ad-icon .main-icon-title{font-size:20px}.footer-links a{font-size:11px;margin:0 5px}}
     </style>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -101,7 +107,7 @@
             <button id="marketplaceGuestBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى (بدون تسجيل)</button>
             <div id="loginMsg" style="color:#e94560; margin-top:8px;"></div>
         </div>
-        <div id="appSection" style="display:none;">
+        <div id="appSection" style="display: none;">
             <div class="user-info">
                 <div class="user-name" id="userName"></div>
                 <div class="sub-days" id="daysLeft"></div>
@@ -114,7 +120,10 @@
 </div>
 
 <div class="footer-links">
-    <a href="about.html">📖 من نحن</a> | <a href="contact.html">📞 اتصل بنا</a> | <a href="privacy.html">🔒 سياسة الخصوصية</a> | <a href="terms.html">📜 الشروط والأحكام</a>
+    <a href="about.html">📖 من نحن</a> |
+    <a href="contact.html">📞 اتصل بنا</a> |
+    <a href="privacy.html">🔒 سياسة الخصوصية</a> |
+    <a href="terms.html">📜 الشروط والأحكام</a>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -134,7 +143,7 @@
 </div>
 
 <script>
-    // ========== Firebase Config (نفس القديم) ==========
+    // ========== Firebase Config ==========
     const firebaseConfig = {
         apiKey: "AIzaSyBiE4Rtmo_d5fVhkDU30XZ_-BQnMtqCGDw",
         authDomain: "khadamati-dz-28051.firebaseapp.com",
@@ -151,37 +160,40 @@
     const CLOUD_NAME = "dmeq8fu4i";
     const UPLOAD_PRESET = "mustapha_preset";
 
-    // ========== متغيرات عامة (نفس الأصل) ==========
     let currentUser = null;
     let isBotTyping = false;
     let pendingService = null;
     let pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, mediaBase64: null, mediaType: null };
 
-    // ========== دوال مساعدة (نفس الأصل) ==========
+    // ========== دوال مساعدة ==========
     function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2500); }
     function addMessage(text, isUser) { const div = document.createElement('div'); div.className = isUser ? 'user-msg' : 'bot-msg'; div.innerText = text; document.getElementById('messages').appendChild(div); div.scrollIntoView(); }
     function addMediaMessage(base64, type) { const div = document.createElement('div'); div.className = 'user-msg-img'; const media = type === 'image' ? document.createElement('img') : document.createElement('video'); media.src = base64; if(type==='video') media.controls = true; media.style.maxWidth = '200px'; media.style.borderRadius = '12px'; div.appendChild(media); document.getElementById('messages').appendChild(div); div.scrollIntoView(); }
     function showTypingIndicator() { const d = document.createElement('div'); d.className = 'bot-msg'; d.id = 'typingIndicator'; d.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>'; document.getElementById('messages').appendChild(d); d.scrollIntoView(); }
     function removeTypingIndicator() { const el = document.getElementById('typingIndicator'); if(el) el.remove(); }
 
-    // ========== التحقق من الاشتراك (كما كان في الأصل - من localStorage) ==========
-    function getSubscription() {
-        if (!currentUser) return { active: false, days: 0 };
-        const userEmail = currentUser.email || localStorage.getItem('currentUserEmail');
-        if (!userEmail) return { active: false, days: 0 };
-        const expiry = localStorage.getItem(`sub_${userEmail}`);
-        if (expiry && Date.now() < parseInt(expiry)) {
-            const days = Math.ceil((parseInt(expiry) - Date.now()) / 86400000);
-            return { active: true, days };
-        }
+    // ========== الاشتراك (من Firestore) ==========
+    async function getSubscription(email) {
+        if (!email) return { active: false, days: 0 };
+        try {
+            const doc = await db.collection('subscriptions').doc(email).get();
+            if (doc.exists) {
+                const data = doc.data();
+                const expiry = data.expiryDate?.toDate ? data.expiryDate.toDate() : new Date(data.expiryDate);
+                if (expiry && expiry.getTime() > Date.now()) {
+                    const days = Math.ceil((expiry.getTime() - Date.now()) / 86400000);
+                    return { active: true, days };
+                }
+            }
+        } catch(e) { console.error(e); }
         return { active: false, days: 0 };
     }
 
-    function updateUI() {
+    async function updateUI() {
         if (!currentUser) return;
-        const displayEmail = currentUser.email || localStorage.getItem('currentUserEmail') || 'مستخدم';
-        document.getElementById('userName').innerHTML = `👤 ${displayEmail.split('@')[0]}`;
-        const sub = getSubscription();
+        const userEmail = currentUser.email || localStorage.getItem('currentUserEmail');
+        document.getElementById('userName').innerHTML = `👤 ${userEmail ? userEmail.split('@')[0] : 'مستخدم'}`;
+        const sub = await getSubscription(userEmail);
         if (sub.active) {
             document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
             document.getElementById('paymentSection').innerHTML = '';
@@ -211,8 +223,9 @@
     window.finalPublish = async () => {
         if (window.isPublishing) return;
         if (!currentUser) { addMessage("⚠️ يرجى تسجيل الدخول أولاً", false); return; }
-        const sub = getSubscription();
-        if (!sub.active) { addMessage(`⚠️ خدمة الإعلانات تتطلب اشتراكاً نشطاً.\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).`, false); return; }
+        const userEmail = currentUser.email || localStorage.getItem('currentUserEmail');
+        const sub = await getSubscription(userEmail);
+        if (!sub.active) { addMessage(`⚠️ خدمة الإعلانات تتطلب اشتراكاً نشطاً.\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).`, false); return; }
         if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaBase64) {
             addMessage("⚠️ البيانات غير مكتملة", false); return;
         }
@@ -229,7 +242,7 @@
                 imageUrl: imageUrl,
                 imageType: pendingAd.mediaType,
                 userId: currentUser.uid,
-                userEmail: currentUser.email || localStorage.getItem('currentUserEmail'),
+                userEmail: userEmail,
                 date: firebase.firestore.FieldValue.serverTimestamp(),
                 views: 0,
                 likes: []
@@ -243,14 +256,48 @@
         finally { window.isPublishing = false; }
     };
 
-    // ========== باقي دوال سير العمل (نفس الأصل) ==========
-    const services = []; // ضع خدماتك هنا إن وجدت
-    const AD_RULES = "📜 **قوانين نشر الإعلانات:**\n❌ لا إعلانات مخلة بالآداب\n❌ لا عنف أو كراهية\n✅ الإعلان يكون حلالاً ومفيداً\n⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.";
+    // ========== الخدمات والأيقونات (كما كانت في الأصل) ==========
+    const services = [
+        { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك بسهولة وأمان.", requirements: "📋 **متطلبات الدفع:** رقم هاتف دجازي + بطاقة ذهبية", steps: "📝 **الخطوات:** اضغط الرابط ← أدخل رقم الهاتف ← اختر المبلغ ← أدخل بيانات الدفع", needsCard: true },
+        { name: "📱 mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", description: "شحن رصيد موبيليس", benefit: "🔹 خدمة رسمية", requirements: "📋 رقم موبيليس + بطاقة", steps: "نفس الخطوات", needsCard: true },
+        { name: "📱 Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", description: "شحن رصيد أوريدو", benefit: "🔹 خدمة E-Storm", requirements: "📋 رقم أوريدو + CIB", steps: "اختر 'شحن الرصيد' ← أدخل رقم الهاتف ← اختر المبلغ ← أدخل بيانات الدفع", needsCard: true },
+        { name: "⚡ فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", description: "دفع فاتورة الكهرباء والغاز", benefit: "🔹 دفع الفواتير إلكترونياً", requirements: "📋 رقم العقد (14 رقم)", steps: "أدخل رقم العقد ← سيظهر المبلغ ← اضغط 'دفع الآن' ← أدخل بيانات البطاقة", needsCard: false },
+        { name: "💧 فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", description: "دفع فاتورة الماء", benefit: "🔹 منصة SEAAL", requirements: "📋 رقم المشترك", steps: "أدخل رقم المشترك ← اختر الفاتورة ← دفع", needsCard: false },
+        { name: "🌐 شحن الانترنت", img: "ALGERIE TELECOM.png", url: "https://paiement.at.dz/index.php?p=internet_recharge&pr=in", description: "شحن رصيد الانترنت", benefit: "🔹 اتصالات الجزائر", requirements: "📋 رقم الهاتف الثابت أو حساب الانترنت", steps: "اضغط الرابط ← أدخل بيانات حسابك ← اختر المبلغ ← أدخل بيانات الدفع", needsCard: true }
+    ];
 
-    function startAdFlow() {
-        const sub = getSubscription();
-        if (!sub.active && currentUser) { addMessage(`⚠️ خدمة الإعلانات تتطلب اشتراكاً نشطاً.\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).`, false); return; }
-        if (!currentUser) { addMessage(`⚠️ يرجى تسجيل الدخول أولاً.`, false); return; }
+    const AD_RULES = "📜 **قوانين نشر الإعلانات:**\n❌ لا إعلانات مخلة بالآداب\n❌ لا عنف أو كراهية\n❌ لا منتجات ممنوعة أو احتيال\n✅ الإعلان يكون حلالاً ومفيداً\n⚠️ المخالفة تؤدي إلى حظر الحساب فوراً.\n━━━━━━━━━━━━━━━━━━━\n🎯 **فوائد بوت مصطفى:**\n💰 وصول لأكثر من 5000 عميل يومياً\n📢 نشر إعلانك على صفحتنا بقوة\n⚡ زيادة مبيعاتك بنسبة تصل إلى 70%\n🖼️ دعم الصور والفيديوهات\n📱 وسائل تواصل متعددة\n🛡️ أمان تام\n⏰ دعم فني على مدار الساعة";
+
+    function showDetailedServiceExplanation(service) {
+        let msg = `📌 **${service.name}** - ${service.description}\n\n${service.benefit}\n\n${service.requirements}\n\n${service.steps}\n\n`;
+        if (service.needsCard) msg += `💳 **ملاحظة مهمة:** تحتاج إلى بطاقة بنكية (ذهبية أو CIB) لإتمام عملية الدفع.\n\n`;
+        msg += `❓ **هل أنت جاهز لفتح الرابط الآن؟**\nأجب بـ 'نعم' لفتح الرابط مباشرة، أو 'لا' للعودة للقائمة.`;
+        addMessage(msg, false);
+        pendingService = service;
+    }
+
+    async function handleServiceReply(text) {
+        const lower = text.trim().toLowerCase();
+        if (lower === 'نعم' || lower === 'yes' || lower === 'جاهز') {
+            if (pendingService) {
+                window.open(pendingService.url, '_blank');
+                addMessage(`✅ **تم فتح رابط "${pendingService.name}" بنجاح!**`, false);
+                pendingService = null;
+            }
+            return true;
+        } else if (lower === 'لا' || lower === 'لأ') {
+            addMessage("🙂 **لا مشكلة!** يمكنك اختيار خدمة أخرى من الأيقونات.", false);
+            pendingService = null;
+            return true;
+        }
+        return false;
+    }
+
+    async function startAdFlow() {
+        if (!currentUser) { addMessage("⚠️ يرجى تسجيل الدخول أولاً.", false); return; }
+        const userEmail = currentUser.email || localStorage.getItem('currentUserEmail');
+        const sub = await getSubscription(userEmail);
+        if (!sub.active) { addMessage(`⚠️ خدمة الإعلانات تتطلب اشتراكاً نشطاً.\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).`, false); return; }
         addMessage(AD_RULES, false);
         setTimeout(() => {
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (الاسم واللقب) كما سيظهر في الإعلان (إجباري):", false);
@@ -277,14 +324,53 @@
     }
     window.selectContactMethod = (method) => {
         pendingAd.contactMethod = method;
-        addMessage(`✅ تم اختيار: ${method}`, false);
+        let methodName = { whatsapp: 'واتساب', messenger: 'مسنجر', phone: 'هاتف' }[method];
+        addMessage(`✅ تم اختيار: ${methodName}`, false);
         setTimeout(() => { addMessage("📋 **تم اكتمال جميع البيانات!** جاري عرض ملخص المعلومات...", false); showSummaryWithEditOptions(); pendingAd.step = 'review'; }, 500);
     };
     function showSummaryWithEditOptions() {
-        const summary = document.createElement('div'); summary.className = 'bot-msg';
-        summary.innerHTML = `📋 **مراجعة معلومات الإعلان:**<br>👤 الاسم: ${pendingAd.fullName}<br>📞 الهاتف: ${pendingAd.phone}<br>📝 الوصف: ${pendingAd.description}<br>🖼️ نوع الملف: ${pendingAd.mediaTypeChoice}<br>💬 التواصل: ${pendingAd.contactMethod}<br><div class="confirm-buttons"><button class="confirm-yes" onclick="window.proceedToPreview()">✅ متابعة إلى المعاينة</button><button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء الإعلان</button></div>`;
-        document.getElementById('messages').appendChild(summary); summary.scrollIntoView();
+        let contactText = '';
+        if (pendingAd.contactMethod === 'whatsapp') contactText = `واتساب: ${pendingAd.phone}`;
+        else if (pendingAd.contactMethod === 'messenger') contactText = `مسنجر: ${pendingAd.phone}`;
+        else contactText = `هاتف: ${pendingAd.phone}`;
+        const summaryContainer = document.createElement('div'); summaryContainer.style.margin = '10px 0';
+        const summaryTitle = document.createElement('div'); summaryTitle.className = 'bot-msg'; summaryTitle.innerText = '📋 **مراجعة معلومات الإعلان:**'; summaryContainer.appendChild(summaryTitle);
+        const infoDiv = document.createElement('div'); infoDiv.className = 'bot-msg'; infoDiv.style.direction = 'rtl'; infoDiv.style.textAlign = 'right';
+        infoDiv.innerHTML = `<div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>👤 الاسم الكامل:</strong> ${pendingAd.fullName}<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('fullName')">تعديل</button></div>
+        <div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>📞 رقم الهاتف:</strong> ${pendingAd.phone}<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('phone')">تعديل</button></div>
+        <div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>📝 الوصف:</strong> ${pendingAd.description}<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('description')">تعديل</button></div>
+        <div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>🖼️ نوع الملف:</strong> ${pendingAd.mediaTypeChoice === 'image' ? 'صورة' : 'فيديو'}<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('mediaTypeChoice')">تعديل</button></div>
+        <div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>📎 الملف:</strong> ✅ مرفق<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('media')">تغيير الملف</button></div>
+        <div style="margin:8px 0;padding:8px;background:white;border-radius:12px;"><strong>💬 وسيلة التواصل:</strong> ${contactText}<button class="edit-btn" style="padding:4px 12px;font-size:12px;margin-right:10px;" onclick="window.editField('contactMethod')">تعديل</button></div>`;
+        summaryContainer.appendChild(infoDiv);
+        const confirmDiv = document.createElement('div'); confirmDiv.className = 'confirm-buttons';
+        confirmDiv.innerHTML = `<button class="confirm-yes" onclick="window.proceedToPreview()">✅ متابعة إلى المعاينة</button><button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء الإعلان</button>`;
+        summaryContainer.appendChild(confirmDiv);
+        document.getElementById('messages').appendChild(summaryContainer); summaryContainer.scrollIntoView();
     }
+    window.editField = (field) => {
+        let promptMsg = '';
+        switch(field) {
+            case 'fullName': promptMsg = 'أدخل الاسم الكامل الجديد:'; break;
+            case 'phone': promptMsg = 'أدخل رقم الهاتف الجديد:'; break;
+            case 'description': promptMsg = 'أدخل الوصف الجديد:'; break;
+            case 'mediaTypeChoice': showMediaTypeChoice(); pendingAd.step = 'waitingForMediaTypeChoice'; return;
+            case 'media': addMessage("🖼️ الرجاء رفع ملف جديد:", false); pendingAd.step = 'editingMedia'; return;
+            case 'contactMethod': addMessage("📞 اختر وسيلة التواصل الجديدة:", false); showContactButtonsForEdit(); return;
+        }
+        addMessage(promptMsg, false);
+        pendingAd.step = `editing_${field}`;
+    };
+    function showContactButtonsForEdit() {
+        const div = document.createElement('div'); div.className = 'bot-msg';
+        div.innerHTML = `<div class="contact-buttons"><button class="contact-btn" onclick="window.selectContactMethodForEdit('whatsapp')">💚 واتساب</button><button class="contact-btn messenger" onclick="window.selectContactMethodForEdit('messenger')">💬 مسنجر</button><button class="contact-btn phone" onclick="window.selectContactMethodForEdit('phone')">📱 هاتف</button></div>`;
+        document.getElementById('messages').appendChild(div); div.scrollIntoView();
+    }
+    window.selectContactMethodForEdit = (method) => {
+        pendingAd.contactMethod = method;
+        addMessage(`✅ تم تغيير وسيلة التواصل إلى: ${method}`, false);
+        setTimeout(() => showSummaryWithEditOptions(), 500);
+    };
     window.proceedToPreview = () => {
         if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaBase64) {
             addMessage("⚠️ يرجى التأكد من اكتمال جميع البيانات قبل المتابعة", false); return;
@@ -293,28 +379,107 @@
     };
     window.cancelAd = () => { addMessage("🙂 تم إلغاء الإعلان.", false); pendingAd = { step: null }; document.getElementById('mediaUploadBtn').style.display = 'none'; };
     function showFacebookPreview() {
+        let contactText = '', contactIcon = '';
+        if (pendingAd.contactMethod === 'whatsapp') { contactText = `واتساب: ${pendingAd.phone}`; contactIcon = '💚'; }
+        else if (pendingAd.contactMethod === 'messenger') { contactText = `مسنجر: ${pendingAd.phone}`; contactIcon = '💬'; }
+        else { contactText = `هاتف: ${pendingAd.phone}`; contactIcon = '📱'; }
+        const previewContainer = document.createElement('div'); previewContainer.style.margin = '10px 0';
+        const previewTitle = document.createElement('div'); previewTitle.className = 'bot-msg'; previewTitle.innerText = '🔍 **معاينة الإعلان كما سيظهر:**'; previewContainer.appendChild(previewTitle);
         const previewDiv = document.createElement('div'); previewDiv.className = 'facebook-preview';
-        const mediaHtml = pendingAd.mediaType === 'image' ? `<img class="fb-media" src="${pendingAd.mediaBase64}">` : `<video class="fb-media-video" src="${pendingAd.mediaBase64}" controls></video>`;
-        previewDiv.innerHTML = `<div class="fb-header"><div class="fb-avatar">${pendingAd.fullName.charAt(0)}</div><div><div class="fb-name">${pendingAd.fullName}</div><div class="fb-time">الآن · 🌍</div></div></div><div class="fb-content">${pendingAd.description}</div>${mediaHtml}<div class="fb-contact">${pendingAd.contactMethod}: ${pendingAd.phone}</div><div class="fb-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div><div class="confirm-buttons"><button class="confirm-yes" onclick="window.finalPublish()">✅ تأكيد النشر</button><button class="edit-btn" onclick="window.backToEdit()">✏️ العودة للتعديل</button><button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء</button></div>`;
-        document.getElementById('messages').appendChild(previewDiv); previewDiv.scrollIntoView();
+        let mediaHtml = '';
+        if (pendingAd.mediaBase64 && pendingAd.mediaType === 'image') mediaHtml = `<img class="fb-media" src="${pendingAd.mediaBase64}">`;
+        else if (pendingAd.mediaBase64 && pendingAd.mediaType === 'video') mediaHtml = `<video class="fb-media-video" src="${pendingAd.mediaBase64}" controls></video>`;
+        previewDiv.innerHTML = `<div class="fb-header"><div class="fb-avatar">${pendingAd.fullName ? pendingAd.fullName.charAt(0).toUpperCase() : 'م'}</div><div><div class="fb-name">${pendingAd.fullName || 'اسم المستخدم'}</div><div class="fb-time">الآن · 🌍</div></div></div><div class="fb-content">${pendingAd.description || '📢 إعلان جديد'}</div>${mediaHtml}<div class="fb-contact">${contactIcon} ${contactText}</div><div class="fb-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>`;
+        previewContainer.appendChild(previewDiv);
+        const finalButtons = document.createElement('div'); finalButtons.className = 'confirm-buttons';
+        finalButtons.innerHTML = `<button class="confirm-yes" onclick="window.finalPublish()">✅ تأكيد النشر</button><button class="edit-btn" onclick="window.backToEdit()">✏️ العودة للتعديل</button><button class="confirm-no" onclick="window.cancelAd()">❌ إلغاء</button>`;
+        previewContainer.appendChild(finalButtons);
+        document.getElementById('messages').appendChild(previewContainer); previewContainer.scrollIntoView();
     }
     window.backToEdit = () => { const last = document.getElementById('messages').lastChild; if(last) last.remove(); showSummaryWithEditOptions(); };
 
-    async function handleAdFlow(msg) {
-        if (pendingAd.step === 'fullName') { if(msg.trim().length<3){addMessage("❌ يرجى إدخال الاسم الكامل (3 أحرف على الأقل)",false); return false;} pendingAd.fullName=msg.trim(); addMessage(`✅ تم تسجيل الاسم: ${pendingAd.fullName}`,false); addMessage("📱 **رقم الهاتف (للتواصل):**\nأرسل رقم هاتفك (إجباري):",false); pendingAd.step='phone'; return true; }
-        if (pendingAd.step === 'phone') { if(msg.length<9){addMessage("❌ يرجى إدخال رقم هاتف صحيح (مثال: 0555123456)",false); return false;} pendingAd.phone=msg.trim(); addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`,false); showMediaTypeChoice(); pendingAd.step='waitingMedia'; return true; }
-        if (pendingAd.step === 'description') { if(msg.length<5){addMessage("❌ يرجى كتابة وصف أطول (5 أحرف على الأقل)",false); return false;} pendingAd.description=msg.trim(); addMessage(`✅ تم تسجيل الوصف`,false); showContactButtons(); pendingAd.step='waitingContact'; return true; }
+    async function handleAdFlow(userMessage) {
+        if (pendingAd.step && pendingAd.step.startsWith('editing_')) {
+            const field = pendingAd.step.replace('editing_', '');
+            switch(field) {
+                case 'fullName':
+                    if (userMessage.trim().length < 3) { addMessage("❌ يرجى إدخال الاسم الكامل بشكل صحيح (3 أحرف على الأقل)", false); return false; }
+                    pendingAd.fullName = userMessage.trim(); addMessage(`✅ تم تحديث الاسم إلى: ${pendingAd.fullName}`, false); break;
+                case 'phone':
+                    if (userMessage.length < 9) { addMessage("❌ يرجى إدخال رقم هاتف صحيح (مثال: 0555123456)", false); return false; }
+                    pendingAd.phone = userMessage.trim(); addMessage(`✅ تم تحديث رقم الهاتف إلى: ${pendingAd.phone}`, false); break;
+                case 'description':
+                    if (userMessage.trim().length < 5) { addMessage("❌ يرجى كتابة وصف أطول (5 أحرف على الأقل)", false); return false; }
+                    pendingAd.description = userMessage.trim(); addMessage(`✅ تم تحديث الوصف`, false); break;
+            }
+            pendingAd.step = 'review';
+            setTimeout(() => showSummaryWithEditOptions(), 500);
+            return true;
+        }
+        if (pendingAd.step === 'fullName') {
+            if (userMessage.trim().length < 3) { addMessage("❌ يرجى إدخال الاسم الكامل بشكل صحيح (3 أحرف على الأقل)", false); return false; }
+            pendingAd.fullName = userMessage.trim(); addMessage(`✅ تم تسجيل الاسم: ${pendingAd.fullName}`, false);
+            addMessage("📱 **رقم الهاتف (للتواصل):**\nأرسل رقم هاتفك (إجباري):", false);
+            pendingAd.step = 'phone'; return true;
+        }
+        if (pendingAd.step === 'phone') {
+            if (userMessage.length < 9) { addMessage("❌ يرجى إدخال رقم هاتف صحيح (مثال: 0555123456)", false); return false; }
+            pendingAd.phone = userMessage.trim(); addMessage(`✅ تم تسجيل رقم الهاتف: ${pendingAd.phone}`, false);
+            showMediaTypeChoice(); pendingAd.step = 'waitingForMediaTypeChoice'; return true;
+        }
+        if (pendingAd.step === 'description') {
+            if (userMessage.trim().length < 5) { addMessage("❌ يرجى كتابة وصف أطول (5 أحرف على الأقل)", false); return false; }
+            pendingAd.description = userMessage.trim(); addMessage(`✅ تم تسجيل الوصف`, false);
+            showContactButtons(); pendingAd.step = 'waitingForContact'; return true;
+        }
         return false;
     }
 
-    function compressImage(file, maxWidth=800, quality=0.7) {
+    async function handleGeneralMessage(message) {
+        const lower = message.toLowerCase();
+        if (lower.includes('مرحب') || lower.includes('السلام')) return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى (شحن الجوال، فواتير، إنترنت) اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان: اضغط على الأيقونة البرتقالية الكبيرة";
+        if (lower.includes('شكر')) return "العفو! 🤍 أنا هنا لخدمتك دائماً.";
+        if (lower.includes('القوانين')) return AD_RULES;
+        return "📢 **بوت مصطفى - خدمة الإعلانات هي الأساس**\n\n📢 للإعلانات: اضغط على الأيقونة الرئيسية\n\n✅ الخدمات الأخرى المتاحة:\n• شحن الجوال (Djezzy, Mobilis, Ooredoo)\n• دفع فواتير الكهرباء والماء\n• شحن الانترنت (Algerie Telecom)\n\nاختر الخدمة من الأيقونات.";
+    }
+
+    function buildIcons() {
+        const container = document.createElement('div');
+        const mainAdDiv = document.createElement('div'); mainAdDiv.className = 'main-ad-icon';
+        mainAdDiv.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
+        mainAdDiv.onclick = startAdFlow; container.appendChild(mainAdDiv);
+        const grid = document.createElement('div'); grid.className = 'icon-grid';
+        services.forEach(s => { const item = document.createElement('div'); item.className = 'icon-item'; const img = document.createElement('img'); img.src = s.img; img.alt = s.name; img.onerror = () => img.style.display = 'none'; const span = document.createElement('span'); span.innerText = s.name; item.appendChild(img); item.appendChild(span); item.onclick = async () => { const userEmail = currentUser ? (currentUser.email || localStorage.getItem('currentUserEmail')) : null; const sub = userEmail ? await getSubscription(userEmail) : { active: false }; if (!sub.active) { addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه.`, false); return; } showDetailedServiceExplanation(s); }; grid.appendChild(item); });
+        container.appendChild(grid);
+        return container;
+    }
+
+    async function initChat() {
+        document.getElementById('messages').innerHTML = '';
+        let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**الخدمات الأخرى المتاحة:**\n📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)\n⚡ دفع فواتير الكهرباء والغاز والماء\n🌐 شحن الانترنت (Algerie Telecom)\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة الرئيسية\n• للخدمات الأخرى: اضغط على الأيقونات العادية`;
+        let hasActiveSub = false;
+        if (currentUser) {
+            const userEmail = currentUser.email || localStorage.getItem('currentUserEmail');
+            const sub = await getSubscription(userEmail);
+            if (sub.active) hasActiveSub = true;
+        }
+        if (!hasActiveSub && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.`;
+        else if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
+        else if (hasActiveSub) welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك في خدمات بوت مصطفى`;
+        addMessage(welcomeMsg, false);
+        document.getElementById('messages').appendChild(buildIcons());
+    }
+
+    // ========== رفع الملف (مع ضغط الصورة) ==========
+    function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
                     let width = img.width, height = img.height;
-                    if(width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                    if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                    if (height > maxHeight) { width = (width * maxHeight) / height; height = maxHeight; }
                     const canvas = document.createElement('canvas');
                     canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d');
@@ -332,64 +497,42 @@
     document.getElementById('mediaUploadBtn').onclick = () => document.getElementById('mediaInput').click();
     document.getElementById('mediaInput').onchange = async (e) => {
         const file = e.target.files[0];
-        if(!file) return;
-        const isImage = file.type.startsWith('image');
-        const mediaType = isImage ? 'image' : 'video';
-        if(pendingAd.mediaTypeChoice && pendingAd.mediaTypeChoice !== mediaType) { showToast(`❌ يرجى رفع ${pendingAd.mediaTypeChoice}`); return; }
-        let processed = file;
-        if(isImage) { showToast("🔄 جاري ضغط الصورة..."); processed = await compressImage(file); showToast("✅ تم ضغط الصورة"); }
+        if (!file) return;
+        const fileType = file.type;
+        let mediaType = null;
+        let processedFile = file;
+        if (fileType.startsWith('image/')) {
+            mediaType = 'image';
+            if (pendingAd.mediaTypeChoice && pendingAd.mediaTypeChoice !== 'image') { showToast(`❌ يجب رفع ${pendingAd.mediaTypeChoice}`); return; }
+            try { showToast("🔄 جاري ضغط الصورة..."); const compressed = await compressImage(file, 800, 800, 0.7); processedFile = new File([compressed], file.name, { type: 'image/jpeg' }); showToast("✅ تم ضغط الصورة"); } catch(e) { console.error(e); }
+        } else if (fileType.startsWith('video/')) {
+            mediaType = 'video';
+            if (pendingAd.mediaTypeChoice && pendingAd.mediaTypeChoice !== 'video') { showToast(`❌ يجب رفع ${pendingAd.mediaTypeChoice}`); return; }
+            showToast("🎬 جاري تجهيز الفيديو...");
+        } else { showToast("❌ يرجى اختيار صورة أو فيديو فقط"); return; }
         const reader = new FileReader();
         reader.onload = (ev) => {
             pendingAd.mediaBase64 = ev.target.result;
             pendingAd.mediaType = mediaType;
             addMediaMessage(pendingAd.mediaBase64, mediaType);
-            addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'}`, false);
+            addMessage(`✅ تم استلام ${mediaType === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
             setTimeout(() => { addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false); pendingAd.step = 'description'; }, 500);
         };
-        reader.readAsDataURL(processed);
+        reader.readAsDataURL(processedFile);
         document.getElementById('mediaInput').value = '';
     };
 
-    async function handleGeneralMessage(msg) {
-        const lower = msg.toLowerCase();
-        if(lower.includes('مرحب') || lower.includes('السلام')) return "وعليكم السلام ورحمة الله! 😊\nأهلاً بك في **بوت مصطفى**.\n\n📢 **خدمة الإعلانات** هي خدمتنا الأساسية\n\n📱 للخدمات الأخرى (شحن الجوال، فواتير، إنترنت) اضغط على الأيقونات أدناه.\n\n📢 لنشر إعلان: اضغط على الأيقونة البرتقالية الكبيرة";
-        if(lower.includes('شكر')) return "العفو! 🤍 أنا هنا لخدمتك دائماً.";
-        if(lower.includes('القوانين')) return AD_RULES;
-        return "📢 **بوت مصطفى - خدمة الإعلانات هي الأساس**\n\n📢 للإعلانات: اضغط على الأيقونة الرئيسية\n\n✅ الخدمات الأخرى المتاحة:\n• شحن الجوال (Djezzy, Mobilis, Ooredoo)\n• دفع فواتير الكهرباء والماء\n• شحن الانترنت (Algerie Telecom)\n\nاختر الخدمة من الأيقونات.";
-    }
-
-    function buildIcons() {
-        const container = document.createElement('div');
-        const mainAdDiv = document.createElement('div'); mainAdDiv.className = 'main-ad-icon'; mainAdDiv.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`; mainAdDiv.onclick = startAdFlow; container.appendChild(mainAdDiv);
-        const grid = document.createElement('div'); grid.className = 'icon-grid';
-        // يمكن إضافة الخدمات هنا إن وجدت
-        container.appendChild(grid);
-        return container;
-    }
-
-    async function initChat() {
-        document.getElementById('messages').innerHTML = '';
-        const sub = getSubscription();
-        let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**الخدمات الأخرى المتاحة:**\n📱 شحن الجوال (Djezzy, Mobilis, Ooredoo)\n⚡ دفع فواتير الكهرباء والغاز والماء\n🌐 شحن الانترنت (Algerie Telecom)\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة الرئيسية\n• للخدمات الأخرى: اضغط على الأيقونات العادية`;
-        if (!sub.active && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.`;
-        else if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
-        else if (sub.active) welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك في خدمات بوت مصطفى`;
-        addMessage(welcomeMsg, false);
-        document.getElementById('messages').appendChild(buildIcons());
-    }
-
-    // ========== أحداث المصادقة والأزرار ==========
+    // ========== المصادقة والأحداث ==========
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;
             const savedEmail = localStorage.getItem('currentUserEmail');
             if (savedEmail && !user.email) {
-                await user.updateProfile({ displayName: savedEmail });
-                // لا يمكن تحديث البريد الإلكتروني بهذه الطريقة، لكننا نخزنه في localStorage
+                // لا يمكن تحديث البريد الإلكتروني بسهولة، لكن نخزنه في localStorage
             }
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
-            updateUI();
+            await updateUI();
         } else {
             const savedEmail = localStorage.getItem('currentUserEmail');
             if (savedEmail) {
@@ -414,7 +557,7 @@
     document.getElementById('logoutBtn').onclick = () => { auth.signOut(); localStorage.removeItem('currentUserEmail'); location.reload(); };
     document.getElementById('marketplaceGuestBtn').onclick = () => window.open('marketplace.html');
     document.getElementById('marketplaceBtn').onclick = () => window.open('marketplace.html');
-    document.getElementById('topBotBar').onclick = () => { document.getElementById('chatFullscreen').classList.add('open'); if(document.getElementById('messages').children.length === 0) initChat(); };
+    document.getElementById('topBotBar').onclick = () => { document.getElementById('chatFullscreen').classList.add('open'); if (document.getElementById('messages').children.length === 0) initChat(); };
     document.getElementById('closeChatBtn').onclick = () => document.getElementById('chatFullscreen').classList.remove('open');
 
     document.getElementById('sendBtn').onclick = async () => {
@@ -422,21 +565,21 @@
         const txt = document.getElementById('chatInput').value.trim();
         if (txt) addMessage(txt, true);
         document.getElementById('chatInput').value = '';
-        if (pendingAd.step && pendingAd.step !== 'waitingMedia' && pendingAd.step !== 'waitingContact' && pendingAd.step !== 'review') {
+        if (pendingAd.step && pendingAd.step !== 'waitingForMediaTypeChoice' && pendingAd.step !== 'waitingForContact' && pendingAd.step !== 'review' && !pendingAd.step?.startsWith('editing_')) {
             if (!txt) return;
-            isBotTyping = true; showTypingIndicator(); await new Promise(r=>setTimeout(r,500)); removeTypingIndicator(); await handleAdFlow(txt); isBotTyping = false; return;
+            isBotTyping = true; showTypingIndicator(); await new Promise(r => setTimeout(r, 500)); removeTypingIndicator(); await handleAdFlow(txt); isBotTyping = false; return;
         }
         if (pendingService) {
             const lower = txt.toLowerCase();
-            if (lower === 'نعم') { window.open(pendingService.url,'_blank'); addMessage(`✅ تم فتح الرابط`,false); pendingService=null; }
-            else if (lower === 'لا') { addMessage("🙂 لا مشكلة! يمكنك اختيار خدمة أخرى.",false); pendingService=null; }
+            if (lower === 'نعم' || lower === 'yes') { window.open(pendingService.url, '_blank'); addMessage(`✅ تم فتح رابط "${pendingService.name}" بنجاح!`, false); pendingService = null; }
+            else if (lower === 'لا' || lower === 'لأ') { addMessage("🙂 لا مشكلة! يمكنك اختيار خدمة أخرى.", false); pendingService = null; }
             else addMessage("أجب بـ نعم أو لا", false);
             return;
         }
         if (!txt) return;
-        isBotTyping = true; showTypingIndicator(); await new Promise(r=>setTimeout(r,800)); removeTypingIndicator(); const reply = await handleGeneralMessage(txt); addMessage(reply, false); isBotTyping = false;
+        isBotTyping = true; showTypingIndicator(); await new Promise(r => setTimeout(r, 800)); removeTypingIndicator(); const reply = await handleGeneralMessage(txt); addMessage(reply, false); isBotTyping = false;
     };
-    document.getElementById('chatInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') document.getElementById('sendBtn').click(); });
+    document.getElementById('chatInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('sendBtn').click(); });
 </script>
 </body>
 </html>
