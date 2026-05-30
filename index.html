@@ -103,6 +103,12 @@
         .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
         .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
         .contact-btn:hover { transform: scale(1.05); }
+        .contact-btn img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
         .confirm-buttons {
             display: flex;
             gap: 10px;
@@ -189,7 +195,6 @@
             margin: 10px 0;
             direction: ltr;
             text-align: left;
-            font-family: 'Cairo', sans-serif;
         }
         .alice-main-media {
             width: 100%;
@@ -547,11 +552,11 @@
             const div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
-                <div>📸 **اختر صوراً أو فيديوهات (يمكنك اختيار عدة ملفات دفعة واحدة):**</div>
+                <div>📸 **اختر صوراً أو فيديوهات (يمكنك اختيار عدة ملفات دفعة واحدة):</div>
                 <div class="selected-media-info" id="selectedMediaInfo">📎 لم يتم اختيار أي ملفات بعد</div>
                 <div class="media-preview-list" id="mediaPreviewList"></div>
                 <div class="contact-buttons">
-                    <button class="contact-btn" id="openFileSelectorBtn">📁 اختيار الملفات</button>
+                    <button class="contact-btn" id="openFileSelectorBtn" style="background:#007bff;">📁 اختيار الملفات</button>
                 </div>
             `;
             messagesDiv.appendChild(div);
@@ -724,9 +729,9 @@
             div.innerHTML = `
                 <div>📞 **اختر وسيلة التواصل التي ستظهر في الإعلان (إجباري):**</div>
                 <div class="contact-buttons">
-                    <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')"><span>💚</span> واتساب</button>
-                    <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')"><span>💬</span> مسنجر</button>
-                    <button class="contact-btn phone" onclick="window.selectContactMethod('phone')"><span>📱</span> هاتف</button>
+                    <button class="contact-btn" onclick="window.selectContactMethod('whatsapp')"><img src="whatsapp.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> واتساب</button>
+                    <button class="contact-btn messenger" onclick="window.selectContactMethod('messenger')"><img src="Messenger.png" style="width:24px; height:24px; vertical-align:middle; margin-left:5px;"> مسنجر</button>
+                    <button class="contact-btn phone" onclick="window.selectContactMethod('phone')">📱 هاتف</button>
                 </div>
             `;
             messagesDiv.appendChild(div);
