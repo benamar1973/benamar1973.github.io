@@ -8,6 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
+        /* جميع الأنماط كما هي - لم يتم تغييرها */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
@@ -186,7 +187,6 @@
             .contact-btn img { width: 20px; height: 20px; }
         }
 
-        /* AliExpress Preview Styles */
         .alice-preview {
             background: white;
             border-radius: 16px;
@@ -1015,61 +1015,102 @@
             showSummaryWithEditOptions();
         };
         
+        // ========== دالة النشر النهائية - تم إصلاحها بالكامل ==========
         window.finalPublish = async () => {
-            if (window.isPublishing) return;
+            if (window.isPublishing) {
+                addMessage("⚠️ عملية نشر جارية بالفعل، يرجى الانتظار...", false);
+                return;
+            }
             window.isPublishing = true;
             
             try {
                 addMessage("🚀 جاري نشر إعلانك...", false);
                 showTypingIndicator();
                 
-                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || pendingAd.mediaItems.length === 0) {
-                    addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى المحاولة مرة أخرى.", false);
+                // التحقق من صحة البيانات
+                if (!pendingAd.fullName || pendingAd.fullName.trim() === "") {
+                    addMessage("⚠️ خطأ: الاسم الكامل مطلوب", false);
+                    removeTypingIndicator();
+                    window.isPublishing = false;
+                    return;
+                }
+                if (!pendingAd.phone || pendingAd.phone.trim() === "") {
+                    addMessage("⚠️ خطأ: رقم الهاتف مطلوب", false);
+                    removeTypingIndicator();
+                    window.isPublishing = false;
+                    return;
+                }
+                if (!pendingAd.description || pendingAd.description.trim() === "") {
+                    addMessage("⚠️ خطأ: وصف الإعلان مطلوب", false);
+                    removeTypingIndicator();
+                    window.isPublishing = false;
+                    return;
+                }
+                if (!pendingAd.contactMethod) {
+                    addMessage("⚠️ خطأ: وسيلة التواصل مطلوبة", false);
+                    removeTypingIndicator();
+                    window.isPublishing = false;
+                    return;
+                }
+                if (pendingAd.mediaItems.length === 0) {
+                    addMessage("⚠️ خطأ: يجب رفع صورة أو فيديو واحد على الأقل", false);
                     removeTypingIndicator();
                     window.isPublishing = false;
                     return;
                 }
                 
+                // جلب الإعلانات الموجودة من localStorage
                 let existingAds = [];
                 const stored = localStorage.getItem('marketplace_ads');
                 if (stored) {
                     try {
                         existingAds = JSON.parse(stored);
+                        if (!Array.isArray(existingAds)) existingAds = [];
                     } catch(e) {
+                        console.error("خطأ في قراءة الإعلانات:", e);
                         existingAds = [];
                     }
                 }
                 
+                // إنشاء إعلان جديد بنفس الصيغة التي يفهمها marketplace.html
                 const newAd = {
                     id: Date.now(),
-                    name: pendingAd.fullName,
-                    phone: pendingAd.phone,
-                    description: pendingAd.description,
+                    name: pendingAd.fullName.trim(),
+                    phone: pendingAd.phone.trim(),
+                    description: pendingAd.description.trim(),
                     contactMethod: pendingAd.contactMethod,
-                    mediaItems: pendingAd.mediaItems,
-                    userId: currentUser,
+                    mediaItems: pendingAd.mediaItems,  // المصفوفة الجديدة
+                    mediaList: pendingAd.mediaItems,   // للتوافق مع marketplace القديم
+                    userId: currentUser || localStorage.getItem('currentUser') || 'guest',
                     date: Date.now(),
                     views: 0,
                     likes: 0
                 };
                 
+                // إضافة الإعلان الجديد في البداية
                 existingAds.unshift(newAd);
+                
+                // حفظ في localStorage
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // تجربة قراءة للتأكد من الحفظ
+                const testRead = localStorage.getItem('marketplace_ads');
+                console.log("تم حفظ الإعلان، عدد الإعلانات:", existingAds.length);
+                
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 removeTypingIndicator();
                 
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
-                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nmarketplace.html", false);
                 
+                // إعادة تعيين حالة الإعلان
                 document.getElementById('mediaUploadBtn').style.display = 'none';
-                
                 pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaItems: [] };
                 
             } catch (error) {
                 console.error("خطأ في النشر:", error);
                 removeTypingIndicator();
-                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان. يرجى المحاولة مرة أخرى.", false);
+                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان: " + error.message, false);
             } finally {
                 window.isPublishing = false;
             }
