@@ -108,6 +108,8 @@
         .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .contact-buttons-wrapper { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .contact-choice-btn { border: none; border-radius: 50px; padding: 10px 16px; cursor: pointer; color: white; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; min-width: 90px; justify-content: center; }
         .main-ad-icon {
             background: linear-gradient(135deg, #ff6b35, #f7931e);
             border-radius: 20px;
@@ -132,6 +134,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin: 10px 0;
             text-align: right;
+            width: 100%;
         }
         .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; }
         .preview-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
@@ -214,7 +217,8 @@
         function addMessage(text, isUser) {
             let div = document.createElement('div');
             div.className = isUser ? 'user-msg' : 'bot-msg';
-            div.innerText = text;
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerHTML = formattedText;
             document.getElementById('messages').appendChild(div);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
@@ -331,11 +335,11 @@
             let div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
-                <div>📞 **اختر وسيلة التواصل (إجباري):**</div>
-                <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
-                    <button onclick="selectContact('whatsapp')" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💚 واتساب</button>
-                    <button onclick="selectContact('messenger')" style="background:#0084ff; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💬 مسنجر</button>
-                    <button onclick="selectContact('phone')" style="background:#34b7f1; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">📱 هاتف</button>
+                <div>📞 <strong>اختر وسيلة التواصل (إجباري):</strong></div>
+                <div class="contact-buttons-wrapper">
+                    <button class="contact-choice-btn" onclick="selectContact('whatsapp')" style="background:#25D366;">💚 واتساب</button>
+                    <button class="contact-choice-btn" onclick="selectContact('messenger')" style="background:#0084ff;">💬 مسنجر</button>
+                    <button class="contact-choice-btn" onclick="selectContact('phone')" style="background:#34b7f1;">📱 هاتف</button>
                 </div>
             `;
             document.getElementById('messages').appendChild(div);
@@ -438,7 +442,6 @@
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 addMessage("✅ تم نشر إعلانك بنجاح! 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
-                addMessage("🛒 رابط سوق مصطفى:\nmarketplace.html", false);
                 step = null;
                 adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
                 document.getElementById('mediaUploadBtn').style.display = 'none';
@@ -523,7 +526,8 @@
             let input = document.getElementById('chatInput');
             let msg = input.value.trim();
             
-            if (step === 'media') {
+            // إصلاح التخطي التلقائي: إذا كان المستخدم في خطوة الميديا وضغط إرسال دون نص (أو كتب تخطي)
+            if (step === 'media' && (!msg || msg === 'تخطي' || msg === 'إنهاء')) {
                 addMessage("📥 تم تخطي/إنهاء خطوة رفع الملفات.", true);
                 addMessage("📝 الوصف:\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
                 step = 'desc';
@@ -533,6 +537,15 @@
             }
 
             if (!msg) return;
+            
+            // إذا كتب نصاً في خطوة الميديا بدلاً من الضغط على إرسال فارغ للتخطي
+            if (step === 'media' && msg !== '') {
+                addMessage(msg, true);
+                addMessage("⚠️ يرجى رفع الملفات أولاً، أو اضغط على زر (إرسال) مباشرة بدون كتابة نص لتخطي هذه الخطوة.", false);
+                input.value = '';
+                return;
+            }
+
             addMessage(msg, true);
             input.value = '';
             
@@ -546,7 +559,7 @@
                 if (msg.length < 9) { addMessage("❌ رقم هاتف غير صحيح.", false); return; }
                 adData.phone = msg;
                 addMessage(`✅ تم تسجيل رقم الهاتف: ${adData.phone}`, false);
-                addMessage("🖼️ الآن قم برفع الصور أو الفيديوهات بالإستعانة بزر (📷 رفع ملفات)، وعند الإنهاء اضغط على زر (إرسال) للانتقال لخطوة الوصف.", false);
+                addMessage("🖼️ الآن قم برفع الصور أو الفيديوهات بالإستعانة بزر (📷 رفع ملفات)، وعند الإنهاء اضغط على زر (إرسال) فارغاً للانتقال لخطوة الوصف.", false);
                 document.getElementById('mediaUploadBtn').style.display = 'inline-block';
                 step = 'media';
             } else if (step === 'desc') {
