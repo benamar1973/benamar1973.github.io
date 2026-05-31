@@ -47,9 +47,61 @@
         }
         .ad-name { font-weight: bold; font-size: 1.2rem; color: #0f3460; }
         .ad-date { font-size: 0.8rem; color: #6c757d; }
-        .ad-media { width: 100%; max-height: 400px; object-fit: cover; background: #000; }
-        .ad-video { width: 100%; max-height: 400px; background: #000; }
-        .ad-description { padding: 16px; font-size: 1rem; line-height: 1.5; color: #212529; }
+        .main-media {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            background: #000;
+            display: block;
+        }
+        .main-video {
+            width: 100%;
+            max-height: 400px;
+            background: #000;
+        }
+        .thumbnails {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .thumbnail.active {
+            border-color: #007bff;
+        }
+        .thumbnail-video {
+            width: 70px;
+            height: 70px;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        .thumbnail-video.active {
+            border-color: #007bff;
+        }
+        .ad-description {
+            padding: 16px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #212529;
+        }
         .ad-contact {
             padding: 10px 16px;
             background: #e9ecef;
@@ -103,14 +155,17 @@
             text-decoration: none;
             margin-top: 20px;
             font-weight: bold;
-            cursor: pointer;
-            border: none;
         }
         .back-link:hover { background: #218838; }
         footer {
             text-align: center;
             margin-top: 30px;
             color: rgba(255,255,255,0.6);
+        }
+        @media (max-width: 600px) {
+            .ad-name { font-size: 1rem; }
+            .ad-description { font-size: 0.9rem; }
+            .thumbnail, .thumbnail-video { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -131,7 +186,7 @@
     <div id="allAdsList"></div>
 
     <div style="text-align: center;">
-        <button class="back-link" onclick="window.location.href='index.html';">← العودة إلى بوت مصطفى</button>
+        <a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a>
     </div>
     <footer>بوت مصطفى - خدمة الإعلانات | تواصل عبر واتساب: 0556765445</footer>
 </div>
@@ -174,40 +229,67 @@
         });
     }
 
+    // دالة عرض الإعلان مع معرض صور متحرك
     function displayAds(ads, container, showDelete) {
         if (!ads.length) return;
         let html = '';
         for (let ad of ads) {
-            let mainMedia = null;
-            if (ad.mediaList && ad.mediaList.length > 0) {
-                let index = ad.mainMediaIndex !== undefined ? ad.mainMediaIndex : 0;
-                if (index >= ad.mediaList.length) index = 0;
-                mainMedia = ad.mediaList[index];
-            }
-            let mediaHtml = '';
+            // التأكد من وجود mediaList و mainMediaIndex
+            let mediaList = ad.mediaList || [];
+            let mainIndex = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
+            let mainMedia = mediaList.length > 0 ? mediaList[mainIndex] : null;
+
+            // بناء HTML للوسائط الرئيسية
+            let mainHtml = '';
             if (mainMedia) {
-                if (mainMedia.type === 'image') mediaHtml = `<img class="ad-media" src="${mainMedia.data}" alt="صورة الإعلان">`;
-                else if (mainMedia.type === 'video') mediaHtml = `<video class="ad-video" src="${mainMedia.data}" controls></video>`;
+                if (mainMedia.type === 'image') {
+                    mainHtml = `<img class="main-media" src="${mainMedia.url}" alt="الصورة الرئيسية" id="main-${ad.id}">`;
+                } else {
+                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls id="main-${ad.id}"></video>`;
+                }
             } else {
-                mediaHtml = `<div style="background:#dee2e6; padding:30px; text-align:center; color:#6c757d;">📷 لا توجد وسائط</div>`;
+                mainHtml = `<div style="background:#dee2e6; padding:30px; text-align:center; color:#6c757d;">📷 لا توجد وسائط</div>`;
             }
+
+            // بناء المصغرات لكل الوسائط
+            let thumbnailsHtml = '';
+            if (mediaList.length > 1) {
+                thumbnailsHtml = '<div class="thumbnails">';
+                for (let i = 0; i < mediaList.length; i++) {
+                    let media = mediaList[i];
+                    let isActive = (i === mainIndex) ? 'active' : '';
+                    if (media.type === 'image') {
+                        thumbnailsHtml += `<img src="${media.url}" class="thumbnail ${isActive}" onclick="changeMainMedia(${ad.id}, ${i})" data-index="${i}">`;
+                    } else {
+                        thumbnailsHtml += `<div class="thumbnail-video ${isActive}" onclick="changeMainMedia(${ad.id}, ${i})" data-index="${i}">🎬</div>`;
+                    }
+                }
+                thumbnailsHtml += '</div>';
+            }
+
             let contactIcon = '';
             if (ad.contactMethod === 'whatsapp') contactIcon = '💚 واتساب';
             else if (ad.contactMethod === 'messenger') contactIcon = '💬 مسنجر';
             else if (ad.contactMethod === 'phone') contactIcon = '📱 هاتف';
             else contactIcon = '📞';
+
             let deleteBtn = '';
             if (showDelete && currentUser && ad.userId === currentUser) {
                 deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف الإعلان</button>`;
             }
+
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
+
             html += `
-                <div class="ad-card" id="ad-${ad.id}">
+                <div class="ad-card" id="ad-${ad.id}" data-media-list='${JSON.stringify(mediaList)}'>
                     <div class="ad-header">
                         <div class="ad-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-date">${dateStr}</div>
                     </div>
-                    ${mediaHtml}
+                    <div id="media-container-${ad.id}">
+                        ${mainHtml}
+                    </div>
+                    ${thumbnailsHtml}
                     <div class="ad-description">${escapeHtml(ad.description)}</div>
                     <div class="ad-contact">
                         <span>${contactIcon} ${escapeHtml(ad.phone)}</span>
@@ -222,6 +304,41 @@
         }
         container.innerHTML = html;
     }
+
+    // دالة تغيير الوسائط الرئيسية عند النقر على مصغرة
+    window.changeMainMedia = function(adId, newIndex) {
+        let adCard = document.getElementById(`ad-${adId}`);
+        if (!adCard) return;
+        let mediaListRaw = adCard.getAttribute('data-media-list');
+        if (!mediaListRaw) return;
+        let mediaList = JSON.parse(mediaListRaw);
+        if (newIndex >= mediaList.length) return;
+        let media = mediaList[newIndex];
+        let container = document.getElementById(`media-container-${adId}`);
+        if (!container) return;
+        let mainHtml = '';
+        if (media.type === 'image') {
+            mainHtml = `<img class="main-media" src="${media.url}" alt="الصورة الرئيسية" id="main-${adId}">`;
+        } else {
+            mainHtml = `<video class="main-video" src="${media.url}" controls id="main-${adId}"></video>`;
+        }
+        container.innerHTML = mainHtml;
+
+        // تحديث الصنف active في المصغرات
+        let thumbnails = adCard.querySelectorAll('.thumbnail, .thumbnail-video');
+        thumbnails.forEach((thumb, idx) => {
+            if (idx === newIndex) thumb.classList.add('active');
+            else thumb.classList.remove('active');
+        });
+
+        // تحديث mainMediaIndex في كائن الإعلان المخزن (اختياري للاستمرارية)
+        let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+        let adIndex = allAds.findIndex(ad => ad.id === adId);
+        if (adIndex !== -1) {
+            allAds[adIndex].mainMediaIndex = newIndex;
+            localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
+        }
+    };
 
     window.deleteAd = function(adId) {
         if (!currentUser) {
