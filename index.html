@@ -371,7 +371,6 @@
             showToast('تم تسجيل الخروج');
         }
         
-        // startAd - تم إلغاء شرط الاشتراك السنوي
         async function startAd() {
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (إجباري):", false);
             step = 'name';
@@ -507,7 +506,6 @@
             return container;
         }
         
-        // initChat - تم إلغاء شرط الاشتراك
         async function initChat() {
             document.getElementById('messages').innerHTML = '';
             let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية\n✅ **النشر مجاني ولا يتطلب اشتراكاً**`;
@@ -529,6 +527,7 @@
             document.getElementById('mediaInput').click();
         };
         
+        // التعديل الأساسي هنا: تصحيح شرط الانتقال إلى مرحلة الوصف
         document.getElementById('mediaInput').onchange = async (e) => {
             let files = Array.from(e.target.files);
             if (files.length === 0) return;
@@ -562,10 +561,12 @@
             addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
             displayMediaGallery();
             
-            if (step === 'phone') {
+            // التصحيح: التحقق من step === 'media' بدلاً من 'phone'
+            if (step === 'media') {
                 addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
                 step = 'desc';
             }
+            
             document.getElementById('mediaInput').value = '';
         };
         
