@@ -105,9 +105,9 @@
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
         #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
-        .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
-        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; }
+        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; }
         .contact-buttons-wrapper { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
         .contact-choice-btn { border: none; border-radius: 50px; padding: 10px 16px; cursor: pointer; color: white; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; min-width: 90px; justify-content: center; }
         .main-ad-icon {
@@ -141,12 +141,12 @@
         .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
         .preview-time { font-size: 11px; color: #65676B; }
         .preview-content { padding: 0 12px 8px 12px; font-size: 14px; color: #050505; }
-        .preview-media { width: 100%; max-height: 400px; object-fit: cover; }
-        .preview-video { width: 100%; max-height: 400px; background: #000; }
-        .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
-        .preview-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
+        .preview-media { width: 100%; max-height: 300px; object-fit: cover; display: block; }
+        .preview-video { width: 100%; max-height: 300px; background: #000; display: block; }
+        .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; background: #f7f8fa; }
+        .preview-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; }
         .preview-thumb.active { border-color: #007bff; }
-        .preview-thumb-video { width: 70px; height: 70px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; border: 2px solid transparent; }
+        .preview-thumb-video { width: 60px; height: 60px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; }
         .preview-thumb-video.active { border-color: #007bff; }
         .preview-contact { padding: 10px 12px; background: #f0f2f5; margin: 8px; border-radius: 8px; font-size: 13px; text-align: center; font-weight: bold; }
         .preview-buttons { display: flex; justify-content: space-around; padding: 8px 12px; border-top: 1px solid #e4e6eb; color: #65676B; font-size: 13px; }
@@ -330,6 +330,31 @@
             adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
             document.getElementById('mediaUploadBtn').style.display = 'none';
         }
+
+        function showMediaDoneButton() {
+            let div = document.createElement('div');
+            div.className = 'bot-msg';
+            div.style.width = "100%";
+            div.innerHTML = `
+                <div>🖼️ استعمل زر <strong>(📷 رفع ملفات)</strong> بالأسفل لرفع الصور أو الفيديوهات.</div>
+                <button onclick="finishMediaStep()" style="background:#28a745; color:white; border:none; border-radius:30px; padding:12px 20px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%;">
+                    ✅ اضغط هنا عند إنهاء الرفع للانتقال للوصف
+                </button>
+            `;
+            document.getElementById('messages').appendChild(div);
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        }
+
+        window.finishMediaStep = function() {
+            if (adData.mediaList.length === 0) {
+                addMessage("📥 تم تخطي خطوة رفع الملفات (لم يتم رفع أي ملف).", true);
+            } else {
+                addMessage(`📥 تم تأكيد حفظ عدد (${adData.mediaList.length}) ملف بنجاح والإنهاء.`, true);
+            }
+            addMessage("📝 الوصف:\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
+            step = 'desc';
+            document.getElementById('mediaUploadBtn').style.display = 'none';
+        }
         
         function showContacts() {
             let div = document.createElement('div');
@@ -361,9 +386,9 @@
             if (adData.mediaList.length > 0) {
                 let mainMedia = adData.mediaList[adData.mainMediaIndex];
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="preview-media" src="${mainMedia.data}">`;
+                    mainHtml = `<img class="preview-media" src="${mainMedia.data}" id="prevMainImg">`;
                 } else {
-                    mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
+                    mainHtml = `<video class="preview-video" src="${mainMedia.data}" id="prevMainVid" controls></video>`;
                 }
             }
             
@@ -390,10 +415,9 @@
                     <div><div class="preview-name">${adData.name}</div><div class="preview-time">الآن · 🌍</div></div>
                 </div>
                 <div class="preview-content">${adData.desc}</div>
-                ${mainHtml}
+                <div id="previewMainMediaContainer">${mainHtml}</div>
                 ${thumbnailsHtml}
                 <div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone}</div>
-                <div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
             `;
             document.getElementById('messages').appendChild(previewDiv);
             
@@ -409,11 +433,21 @@
         
         window.changeMainMedia = function(index) {
             adData.mainMediaIndex = index;
-            let previewCard = document.querySelector('.preview-card');
-            if (previewCard) previewCard.remove();
-            let btns = document.querySelectorAll('.confirm-buttons');
-            if (btns.length) btns[btns.length-1].remove();
-            showPreview();
+            let container = document.getElementById('previewMainMediaContainer');
+            if(!container) return;
+            
+            let media = adData.mediaList[index];
+            if (media.type === 'image') {
+                container.innerHTML = `<img class="preview-media" src="${media.data}">`;
+            } else {
+                container.innerHTML = `<video class="preview-video" src="${media.data}" controls></video>`;
+            }
+            
+            let thumbs = document.querySelectorAll('.preview-thumb, .preview-thumb-video');
+            thumbs.forEach((t, i) => {
+                if(i === index) t.classList.add('active');
+                else t.classList.remove('active');
+            });
         };
         
         window.cancelAd = function() {
@@ -441,7 +475,12 @@
                 };
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-                addMessage("✅ تم نشر إعلانك بنجاح! 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
+                
+                // تنظيف واجهة أزرار التأكيد لمنع الضغط المتكرر
+                let confButtons = document.querySelectorAll('.confirm-buttons');
+                confButtons.forEach(el => el.remove());
+
+                addMessage("✅ تم نشر إعلانك بنجاح في السوق! 🎉\n\nشكراً لاستخدامك خدمات بوت مصطفى المفتوحة.", false);
                 step = null;
                 adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
                 document.getElementById('mediaUploadBtn').style.display = 'none';
@@ -518,7 +557,7 @@
                 });
             }
             
-            addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
+            showToast(`✅ تم إضافة ${files.length} ملف بنجاح`);
             displayMediaGallery();
         };
         
@@ -526,26 +565,15 @@
             let input = document.getElementById('chatInput');
             let msg = input.value.trim();
             
-            // إصلاح التخطي التلقائي: إذا كان المستخدم في خطوة الميديا وضغط إرسال دون نص (أو كتب تخطي)
-            if (step === 'media' && (!msg || msg === 'تخطي' || msg === 'إنهاء')) {
-                addMessage("📥 تم تخطي/إنهاء خطوة رفع الملفات.", true);
-                addMessage("📝 الوصف:\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
-                step = 'desc';
-                document.getElementById('mediaUploadBtn').style.display = 'none';
+            // في خطوة الميديا، يمنع النص العشوائي من كسر الخطوة، ويوجه المستخدم لاستخدام الزر المخصص
+            if (step === 'media') {
+                if(msg !== "") addMessage(msg, true);
+                addMessage("⚠️ من فضلك ارفع الصور أولاً، ثم اضغط على الزر الأخضر المخصص في الأعلى المكتوب عليه (✅ اضغط هنا عند إنهاء الرفع) للمتابعة.", false);
                 input.value = '';
                 return;
             }
 
             if (!msg) return;
-            
-            // إذا كتب نصاً في خطوة الميديا بدلاً من الضغط على إرسال فارغ للتخطي
-            if (step === 'media' && msg !== '') {
-                addMessage(msg, true);
-                addMessage("⚠️ يرجى رفع الملفات أولاً، أو اضغط على زر (إرسال) مباشرة بدون كتابة نص لتخطي هذه الخطوة.", false);
-                input.value = '';
-                return;
-            }
-
             addMessage(msg, true);
             input.value = '';
             
@@ -559,9 +587,10 @@
                 if (msg.length < 9) { addMessage("❌ رقم هاتف غير صحيح.", false); return; }
                 adData.phone = msg;
                 addMessage(`✅ تم تسجيل رقم الهاتف: ${adData.phone}`, false);
-                addMessage("🖼️ الآن قم برفع الصور أو الفيديوهات بالإستعانة بزر (📷 رفع ملفات)، وعند الإنهاء اضغط على زر (إرسال) فارغاً للانتقال لخطوة الوصف.", false);
-                document.getElementById('mediaUploadBtn').style.display = 'inline-block';
+                
                 step = 'media';
+                document.getElementById('mediaUploadBtn').style.display = 'inline-block';
+                showMediaDoneButton();
             } else if (step === 'desc') {
                 if (msg.length < 5) { addMessage("❌ وصف قصير جداً، يرجى كتابة تفاصيل أكثر.", false); return; }
                 adData.desc = msg;
