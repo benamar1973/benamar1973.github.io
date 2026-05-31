@@ -23,20 +23,50 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         .header h1 { font-size: 2rem; margin-bottom: 8px; }
-        .user-info {
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: rgba(255,255,255,0.2);
             border-radius: 40px;
-            padding: 10px 15px;
-            display: inline-block;
-            margin-top: 10px;
+            padding: 8px 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .user-info { font-weight: bold; }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .logout-btn:hover { background: #c82333; }
+        .toggle-myads-btn {
+            background: #ffc107;
+            color: #333;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 1rem;
         }
         .ad-card {
             background: white;
             border-radius: 25px;
             overflow: hidden;
             margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
+        .ad-card:hover { transform: translateY(-3px); }
         .ad-header {
             padding: 12px 16px;
             background: #f8f9fa;
@@ -46,7 +76,7 @@
             border-bottom: 1px solid #e9ecef;
         }
         .ad-name { font-weight: bold; font-size: 1.2rem; color: #0f3460; }
-        .ad-date { font-size: 0.8rem; color: #6c757d; }
+        .ad-date { font-size: 0.7rem; color: #6c757d; }
         .main-media {
             width: 100%;
             max-height: 400px;
@@ -71,19 +101,17 @@
             width: 70px;
             height: 70px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
             transition: 0.2s;
         }
-        .thumbnail.active {
-            border-color: #007bff;
-        }
+        .thumbnail.active { border-color: #007bff; }
         .thumbnail-video {
             width: 70px;
             height: 70px;
             background: #000;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -91,16 +119,14 @@
             font-size: 24px;
             cursor: pointer;
             border: 2px solid transparent;
-            position: relative;
         }
-        .thumbnail-video.active {
-            border-color: #007bff;
-        }
+        .thumbnail-video.active { border-color: #007bff; }
         .ad-description {
             padding: 16px;
             font-size: 1rem;
             line-height: 1.5;
             color: #212529;
+            background: white;
         }
         .ad-contact {
             padding: 10px 16px;
@@ -115,7 +141,7 @@
         .ad-stats {
             padding: 8px 16px;
             color: #6c757d;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             border-top: 1px solid #dee2e6;
             display: flex;
             gap: 20px;
@@ -126,7 +152,7 @@
             border: none;
             border-radius: 50px;
             padding: 6px 15px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             font-weight: bold;
         }
@@ -174,7 +200,10 @@
     <div class="header">
         <h1>🛒 سوق مصطفى</h1>
         <p>منصة الإعلانات المبوبة</p>
-        <div class="user-info" id="userInfo"></div>
+        <div class="user-bar" id="userBar">
+            <!-- سيتم ملء هذا بالجافاسكريبت -->
+        </div>
+        <button id="toggleMyAdsBtn" class="toggle-myads-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
 
     <div id="myAdsSection" style="display: none;">
@@ -193,16 +222,48 @@
 
 <script>
     let currentUser = localStorage.getItem('currentUser');
-    const userInfoDiv = document.getElementById('userInfo');
+    const userBar = document.getElementById('userBar');
+    const toggleBtn = document.getElementById('toggleMyAdsBtn');
     const myAdsSection = document.getElementById('myAdsSection');
     const myAdsList = document.getElementById('myAdsList');
     const allAdsList = document.getElementById('allAdsList');
 
-    if (currentUser) {
-        userInfoDiv.innerHTML = `👋 مرحباً ${currentUser.split('@')[0]} | يمكنك حذف إعلاناتك فقط`;
-        myAdsSection.style.display = 'block';
-    } else {
-        userInfoDiv.innerHTML = `👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a> لحذف إعلاناتك`;
+    let myAdsVisible = false;
+
+    function renderUserBar() {
+        if (currentUser) {
+            userBar.innerHTML = `
+                <span class="user-info">👋 مرحباً ${currentUser.split('@')[0]}</span>
+                <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
+            `;
+            toggleBtn.style.display = 'block';
+        } else {
+            userBar.innerHTML = `<span class="user-info">👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a></span>`;
+            toggleBtn.style.display = 'none';
+            myAdsSection.style.display = 'none';
+            myAdsVisible = false;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        renderUserBar();
+        loadAds(); // تحديث العرض (إخفاء إعلاناتي)
+        toggleBtn.innerText = '📌 عرض إعلاناتي';
+        myAdsVisible = false;
+        myAdsSection.style.display = 'none';
+    }
+
+    function toggleMyAds() {
+        if (!currentUser) return;
+        myAdsVisible = !myAdsVisible;
+        myAdsSection.style.display = myAdsVisible ? 'block' : 'none';
+        toggleBtn.innerText = myAdsVisible ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
+        if (myAdsVisible) {
+            // إعادة تحميل الإعلانات لتحديث القائمة
+            loadAds();
+        }
     }
 
     function loadAds() {
@@ -212,7 +273,9 @@
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
             displayAds(myAds, myAdsList, true);
-            if (myAds.length === 0) myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك حتى الآن. انشر إعلانك من بوت مصطفى.</div>';
+            if (myAds.length === 0 && myAdsVisible) {
+                myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك حتى الآن. انشر إعلانك من بوت مصطفى.</div>';
+            }
         } else {
             myAdsList.innerHTML = '<div class="no-ads">🔐 سجل الدخول لترى إعلاناتك وتحذفها.</div>';
         }
@@ -229,17 +292,18 @@
         });
     }
 
-    // دالة عرض الإعلان مع معرض صور متحرك
     function displayAds(ads, container, showDelete) {
-        if (!ads.length) return;
+        if (!ads.length) {
+            if (container === myAdsList && myAdsVisible) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
+            else if (container === allAdsList) container.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً</div>';
+            return;
+        }
         let html = '';
         for (let ad of ads) {
-            // التأكد من وجود mediaList و mainMediaIndex
             let mediaList = ad.mediaList || [];
             let mainIndex = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
             let mainMedia = mediaList.length > 0 ? mediaList[mainIndex] : null;
 
-            // بناء HTML للوسائط الرئيسية
             let mainHtml = '';
             if (mainMedia) {
                 if (mainMedia.type === 'image') {
@@ -251,7 +315,6 @@
                 mainHtml = `<div style="background:#dee2e6; padding:30px; text-align:center; color:#6c757d;">📷 لا توجد وسائط</div>`;
             }
 
-            // بناء المصغرات لكل الوسائط
             let thumbnailsHtml = '';
             if (mediaList.length > 1) {
                 thumbnailsHtml = '<div class="thumbnails">';
@@ -305,7 +368,6 @@
         container.innerHTML = html;
     }
 
-    // دالة تغيير الوسائط الرئيسية عند النقر على مصغرة
     window.changeMainMedia = function(adId, newIndex) {
         let adCard = document.getElementById(`ad-${adId}`);
         if (!adCard) return;
@@ -324,14 +386,12 @@
         }
         container.innerHTML = mainHtml;
 
-        // تحديث الصنف active في المصغرات
         let thumbnails = adCard.querySelectorAll('.thumbnail, .thumbnail-video');
         thumbnails.forEach((thumb, idx) => {
             if (idx === newIndex) thumb.classList.add('active');
             else thumb.classList.remove('active');
         });
 
-        // تحديث mainMediaIndex في كائن الإعلان المخزن (اختياري للاستمرارية)
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex !== -1) {
@@ -357,6 +417,8 @@
         }
     };
 
+    renderUserBar();
+    toggleBtn.onclick = toggleMyAds;
     loadAds();
     window.addEventListener('storage', function(e) { if (e.key === 'marketplace_ads') loadAds(); });
 </script>
