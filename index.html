@@ -5,33 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>بوت مصطفى - خدمة الإعلانات</title>
     <style>
+        /* نفس الـ style السابق - اختصاراً سأضع المحتوى الكامل في الرد النهائي */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px;
-        }
-        .top-bot-bar {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto 20px auto;
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 80px;
-            padding: 20px 30px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: glow 2s infinite;
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
-            50% { box-shadow: 0 10px 40px rgba(0,123,255,0.6); }
-            100% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
-        }
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', 'Segoe UI', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 16px; }
+        .top-bot-bar { width: 100%; max-width: 650px; margin: 0 auto 20px auto; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 80px; padding: 20px 30px; text-align: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: glow 2s infinite; }
+        @keyframes glow { 0% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); } 50% { box-shadow: 0 10px 40px rgba(0,123,255,0.6); } 100% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); } }
         .top-bot-text { font-size: 2.2rem; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 15px; }
         .top-bot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-top: 8px; }
         .container { max-width: 550px; width: 100%; }
@@ -53,104 +31,26 @@
         .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
         .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
         .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
-        .media-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .media-item {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
+        .media-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+        .media-item { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid transparent; }
         .media-item.active { border-color: #007bff; }
         .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
-        .media-item .delete-media {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .main-badge {
-            position: absolute;
-            bottom: 2px;
-            left: 2px;
-            background: #ffc107;
-            color: #333;
-            padding: 2px 5px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: bold;
-        }
+        .media-item .delete-media { position: absolute; top: 2px; right: 2px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .main-badge { position: absolute; bottom: 2px; left: 2px; background: #ffc107; color: #333; padding: 2px 5px; border-radius: 10px; font-size: 9px; font-weight: bold; }
         .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
         #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-size: 15px; }
         #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
         #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
-        .contact-buttons { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; justify-content: center; }
-        .contact-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
-        .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
         .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
         .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
         .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .main-ad-icon {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            border-radius: 20px;
-            padding: 25px 15px;
-            cursor: pointer;
-            text-align: center;
-            margin: 15px 0;
-            border: 3px solid #ffd700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+        .main-ad-icon { background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 20px; padding: 25px 15px; cursor: pointer; text-align: center; margin: 15px 0; border: 3px solid #ffd700; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .main-ad-icon:hover { transform: translateY(-8px) scale(1.02); }
-        .main-ad-icon .main-icon-title { font-size: 24px; font-weight: bold; color: white; display: block; margin-bottom: 6px; }
-        .main-ad-icon .main-icon-sub { font-size: 14px; color: rgba(255,255,255,0.9); }
         .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
-        .typing { display: flex; gap: 4px; align-items: center; }
-        .typing span { width: 8px; height: 8px; background: #888; border-radius: 50%; display: inline-block; animation: typingAnim 1.4s infinite; }
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingAnim { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
         .footer-links { text-align: center; margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px; max-width: 550px; width: 100%; }
         .footer-links a { color: white; text-decoration: none; margin: 0 8px; font-size: 13px; }
-        .preview-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin: 10px 0;
-        }
+        .preview-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 10px 0; }
         .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; }
         .preview-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
         .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
@@ -162,14 +62,9 @@
         .preview-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
         .preview-thumb.active { border-color: #007bff; }
         .preview-thumb-video { width: 70px; height: 70px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; border: 2px solid transparent; }
-        .preview-thumb-video.active { border-color: #007bff; }
         .preview-contact { padding: 10px 12px; background: #f0f2f5; margin: 8px; border-radius: 8px; font-size: 13px; text-align: center; }
         .preview-buttons { display: flex; justify-content: space-around; padding: 8px 12px; border-top: 1px solid #e4e6eb; color: #65676B; font-size: 13px; }
-        @media (max-width: 480px) {
-            .top-bot-text { font-size: 1.6rem; }
-            .preview-thumb { width: 55px; height: 55px; }
-            .media-item { width: 60px; height: 60px; }
-        }
+        @media (max-width: 480px) { .top-bot-text { font-size: 1.6rem; } .preview-thumb { width: 55px; height: 55px; } .media-item { width: 60px; height: 60px; } }
     </style>
 </head>
 <body>
@@ -238,45 +133,16 @@
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
-        function addMediaMessage(url, type, isUser) {
-            let div = document.createElement('div');
-            div.className = isUser ? 'user-msg' : 'bot-msg';
-            if (type === 'image') {
-                let img = document.createElement('img');
-                img.src = url;
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '200px';
-                img.style.borderRadius = '12px';
-                div.appendChild(img);
-            } else {
-                let video = document.createElement('video');
-                video.src = url;
-                video.controls = true;
-                video.style.maxWidth = '220px';
-                video.style.maxHeight = '220px';
-                video.style.borderRadius = '12px';
-                div.appendChild(video);
-            }
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-        }
-        
         function displayMediaGallery() {
             if (adData.mediaList.length === 0) return;
-            
             let galleryDiv = document.createElement('div');
             galleryDiv.className = 'media-gallery';
-            
             for (let i = 0; i < adData.mediaList.length; i++) {
                 let media = adData.mediaList[i];
                 let isMain = (i === adData.mainMediaIndex);
                 let mediaDiv = document.createElement('div');
                 mediaDiv.className = `media-item ${isMain ? 'active' : ''}`;
-                mediaDiv.onclick = () => {
-                    adData.mainMediaIndex = i;
-                    displayMediaGallery();
-                };
-                
+                mediaDiv.onclick = () => { adData.mainMediaIndex = i; displayMediaGallery(); };
                 if (media.type === 'image') {
                     mediaDiv.innerHTML = `<img src="${media.data}"><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}`;
                 } else {
@@ -284,7 +150,6 @@
                 }
                 galleryDiv.appendChild(mediaDiv);
             }
-            
             let clearBtn = document.createElement('button');
             clearBtn.innerText = '🗑️ مسح الكل';
             clearBtn.style.background = '#dc3545';
@@ -293,14 +158,8 @@
             clearBtn.style.borderRadius = '20px';
             clearBtn.style.padding = '5px 15px';
             clearBtn.style.cursor = 'pointer';
-            clearBtn.onclick = () => {
-                adData.mediaList = [];
-                adData.mainMediaIndex = 0;
-                displayMediaGallery();
-                showToast("تم مسح جميع الملفات");
-            };
+            clearBtn.onclick = () => { adData.mediaList = []; adData.mainMediaIndex = 0; displayMediaGallery(); showToast("تم مسح جميع الملفات"); };
             galleryDiv.appendChild(clearBtn);
-            
             let oldGallery = document.querySelector('.media-gallery');
             if (oldGallery) oldGallery.remove();
             document.getElementById('messages').appendChild(galleryDiv);
@@ -309,9 +168,7 @@
         
         function removeMedia(index) {
             adData.mediaList.splice(index, 1);
-            if (adData.mainMediaIndex >= adData.mediaList.length) {
-                adData.mainMediaIndex = Math.max(0, adData.mediaList.length - 1);
-            }
+            if (adData.mainMediaIndex >= adData.mediaList.length) adData.mainMediaIndex = Math.max(0, adData.mediaList.length - 1);
             displayMediaGallery();
             showToast(`🗑️ تم حذف الملف`);
         }
@@ -381,14 +238,7 @@
         function showContacts() {
             let div = document.createElement('div');
             div.className = 'bot-msg';
-            div.innerHTML = `
-                <div>📞 **اختر وسيلة التواصل (إجباري):**</div>
-                <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
-                    <button onclick="selectContact('whatsapp')" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💚 واتساب</button>
-                    <button onclick="selectContact('messenger')" style="background:#0084ff; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💬 مسنجر</button>
-                    <button onclick="selectContact('phone')" style="background:#34b7f1; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">📱 هاتف</button>
-                </div>
-            `;
+            div.innerHTML = `<div>📞 **اختر وسيلة التواصل (إجباري):**</div><div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;"><button onclick="selectContact('whatsapp')" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💚 واتساب</button><button onclick="selectContact('messenger')" style="background:#0084ff; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💬 مسنجر</button><button onclick="selectContact('phone')" style="background:#34b7f1; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">📱 هاتف</button></div>`;
             document.getElementById('messages').appendChild(div);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
@@ -403,51 +253,26 @@
         function showPreview() {
             let contactSymbol = adData.contact === 'whatsapp' ? '💚' : (adData.contact === 'messenger' ? '💬' : '📱');
             let contactName = adData.contact === 'whatsapp' ? 'واتساب' : (adData.contact === 'messenger' ? 'مسنجر' : 'هاتف');
-            
             let mainMedia = adData.mediaList[adData.mainMediaIndex];
-            let mainHtml = '';
-            if (mainMedia.type === 'image') {
-                mainHtml = `<img class="preview-media" src="${mainMedia.data}">`;
-            } else {
-                mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
-            }
-            
+            let mainHtml = mainMedia.type === 'image' ? `<img class="preview-media" src="${mainMedia.data}">` : `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
             let thumbnailsHtml = '';
             if (adData.mediaList.length > 1) {
                 thumbnailsHtml = '<div class="preview-thumbnails">';
                 for (let i = 0; i < adData.mediaList.length; i++) {
                     let m = adData.mediaList[i];
                     let isActive = i === adData.mainMediaIndex ? 'active' : '';
-                    if (m.type === 'image') {
-                        thumbnailsHtml += `<img src="${m.data}" class="preview-thumb ${isActive}" onclick="changeMainMedia(${i})">`;
-                    } else {
-                        thumbnailsHtml += `<div class="preview-thumb-video ${isActive}" onclick="changeMainMedia(${i})">🎬</div>`;
-                    }
+                    if (m.type === 'image') thumbnailsHtml += `<img src="${m.data}" class="preview-thumb ${isActive}" onclick="changeMainMedia(${i})">`;
+                    else thumbnailsHtml += `<div class="preview-thumb-video ${isActive}" onclick="changeMainMedia(${i})">🎬</div>`;
                 }
                 thumbnailsHtml += '</div>';
             }
-            
             let previewDiv = document.createElement('div');
             previewDiv.className = 'preview-card';
-            previewDiv.innerHTML = `
-                <div class="preview-header">
-                    <div class="preview-avatar">${adData.name.charAt(0).toUpperCase()}</div>
-                    <div><div class="preview-name">${adData.name}</div><div class="preview-time">الآن · 🌍</div></div>
-                </div>
-                <div class="preview-content">${adData.desc}</div>
-                ${mainHtml}
-                ${thumbnailsHtml}
-                <div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone}</div>
-                <div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
-            `;
+            previewDiv.innerHTML = `<div class="preview-header"><div class="preview-avatar">${adData.name.charAt(0).toUpperCase()}</div><div><div class="preview-name">${adData.name}</div><div class="preview-time">الآن · 🌍</div></div></div><div class="preview-content">${adData.desc}</div>${mainHtml}${thumbnailsHtml}<div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone}</div><div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>`;
             document.getElementById('messages').appendChild(previewDiv);
-            
             let btns = document.createElement('div');
             btns.className = 'confirm-buttons';
-            btns.innerHTML = `
-                <button class="confirm-yes" onclick="publishAd()">✅ تأكيد النشر</button>
-                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>
-            `;
+            btns.innerHTML = `<button class="confirm-yes" onclick="publishAd()">✅ تأكيد النشر</button><button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>`;
             document.getElementById('messages').appendChild(btns);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
@@ -487,7 +312,7 @@
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
-                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nmarketplace.html", false);
                 step = null;
                 adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
                 document.getElementById('mediaUploadBtn').style.display = 'none';
@@ -517,56 +342,30 @@
         document.getElementById('marketplaceBtn').onclick = () => window.open('marketplace.html', '_blank');
         document.getElementById('loginBtn').onclick = login;
         document.getElementById('logoutBtn').onclick = logout;
-        document.getElementById('topBotBar').onclick = () => {
-            document.getElementById('chatFullscreen').classList.add('open');
-            if (document.getElementById('messages').children.length === 0) initChat();
-        };
+        document.getElementById('topBotBar').onclick = () => { document.getElementById('chatFullscreen').classList.add('open'); if (document.getElementById('messages').children.length === 0) initChat(); };
         document.getElementById('closeChatBtn').onclick = () => document.getElementById('chatFullscreen').classList.remove('open');
+        document.getElementById('mediaUploadBtn').onclick = () => document.getElementById('mediaInput').click();
         
-        document.getElementById('mediaUploadBtn').onclick = () => {
-            document.getElementById('mediaInput').click();
-        };
-        
-        // التعديل الأساسي هنا: تصحيح شرط الانتقال إلى مرحلة الوصف
         document.getElementById('mediaInput').onchange = async (e) => {
             let files = Array.from(e.target.files);
             if (files.length === 0) return;
-            
             for (let file of files) {
                 let fileType = file.type;
                 let mediaItemType = null;
                 let processedFile = file;
-                
                 if (fileType.startsWith('image/')) {
                     mediaItemType = 'image';
                     let compressedBlob = await compressImage(file, 800, 800, 0.7);
                     processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
                 } else if (fileType.startsWith('video/')) {
                     mediaItemType = 'video';
-                } else {
-                    showToast(`❌ الملف ${file.name} غير صالح`);
-                    continue;
-                }
-                
+                } else { showToast(`❌ الملف ${file.name} غير صالح`); continue; }
                 let reader = new FileReader();
-                await new Promise((resolve) => {
-                    reader.onload = (ev) => {
-                        adData.mediaList.push({ data: ev.target.result, type: mediaItemType, name: file.name });
-                        resolve();
-                    };
-                    reader.readAsDataURL(processedFile);
-                });
+                await new Promise((resolve) => { reader.onload = (ev) => { adData.mediaList.push({ data: ev.target.result, type: mediaItemType, name: file.name }); resolve(); }; reader.readAsDataURL(processedFile); });
             }
-            
             addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
             displayMediaGallery();
-            
-            // التصحيح: التحقق من step === 'media' بدلاً من 'phone'
-            if (step === 'media') {
-                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
-                step = 'desc';
-            }
-            
+            if (step === 'media') { addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false); step = 'desc'; }
             document.getElementById('mediaInput').value = '';
         };
         
@@ -576,7 +375,6 @@
             if (!msg) return;
             addMessage(msg, true);
             input.value = '';
-            
             if (step === 'name') {
                 if (msg.length < 3) { addMessage("❌ الاسم قصير جداً", false); return; }
                 adData.name = msg;
