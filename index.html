@@ -47,7 +47,6 @@
         .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
         .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; }
         .btn-logout { background: #dc3545; margin-top: 15px; }
-        .btn-clear-storage { background: #ff9800; color: #fff; margin-top: 10px; }
         .marketplace-link-btn {
             background: linear-gradient(135deg, #6f42c1, #8b5cf6);
             color: white;
@@ -61,7 +60,7 @@
         }
         .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
         .user-name { font-size: 24px; font-weight: bold; color: #0f3460; word-break: break-all; }
-        .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
+        .btn-clear-storage { background: #ff9800; color: #fff; margin-top: 10px; }
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.5rem; font-weight: bold; }
@@ -282,9 +281,6 @@
             <div id="appSection" style="display: none;">
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
-                    <div class="sub-days" id="daysLeft"></div>
-                    <div style="font-size:13px; color:#856404;" id="planText"></div>
-                    <div id="paymentSection" style="margin-top: 10px;"></div>
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
@@ -357,29 +353,9 @@
 
         function showToast(msg) { const toast = document.getElementById('toast'); toast.innerText = msg; toast.style.opacity = '1'; setTimeout(() => toast.style.opacity = '0', 3000); }
         
-        function getSubscription() { 
-            if (!currentUser) return { active: false, days: 0 }; 
-            const expiry = localStorage.getItem(`sub_${currentUser}`); 
-            if (expiry && Date.now() < parseInt(expiry)) { 
-                const days = Math.ceil((parseInt(expiry) - Date.now()) / 86400000); 
-                return { active: true, days }; 
-            } 
-            return { active: false, days: 0 }; 
-        }
-        
         function updateUI() {
             if (!currentUser) return;
             document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
-            const sub = getSubscription();
-            if (sub.active) {
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${sub.days} يوم`;
-                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                document.getElementById('paymentSection').innerHTML = '';
-            } else {
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
-                document.getElementById('paymentSection').innerHTML = `<div style="font-size:12px; color:#666; margin-top:8px;">💡 أقل من 4 دج إشتراك يومياً</div>`;
-            }
         }
 
         // زر مسح التخزين المحلي
@@ -387,7 +363,6 @@
             if (confirm("⚠️ هل أنت متأكد؟ سيتم حذف جميع الإعلانات المخزنة نهائياً. لا يمكن التراجع.")) {
                 localStorage.removeItem('marketplace_ads');
                 showToast("✅ تم مسح جميع الإعلانات القديمة. يمكنك الآن نشر إعلان جديد.");
-                // إعادة تحميل الدردشة إذا كانت مفتوحة
                 if (messagesDiv.children.length > 0) initChat();
             }
         });
@@ -769,7 +744,6 @@
             showSummaryWithEditOptions();
         };
         
-        // دالة ضغط الصور (تقليل الحجم لتوفير المساحة)
         function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.6) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -851,7 +825,6 @@
             mediaInput.value = '';
         };
 
-        // الدالة النهائية مع معالجة خاصة لخطأ الامتلاء
         window.finalPublish = async () => {
             if (isPublishing) {
                 addMessage("⚠️ عملية نشر جارية بالفعل، يرجى الانتظار.", false);
