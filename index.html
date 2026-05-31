@@ -329,7 +329,7 @@
             showToast(`🗑️ تم حذف الملف`);
         }
         
-        // محاكاة رفع الملفات (للتجربة) - يمكنك استبدالها بـ Cloudinary لاحقاً
+        // محاكاة رفع الملفات (للتجربة) - يمكنك دمج Cloudinary لاحقاً
         async function simulateUpload(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -395,11 +395,11 @@
             showPreview();
         }
         
-        // المعاينة بنفس تصميم سوق مصطفى
+        // المعاينة بنفس تصميم سوق مصطفى - تم إصلاح خطأ الوسائط
         function showPreview() {
             let contactSymbol = adData.contact === 'whatsapp' ? '💚' : (adData.contact === 'messenger' ? '💬' : '📱');
             let contactName = adData.contact === 'whatsapp' ? 'واتساب' : (adData.contact === 'messenger' ? 'مسنجر' : 'هاتف');
-            let mainMedia = adData.mediaList[adData.mainMediaIndex] || null;
+            let mainMedia = (adData.mediaList.length > 0) ? adData.mediaList[adData.mainMediaIndex] : null;
             let mainHtml = '';
             if (mainMedia) {
                 if (mainMedia.type === 'image') mainHtml = `<img class="preview-media" src="${mainMedia.url}">`;
@@ -452,15 +452,13 @@
         
         window.changeMainMedia = function(index) {
             adData.mainMediaIndex = index;
-            // إزالة المعاينة والأزرار القديمة
             let previewCard = document.querySelector('.preview-card');
             if (previewCard) previewCard.remove();
             let btns = document.querySelectorAll('.confirm-buttons');
             if (btns.length) btns[btns.length-1].remove();
-            showPreview(); // إعادة عرض المعاينة مع الصورة الرئيسية الجديدة
+            showPreview();
         };
         
-        // تعديل الإعلان
         window.editAd = function() {
             let previewCard = document.querySelector('.preview-card');
             if (previewCard) previewCard.remove();
@@ -486,7 +484,6 @@
         };
         
         window.editField = function(field) {
-            // إزالة القائمة
             let menuDiv = document.querySelector('.bot-msg:last-child');
             if (menuDiv && menuDiv.innerHTML.includes('اختر ما تريد تعديله')) menuDiv.remove();
             
@@ -500,11 +497,10 @@
                 addMessage("📄 أرسل الوصف الجديد:", false);
                 step = 'edit_desc';
             } else if (field === 'contact') {
-                showContacts(); // يعرض أزرار التواصل لاختيار وسيلة جديدة
+                showContacts();
                 step = 'edit_contact';
             } else if (field === 'media') {
                 addMessage("🖼️ يمكنك الآن رفع ملفات إضافية أو حذف الموجودة من المعرض أعلاه.", false);
-                // لا نغير step، فقط نسمح برفع الملفات
             }
         };
         
@@ -591,14 +587,9 @@
             }
             addMessage(`✅ تم رفع ${files.length} ملف بنجاح!`, false);
             displayMediaGallery();
-            if (step === 'media' || step === 'edit_menu') {
-                // إذا كنا في مرحلة رفع الملفات، ننتقل للوصف
-                if (step === 'media') {
-                    addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
-                    step = 'desc';
-                } else {
-                    // في وضع التعديل، فقط نحدث المعرض
-                }
+            if (step === 'media') {
+                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
+                step = 'desc';
             }
             document.getElementById('mediaInput').value = '';
         };
