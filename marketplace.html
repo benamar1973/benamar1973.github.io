@@ -3,278 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>سوق مصطفى - الإعلانات المبوبة</title>
+    <title>سوق مصطفى - إعلانات مبوبة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(145deg, #0b2b40 0%, #1a4a5f 100%);
-            font-family: 'Cairo', 'Tahoma', sans-serif;
-            padding: 16px;
-            min-height: 100vh;
+            background: linear-gradient(145deg, #0b2b40, #1a4a5f);
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            padding: 20px;
+            direction: rtl;
         }
-        .container {
-            max-width: 950px;
-            margin: 0 auto;
-        }
-        /* Header */
+        .container { max-width: 950px; margin: 0 auto; }
         .header {
-            background: linear-gradient(125deg, #1e3c72, #2b4d7a);
-            border-radius: 35px;
+            background: linear-gradient(115deg, #1e5f7a, #2c3e66);
+            border-radius: 40px;
             padding: 25px 20px;
             text-align: center;
             color: white;
-            margin-bottom: 30px;
-            box-shadow: 0 18px 35px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
         }
-        .header h1 {
-            font-size: 2.2rem;
-            letter-spacing: -0.5px;
-        }
-        .header p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
+        .header h1 { font-size: 2rem; }
         .user-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 60px;
+            border-radius: 50px;
             padding: 8px 20px;
-            margin-top: 20px;
-            gap: 15px;
+            margin-top: 15px;
             flex-wrap: wrap;
         }
-        .user-info {
-            font-weight: bold;
-            font-size: 1rem;
-        }
         .logout-btn {
-            background: #e63946;
+            background: #dc3545;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 18px;
             color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 6px 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .logout-btn:hover {
-            background: #c1121f;
-            transform: scale(1.02);
-        }
-        .login-link {
-            color: #ffd966;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        /* زر إظهار/إخفاء إعلاناتي */
         .toggle-btn {
-            background: linear-gradient(105deg, #ffb347, #ffcc33);
+            background: #ffc107;
             border: none;
-            border-radius: 60px;
-            padding: 12px 20px;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #2d2d2d;
-            cursor: pointer;
+            border-radius: 50px;
+            padding: 10px;
             width: 100%;
             margin: 15px 0 5px;
-            transition: 0.2s;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-        }
-        .toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-        }
-        /* العناوين */
-        .section-title {
-            font-size: 1.8rem;
             font-weight: bold;
-            color: #fff;
-            margin: 30px 0 15px 0;
-            border-right: 6px solid #ffc107;
-            padding-right: 18px;
-            text-shadow: 1px 1px 2px #00000040;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #2d2d2d;
         }
-        /* البطاقات */
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: white;
+            border-right: 5px solid #ffc107;
+            padding-right: 15px;
+            margin: 30px 0 15px 0;
+        }
         .ad-card {
-            background: #ffffff;
-            border-radius: 32px;
+            background: white;
+            border-radius: 28px;
             margin-bottom: 28px;
             overflow: hidden;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-            transition: all 0.25s ease;
-        }
-        .ad-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         .ad-header {
-            padding: 16px 22px;
-            background: #fef9e6;
+            background: #fef7e0;
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ffecb3;
         }
         .ad-name {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #1e4663;
-            letter-spacing: -0.3px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1d4e6e;
         }
         .ad-date {
             font-size: 0.7rem;
-            color: #7f8c8d;
-            background: #ecf0f1;
+            background: #e9ecef;
             padding: 4px 12px;
             border-radius: 30px;
         }
-        /* منطقة الوسائط */
         .media-container {
-            background: #1a1a2e;
+            background: #111;
             text-align: center;
-            position: relative;
         }
         .main-img {
             width: 100%;
-            max-height: 460px;
+            max-height: 400px;
             object-fit: contain;
-            background: #0f0f1f;
             cursor: pointer;
         }
         .main-video {
             width: 100%;
-            max-height: 460px;
-            background: #000;
+            max-height: 400px;
         }
-        /* معرض المصغرات */
         .thumbnails {
             display: flex;
-            gap: 12px;
-            padding: 14px;
+            gap: 8px;
+            padding: 12px;
             overflow-x: auto;
-            background: #f4f6f9;
-            border-top: 1px solid #e2e8f0;
+            background: #f2f4f8;
+            border-top: 1px solid #ddd;
         }
         .thumb-img {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             object-fit: cover;
-            border-radius: 16px;
+            border-radius: 12px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: 0.1s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
         .thumb-video {
-            width: 80px;
-            height: 80px;
-            background: #2d3e50;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            background: #2c3e50;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 30px;
+            font-size: 26px;
             cursor: pointer;
             border: 2px solid transparent;
         }
         .thumb-img.active, .thumb-video.active {
-            border-color: #f39c12;
-            transform: scale(1.02);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-color: #007bff;
         }
-        /* الوصف */
         .ad-description {
-            padding: 20px 22px;
-            font-size: 1rem;
-            line-height: 1.65;
-            color: #2c3e50;
-            background: white;
+            padding: 16px 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #2d3e50;
         }
-        /* معلومات الاتصال */
         .ad-contact {
-            padding: 12px 22px;
-            background: #eef2f7;
+            padding: 10px 20px;
+            background: #eef2f5;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
-            border-top: 1px solid #dce5ec;
-        }
-        .contact-info {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1f6392;
-            background: #ffffffc9;
-            padding: 6px 16px;
-            border-radius: 40px;
         }
         .delete-btn {
-            background: #e63946;
-            color: white;
+            background: #dc3545;
             border: none;
-            border-radius: 40px;
-            padding: 7px 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            border-radius: 30px;
+            padding: 5px 15px;
+            color: white;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .delete-btn:hover {
-            background: #b91c2c;
-        }
-        /* الإحصائيات */
         .ad-stats {
-            padding: 10px 22px;
-            background: #fcfcfc;
-            border-top: 1px solid #e9ecef;
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            color: #6c757d;
             display: flex;
-            gap: 25px;
-            font-size: 0.75rem;
-            color: #5d6f83;
+            gap: 20px;
+            border-top: 1px solid #e9ecef;
         }
         .no-ads {
             background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 35px;
-            padding: 45px 20px;
+            border-radius: 25px;
+            padding: 40px;
             text-align: center;
             color: white;
-            font-size: 1.1rem;
-            margin: 20px 0;
         }
         .back-link {
             display: inline-block;
-            background: #2a9d8f;
+            background: #28a745;
             color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
             text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin: 20px 0;
             font-weight: bold;
-            margin: 30px 0 20px;
-            transition: 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .back-link:hover {
-            background: #21867a;
-            transform: translateY(-2px);
         }
         footer {
             text-align: center;
-            color: rgba(255,255,255,0.7);
-            margin-top: 30px;
-            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 20px;
         }
-        @media (max-width: 620px) {
-            .ad-name { font-size: 1.2rem; }
-            .thumb-img, .thumb-video { width: 60px; height: 60px; }
-            .section-title { font-size: 1.5rem; }
+        @media (max-width: 600px) {
+            .ad-name { font-size: 1.1rem; }
+            .thumb-img, .thumb-video { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -282,7 +195,7 @@
 <div class="container">
     <div class="header">
         <h1>🛒 سوق مصطفى</h1>
-        <p>إعلانات مبوبة – تواصل مباشر مع البائع</p>
+        <p>إعلانات مبوبة – تواصل مباشر</p>
         <div class="user-bar" id="userBar"></div>
         <button id="toggleMyAdsBtn" class="toggle-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
@@ -308,20 +221,17 @@
     const myAdsSection = document.getElementById('myAdsSection');
     const myAdsList = document.getElementById('myAdsList');
     const allAdsList = document.getElementById('allAdsList');
-    let myAdsVisible = false;
+    let showMyAds = false;
 
     function renderUserBar() {
         if (currentUser) {
-            userBar.innerHTML = `
-                <span class="user-info">👋 أهلاً ${escapeHtml(currentUser.split('@')[0])}</span>
-                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
-            `;
+            userBar.innerHTML = `<span>👋 أهلاً ${escapeHtml(currentUser.split('@')[0])}</span><button class="logout-btn" onclick="logout()">🚪 خروج</button>`;
             toggleBtn.style.display = 'block';
         } else {
-            userBar.innerHTML = `<span class="user-info">👤 زائر | <a href="index.html" class="login-link">تسجيل الدخول</a></span>`;
+            userBar.innerHTML = `<span>👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a></span>`;
             toggleBtn.style.display = 'none';
             myAdsSection.style.display = 'none';
-            myAdsVisible = false;
+            showMyAds = false;
         }
     }
 
@@ -331,16 +241,16 @@
         renderUserBar();
         loadAds();
         toggleBtn.innerText = '📌 عرض إعلاناتي';
-        myAdsVisible = false;
+        showMyAds = false;
         myAdsSection.style.display = 'none';
     }
 
     function toggleMyAds() {
         if (!currentUser) return;
-        myAdsVisible = !myAdsVisible;
-        myAdsSection.style.display = myAdsVisible ? 'block' : 'none';
-        toggleBtn.innerText = myAdsVisible ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
-        if (myAdsVisible) loadAds();
+        showMyAds = !showMyAds;
+        myAdsSection.style.display = showMyAds ? 'block' : 'none';
+        toggleBtn.innerText = showMyAds ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
+        if (showMyAds) loadAds();
     }
 
     function loadAds() {
@@ -355,13 +265,13 @@
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
             displayAds(myAds, myAdsList, true);
-            if (myAds.length === 0 && myAdsVisible) {
-                myAdsList.innerHTML = '<div class="no-ads">📭 لم تنشر أي إعلان بعد. ابدأ من البوت الآن!</div>';
+            if (myAds.length === 0 && showMyAds) {
+                myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك. انشر من البوت.</div>';
             }
-        } else if (myAdsVisible) {
-            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك وحذفها.</div>';
+        } else if (showMyAds) {
+            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
         }
-        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً. كن أول من ينشر!</div>';
+        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً.</div>';
     }
 
     function escapeHtml(str) {
@@ -376,41 +286,40 @@
 
     function displayAds(ads, container, showDelete) {
         if (!ads.length) {
-            if (container === myAdsList && myAdsVisible) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
-            else if (container === allAdsList) container.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات</div>';
+            if (container === myAdsList && showMyAds) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
             return;
         }
         let html = '';
         for (let ad of ads) {
             let mediaList = ad.mediaList || [];
-            let mainIndex = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
-            let mainMedia = mediaList.length > 0 ? mediaList[mainIndex] : null;
+            let mainIdx = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
+            let mainMedia = mediaList.length ? mediaList[mainIdx] : null;
 
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="main-img" src="${mainMedia.url}" alt="صورة الإعلان" onclick="openImageZoom('${mainMedia.url}')">`;
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url}')">`;
                 } else {
                     mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
                 }
             } else {
-                mainHtml = `<div style="background:#2c3e50; padding:45px; text-align:center; color:white;">🖼️ لا توجد وسائط</div>`;
+                mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
             }
 
-            let thumbnailsHtml = '';
+            let thumbs = '';
             if (mediaList.length > 1) {
-                thumbnailsHtml = '<div class="thumbnails">';
+                thumbs = '<div class="thumbnails">';
                 for (let i = 0; i < mediaList.length; i++) {
-                    let media = mediaList[i];
-                    if (!media || !media.url) continue;
-                    let isActive = (i === mainIndex) ? 'active' : '';
-                    if (media.type === 'image') {
-                        thumbnailsHtml += `<img src="${media.url}" class="thumb-img ${isActive}" onclick="changeMainMedia('ad-${ad.id}', ${i})" loading="lazy">`;
+                    let m = mediaList[i];
+                    if (!m.url) continue;
+                    let activeClass = (i === mainIdx) ? 'active' : '';
+                    if (m.type === 'image') {
+                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" onclick="changeMedia(${ad.id}, ${i})">`;
                     } else {
-                        thumbnailsHtml += `<div class="thumb-video ${isActive}" onclick="changeMainMedia('ad-${ad.id}', ${i})">🎬</div>`;
+                        thumbs += `<div class="thumb-video ${activeClass}" onclick="changeMedia(${ad.id}, ${i})">🎬</div>`;
                     }
                 }
-                thumbnailsHtml += '</div>';
+                thumbs += '</div>';
             }
 
             let contactIcon = '';
@@ -421,24 +330,22 @@
 
             let deleteBtn = '';
             if (showDelete && currentUser && ad.userId === currentUser) {
-                deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف الإعلان</button>`;
+                deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف</button>`;
             }
 
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
 
             html += `
-                <div class="ad-card" id="ad-${ad.id}" data-media-list='${escapeHtml(JSON.stringify(mediaList))}'>
+                <div class="ad-card" id="ad-${ad.id}" data-media='${escapeHtml(JSON.stringify(mediaList))}'>
                     <div class="ad-header">
                         <div class="ad-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-date">${dateStr}</div>
                     </div>
-                    <div id="media-container-${ad.id}" class="media-container">
-                        ${mainHtml}
-                    </div>
-                    ${thumbnailsHtml}
+                    <div id="media-container-${ad.id}" class="media-container">${mainHtml}</div>
+                    ${thumbs}
                     <div class="ad-description">${escapeHtml(ad.description)}</div>
                     <div class="ad-contact">
-                        <span class="contact-info">${contactIcon} ${escapeHtml(ad.phone)}</span>
+                        <span>${contactIcon} ${escapeHtml(ad.phone)}</span>
                         ${deleteBtn}
                     </div>
                     <div class="ad-stats">
@@ -451,32 +358,30 @@
         container.innerHTML = html;
     }
 
-    window.changeMainMedia = function(adElementId, newIndex) {
-        let adCard = document.getElementById(adElementId);
-        if (!adCard) return;
-        let mediaListRaw = adCard.getAttribute('data-media-list');
-        if (!mediaListRaw) return;
-        let mediaList = JSON.parse(mediaListRaw);
+    window.changeMedia = function(adId, newIndex) {
+        let adDiv = document.getElementById(`ad-${adId}`);
+        if (!adDiv) return;
+        let mediaList = JSON.parse(adDiv.getAttribute('data-media'));
         if (newIndex >= mediaList.length) return;
         let media = mediaList[newIndex];
-        let container = document.getElementById(`media-container-${adElementId.replace('ad-','')}`);
+        let container = document.getElementById(`media-container-${adId}`);
         if (!container) return;
-        let mainHtml = '';
+        let newHtml = '';
         if (media.type === 'image') {
-            mainHtml = `<img class="main-img" src="${media.url}" alt="صورة الإعلان" onclick="openImageZoom('${media.url}')">`;
+            newHtml = `<img class="main-img" src="${media.url}" onclick="zoomImage('${media.url}')">`;
         } else {
-            mainHtml = `<video class="main-video" src="${media.url}" controls></video>`;
+            newHtml = `<video class="main-video" src="${media.url}" controls></video>`;
         }
-        container.innerHTML = mainHtml;
-
-        let thumbnails = adCard.querySelectorAll('.thumb-img, .thumb-video');
-        thumbnails.forEach((thumb, idx) => {
+        container.innerHTML = newHtml;
+        // تحديث active في المصغرات
+        let thumbs = adDiv.querySelectorAll('.thumb-img, .thumb-video');
+        thumbs.forEach((thumb, idx) => {
             if (idx === newIndex) thumb.classList.add('active');
             else thumb.classList.remove('active');
         });
-
+        // حفظ mainMediaIndex في localStorage
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-        let adIndex = allAds.findIndex(ad => ad.id === parseInt(adElementId.replace('ad-','')));
+        let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex !== -1) {
             allAds[adIndex].mainMediaIndex = newIndex;
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
@@ -500,7 +405,7 @@
         }
     };
 
-    window.openImageZoom = function(imgSrc) {
+    window.zoomImage = function(src) {
         let modal = document.createElement('div');
         modal.style.position = 'fixed';
         modal.style.top = '0';
@@ -515,7 +420,7 @@
         modal.style.cursor = 'pointer';
         modal.onclick = () => modal.remove();
         let img = document.createElement('img');
-        img.src = imgSrc;
+        img.src = src;
         img.style.maxWidth = '90%';
         img.style.maxHeight = '90%';
         img.style.borderRadius = '12px';
