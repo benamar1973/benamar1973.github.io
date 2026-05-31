@@ -324,6 +324,7 @@
         let isBotTyping = false;
         let pendingService = null;
         let pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
+        let isPublishing = false;
 
         const services = [
             { name: "📱 DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", description: "شحن رصيد هاتف دجازي", benefit: "🔹 **فائدة الرابط:** يتيح لك شحن رصيد هاتفك أو هاتف أي شخص آخر بسهولة وأمان.\n🔹 يمكنك الشحن بأي مبلغ (500, 1000, 2000, 5000 دج).", requirements: "📋 **متطلبات الدفع:**\n• رقم هاتف دجازي المراد شحنه 📱\n• بطاقة ذهبية أو CIB بنكية 💳", steps: "📝 **خطوات التسجيل:**\n1️⃣ اضغط على الرابط\n2️⃣ أدخل رقم الهاتف\n3️⃣ اختر المبلغ\n4️⃣ أدخل بيانات الدفع\n5️⃣ تأكيد العملية", needsCard: true },
@@ -380,19 +381,12 @@
             } else {
                 document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
                 document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك للوصول إلى جميع الخدمات';
-                // تم حذف رابط الاشتراك السنوي مع الاحتفاظ بالنص الإرشادي فقط
                 document.getElementById('paymentSection').innerHTML = `<div style="font-size:12px; color:#666; margin-top:8px;">💡 أقل من 4 دج إشتراك يومياً | يمكنك تحقيق هدف كنت تصرف عليه أكثر من 2000 دج</div>`;
             }
         }
 
-        // أزرار دخول السوق
-        document.getElementById('marketplaceGuestBtn').onclick = () => {
-            window.open('marketplace.html', '_blank');
-        };
-        
-        document.getElementById('marketplaceBtn').onclick = () => {
-            window.open('marketplace.html', '_blank');
-        };
+        document.getElementById('marketplaceGuestBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
+        document.getElementById('marketplaceBtn').onclick = () => { window.open('marketplace.html', '_blank'); };
 
         document.getElementById('loginBtn').onclick = () => { 
             const email = document.getElementById('emailInput').value.trim(); 
@@ -829,6 +823,7 @@
                     showToast("✅ تم ضغط الصورة بنجاح!");
                 } catch(e) {
                     console.error("خطأ في الضغط:", e);
+                    showToast("⚠️ لم نتمكن من ضغط الصورة، سيتم رفعها كما هي");
                 }
             } else if (fileType.startsWith('video/')) {
                 mediaType = 'video';
@@ -860,37 +855,47 @@
             mediaInput.value = '';
         };
 
-        // الدالة النهائية للنشر
+        // الدالة النهائية للنشر (تم إصلاحها بشكل كامل)
         window.finalPublish = async () => {
-            if (window.isPublishing) return;
-            window.isPublishing = true;
+            if (isPublishing) {
+                addMessage("⚠️ عملية نشر جارية بالفعل، يرجى الانتظار.", false);
+                return;
+            }
+            
+            // التحقق من اكتمال البيانات
+            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaTypeChoice || !pendingAd.media) {
+                addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى العودة وتعبئة جميع الحقول المطلوبة.", false);
+                return;
+            }
+            
+            if (!currentUser) {
+                addMessage("⚠️ يرجى تسجيل الدخول أولاً لنشر الإعلان.", false);
+                return;
+            }
+            
+            isPublishing = true;
+            addMessage("🚀 جاري نشر إعلانك...", false);
+            showTypingIndicator();
             
             try {
-                addMessage("🚀 جاري نشر إعلانك...", false);
-                showTypingIndicator();
-                
-                if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaTypeChoice || !pendingAd.media) {
-                    addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى المحاولة مرة أخرى.", false);
-                    removeTypingIndicator();
-                    window.isPublishing = false;
-                    return;
-                }
-                
+                // محاولة حفظ البيانات في localStorage
                 let existingAds = [];
                 const stored = localStorage.getItem('marketplace_ads');
                 if (stored) {
                     try {
                         existingAds = JSON.parse(stored);
+                        if (!Array.isArray(existingAds)) existingAds = [];
                     } catch(e) {
+                        console.warn("بيانات تالفة، سيتم إنشاء قائمة جديدة");
                         existingAds = [];
                     }
                 }
                 
                 const newAd = {
                     id: Date.now(),
-                    name: pendingAd.fullName,
-                    phone: pendingAd.phone,
-                    description: pendingAd.description,
+                    name: pendingAd.fullName.trim(),
+                    phone: pendingAd.phone.trim(),
+                    description: pendingAd.description.trim(),
                     contactMethod: pendingAd.contactMethod,
                     image: pendingAd.media,
                     imageType: pendingAd.mediaType,
@@ -903,22 +908,23 @@
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // محاكاة تأخير بسيط لإظهار تأثير النشر
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 removeTypingIndicator();
                 
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
-                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html\n(إذا كنت تختبر محلياً، استخدم الرابط النسبي marketplace.html)", false);
                 
+                // إعادة تعيين حالة الإعلان
                 document.getElementById('mediaUploadBtn').style.display = 'none';
-                
                 pendingAd = { step: null, fullName: null, phone: null, description: null, contactMethod: null, mediaTypeChoice: null, media: null, mediaType: null };
                 
             } catch (error) {
-                console.error("خطأ في النشر:", error);
+                console.error("خطأ أثناء النشر:", error);
                 removeTypingIndicator();
-                addMessage("⚠️ حدث خطأ أثناء نشر الإعلان. يرجى المحاولة مرة أخرى.", false);
+                addMessage(`⚠️ حدث خطأ أثناء نشر الإعلان: ${error.message || "يرجى المحاولة مرة أخرى"}`, false);
             } finally {
-                window.isPublishing = false;
+                isPublishing = false;
             }
         };
 
