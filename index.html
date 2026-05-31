@@ -371,12 +371,8 @@
             showToast('تم تسجيل الخروج');
         }
         
+        // startAd - تم إلغاء شرط الاشتراك السنوي
         async function startAd() {
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (!sub || Date.now() > parseInt(sub)) {
-                addMessage("⚠️ الاشتراك مطلوب (1000 دج سنوياً)", false);
-                return;
-            }
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (إجباري):", false);
             step = 'name';
             adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
@@ -511,16 +507,10 @@
             return container;
         }
         
+        // initChat - تم إلغاء شرط الاشتراك
         async function initChat() {
             document.getElementById('messages').innerHTML = '';
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية`;
-            if (!sub || Date.now() > parseInt(sub)) {
-                if (currentUser) welcomeMsg += `\n\n⚠️ ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج)`;
-                else welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً`;
-            } else {
-                welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك`;
-            }
+            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية\n✅ **النشر مجاني ولا يتطلب اشتراكاً**`;
             addMessage(welcomeMsg, false);
             document.getElementById('messages').appendChild(buildIcons());
         }
