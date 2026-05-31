@@ -42,9 +42,7 @@
         .marketplace-link-btn { background: linear-gradient(135deg, #6f42c1, #8b5cf6); color: white; border: none; border-radius: 50px; padding: 12px 20px; margin-top: 10px; cursor: pointer; font-weight: bold; width: 100%; }
         .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
         .user-name { font-size: 24px; font-weight: bold; color: #0f3460; }
-        .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
-        .payment-buttons { display: flex; gap: 10px; margin-top: 10px; justify-content: center; }
-        .payment-btn { background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; border-radius: 50px; padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .sub-days { background: #d4edda; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; color: #155724; font-weight: bold; }
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.5rem; font-weight: bold; }
@@ -173,9 +171,8 @@
             <div id="appSection" style="display: none;">
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
-                    <div class="sub-days" id="daysLeft"></div>
-                    <div style="font-size:13px; color:#856404;" id="planText"></div>
-                    <div id="paymentSection" style="margin-top:10px;"></div>
+                    <div class="sub-days" id="daysLeft">✅ الحساب نشط ومجاني بالكامل</div>
+                    <div style="font-size:13px; color:#155724;" id="planText">✨ مرحباً بك في خدمات بوت مصطفى المجانية ✨</div>
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
@@ -311,17 +308,6 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             document.getElementById('userName').innerHTML = `👤 ${email.split('@')[0]}`;
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (sub && Date.now() < parseInt(sub)) {
-                let days = Math.max(0, Math.ceil((parseInt(sub)-Date.now())/86400000));
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${days} يوم`;
-                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                document.getElementById('paymentSection').innerHTML = '';
-            } else {
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8','_blank')">📅 اشتراك سنوي 1000 دج</button></div>`;
-            }
             showToast(`مرحباً ${email.split('@')[0]}`);
         }
         
@@ -335,11 +321,6 @@
         }
         
         async function startAd() {
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (!sub || Date.now() > parseInt(sub)) {
-                addMessage("⚠️ الاشتراك مطلوب (1000 دج سنوياً)", false);
-                return;
-            }
             addMessage("📢 لنبدأ عملية نشر إعلانك!\n\n📝 من فضلك أرسل الاسم الكامل (إجباري):", false);
             step = 'name';
             adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
@@ -478,14 +459,14 @@
         
         async function initChat() {
             document.getElementById('messages').innerHTML = '';
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            let welcomeMsg = `✨ أهلاً بك في بوت مصطفى ✨\n\n📢 خدمة الإعلانات هي خدمتنا الأساسية\n\nكيف تبدأ؟\n• للإعلانات: اضغط على الأيقونة البرتقالية بالأسفل`;
-            if (!sub || Date.now() > parseInt(sub)) {
-                if (currentUser) welcomeMsg += `\n\n⚠️ ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع في الواجهة الرئيسية (اشتراك سنوي 1000 دج)`;
-                else welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً في الصفحة الرئيسية قبل استخدام البوت.`;
+            let welcomeMsg = `✨ أهلاً بك في بوت مصطفى ✨\n\n📢 خدمة الإعلانات هي خدمتنا الأساسية الحرة والمجانية.\n\nكيف تبدأ؟\n• للإعلانات: اضغط على الأيقونة البرتقالية بالأسفل`;
+            
+            if (!currentUser) {
+                welcomeMsg += `\n\n🔐 تنبيه: يرجى تسجيل الدخول أولاً في الصفحة الرئيسية قبل استخدام البوت لضمان حفظ إعلاناتك باسمك.`;
             } else {
-                welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحباً بك!`;
+                welcomeMsg += `\n\n✅ حسابك متصل وجاهز للاستخدام!`;
             }
+            
             addMessage(welcomeMsg, false);
             document.getElementById('messages').appendChild(buildIcons());
         }
@@ -582,35 +563,7 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
             document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (sub && Date.now() < parseInt(sub)) {
-                let days = Math.max(0, Math.ceil((parseInt(sub)-Date.now())/86400000));
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${days} يوم`;
-                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                document.getElementById('paymentSection').innerHTML = '';
-            } else {
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8','_blank')">📅 اشتراك سنوي 1000 دج</button></div>`;
-            }
         }
-        
-        function checkPayment() {
-            let params = new URLSearchParams(window.location.search);
-            let code = params.get('code');
-            let days = params.get('days');
-            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
-                let expiry = Date.now() + (parseInt(days) * 86400000);
-                localStorage.setItem(`sub_${currentUser}`, expiry);
-                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
-                if (document.getElementById('appSection').style.display !== 'none') {
-                    document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${days} يوم`;
-                    document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                    document.getElementById('paymentSection').innerHTML = '';
-                }
-            }
-        }
-        checkPayment();
     </script>
 </body>
 </html>
