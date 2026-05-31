@@ -106,8 +106,8 @@
         #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
         .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; width: 100%; }
-        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; }
-        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; }
+        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; text-align: center; }
+        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; min-width: 120px; text-align: center; }
         .contact-buttons-wrapper { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
         .contact-choice-btn { border: none; border-radius: 50px; padding: 10px 16px; cursor: pointer; color: white; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; min-width: 90px; justify-content: center; }
         .main-ad-icon {
@@ -386,9 +386,9 @@
             if (adData.mediaList.length > 0) {
                 let mainMedia = adData.mediaList[adData.mainMediaIndex];
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="preview-media" src="${mainMedia.data}" id="prevMainImg">`;
+                    mainHtml = `<img class="preview-media" src="${mainMedia.data}">`;
                 } else {
-                    mainHtml = `<video class="preview-video" src="${mainMedia.data}" id="prevMainVid" controls></video>`;
+                    mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
                 }
             }
             
@@ -476,7 +476,6 @@
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 
-                // تنظيف واجهة أزرار التأكيد لمنع الضغط المتكرر
                 let confButtons = document.querySelectorAll('.confirm-buttons');
                 confButtons.forEach(el => el.remove());
 
@@ -565,7 +564,6 @@
             let input = document.getElementById('chatInput');
             let msg = input.value.trim();
             
-            // في خطوة الميديا، يمنع النص العشوائي من كسر الخطوة، ويوجه المستخدم لاستخدام الزر المخصص
             if (step === 'media') {
                 if(msg !== "") addMessage(msg, true);
                 addMessage("⚠️ من فضلك ارفع الصور أولاً، ثم اضغط على الزر الأخضر المخصص في الأعلى المكتوب عليه (✅ اضغط هنا عند إنهاء الرفع) للمتابعة.", false);
