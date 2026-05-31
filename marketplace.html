@@ -2,196 +2,279 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق مصطفى - الإعلانات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>سوق مصطفى - الإعلانات المبوبة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            padding: 20px;
-            direction: rtl;
+            background: linear-gradient(145deg, #0b2b40 0%, #1a4a5f 100%);
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            padding: 16px;
+            min-height: 100vh;
         }
-        .container { max-width: 800px; margin: 0 auto; }
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 30px;
-            padding: 20px;
+            background: linear-gradient(125deg, #1e3c72, #2b4d7a);
+            border-radius: 35px;
+            padding: 25px 20px;
             text-align: center;
             color: white;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            box-shadow: 0 18px 35px rgba(0,0,0,0.25);
         }
-        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header h1 {
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
         .user-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255,255,255,0.2);
-            border-radius: 40px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
             padding: 8px 20px;
-            margin-top: 15px;
+            margin-top: 20px;
+            gap: 15px;
             flex-wrap: wrap;
-            gap: 10px;
         }
-        .user-info { font-weight: bold; }
-        .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 6px 20px;
-            cursor: pointer;
+        .user-info {
             font-weight: bold;
-            font-size: 0.9rem;
-        }
-        .logout-btn:hover { background: #c82333; }
-        .toggle-myads-btn {
-            background: #ffc107;
-            color: #333;
-            border: none;
-            border-radius: 50px;
-            padding: 8px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 10px 0;
-            width: 100%;
             font-size: 1rem;
         }
-        .ad-card {
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+        .logout-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 6px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        .ad-card:hover { transform: translateY(-3px); }
+        .logout-btn:hover {
+            background: #c1121f;
+            transform: scale(1.02);
+        }
+        .login-link {
+            color: #ffd966;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* زر إظهار/إخفاء إعلاناتي */
+        .toggle-btn {
+            background: linear-gradient(105deg, #ffb347, #ffcc33);
+            border: none;
+            border-radius: 60px;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #2d2d2d;
+            cursor: pointer;
+            width: 100%;
+            margin: 15px 0 5px;
+            transition: 0.2s;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }
+        /* العناوين */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 30px 0 15px 0;
+            border-right: 6px solid #ffc107;
+            padding-right: 18px;
+            text-shadow: 1px 1px 2px #00000040;
+        }
+        /* البطاقات */
+        .ad-card {
+            background: #ffffff;
+            border-radius: 32px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+            transition: all 0.25s ease;
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+        }
         .ad-header {
-            padding: 12px 16px;
-            background: #f8f9fa;
+            padding: 16px 22px;
+            background: #fef9e6;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #ffecb3;
         }
-        .ad-name { font-weight: bold; font-size: 1.2rem; color: #0f3460; }
-        .ad-date { font-size: 0.7rem; color: #6c757d; }
-        .main-media {
+        .ad-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #1e4663;
+            letter-spacing: -0.3px;
+        }
+        .ad-date {
+            font-size: 0.7rem;
+            color: #7f8c8d;
+            background: #ecf0f1;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        /* منطقة الوسائط */
+        .media-container {
+            background: #1a1a2e;
+            text-align: center;
+            position: relative;
+        }
+        .main-img {
             width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            background: #000;
-            display: block;
+            max-height: 460px;
+            object-fit: contain;
+            background: #0f0f1f;
+            cursor: pointer;
         }
         .main-video {
             width: 100%;
-            max-height: 400px;
+            max-height: 460px;
             background: #000;
         }
+        /* معرض المصغرات */
         .thumbnails {
             display: flex;
-            gap: 8px;
-            padding: 12px;
+            gap: 12px;
+            padding: 14px;
             overflow-x: auto;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
+            background: #f4f6f9;
+            border-top: 1px solid #e2e8f0;
         }
-        .thumbnail {
-            width: 70px;
-            height: 70px;
+        .thumb-img {
+            width: 80px;
+            height: 80px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 16px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: 0.2s;
+            transition: 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-        .thumbnail.active { border-color: #007bff; }
-        .thumbnail-video {
-            width: 70px;
-            height: 70px;
-            background: #000;
-            border-radius: 10px;
+        .thumb-video {
+            width: 80px;
+            height: 80px;
+            background: #2d3e50;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
+            font-size: 30px;
             cursor: pointer;
             border: 2px solid transparent;
         }
-        .thumbnail-video.active { border-color: #007bff; }
+        .thumb-img.active, .thumb-video.active {
+            border-color: #f39c12;
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        /* الوصف */
         .ad-description {
-            padding: 16px;
+            padding: 20px 22px;
             font-size: 1rem;
-            line-height: 1.5;
-            color: #212529;
+            line-height: 1.65;
+            color: #2c3e50;
             background: white;
         }
+        /* معلومات الاتصال */
         .ad-contact {
-            padding: 10px 16px;
-            background: #e9ecef;
+            padding: 12px 22px;
+            background: #eef2f7;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            flex-wrap: wrap;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-top: 1px solid #dce5ec;
         }
-        .ad-stats {
-            padding: 8px 16px;
-            color: #6c757d;
-            font-size: 0.75rem;
-            border-top: 1px solid #dee2e6;
-            display: flex;
-            gap: 20px;
+        .contact-info {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f6392;
+            background: #ffffffc9;
+            padding: 6px 16px;
+            border-radius: 40px;
         }
         .delete-btn {
-            background: #dc3545;
+            background: #e63946;
             color: white;
             border: none;
-            border-radius: 50px;
-            padding: 6px 15px;
-            font-size: 0.75rem;
-            cursor: pointer;
+            border-radius: 40px;
+            padding: 7px 20px;
+            font-size: 0.8rem;
             font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        .delete-btn:hover { background: #c82333; }
-        .section-title {
-            color: white;
-            margin: 20px 0 10px 0;
-            font-size: 1.5rem;
-            border-right: 5px solid #ffc107;
-            padding-right: 15px;
+        .delete-btn:hover {
+            background: #b91c2c;
+        }
+        /* الإحصائيات */
+        .ad-stats {
+            padding: 10px 22px;
+            background: #fcfcfc;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 25px;
+            font-size: 0.75rem;
+            color: #5d6f83;
         }
         .no-ads {
             background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 30px;
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 45px 20px;
             text-align: center;
             color: white;
-            margin: 15px 0;
+            font-size: 1.1rem;
+            margin: 20px 0;
         }
         .back-link {
             display: inline-block;
-            background: #28a745;
+            background: #2a9d8f;
             color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
+            padding: 12px 30px;
+            border-radius: 50px;
             text-decoration: none;
-            margin-top: 20px;
             font-weight: bold;
+            margin: 30px 0 20px;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .back-link:hover { background: #218838; }
+        .back-link:hover {
+            background: #21867a;
+            transform: translateY(-2px);
+        }
         footer {
             text-align: center;
+            color: rgba(255,255,255,0.7);
             margin-top: 30px;
-            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
         }
-        @media (max-width: 600px) {
-            .ad-name { font-size: 1rem; }
-            .ad-description { font-size: 0.9rem; }
-            .thumbnail, .thumbnail-video { width: 55px; height: 55px; }
+        @media (max-width: 620px) {
+            .ad-name { font-size: 1.2rem; }
+            .thumb-img, .thumb-video { width: 60px; height: 60px; }
+            .section-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -199,15 +282,13 @@
 <div class="container">
     <div class="header">
         <h1>🛒 سوق مصطفى</h1>
-        <p>منصة الإعلانات المبوبة</p>
-        <div class="user-bar" id="userBar">
-            <!-- سيتم ملء هذا بالجافاسكريبت -->
-        </div>
-        <button id="toggleMyAdsBtn" class="toggle-myads-btn" style="display: none;">📌 عرض إعلاناتي</button>
+        <p>إعلانات مبوبة – تواصل مباشر مع البائع</p>
+        <div class="user-bar" id="userBar"></div>
+        <button id="toggleMyAdsBtn" class="toggle-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
 
     <div id="myAdsSection" style="display: none;">
-        <div class="section-title">📌 إعلاناتي</div>
+        <div class="section-title">⭐ إعلاناتي</div>
         <div id="myAdsList"></div>
     </div>
 
@@ -217,7 +298,7 @@
     <div style="text-align: center;">
         <a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a>
     </div>
-    <footer>بوت مصطفى - خدمة الإعلانات | تواصل عبر واتساب: 0556765445</footer>
+    <footer>بوت مصطفى – خدمة الإعلانات | تواصل: 0556765445</footer>
 </div>
 
 <script>
@@ -227,18 +308,17 @@
     const myAdsSection = document.getElementById('myAdsSection');
     const myAdsList = document.getElementById('myAdsList');
     const allAdsList = document.getElementById('allAdsList');
-
     let myAdsVisible = false;
 
     function renderUserBar() {
         if (currentUser) {
             userBar.innerHTML = `
-                <span class="user-info">👋 مرحباً ${currentUser.split('@')[0]}</span>
-                <button class="logout-btn" onclick="logout()">🚪 تسجيل الخروج</button>
+                <span class="user-info">👋 أهلاً ${escapeHtml(currentUser.split('@')[0])}</span>
+                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
             `;
             toggleBtn.style.display = 'block';
         } else {
-            userBar.innerHTML = `<span class="user-info">👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a></span>`;
+            userBar.innerHTML = `<span class="user-info">👤 زائر | <a href="index.html" class="login-link">تسجيل الدخول</a></span>`;
             toggleBtn.style.display = 'none';
             myAdsSection.style.display = 'none';
             myAdsVisible = false;
@@ -249,7 +329,7 @@
         localStorage.removeItem('currentUser');
         currentUser = null;
         renderUserBar();
-        loadAds(); // تحديث العرض (إخفاء إعلاناتي)
+        loadAds();
         toggleBtn.innerText = '📌 عرض إعلاناتي';
         myAdsVisible = false;
         myAdsSection.style.display = 'none';
@@ -260,26 +340,28 @@
         myAdsVisible = !myAdsVisible;
         myAdsSection.style.display = myAdsVisible ? 'block' : 'none';
         toggleBtn.innerText = myAdsVisible ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
-        if (myAdsVisible) {
-            // إعادة تحميل الإعلانات لتحديث القائمة
-            loadAds();
-        }
+        if (myAdsVisible) loadAds();
     }
 
     function loadAds() {
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+        allAds = allAds.map(ad => {
+            if (!ad.mediaList) ad.mediaList = [];
+            if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
+            return ad;
+        });
         allAds.sort((a,b) => b.date - a.date);
         displayAds(allAds, allAdsList, false);
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
             displayAds(myAds, myAdsList, true);
             if (myAds.length === 0 && myAdsVisible) {
-                myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك حتى الآن. انشر إعلانك من بوت مصطفى.</div>';
+                myAdsList.innerHTML = '<div class="no-ads">📭 لم تنشر أي إعلان بعد. ابدأ من البوت الآن!</div>';
             }
-        } else {
-            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل الدخول لترى إعلاناتك وتحذفها.</div>';
+        } else if (myAdsVisible) {
+            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك وحذفها.</div>';
         }
-        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً. كن أول من ينشر إعلاناً!</div>';
+        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً. كن أول من ينشر!</div>';
     }
 
     function escapeHtml(str) {
@@ -295,7 +377,7 @@
     function displayAds(ads, container, showDelete) {
         if (!ads.length) {
             if (container === myAdsList && myAdsVisible) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
-            else if (container === allAdsList) container.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً</div>';
+            else if (container === allAdsList) container.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات</div>';
             return;
         }
         let html = '';
@@ -305,14 +387,14 @@
             let mainMedia = mediaList.length > 0 ? mediaList[mainIndex] : null;
 
             let mainHtml = '';
-            if (mainMedia) {
+            if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="main-media" src="${mainMedia.url}" alt="الصورة الرئيسية" id="main-${ad.id}">`;
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" alt="صورة الإعلان" onclick="openImageZoom('${mainMedia.url}')">`;
                 } else {
-                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls id="main-${ad.id}"></video>`;
+                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
                 }
             } else {
-                mainHtml = `<div style="background:#dee2e6; padding:30px; text-align:center; color:#6c757d;">📷 لا توجد وسائط</div>`;
+                mainHtml = `<div style="background:#2c3e50; padding:45px; text-align:center; color:white;">🖼️ لا توجد وسائط</div>`;
             }
 
             let thumbnailsHtml = '';
@@ -320,11 +402,12 @@
                 thumbnailsHtml = '<div class="thumbnails">';
                 for (let i = 0; i < mediaList.length; i++) {
                     let media = mediaList[i];
+                    if (!media || !media.url) continue;
                     let isActive = (i === mainIndex) ? 'active' : '';
                     if (media.type === 'image') {
-                        thumbnailsHtml += `<img src="${media.url}" class="thumbnail ${isActive}" onclick="changeMainMedia(${ad.id}, ${i})" data-index="${i}">`;
+                        thumbnailsHtml += `<img src="${media.url}" class="thumb-img ${isActive}" onclick="changeMainMedia('ad-${ad.id}', ${i})" loading="lazy">`;
                     } else {
-                        thumbnailsHtml += `<div class="thumbnail-video ${isActive}" onclick="changeMainMedia(${ad.id}, ${i})" data-index="${i}">🎬</div>`;
+                        thumbnailsHtml += `<div class="thumb-video ${isActive}" onclick="changeMainMedia('ad-${ad.id}', ${i})">🎬</div>`;
                     }
                 }
                 thumbnailsHtml += '</div>';
@@ -344,18 +427,18 @@
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
 
             html += `
-                <div class="ad-card" id="ad-${ad.id}" data-media-list='${JSON.stringify(mediaList)}'>
+                <div class="ad-card" id="ad-${ad.id}" data-media-list='${escapeHtml(JSON.stringify(mediaList))}'>
                     <div class="ad-header">
                         <div class="ad-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-date">${dateStr}</div>
                     </div>
-                    <div id="media-container-${ad.id}">
+                    <div id="media-container-${ad.id}" class="media-container">
                         ${mainHtml}
                     </div>
                     ${thumbnailsHtml}
                     <div class="ad-description">${escapeHtml(ad.description)}</div>
                     <div class="ad-contact">
-                        <span>${contactIcon} ${escapeHtml(ad.phone)}</span>
+                        <span class="contact-info">${contactIcon} ${escapeHtml(ad.phone)}</span>
                         ${deleteBtn}
                     </div>
                     <div class="ad-stats">
@@ -368,32 +451,32 @@
         container.innerHTML = html;
     }
 
-    window.changeMainMedia = function(adId, newIndex) {
-        let adCard = document.getElementById(`ad-${adId}`);
+    window.changeMainMedia = function(adElementId, newIndex) {
+        let adCard = document.getElementById(adElementId);
         if (!adCard) return;
         let mediaListRaw = adCard.getAttribute('data-media-list');
         if (!mediaListRaw) return;
         let mediaList = JSON.parse(mediaListRaw);
         if (newIndex >= mediaList.length) return;
         let media = mediaList[newIndex];
-        let container = document.getElementById(`media-container-${adId}`);
+        let container = document.getElementById(`media-container-${adElementId.replace('ad-','')}`);
         if (!container) return;
         let mainHtml = '';
         if (media.type === 'image') {
-            mainHtml = `<img class="main-media" src="${media.url}" alt="الصورة الرئيسية" id="main-${adId}">`;
+            mainHtml = `<img class="main-img" src="${media.url}" alt="صورة الإعلان" onclick="openImageZoom('${media.url}')">`;
         } else {
-            mainHtml = `<video class="main-video" src="${media.url}" controls id="main-${adId}"></video>`;
+            mainHtml = `<video class="main-video" src="${media.url}" controls></video>`;
         }
         container.innerHTML = mainHtml;
 
-        let thumbnails = adCard.querySelectorAll('.thumbnail, .thumbnail-video');
+        let thumbnails = adCard.querySelectorAll('.thumb-img, .thumb-video');
         thumbnails.forEach((thumb, idx) => {
             if (idx === newIndex) thumb.classList.add('active');
             else thumb.classList.remove('active');
         });
 
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-        let adIndex = allAds.findIndex(ad => ad.id === adId);
+        let adIndex = allAds.findIndex(ad => ad.id === parseInt(adElementId.replace('ad-','')));
         if (adIndex !== -1) {
             allAds[adIndex].mainMediaIndex = newIndex;
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
@@ -402,19 +485,42 @@
 
     window.deleteAd = function(adId) {
         if (!currentUser) {
-            alert("يجب تسجيل الدخول أولاً لحذف الإعلان.");
+            alert("يجب تسجيل الدخول أولاً.");
             return;
         }
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex === -1) { alert("الإعلان غير موجود."); return; }
         if (allAds[adIndex].userId !== currentUser) { alert("لا يمكنك حذف إعلان ليس لك."); return; }
-        if (confirm("هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
+        if (confirm("⚠️ هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
             allAds.splice(adIndex, 1);
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
             loadAds();
             alert("✅ تم حذف الإعلان بنجاح.");
         }
+    };
+
+    window.openImageZoom = function(imgSrc) {
+        let modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+        modal.style.zIndex = '10000';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.cursor = 'pointer';
+        modal.onclick = () => modal.remove();
+        let img = document.createElement('img');
+        img.src = imgSrc;
+        img.style.maxWidth = '90%';
+        img.style.maxHeight = '90%';
+        img.style.borderRadius = '12px';
+        modal.appendChild(img);
+        document.body.appendChild(modal);
     };
 
     renderUserBar();
