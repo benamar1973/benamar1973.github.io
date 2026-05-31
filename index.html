@@ -194,8 +194,6 @@
                     <div id="paymentSection" style="margin-top:10px;"></div>
                 </div>
                 <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
-                <!-- زر إلغاء الاشتراك الجديد -->
-                <button id="cancelSubscriptionBtn" class="btn" style="background:#ffc107; color:#333; margin-top:10px;">❌ إلغاء الاشتراك السنوي</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
             </div>
         </div>
@@ -373,25 +371,8 @@
             showToast('تم تسجيل الخروج');
         }
         
-        // دالة إلغاء الاشتراك
-        function cancelSubscription() {
-            if (!currentUser) return;
-            if (confirm("⚠️ هل أنت متأكد من إلغاء الاشتراك السنوي؟ لن تتمكن من نشر إعلانات جديدة.")) {
-                localStorage.removeItem(`sub_${currentUser}`);
-                // تحديث الواجهة
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8','_blank')">📅 اشتراك سنوي 1000 دج</button></div>`;
-                showToast("❌ تم إلغاء الاشتراك السنوي");
-            }
-        }
-        
+        // startAd - تم إلغاء شرط الاشتراك السنوي
         async function startAd() {
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (!sub || Date.now() > parseInt(sub)) {
-                addMessage("⚠️ الاشتراك مطلوب (1000 دج سنوياً)", false);
-                return;
-            }
             addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (إجباري):", false);
             step = 'name';
             adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
@@ -526,16 +507,10 @@
             return container;
         }
         
+        // initChat - تم إلغاء شرط الاشتراك
         async function initChat() {
             document.getElementById('messages').innerHTML = '';
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية`;
-            if (!sub || Date.now() > parseInt(sub)) {
-                if (currentUser) welcomeMsg += `\n\n⚠️ ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج)`;
-                else welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً`;
-            } else {
-                welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك`;
-            }
+            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية\n✅ **النشر مجاني ولا يتطلب اشتراكاً**`;
             addMessage(welcomeMsg, false);
             document.getElementById('messages').appendChild(buildIcons());
         }
@@ -544,7 +519,6 @@
         document.getElementById('marketplaceBtn').onclick = () => window.open('marketplace.html', '_blank');
         document.getElementById('loginBtn').onclick = login;
         document.getElementById('logoutBtn').onclick = logout;
-        document.getElementById('cancelSubscriptionBtn').onclick = cancelSubscription;  // ربط زر الإلغاء
         document.getElementById('topBotBar').onclick = () => {
             document.getElementById('chatFullscreen').classList.add('open');
             if (document.getElementById('messages').children.length === 0) initChat();
