@@ -3,466 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>بوت مصطفى - خدمة الإعلانات</title>
+    <title>boot خدماتي</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            min-height: 100vh;
+        body { background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%); font-family: 'Cairo', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
+        .card { background: white; border-radius: 35px; padding: 25px 20px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
+        
+        /* أيقونة البوت الكبيرة مع النص داخلها */
+        .bot-icon {
+            font-size: 100px;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .top-bot-bar {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto 20px auto;
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 80px;
-            padding: 20px 30px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: glow 2s infinite;
+        .bot-icon span:first-child {
+            font-size: 70px;
         }
-        @keyframes glow {
-            0% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
-            50% { box-shadow: 0 10px 40px rgba(0,123,255,0.6); }
-            100% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
-        }
-        .top-bot-text { font-size: 2.2rem; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .top-bot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-top: 8px; }
-        .container { max-width: 550px; width: 100%; }
-        .card { background: white; border-radius: 35px; padding: 25px 20px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
-        .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; }
-        .btn-logout { background: #dc3545; margin-top: 15px; }
-        .marketplace-link-btn { background: linear-gradient(135deg, #6f42c1, #8b5cf6); color: white; border: none; border-radius: 50px; padding: 12px 20px; margin-top: 10px; cursor: pointer; font-weight: bold; width: 100%; }
-        .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
-        .user-name { font-size: 24px; font-weight: bold; color: #0f3460; }
-        .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
-        .payment-buttons { display: flex; gap: 10px; margin-top: 10px; justify-content: center; }
-        .payment-btn { background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; border-radius: 50px; padding: 12px 25px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
-        .chat-fullscreen.open { transform: translateY(0); }
-        .chat-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.5rem; font-weight: bold; }
-        .close-btn { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
-        .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
-        .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
-        .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
-        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-size: 15px; }
-        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .contact-buttons { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; justify-content: center; }
-        .contact-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 14px;
+        .bot-icon span:last-child {
+            font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            color: white;
+            margin-top: 5px;
         }
-        .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
-        .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
-        .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
-        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
-        .main-ad-icon {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            border-radius: 20px;
-            padding: 25px 15px;
-            cursor: pointer;
-            text-align: center;
-            margin: 15px 0;
-            border: 3px solid #ffd700;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .main-ad-icon:hover { transform: translateY(-8px) scale(1.02); }
-        .main-ad-icon .main-icon-title { font-size: 24px; font-weight: bold; color: white; display: block; margin-bottom: 6px; }
-        .main-ad-icon .main-icon-sub { font-size: 14px; color: rgba(255,255,255,0.9); }
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
-        .typing { display: flex; gap: 4px; align-items: center; }
-        .typing span { width: 8px; height: 8px; background: #888; border-radius: 50%; display: inline-block; animation: typingAnim 1.4s infinite; }
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingAnim { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-        .footer-links { text-align: center; margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px; max-width: 550px; width: 100%; }
-        .footer-links a { color: white; text-decoration: none; margin: 0 8px; font-size: 13px; }
-        .preview-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin: 10px 0;
-        }
-        .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; }
-        .preview-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
-        .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
-        .preview-time { font-size: 11px; color: #65676B; }
-        .preview-content { padding: 0 12px 8px 12px; font-size: 14px; color: #050505; }
-        .preview-media { width: 100%; max-height: 400px; object-fit: cover; }
-        .preview-video { width: 100%; max-height: 400px; background: #000; }
-        .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
-        .preview-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
-        .preview-thumb.active { border-color: #007bff; }
-        .preview-contact { padding: 10px 12px; background: #f0f2f5; margin: 8px; border-radius: 8px; font-size: 13px; text-align: center; }
-        .preview-buttons { display: flex; justify-content: space-around; padding: 8px 12px; border-top: 1px solid #e4e6eb; color: #65676B; font-size: 13px; }
-        @media (max-width: 480px) {
-            .top-bot-text { font-size: 1.6rem; }
-            .preview-thumb { width: 55px; height: 55px; }
-        }
+        .version { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+        .user-info { background: #f8f9fa; border-radius: 25px; padding: 15px; margin-bottom: 20px; }
+        .user-name { font-size: 18px; font-weight: bold; color: #0f3460; word-break: break-all; }
+        .sub-status { font-size: 14px; font-weight: bold; color: #28a745; margin: 8px 0; }
+        .sub-note { font-size: 13px; color: #0f3460; }
+        .stats { background: #e8f0fe; border-radius: 40px; padding: 8px; margin: 12px 0; font-size: 13px; }
+        .chat-btn { background: linear-gradient(135deg, #007bff, #00c6ff); border: none; border-radius: 60px; padding: 15px; font-size: 1.3rem; font-weight: bold; color: white; width: 100%; cursor: pointer; margin: 10px 0; }
+        .logout-btn { background: #dc3545; border: none; border-radius: 50px; padding: 12px; width: 100%; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        /* الشات بوت */
+        .chat-full { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
+        .chat-full.open { transform: translateY(0); }
+        .chat-head { background: #007bff; color: white; padding: 16px; display: flex; justify-content: space-between; font-size: 1.3rem; }
+        .close { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
+        .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .bot-msg, .user-msg { padding: 10px 14px; border-radius: 20px; max-width: 85%; font-size: 14px; }
+        .bot-msg { background: #e3f2fd; align-self: flex-start; }
+        .user-msg { background: #d4edda; align-self: flex-end; }
+        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-family: inherit; }
+        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; }
+        .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: white; border-radius: 20px; padding: 16px; margin: 10px 0; }
+        .icon-item { background: #f8f9fa; border-radius: 18px; padding: 10px 5px; cursor: pointer; text-align: center; border: 1px solid #ddd; }
+        .icon-item img { width: 55px; height: 55px; object-fit: cover; border-radius: 12px; margin-bottom: 6px; }
+        .icon-item span { font-size: 11px; display: block; }
+        .link-btn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 8px 16px; margin-top: 10px; cursor: pointer; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 8px 16px; border-radius: 30px; opacity: 0; transition: 0.2s; z-index: 9999; }
     </style>
 </head>
 <body>
-    <div class="top-bot-bar" id="topBotBar">
-        <div class="top-bot-text"><span>🤖</span><span>بوت مصطفى</span><span>✨</span></div>
-        <div class="top-bot-sub">خدمة الإعلانات · شحن · فواتير</div>
+<div class="card">
+    <!-- أيقونة البوت مع النص داخلها -->
+    <div class="bot-icon">
+        <span>🤖</span>
+        <span>boot خدماتي</span>
     </div>
-    <div class="container">
-        <div class="card">
-            <div class="version">⭐ بوت مصطفى · خدمة الإعلانات هي الأساس ⭐</div>
-            <div id="loginSection">
-                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" required>
-                <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
-                <button id="marketplaceGuestBtn" class="marketplace-link-btn" style="margin-top:10px;">🛒 دخول إلى سوق مصطفى (بدون تسجيل)</button>
-                <div id="loginMsg" style="color:#e94560; margin-top:8px;"></div>
-            </div>
-            <div id="appSection" style="display: none;">
-                <div class="user-info">
-                    <div class="user-name" id="userName"></div>
-                    <div class="sub-days" id="daysLeft"></div>
-                    <div style="font-size:13px; color:#856404;" id="planText"></div>
-                    <div id="paymentSection" style="margin-top:10px;"></div>
-                </div>
-                <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
-                <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
-            </div>
+    <div class="version">نسخة 2.1 · خدمات رقمية ذكية</div>
+
+    <div id="loginBox">
+        <input type="email" id="email" placeholder="بريدك الإلكتروني" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #ddd;">
+        <button id="loginBtn" style="background:#0f3460; color:white; width:100%; padding:12px; border-radius:40px; border:none; font-weight:bold; cursor:pointer;">دخول / إنشاء حساب</button>
+        <div id="loginMsg" style="color:#e94560; margin-top:8px;"></div>
+    </div>
+
+    <div id="appBox" style="display:none;">
+        <div class="user-info">
+            <div class="user-name" id="userName"></div>
+            <div class="sub-status" id="subStatus">✅ اشتراك مفعل - يتبقى 365 يوم</div>
+            <div class="sub-note" id="subNote">اشتراك نشط - تمتع بجميع الخدمات 🚀</div>
+            <div class="stats" id="statsTxt">📊 أكبر خدمة: Ooredoo (1 مرة)</div>
         </div>
+        <button id="openChat" class="chat-btn">💬 افتح المساعد</button>
+        <button id="logout" class="logout-btn">تسجيل الخروج</button>
     </div>
-    <div class="footer-links">
-        <a href="about.html">📖 من نحن</a> |
-        <a href="contact.html">📞 اتصل بنا</a> |
-        <a href="privacy.html">🔒 سياسة الخصوصية</a> |
-        <a href="terms.html">📜 الشروط والأحكام</a>
+</div>
+
+<div id="chatPanel" class="chat-full">
+    <div class="chat-head">
+        <span>🤖 boot خدماتي | مساعدك</span>
+        <button class="close" id="closeChat">✕</button>
     </div>
-    <div id="toast" class="toast"></div>
-    <div id="chatFullscreen" class="chat-fullscreen">
-        <div class="chat-header">
-            <span>🤖 بوت مصطفى | خدمة الإعلانات</span>
-            <button class="close-btn" id="closeChatBtn">✕</button>
-        </div>
-        <div class="messages" id="messages"></div>
-        <div class="input-area">
-            <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
-            <button id="sendBtn">إرسال</button>
-        </div>
+    <div class="msgs" id="msgs"></div>
+    <div class="input-area">
+        <input type="text" id="chatInput" placeholder="اكتب سؤالك...">
+        <button id="sendBtn">إرسال</button>
     </div>
-    <script>
-        let currentUser = null;
-        let step = null;
-        let adData = { name: null, phone: null, desc: null, contact: null, mediaUrl: null, mediaType: null };
-        
-        function showToast(msg) {
-            let t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 2000);
+</div>
+
+<div id="toastMsg" class="toast"></div>
+
+<script>
+    let currentUser = null;
+    let stats = {};
+    let pendingService = null;
+
+    const services = [
+        { name: "DJEZZY", img: "DJEZZY.png", url: "https://moncompte.djezzy.dz/fr/guest/recharge", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر طريقة الشحن.", needsCard: true },
+        { name: "mobilis", img: "MOBILIS.png", url: "https://e-paiement.mobilis.dz/", instructions: "🔹 أدخل رقم الهاتف.\n🔹 اختر المبلغ.", needsCard: true },
+        { name: "Ooredoo", img: "OOREDOO.png", url: "https://estorm.ooredoo.dz/e-payment/payment/public/?lang=ar", instructions: "🔹 اختر الخدمة.\n🔹 أدخل رقم الهاتف.", needsCard: true },
+        { name: "دفع فاتورة الكهرباء", img: "SONELGAZ.png", url: "https://epayement.elit.dz/payementFacture.xhtml", instructions: "🔹 أدخل رقم العقد.", needsCard: false },
+        { name: "دفع فاتورة الماء", img: "SEAAL.png", url: "https://fatourati.seaal.dz/", instructions: "🔹 أدخل رقم المشترك.", needsCard: false },
+        { name: "نتائج BEM", img: "ONEC.png", url: "https://bem.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false },
+        { name: "نتائج BAC", img: "ONEC.png", url: "https://bac.onec.dz/", instructions: "🔹 أدخل رقم التسجيل.", needsCard: false },
+        { name: "منحة البطالة", img: "ANEM.png", url: "https://minha.anem.dz/pre_inscription", instructions: "🔹 تحتاج شهادة ميلاد ورقم ANEM.", needsCard: false },
+        { name: "تجنيد الجيش", img: "الجيش الوطني.png", url: "https://preinscription.mdn.dz/", instructions: "🔹 أنشئ حساباً واملأ البيانات.", needsCard: false },
+        { name: "فضاء الأولياء", img: "فضاء الاولياء.png", url: "https://awlyaa.education.dz/login", instructions: "🔹 رقم التسجيل وكلمة المرور من المدرسة.", needsCard: false },
+        { name: "سكنات عدل", img: "AADEL.png", url: "https://www.aadl.dz", instructions: "🔹 أنشئ ملفاً وتابع الاكتتابات.", needsCard: false },
+        { name: "CCP", img: "CCP.png", url: "https://eccp.poste.dz", instructions: "🔹 أدخل رقم CCP ورمز التحقق.", needsCard: false },
+        { name: "قسيمة السيارات", img: "مديرية-الضرائب.png", url: "https://qassimatouka.mf.gov.dz/home", instructions: "🔹 أدخل رقم التسجيل المركزي.", needsCard: false }
+    ];
+
+    function showToast(t) {
+        let toast = document.getElementById('toastMsg');
+        toast.innerText = t;
+        toast.style.opacity = '1';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    function isSubscribed() {
+        let expiry = localStorage.getItem(`sub_${currentUser}`);
+        return expiry && Date.now() < parseInt(expiry);
+    }
+
+    function updateUI() {
+        if (!currentUser) return;
+        document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
+        let sub = isSubscribed();
+        if (sub) {
+            let days = Math.ceil((localStorage.getItem(`sub_${currentUser}`) - Date.now()) / 86400000);
+            document.getElementById('subStatus').innerHTML = `✅ اشتراك مفعل - يتبقى ${days} يوم`;
+            document.getElementById('subNote').innerHTML = 'اشتراك نشط - تمتع بجميع الخدمات 🚀';
+        } else {
+            document.getElementById('subStatus').innerHTML = '⚠️ لا يوجد اشتراك نشط';
+            document.getElementById('subNote').innerHTML = '🔹 اشتراك شهري 100 دج / سنوي 365 دج';
         }
-        
-        function addMessage(text, isUser) {
-            let div = document.createElement('div');
-            div.className = isUser ? 'user-msg' : 'bot-msg';
-            div.innerText = text;
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        let maxS = "لا توجد", maxC = 0;
+        for (let s in stats) if (stats[s] > maxC) { maxC = stats[s]; maxS = s; }
+        if (maxC > 0) document.getElementById('statsTxt').innerHTML = `📊 أكبر خدمة: ${maxS} (${maxC} مرة)`;
+        else document.getElementById('statsTxt').innerHTML = `📊 لم تستخدم أي خدمة بعد`;
+    }
+
+    function recordUse(serviceName) {
+        if (!currentUser) return;
+        stats[serviceName] = (stats[serviceName] || 0) + 1;
+        localStorage.setItem(`stats_${currentUser}`, JSON.stringify(stats));
+        updateUI();
+    }
+
+    // تسجيل الدخول
+    document.getElementById('loginBtn').onclick = () => {
+        let email = document.getElementById('email').value.trim();
+        if (!email || !email.includes('@')) {
+            document.getElementById('loginMsg').innerText = '❌ أدخل بريداً صحيحاً';
+            return;
         }
-        
-        function addMediaMessage(url, type, isUser) {
-            let div = document.createElement('div');
-            div.className = isUser ? 'user-msg' : 'bot-msg';
-            if (type === 'image') {
-                let img = document.createElement('img');
-                img.src = url;
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '200px';
-                img.style.borderRadius = '12px';
-                div.appendChild(img);
-            } else {
-                let video = document.createElement('video');
-                video.src = url;
-                video.controls = true;
-                video.style.maxWidth = '220px';
-                video.style.maxHeight = '220px';
-                video.style.borderRadius = '12px';
-                div.appendChild(video);
-            }
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        currentUser = email;
+        localStorage.setItem('currentUser', currentUser);
+        let saved = localStorage.getItem(`stats_${currentUser}`);
+        if (saved) stats = JSON.parse(saved); else stats = {};
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('appBox').style.display = 'block';
+        updateUI();
+        showToast(`مرحباً ${email.split('@')[0]}`);
+    };
+    document.getElementById('logout').onclick = () => {
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('appBox').style.display = 'none';
+        document.getElementById('email').value = '';
+        showToast('تم الخروج');
+    };
+    let savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = savedUser;
+        let savedStats = localStorage.getItem(`stats_${currentUser}`);
+        if (savedStats) stats = JSON.parse(savedStats);
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('appBox').style.display = 'block';
+        updateUI();
+    }
+
+    // الشات بوت
+    let msgsDiv = document.getElementById('msgs');
+    let chatInput = document.getElementById('chatInput');
+    let sendChat = document.getElementById('sendBtn');
+    let openChat = document.getElementById('openChat');
+    let closeChat = document.getElementById('closeChat');
+    let chatPanel = document.getElementById('chatPanel');
+
+    openChat.onclick = () => chatPanel.classList.add('open');
+    closeChat.onclick = () => chatPanel.classList.remove('open');
+
+    function addMsg(text, isUser) {
+        let d = document.createElement('div');
+        d.className = isUser ? 'user-msg' : 'bot-msg';
+        d.innerText = text;
+        msgsDiv.appendChild(d);
+        msgsDiv.scrollTop = msgsDiv.scrollHeight;
+    }
+
+    function askConfirm(service) {
+        let extra = service.needsCard ? "\n💳 تحتاج بطاقة ذهبية أو CIB.\n" : "";
+        addMsg(`📌 ${service.name}\n📝 ${service.instructions}${extra}\n❓ هل أنت جاهز لفتح الرابط؟ (نعم/لا)`, false);
+        pendingService = service;
+    }
+
+    function handleReply(txt) {
+        let low = txt.trim().toLowerCase();
+        if (low === 'نعم' || low === 'yes' || low === 'جاهز') {
+            window.open(pendingService.url, '_blank');
+            addMsg(`✅ تم فتح رابط ${pendingService.name}`, false);
+            recordUse(pendingService.name);
+            pendingService = null;
+            return true;
+        } else if (low === 'لا' || low === 'لأ') {
+            addMsg("لا مشكلة، أنا هنا للمساعدة 🤝", false);
+            pendingService = null;
+            return true;
         }
-        
-        function login() {
-            let email = document.getElementById('emailInput').value.trim();
-            if (!email.includes('@')) {
-                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً صحيحاً';
-                return;
-            }
-            currentUser = email;
-            localStorage.setItem('currentUser', currentUser);
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('appSection').style.display = 'block';
-            document.getElementById('userName').innerHTML = `👤 ${email.split('@')[0]}`;
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (sub && Date.now() < parseInt(sub)) {
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${Math.ceil((parseInt(sub)-Date.now())/86400000)} يوم`;
-                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                document.getElementById('paymentSection').innerHTML = '';
-            } else {
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8','_blank')">📅 اشتراك سنوي 1000 دج</button></div>`;
-            }
-            showToast(`مرحباً ${email.split('@')[0]}`);
-        }
-        
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('appSection').style.display = 'none';
-            step = null;
-            showToast('تم تسجيل الخروج');
-        }
-        
-        async function startAd() {
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (!sub || Date.now() > parseInt(sub)) {
-                addMessage("⚠️ الاشتراك مطلوب (1000 دج سنوياً)", false);
-                return;
-            }
-            addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (إجباري):", false);
-            step = 'name';
-            adData = { name: null, phone: null, desc: null, contact: null, mediaUrl: null, mediaType: null };
-        }
-        
-        function createFileUploader() {
-            let input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*,video/*';
-            input.onchange = (e) => {
-                let file = e.target.files[0];
-                if (!file) return;
-                let type = file.type.startsWith('image/') ? 'image' : (file.type.startsWith('video/') ? 'video' : null);
-                if (!type) { showToast("ملف غير صالح"); return; }
-                let reader = new FileReader();
-                reader.onload = (ev) => {
-                    adData.mediaUrl = ev.target.result;
-                    adData.mediaType = type;
-                    addMediaMessage(adData.mediaUrl, type, true);
-                    addMessage(`✅ تم استلام ${type === 'image' ? 'الصورة' : 'الفيديو'} بنجاح!`, false);
-                    addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
-                    step = 'desc';
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        }
-        
-        function showContacts() {
-            let div = document.createElement('div');
-            div.className = 'bot-msg';
-            div.innerHTML = `
-                <div>📞 **اختر وسيلة التواصل (إجباري):**</div>
-                <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
-                    <button onclick="selectContact('whatsapp')" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💚 واتساب</button>
-                    <button onclick="selectContact('messenger')" style="background:#0084ff; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💬 مسنجر</button>
-                    <button onclick="selectContact('phone')" style="background:#34b7f1; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">📱 هاتف</button>
-                </div>
-            `;
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-        }
-        
-        function selectContact(contact) {
-            adData.contact = contact;
-            let contactName = contact === 'whatsapp' ? 'واتساب' : (contact === 'messenger' ? 'مسنجر' : 'هاتف');
-            addMessage(`✅ تم اختيار ${contactName}`, false);
-            showPreview();
-        }
-        
-        function showPreview() {
-            let contactSymbol = adData.contact === 'whatsapp' ? '💚' : (adData.contact === 'messenger' ? '💬' : '📱');
-            let contactName = adData.contact === 'whatsapp' ? 'واتساب' : (adData.contact === 'messenger' ? 'مسنجر' : 'هاتف');
-            
-            let mainHtml = '';
-            if (adData.mediaType === 'image') {
-                mainHtml = `<img class="preview-media" src="${adData.mediaUrl}">`;
-            } else {
-                mainHtml = `<video class="preview-video" src="${adData.mediaUrl}" controls></video>`;
-            }
-            
-            let previewDiv = document.createElement('div');
-            previewDiv.className = 'preview-card';
-            previewDiv.innerHTML = `
-                <div class="preview-header">
-                    <div class="preview-avatar">${adData.name.charAt(0).toUpperCase()}</div>
-                    <div><div class="preview-name">${adData.name}</div><div class="preview-time">الآن · 🌍</div></div>
-                </div>
-                <div class="preview-content">${adData.desc}</div>
-                ${mainHtml}
-                <div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone}</div>
-                <div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
-            `;
-            document.getElementById('messages').appendChild(previewDiv);
-            
-            let btns = document.createElement('div');
-            btns.className = 'confirm-buttons';
-            btns.innerHTML = `
-                <button class="confirm-yes" onclick="publishAd()">✅ تأكيد النشر</button>
-                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>
-            `;
-            document.getElementById('messages').appendChild(btns);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-        }
-        
-        function cancelAd() {
-            addMessage("🙂 تم إلغاء الإعلان", false);
-            step = null;
-            adData = { name: null, phone: null, desc: null, contact: null, mediaUrl: null, mediaType: null };
-        }
-        
-        function publishAd() {
-            try {
-                let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-                let newAd = {
-                    id: Date.now(),
-                    name: adData.name,
-                    phone: adData.phone,
-                    description: adData.desc,
-                    contactMethod: adData.contact,
-                    mediaList: [{ data: adData.mediaUrl, type: adData.mediaType }],
-                    mainMediaIndex: 0,
-                    userId: currentUser,
-                    date: Date.now(),
-                    views: 0,
-                    likes: 0
-                };
-                existingAds.unshift(newAd);
-                localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
-                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
-                step = null;
-                adData = { name: null, phone: null, desc: null, contact: null, mediaUrl: null, mediaType: null };
-            } catch(e) {
-                addMessage("⚠️ حدث خطأ أثناء النشر، يرجى المحاولة مرة أخرى", false);
-            }
-        }
-        
-        function buildIcons() {
-            let container = document.createElement('div');
-            let mainAd = document.createElement('div');
-            mainAd.className = 'main-ad-icon';
-            mainAd.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
-            mainAd.onclick = () => startAd();
-            container.appendChild(mainAd);
-            return container;
-        }
-        
-        async function initChat() {
-            document.getElementById('messages').innerHTML = '';
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية`;
-            if (!sub || Date.now() > parseInt(sub)) {
-                if (currentUser) welcomeMsg += `\n\n⚠️ ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج)`;
-                else welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً`;
-            } else {
-                welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك`;
-            }
-            addMessage(welcomeMsg, false);
-            document.getElementById('messages').appendChild(buildIcons());
-        }
-        
-        document.getElementById('marketplaceGuestBtn').onclick = () => window.open('marketplace.html', '_blank');
-        document.getElementById('marketplaceBtn').onclick = () => window.open('marketplace.html', '_blank');
-        document.getElementById('loginBtn').onclick = login;
-        document.getElementById('logoutBtn').onclick = logout;
-        document.getElementById('topBotBar').onclick = () => {
-            document.getElementById('chatFullscreen').classList.add('open');
-            if (document.getElementById('messages').children.length === 0) initChat();
-        };
-        document.getElementById('closeChatBtn').onclick = () => document.getElementById('chatFullscreen').classList.remove('open');
-        
-        document.getElementById('sendBtn').onclick = () => {
-            let input = document.getElementById('chatInput');
-            let msg = input.value.trim();
-            if (!msg) return;
-            addMessage(msg, true);
-            input.value = '';
-            
-            if (step === 'name') {
-                if (msg.length < 3) { addMessage("❌ الاسم قصير جداً", false); return; }
-                adData.name = msg;
-                addMessage(`✅ تم تسجيل الاسم: ${adData.name}`, false);
-                addMessage("📱 **رقم الهاتف:**\nأرسل رقم هاتفك (إجباري):", false);
-                step = 'phone';
-            } else if (step === 'phone') {
-                if (msg.length < 9) { addMessage("❌ رقم هاتف غير صحيح", false); return; }
-                adData.phone = msg;
-                addMessage(`✅ تم تسجيل رقم الهاتف: ${adData.phone}`, false);
-                addMessage("🖼️ **الآن قم برفع الصورة أو الفيديو** (إجباري)", false);
-                setTimeout(() => createFileUploader(), 500);
-                step = 'media';
-            } else if (step === 'desc') {
-                if (msg.length < 5) { addMessage("❌ وصف قصير جداً", false); return; }
-                adData.desc = msg;
-                addMessage(`✅ تم تسجيل الوصف: ${adData.desc}`, false);
-                showContacts();
-                step = null;
-            }
-        };
-        
-        if (localStorage.getItem('currentUser')) {
-            currentUser = localStorage.getItem('currentUser');
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('appSection').style.display = 'block';
-            document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
-            let sub = localStorage.getItem(`sub_${currentUser}`);
-            if (sub && Date.now() < parseInt(sub)) {
-                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${Math.ceil((parseInt(sub)-Date.now())/86400000)} يوم`;
-                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                document.getElementById('paymentSection').innerHTML = '';
-            } else {
-                document.getElementById('daysLeft').innerHTML = '⚠️ لا يوجد اشتراك نشط';
-                document.getElementById('planText').innerHTML = '⚠️ يرجى الاشتراك';
-                document.getElementById('paymentSection').innerHTML = `<div class="payment-buttons"><button class="payment-btn" onclick="window.open('https://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8','_blank')">📅 اشتراك سنوي 1000 دج</button></div>`;
-            }
-        }
-        
-        function checkPayment() {
-            let params = new URLSearchParams(window.location.search);
-            let code = params.get('code');
-            let days = params.get('days');
-            if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
-                let expiry = Date.now() + (parseInt(days) * 86400000);
-                localStorage.setItem(`sub_${currentUser}`, expiry);
-                showToast(`✅ تم تفعيل اشتراكك لمدة ${days} يوماً!`);
-                if (document.getElementById('appSection').style.display !== 'none') {
-                    document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - يتبقى ${days} يوم`;
-                    document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
-                    document.getElementById('paymentSection').innerHTML = '';
+        return false;
+    }
+
+    function buildGrid() {
+        let grid = document.createElement('div');
+        grid.className = 'icon-grid';
+        services.forEach(s => {
+            let item = document.createElement('div');
+            item.className = 'icon-item';
+            let img = document.createElement('img');
+            img.src = s.img;
+            img.onerror = () => img.style.display = 'none';
+            let span = document.createElement('span');
+            span.innerText = s.name;
+            item.appendChild(img);
+            item.appendChild(span);
+            item.onclick = () => {
+                if (!isSubscribed()) {
+                    addMsg(`⚠️ خدمة "${s.name}" تتطلب اشتراكاً. استخدم زر الاشتراك بالأسفل.`, false);
+                    return;
                 }
+                askConfirm(s);
+            };
+            grid.appendChild(item);
+        });
+        return grid;
+    }
+
+    function initChat() {
+        msgsDiv.innerHTML = '';
+        let welcome = document.createElement('div');
+        welcome.className = 'bot-msg';
+        welcome.innerText = 'مرحباً! اختر الخدمة من الأيقونات 👇';
+        msgsDiv.appendChild(welcome);
+        msgsDiv.appendChild(buildGrid());
+        let subDiv = document.createElement('div');
+        subDiv.style.display = 'flex';
+        subDiv.style.gap = '10px';
+        subDiv.style.marginTop = '10px';
+        let mBtn = document.createElement('button');
+        mBtn.innerText = '📅 اشتراك شهري 100 دج';
+        mBtn.className = 'link-btn';
+        mBtn.style.background = '#28a745';
+        mBtn.onclick = () => window.open('http://pay.chargily.com/payment-links/01ksbj2yny90tgfyka6hrd89yz');
+        let yBtn = document.createElement('button');
+        yBtn.innerText = '📅 اشتراك سنوي 365 دج';
+        yBtn.className = 'link-btn';
+        yBtn.style.background = '#e94560';
+        yBtn.onclick = () => window.open('http://pay.chargily.com/payment-links/01ksbjdn2ta8exe7knnayrmhn8');
+        subDiv.appendChild(mBtn);
+        subDiv.appendChild(yBtn);
+        msgsDiv.appendChild(subDiv);
+    }
+
+    sendChat.onclick = () => {
+        let txt = chatInput.value.trim();
+        if (!txt) return;
+        addMsg(txt, true);
+        chatInput.value = '';
+        setTimeout(() => {
+            if (pendingService) {
+                if (!handleReply(txt)) addMsg("أجب بـ 'نعم' أو 'لا' فقط.", false);
+            } else {
+                if (txt.includes('اشتراك')) addMsg("روابط الاشتراك موجودة أسفل الشاشة.", false);
+                else addMsg("اختر خدمة من الأيقونات.", false);
             }
+        }, 300);
+    };
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChat.click(); });
+
+    // تفعيل اشتراك
+    (function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let code = urlParams.get('code');
+        let days = urlParams.get('days');
+        if (code && days && currentUser && (code === 'MONTHLY2024' || code === 'YEARLY2024')) {
+            let expiry = Date.now() + (parseInt(days) * 86400000);
+            localStorage.setItem(`sub_${currentUser}`, expiry);
+            showToast(`✅ تم تفعيل اشتراك ${days} يوماً`);
+            updateUI();
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
-        checkPayment();
-    </script>
+    })();
+
+    initChat();
+</script>
 </body>
 </html>
