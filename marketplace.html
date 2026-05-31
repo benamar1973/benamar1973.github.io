@@ -77,9 +77,8 @@
             font-size: 0.8rem;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
         }
-        .delete-btn:hover { background: #c82333; transform: scale(1.02); }
+        .delete-btn:hover { background: #c82333; }
         .section-title {
             color: white;
             margin: 20px 0 10px 0;
@@ -104,16 +103,14 @@
             text-decoration: none;
             margin-top: 20px;
             font-weight: bold;
+            cursor: pointer;
+            border: none;
         }
         .back-link:hover { background: #218838; }
         footer {
             text-align: center;
             margin-top: 30px;
             color: rgba(255,255,255,0.6);
-        }
-        @media (max-width: 600px) {
-            .ad-name { font-size: 1rem; }
-            .ad-description { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -134,7 +131,7 @@
     <div id="allAdsList"></div>
 
     <div style="text-align: center;">
-        <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+        <button class="back-link" onclick="window.location.href='index.html';">← العودة إلى بوت مصطفى</button>
     </div>
     <footer>بوت مصطفى - خدمة الإعلانات | تواصل عبر واتساب: 0556765445</footer>
 </div>
@@ -147,7 +144,7 @@
     const allAdsList = document.getElementById('allAdsList');
 
     if (currentUser) {
-        userInfoDiv.innerHTML = `👋 مرحباً ${currentUser.split('@')[0]} | <span style="font-size:0.8rem;">يمكنك حذف إعلاناتك</span>`;
+        userInfoDiv.innerHTML = `👋 مرحباً ${currentUser.split('@')[0]} | يمكنك حذف إعلاناتك فقط`;
         myAdsSection.style.display = 'block';
     } else {
         userInfoDiv.innerHTML = `👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a> لحذف إعلاناتك`;
