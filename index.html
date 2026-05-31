@@ -25,95 +25,183 @@
             text-align: center;
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
+            animation: glow 2s infinite;
         }
-        .top-bot-bar:hover { transform: scale(1.02); }
+        @keyframes glow {
+            0% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
+            50% { box-shadow: 0 10px 40px rgba(0,123,255,0.6); }
+            100% { box-shadow: 0 5px 20px rgba(0,123,255,0.3); }
+        }
         .top-bot-text { font-size: 2.2rem; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .top-bot-sub { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-top: 8px; }
         .container { max-width: 550px; width: 100%; }
         .card { background: white; border-radius: 35px; padding: 25px 20px; text-align: center; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
         .auth-input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 1px solid #ddd; font-size: 16px; text-align: center; }
-        .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; transition: 0.2s; }
-        .btn:hover { background: #0056b3; }
+        .btn { background: #007bff; color: white; border: none; border-radius: 50px; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin: 8px 0; }
+        .btn-logout { background: #dc3545; margin-top: 15px; }
         .marketplace-link-btn { background: linear-gradient(135deg, #6f42c1, #8b5cf6); color: white; border: none; border-radius: 50px; padding: 12px 20px; margin-top: 10px; cursor: pointer; font-weight: bold; width: 100%; }
         .user-info { background: #e8f0fe; border-radius: 25px; padding: 15px; margin: 15px 0; }
         .user-name { font-size: 24px; font-weight: bold; color: #0f3460; }
-        
-        /* شاشة الشات */
+        .sub-days { background: #fff3cd; border-radius: 40px; padding: 8px; margin: 10px 0; font-size: 14px; }
         .chat-fullscreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 10000; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s; direction: rtl; }
         .chat-fullscreen.open { transform: translateY(0); }
         .chat-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 1.5rem; font-weight: bold; }
         .close-btn { background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
         .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
         .bot-msg, .user-msg { padding: 12px 16px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
-        .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; text-align: right; }
-        .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; text-align: right; }
-        
-        /* معرض الصور المرفوعة داخل المحادثة */
-        .media-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; background: #eef2f7; padding: 12px; border-radius: 20px; width: 100%; }
-        .media-item { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; }
+        .bot-msg { background: #e3f2fd; align-self: flex-start; border-bottom-right-radius: 5px; }
+        .user-msg { background: #d4edda; align-self: flex-end; border-bottom-left-radius: 5px; }
+        .media-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .media-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
         .media-item.active { border-color: #007bff; }
         .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
-        .delete-media { position: absolute; top: 2px; right: 2px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
-        .main-badge { position: absolute; bottom: 2px; left: 2px; background: #ffc107; color: #333; padding: 2px 5px; border-radius: 10px; font-size: 9px; font-weight: bold; }
-        
-        /* منطقة الإدخال السفلية */
-        .input-area { background: white; padding: 12px; display: flex; gap: 8px; border-top: 1px solid #ddd; align-items: center; }
-        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px 16px; font-size: 15px; outline: none; }
-        #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,123,255,0.3); }
-        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 20px; height: 45px; cursor: pointer; font-weight: bold; font-size: 15px; flex-shrink: 0; }
+        .media-item .delete-media {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-badge {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            background: #ffc107;
+            color: #333;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        .input-area { background: white; padding: 12px; display: flex; gap: 10px; border-top: 1px solid #ddd; flex-wrap: wrap; }
+        #chatInput { flex: 1; border: 1px solid #ccc; border-radius: 30px; padding: 12px; font-size: 15px; }
+        #sendBtn { background: #28a745; color: white; border: none; border-radius: 30px; padding: 0 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #mediaUploadBtn { background: #007bff; color: white; border: none; border-radius: 30px; padding: 0 20px; cursor: pointer; font-weight: bold; font-size: 16px; display: none; }
         #mediaInput { display: none; }
-        
-        /* أزرار التحكم والخيارات المتجاوبة */
-        .confirm-buttons { display: flex; gap: 10px; margin: 15px 0; justify-content: center; width: 100%; }
-        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; text-align: center; font-size: 15px; }
-        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; flex: 1; text-align: center; font-size: 15px; }
-        .contact-buttons-wrapper { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .contact-choice-btn { border: none; border-radius: 50px; padding: 10px 18px; cursor: pointer; color: white; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; }
-        
-        /* بطاقة معاينة الإعلان الاحترافية */
-        .preview-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin: 15px 0; text-align: right; width: 100%; border: 1px solid #e4e6eb; }
-        .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; border-bottom: 1px solid #f0f2f5; }
+        .contact-buttons { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; justify-content: center; }
+        .contact-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-btn.messenger { background: linear-gradient(135deg, #0084ff, #0063d1); }
+        .contact-btn.phone { background: linear-gradient(135deg, #34b7f1, #1c8ad9); }
+        .confirm-buttons { display: flex; gap: 10px; margin: 10px 0; justify-content: center; flex-wrap: wrap; }
+        .confirm-yes { background: #28a745; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .confirm-no { background: #dc3545; color: white; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .edit-btn { background: #ffc107; color: #333; border: none; border-radius: 50px; padding: 10px 25px; cursor: pointer; font-weight: bold; }
+        .main-ad-icon {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-radius: 20px;
+            padding: 25px 15px;
+            cursor: pointer;
+            text-align: center;
+            margin: 15px 0;
+            border: 3px solid #ffd700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .main-ad-icon:hover { transform: translateY(-8px) scale(1.02); }
+        .main-ad-icon .main-icon-title { font-size: 24px; font-weight: bold; color: white; display: block; margin-bottom: 6px; }
+        .main-ad-icon .main-icon-sub { font-size: 14px; color: rgba(255,255,255,0.9); }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
+        .typing { display: flex; gap: 4px; align-items: center; }
+        .typing span { width: 8px; height: 8px; background: #888; border-radius: 50%; display: inline-block; animation: typingAnim 1.4s infinite; }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingAnim { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
+        .footer-links { text-align: center; margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 20px; max-width: 550px; width: 100%; }
+        .footer-links a { color: white; text-decoration: none; margin: 0 8px; font-size: 13px; }
+        .preview-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 10px 0;
+        }
+        .preview-header { display: flex; align-items: center; padding: 12px; gap: 10px; }
         .preview-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #00c6ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
         .preview-name { font-weight: bold; font-size: 14px; color: #050505; }
         .preview-time { font-size: 11px; color: #65676B; }
-        .preview-content { padding: 12px; font-size: 15px; color: #050505; background: #fafafa; white-space: pre-wrap; }
-        .preview-media-holder { width: 100%; background: #f0f2f5; display: block; }
-        .preview-media { width: 100%; max-height: 280px; object-fit: contain; display: block; margin: 0 auto; }
-        .preview-video { width: 100%; max-height: 280px; background: #000; display: block; }
-        .preview-thumbnails { display: flex; gap: 8px; padding: 10px; overflow-x: auto; background: #f7f8fa; border-top: 1px solid #e4e6eb; }
-        .preview-thumb { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; }
+        .preview-content { padding: 0 12px 8px 12px; font-size: 14px; color: #050505; }
+        .preview-media { width: 100%; max-height: 400px; object-fit: cover; }
+        .preview-video { width: 100%; max-height: 400px; background: #000; }
+        .preview-thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
+        .preview-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
         .preview-thumb.active { border-color: #007bff; }
-        .preview-contact { padding: 12px; background: #e8f0fe; margin: 10px; border-radius: 8px; font-size: 14px; text-align: center; font-weight: bold; color: #1a73e8; border: 1px dashed #1a73e8; }
-        
-        .main-ad-icon { background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 20px; padding: 25px 15px; cursor: pointer; text-align: center; margin: 15px 0; border: 3px solid #ffd700; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.2s; }
-        .main-ad-icon:hover { transform: scale(1.02); }
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 12px 24px; border-radius: 30px; opacity: 0; transition: 0.3s; z-index: 9999; font-weight: bold; pointer-events: none; }
+        .preview-thumb-video { width: 70px; height: 70px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; border: 2px solid transparent; }
+        .preview-thumb-video.active { border-color: #007bff; }
+        .preview-contact { padding: 10px 12px; background: #f0f2f5; margin: 8px; border-radius: 8px; font-size: 13px; text-align: center; }
+        .preview-buttons { display: flex; justify-content: space-around; padding: 8px 12px; border-top: 1px solid #e4e6eb; color: #65676B; font-size: 13px; }
+        @media (max-width: 480px) {
+            .top-bot-text { font-size: 1.6rem; }
+            .preview-thumb { width: 55px; height: 55px; }
+            .media-item { width: 60px; height: 60px; }
+        }
     </style>
 </head>
 <body>
-
     <div class="top-bot-bar" id="topBotBar">
         <div class="top-bot-text"><span>🤖</span><span>بوت مصطفى</span><span>✨</span></div>
+        <div class="top-bot-sub">خدمة الإعلانات · شحن · فواتير</div>
     </div>
-
     <div class="container">
         <div class="card">
+            <div class="version">⭐ بوت مصطفى · خدمة الإعلانات هي الأساس ⭐</div>
             <div id="loginSection">
-                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" value="test@test.com" required>
+                <input type="email" id="emailInput" class="auth-input" placeholder="بريدك الإلكتروني" required>
                 <button id="loginBtn" class="btn">🚪 دخول / إنشاء حساب</button>
+                <button id="marketplaceGuestBtn" class="marketplace-link-btn" style="margin-top:10px;">🛒 دخول إلى سوق مصطفى (بدون تسجيل)</button>
+                <div id="loginMsg" style="color:#e94560; margin-top:8px;"></div>
             </div>
             <div id="appSection" style="display: none;">
                 <div class="user-info">
                     <div class="user-name" id="userName"></div>
+                    <div class="sub-days" id="daysLeft"></div>
+                    <div style="font-size:13px; color:#856404;" id="planText"></div>
                 </div>
+                <button id="logoutBtn" class="btn btn-logout">تسجيل الخروج</button>
                 <button id="marketplaceBtn" class="marketplace-link-btn">🛒 دخول إلى سوق مصطفى</button>
             </div>
         </div>
     </div>
-
+    <div class="footer-links">
+        <a href="about.html">📖 من نحن</a> |
+        <a href="contact.html">📞 اتصل بنا</a> |
+        <a href="privacy.html">🔒 سياسة الخصوصية</a> |
+        <a href="terms.html">📜 الشروط والأحكام</a>
+    </div>
     <div id="toast" class="toast"></div>
-
-    <!-- شاشة المحادثة الكاملة -->
     <div id="chatFullscreen" class="chat-fullscreen">
         <div class="chat-header">
             <span>🤖 بوت مصطفى | خدمة الإعلانات</span>
@@ -121,142 +209,199 @@
         </div>
         <div class="messages" id="messages"></div>
         <div class="input-area">
-            <button id="mediaUploadBtn" type="button" title="رفع ملفات">📷</button>
-            <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
             <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا...">
+            <button id="mediaUploadBtn">📷 رفع ملفات</button>
+            <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
             <button id="sendBtn">إرسال</button>
         </div>
     </div>
-
     <script>
         let currentUser = null;
         let step = null;
         let adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
-        let pendingFilesCount = 0;
-        let mediaDoneAdded = false;
         
         function showToast(msg) {
             let t = document.getElementById('toast');
-            if (t) { t.innerText = msg; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000); }
+            t.innerText = msg;
+            t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 2000);
         }
         
         function addMessage(text, isUser) {
             let div = document.createElement('div');
             div.className = isUser ? 'user-msg' : 'bot-msg';
-            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerText = text;
             document.getElementById('messages').appendChild(div);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
-        function removeAllMediaGalleries() {
-            document.querySelectorAll('.media-gallery').forEach(g => g.remove());
+        function addMediaMessage(url, type, isUser) {
+            let div = document.createElement('div');
+            div.className = isUser ? 'user-msg' : 'bot-msg';
+            if (type === 'image') {
+                let img = document.createElement('img');
+                img.src = url;
+                img.style.maxWidth = '200px';
+                img.style.maxHeight = '200px';
+                img.style.borderRadius = '12px';
+                div.appendChild(img);
+            } else {
+                let video = document.createElement('video');
+                video.src = url;
+                video.controls = true;
+                video.style.maxWidth = '220px';
+                video.style.maxHeight = '220px';
+                video.style.borderRadius = '12px';
+                div.appendChild(video);
+            }
+            document.getElementById('messages').appendChild(div);
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
         function displayMediaGallery() {
-            removeAllMediaGalleries();
-            if (!adData.mediaList || adData.mediaList.length === 0) return;
+            if (adData.mediaList.length === 0) return;
             
             let galleryDiv = document.createElement('div');
             galleryDiv.className = 'media-gallery';
             
-            adData.mediaList.forEach((media, i) => {
+            for (let i = 0; i < adData.mediaList.length; i++) {
+                let media = adData.mediaList[i];
                 let isMain = (i === adData.mainMediaIndex);
                 let mediaDiv = document.createElement('div');
                 mediaDiv.className = `media-item ${isMain ? 'active' : ''}`;
-                mediaDiv.onclick = (e) => { 
-                    if(e.target.classList.contains('delete-media')) return;
-                    adData.mainMediaIndex = i; 
-                    displayMediaGallery(); 
+                mediaDiv.onclick = () => {
+                    adData.mainMediaIndex = i;
+                    displayMediaGallery();
                 };
                 
                 if (media.type === 'image') {
-                    mediaDiv.innerHTML = `<img src="${media.data}"><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">رئيسي</span>' : ''}`;
+                    mediaDiv.innerHTML = `<img src="${media.data}"><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}`;
                 } else {
-                    mediaDiv.innerHTML = `<video src="${media.data}"></video><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">رئيسي</span>' : ''}`;
+                    mediaDiv.innerHTML = `<video src="${media.data}"></video><button class="delete-media" onclick="event.stopPropagation(); removeMedia(${i})">✕</button>${isMain ? '<span class="main-badge">⭐ رئيسي</span>' : ''}`;
                 }
                 galleryDiv.appendChild(mediaDiv);
-            });
+            }
+            
+            let clearBtn = document.createElement('button');
+            clearBtn.innerText = '🗑️ مسح الكل';
+            clearBtn.style.background = '#dc3545';
+            clearBtn.style.color = 'white';
+            clearBtn.style.border = 'none';
+            clearBtn.style.borderRadius = '20px';
+            clearBtn.style.padding = '5px 15px';
+            clearBtn.style.cursor = 'pointer';
+            clearBtn.onclick = () => {
+                adData.mediaList = [];
+                adData.mainMediaIndex = 0;
+                displayMediaGallery();
+                showToast("تم مسح جميع الملفات");
+            };
+            galleryDiv.appendChild(clearBtn);
+            
+            let oldGallery = document.querySelector('.media-gallery');
+            if (oldGallery) oldGallery.remove();
             document.getElementById('messages').appendChild(galleryDiv);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
-        window.removeMedia = function(index) {
-            if(adData.mediaList) {
-                adData.mediaList.splice(index, 1);
-                if(adData.mainMediaIndex >= adData.mediaList.length) adData.mainMediaIndex = Math.max(0, adData.mediaList.length - 1);
-                displayMediaGallery();
+        function removeMedia(index) {
+            adData.mediaList.splice(index, 1);
+            if (adData.mainMediaIndex >= adData.mediaList.length) {
+                adData.mainMediaIndex = Math.max(0, adData.mediaList.length - 1);
             }
+            displayMediaGallery();
+            showToast(`🗑️ تم حذف الملف`);
+        }
+        
+        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    let img = new Image();
+                    img.onload = () => {
+                        let width = img.width, height = img.height;
+                        if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                        if (height > maxHeight) { width = (width * maxHeight) / height; height = maxHeight; }
+                        let canvas = document.createElement('canvas');
+                        canvas.width = width; canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        canvas.toBlob(resolve, 'image/jpeg', quality);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
         }
         
         function login() {
             let email = document.getElementById('emailInput').value.trim();
-            if (!email) return;
+            if (!email.includes('@')) {
+                document.getElementById('loginMsg').innerText = '❌ أدخل بريداً صحيحاً';
+                return;
+            }
             currentUser = email;
             localStorage.setItem('currentUser', currentUser);
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('appSection').style.display = 'block';
-            document.getElementById('userName').innerText = `👤 ${email.split('@')[0]}`;
+            document.getElementById('userName').innerHTML = `👤 ${email.split('@')[0]}`;
+            // تفعيل الاشتراك تلقائياً (بدون رابط دفع)
+            let sub = localStorage.getItem(`sub_${currentUser}`);
+            if (!sub || Date.now() > parseInt(sub)) {
+                // منح اشتراك تلقائي لمدة 10 سنوات
+                let autoExpiry = Date.now() + (3650 * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, autoExpiry);
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - تلقائي مجاني`;
+                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
+            } else {
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل`;
+                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
+            }
             showToast(`مرحباً ${email.split('@')[0]}`);
         }
         
-        function startAd() {
-            adData = { name: '', phone: '', desc: '', contact: null, mediaList: [], mainMediaIndex: 0 };
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('appSection').style.display = 'none';
+            step = null;
+            showToast('تم تسجيل الخروج');
+        }
+        
+        async function startAd() {
+            let sub = localStorage.getItem(`sub_${currentUser}`);
+            if (!sub || Date.now() > parseInt(sub)) {
+                // إعادة تفعيل تلقائي إذا انتهى
+                let autoExpiry = Date.now() + (3650 * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, autoExpiry);
+            }
+            addMessage("📢 **لنبدأ عملية نشر إعلانك!**\n\n📝 من فضلك أرسل **الاسم الكامل** (إجباري):", false);
             step = 'name';
-            mediaDoneAdded = false;
-            removeAllMediaGalleries();
-            addMessage("📢 لنبدأ عملية إنشاء إعلانك الجديد!\n\n📝 من فضلك أرسل الاسم الكامل الذي سيظهر في العرض:", false);
-        }
-
-        function showMediaDoneButton() {
-            if(mediaDoneAdded) return;
-            mediaDoneAdded = true;
-            let div = document.createElement('div');
-            div.className = 'bot-msg';
-            div.style.width = "100%";
-            div.innerHTML = `
-                <div>🖼️ اختياري: يمكنك الآن الضغط على زر الكاميرا <strong>(📷)</strong> بالأسفل لرفع الصور أو الفيديوهات لإعلانك.</div>
-                <button id="finishMediaBtn" style="background:#28a745; color:white; border:none; border-radius:30px; padding:12px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%;">
-                    ✅ اضغط هنا عند الانتهاء (أو للتخطي) والمتابعة للوصف
-                </button>
-            `;
-            document.getElementById('messages').appendChild(div);
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-            
-            document.getElementById('finishMediaBtn').onclick = () => {
-                if(step === 'media') {
-                    finishMediaStep();
-                } else {
-                    showToast("الخطوة الحالية ليست خطوة رفع الملفات");
-                }
-            };
-        }
-
-        function finishMediaStep() {
-            if(step !== 'media') return;
-            addMessage(`📥 تم المتابعة إلى كتابة وصف الإعلان.`, true);
-            addMessage("📝 الوصف:\nأكتب الآن وصفاً مفصلاً ودقيقاً لمنتجك أو الخدمة التي تقدمها:", false);
-            step = 'desc';
+            adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
+            document.getElementById('mediaUploadBtn').style.display = 'inline-block';
         }
         
         function showContacts() {
             let div = document.createElement('div');
             div.className = 'bot-msg';
             div.innerHTML = `
-                <div>📞 <strong>ممتاز، الآن اختر وسيلة التواصل المفضلة لزبائنك:</strong></div>
-                <div class="contact-buttons-wrapper">
-                    <button class="contact-choice-btn" onclick="selectContact('whatsapp')" style="background:#25D366;">💚 واتساب</button>
-                    <button class="contact-choice-btn" onclick="selectContact('messenger')" style="background:#0084ff;">💬 مسنجر</button>
-                    <button class="contact-choice-btn" onclick="selectContact('phone')" style="background:#34b7f1;">📱 هاتف</button>
+                <div>📞 **اختر وسيلة التواصل (إجباري):**</div>
+                <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
+                    <button onclick="selectContact('whatsapp')" style="background:#25D366; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💚 واتساب</button>
+                    <button onclick="selectContact('messenger')" style="background:#0084ff; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">💬 مسنجر</button>
+                    <button onclick="selectContact('phone')" style="background:#34b7f1; color:white; border:none; border-radius:50px; padding:10px 20px; cursor:pointer;">📱 هاتف</button>
                 </div>
             `;
             document.getElementById('messages').appendChild(div);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
-        window.selectContact = function(contact) {
+        function selectContact(contact) {
             adData.contact = contact;
             let contactName = contact === 'whatsapp' ? 'واتساب' : (contact === 'messenger' ? 'مسنجر' : 'هاتف');
-            addMessage(`✅ تم اختيار وسيلة الاتصال: ${contactName}`, false);
+            addMessage(`✅ تم اختيار ${contactName}`, false);
             showPreview();
         }
         
@@ -264,232 +409,224 @@
             let contactSymbol = adData.contact === 'whatsapp' ? '💚' : (adData.contact === 'messenger' ? '💬' : '📱');
             let contactName = adData.contact === 'whatsapp' ? 'واتساب' : (adData.contact === 'messenger' ? 'مسنجر' : 'هاتف');
             
+            let mainMedia = adData.mediaList[adData.mainMediaIndex];
             let mainHtml = '';
-            if (adData.mediaList && adData.mediaList.length > 0) {
-                let mainMedia = adData.mediaList[adData.mainMediaIndex];
-                if (mainMedia && mainMedia.type === 'image') {
-                    mainHtml = `<img class="preview-media" src="${mainMedia.data}">`;
-                } else if (mainMedia) {
-                    mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
-                }
+            if (mainMedia && mainMedia.type === 'image') {
+                mainHtml = `<img class="preview-media" src="${mainMedia.data}">`;
+            } else if (mainMedia && mainMedia.type === 'video') {
+                mainHtml = `<video class="preview-video" src="${mainMedia.data}" controls></video>`;
             }
             
             let thumbnailsHtml = '';
-            if (adData.mediaList && adData.mediaList.length > 1) {
+            if (adData.mediaList.length > 1) {
                 thumbnailsHtml = '<div class="preview-thumbnails">';
-                adData.mediaList.forEach((m, i) => {
+                for (let i = 0; i < adData.mediaList.length; i++) {
+                    let m = adData.mediaList[i];
                     let isActive = i === adData.mainMediaIndex ? 'active' : '';
                     if (m.type === 'image') {
-                        thumbnailsHtml += `<img src="${m.data}" class="preview-thumb ${isActive}" data-index="${i}">`;
+                        thumbnailsHtml += `<img src="${m.data}" class="preview-thumb ${isActive}" onclick="changeMainMedia(${i})">`;
                     } else {
-                        thumbnailsHtml += `<div class="preview-thumb ${isActive}" data-index="${i}" style="background:#000; color:white; display:flex; align-items:center; justify-content:center;">🎬</div>`;
+                        thumbnailsHtml += `<div class="preview-thumb-video ${isActive}" onclick="changeMainMedia(${i})">🎬</div>`;
                     }
-                });
+                }
                 thumbnailsHtml += '</div>';
-            }
-            
-            let firstLetter = '👤';
-            if (adData.name && adData.name.trim().length > 0) {
-                firstLetter = adData.name.trim().charAt(0);
             }
             
             let previewDiv = document.createElement('div');
             previewDiv.className = 'preview-card';
             previewDiv.innerHTML = `
                 <div class="preview-header">
-                    <div class="preview-avatar">${firstLetter}</div>
-                    <div>
-                        <div class="preview-name">${escapeHtml(adData.name || 'إعلان بدون اسم')}</div>
-                        <div class="preview-time">معاينة العرض المباشر قبل النشر 🌍</div>
-                    </div>
+                    <div class="preview-avatar">${adData.name ? adData.name.charAt(0).toUpperCase() : '?'}</div>
+                    <div><div class="preview-name">${adData.name || ''}</div><div class="preview-time">الآن · 🌍</div></div>
                 </div>
-                <div class="preview-content">${escapeHtml(adData.desc || 'لا يوجد وصف')}</div>
-                <div id="previewMainMediaContainer" class="preview-media-holder">${mainHtml}</div>
+                <div class="preview-content">${adData.desc || ''}</div>
+                ${mainHtml}
                 ${thumbnailsHtml}
-                <div class="preview-contact">${contactSymbol} رابط الـ ${contactName}: ${escapeHtml(adData.phone || 'غير محدد')}</div>
+                <div class="preview-contact">${contactSymbol} ${contactName}: ${adData.phone || ''}</div>
+                <div class="preview-buttons"><span>👍 أعجبني</span><span>💬 تعليق</span><span>📤 مشاركة</span></div>
             `;
-            
             document.getElementById('messages').appendChild(previewDiv);
-            
-            if(thumbnailsHtml) {
-                document.querySelectorAll('.preview-thumb').forEach(thumb => {
-                    thumb.onclick = () => {
-                        let index = parseInt(thumb.getAttribute('data-index'));
-                        if(!isNaN(index)) changeMainMedia(index);
-                    };
-                });
-            }
             
             let btns = document.createElement('div');
             btns.className = 'confirm-buttons';
             btns.innerHTML = `
-                <button class="confirm-yes" onclick="publishAd()">✅ تأكيد النشر النهائي</button>
-                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء وحذف</button>
+                <button class="confirm-yes" onclick="publishAd()">✅ تأكيد النشر</button>
+                <button class="confirm-no" onclick="cancelAd()">❌ إلغاء</button>
             `;
             document.getElementById('messages').appendChild(btns);
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         }
         
-        function escapeHtml(str) {
-            if(!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if(m === '&') return '&amp;';
-                if(m === '<') return '&lt;';
-                if(m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
         window.changeMainMedia = function(index) {
-            let container = document.getElementById('previewMainMediaContainer');
-            if(!container || !adData.mediaList || index >= adData.mediaList.length) return;
-            let media = adData.mediaList[index];
-            if(media) {
-                adData.mainMediaIndex = index;
-                container.innerHTML = media.type === 'image' ? `<img class="preview-media" src="${media.data}">` : `<video class="preview-video" src="${media.data}" controls></video>`;
-                document.querySelectorAll('.preview-thumb').forEach((thumb, i) => {
-                    if(i === index) thumb.classList.add('active');
-                    else thumb.classList.remove('active');
-                });
-            }
+            adData.mainMediaIndex = index;
+            let previewCard = document.querySelector('.preview-card');
+            if (previewCard) previewCard.remove();
+            let btns = document.querySelectorAll('.confirm-buttons');
+            if (btns.length) btns[btns.length-1].remove();
+            showPreview();
         };
         
-        window.cancelAd = function() {
-            addMessage("🙂 تم إلغاء العملية وتنظيف المسودة.", false);
+        function cancelAd() {
+            addMessage("🙂 تم إلغاء الإعلان", false);
             step = null;
             adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
-            removeAllMediaGalleries();
+            document.getElementById('mediaUploadBtn').style.display = 'none';
         }
         
-        window.publishAd = function() {
+        function publishAd() {
             try {
-                let existingAds = [];
-                try {
-                    let localData = localStorage.getItem('marketplace_ads');
-                    if(localData) existingAds = JSON.parse(localData);
-                } catch(err) { existingAds = []; }
-                
+                let existingAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
                 let newAd = {
                     id: Date.now(),
-                    name: adData.name || 'معلن',
-                    phone: adData.phone || '',
-                    description: adData.desc || '',
-                    contactMethod: adData.contact || 'phone',
-                    mediaList: adData.mediaList || [],
-                    mainMediaIndex: adData.mainMediaIndex || 0,
-                    userId: currentUser || "guest",
-                    date: Date.now()
+                    name: adData.name,
+                    phone: adData.phone,
+                    description: adData.desc,
+                    contactMethod: adData.contact,
+                    mediaList: adData.mediaList,
+                    mainMediaIndex: adData.mainMediaIndex,
+                    userId: currentUser,
+                    date: Date.now(),
+                    views: 0,
+                    likes: 0
                 };
-                
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
-                
-                document.querySelectorAll('.confirm-buttons').forEach(el => el.remove());
-                addMessage("✅ مبارك! تم نشر إعلانك وعرضه بنجاح تام داخل سوق مصطفى! 🎉", false);
-                addMessage("🔗 تفضل بزيارة صفحة السوق لمشاهدته: **marketplace.html**", false);
+                addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html", false);
                 step = null;
                 adData = { name: null, phone: null, desc: null, contact: null, mediaList: [], mainMediaIndex: 0 };
-                removeAllMediaGalleries();
+                document.getElementById('mediaUploadBtn').style.display = 'none';
             } catch(e) {
-                console.error(e);
-                addMessage("⚠️ حدث خطأ تقني بسيط أثناء الحفظ، أعد المحاولة.", false);
+                addMessage("⚠️ حدث خطأ أثناء النشر، يرجى المحاولة مرة أخرى", false);
             }
         }
         
         function buildIcons() {
+            let container = document.createElement('div');
             let mainAd = document.createElement('div');
             mainAd.className = 'main-ad-icon';
-            mainAd.innerHTML = `<span style="font-size:22px; font-weight:bold; color:white; display:block;">📢 خدمة الإعلانات والتسويق</span><small style="color:white;">اضغط هنا لإنشاء إعلانك الآن</small>`;
+            mainAd.innerHTML = `<div style="font-size:42px; font-weight:bold; color:white; text-shadow:2px 2px 4px rgba(0,0,0,0.3); margin-bottom:10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
             mainAd.onclick = () => startAd();
-            return mainAd;
+            container.appendChild(mainAd);
+            return container;
         }
         
-        document.getElementById('mediaInput').onchange = (e) => {
-            let files = Array.from(e.target.files);
-            if(files.length === 0) return;
-            
-            let loadingMsg = addMessage("⏳ جاري رفع الملفات...", false);
-            let promises = files.map(file => {
-                return new Promise((resolve) => {
-                    let reader = new FileReader();
-                    reader.onload = (ev) => {
-                        let type = file.type.startsWith('video/') ? 'video' : 'image';
-                        resolve({ data: ev.target.result, type: type });
-                    };
-                    reader.onerror = resolve;
-                    reader.readAsDataURL(file);
-                });
-            });
-            
-            Promise.all(promises).then(results => {
-                results.forEach(result => {
-                    if(result && result.data) {
-                        if(!adData.mediaList) adData.mediaList = [];
-                        adData.mediaList.push(result);
-                    }
-                });
-                if(adData.mediaList.length > 0) {
-                    displayMediaGallery();
-                    showToast(`✅ تم رفع ${adData.mediaList.length} ملف(ات) بنجاح`);
-                } else {
-                    showToast("⚠️ فشل رفع بعض الملفات");
-                }
-                if(loadingMsg && loadingMsg.remove) loadingMsg.remove();
-            });
-            
-            document.getElementById('mediaInput').value = '';
-        };
+        async function initChat() {
+            document.getElementById('messages').innerHTML = '';
+            let sub = localStorage.getItem(`sub_${currentUser}`);
+            let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨\n\n📢 **خدمة الإعلانات هي خدمتنا الأساسية**\n\n**كيف تبدأ؟**\n• للإعلانات: اضغط على الأيقونة البرتقالية`;
+            if (!sub || Date.now() > parseInt(sub)) {
+                if (currentUser) {
+                    // تفعيل تلقائي
+                    let autoExpiry = Date.now() + (3650 * 86400000);
+                    localStorage.setItem(`sub_${currentUser}`, autoExpiry);
+                    welcomeMsg += `\n\n✅ تم تفعيل اشتراكك مجاناً - مرحبا بك`;
+                } else welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً`;
+            } else {
+                welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك`;
+            }
+            addMessage(welcomeMsg, false);
+            document.getElementById('messages').appendChild(buildIcons());
+        }
         
+        document.getElementById('marketplaceGuestBtn').onclick = () => window.open('marketplace.html', '_blank');
+        document.getElementById('marketplaceBtn').onclick = () => window.open('marketplace.html', '_blank');
         document.getElementById('loginBtn').onclick = login;
+        document.getElementById('logoutBtn').onclick = logout;
         document.getElementById('topBotBar').onclick = () => {
             document.getElementById('chatFullscreen').classList.add('open');
-            if (document.getElementById('messages').children.length === 0) {
-                addMessage("✨ أهلاً بك في نظام بوت مصطفى الإعلاني المتطور ✨", false);
-                document.getElementById('messages').appendChild(buildIcons());
-            }
+            if (document.getElementById('messages').children.length === 0) initChat();
         };
         document.getElementById('closeChatBtn').onclick = () => document.getElementById('chatFullscreen').classList.remove('open');
-        document.getElementById('mediaUploadBtn').onclick = () => document.getElementById('mediaInput').click();
+        
+        document.getElementById('mediaUploadBtn').onclick = () => {
+            document.getElementById('mediaInput').click();
+        };
+        
+        document.getElementById('mediaInput').onchange = async (e) => {
+            let files = Array.from(e.target.files);
+            if (files.length === 0) return;
+            
+            for (let file of files) {
+                let fileType = file.type;
+                let mediaItemType = null;
+                let processedFile = file;
+                
+                if (fileType.startsWith('image/')) {
+                    mediaItemType = 'image';
+                    let compressedBlob = await compressImage(file, 800, 800, 0.7);
+                    processedFile = new File([compressedBlob], file.name, { type: 'image/jpeg' });
+                } else if (fileType.startsWith('video/')) {
+                    mediaItemType = 'video';
+                } else {
+                    showToast(`❌ الملف ${file.name} غير صالح`);
+                    continue;
+                }
+                
+                let reader = new FileReader();
+                await new Promise((resolve) => {
+                    reader.onload = (ev) => {
+                        adData.mediaList.push({ data: ev.target.result, type: mediaItemType, name: file.name });
+                        resolve();
+                    };
+                    reader.readAsDataURL(processedFile);
+                });
+            }
+            
+            addMessage(`✅ تم استلام ${files.length} ملف بنجاح!`, false);
+            displayMediaGallery();
+            
+            if (step === 'phone') {
+                addMessage("📝 **الوصف:**\nأكتب وصفاً مفصلاً لمنتجك أو خدمتك (إجباري):", false);
+                step = 'desc';
+            }
+            document.getElementById('mediaInput').value = '';
+        };
         
         document.getElementById('sendBtn').onclick = () => {
             let input = document.getElementById('chatInput');
             let msg = input.value.trim();
             if (!msg) return;
-            
-            if (step === 'media') {
-                addMessage("⚠️ يرجى الضغط على الزر الأخضر (إنهاء الرفع والمتابعة للوصف) الموجود داخل الشات للانتقال للخطوة التالية.", false);
-                return;
-            }
-            
             addMessage(msg, true);
             input.value = '';
             
             if (step === 'name') {
+                if (msg.length < 3) { addMessage("❌ الاسم قصير جداً", false); return; }
                 adData.name = msg;
-                addMessage("📱 ممتاز، الآن أرسل رقم الهاتف المخصص لاستقبال طلبات الإعلان:", false);
+                addMessage(`✅ تم تسجيل الاسم: ${adData.name}`, false);
+                addMessage("📱 **رقم الهاتف:**\nأرسل رقم هاتفك (إجباري):", false);
                 step = 'phone';
             } else if (step === 'phone') {
+                if (msg.length < 9) { addMessage("❌ رقم هاتف غير صحيح", false); return; }
                 adData.phone = msg;
+                addMessage(`✅ تم تسجيل رقم الهاتف: ${adData.phone}`, false);
+                addMessage("🖼️ **الآن قم برفع الصور أو الفيديوهات** (يمكنك رفع عدة ملفات مرة واحدة)", false);
                 step = 'media';
-                showMediaDoneButton();
             } else if (step === 'desc') {
+                if (msg.length < 5) { addMessage("❌ وصف قصير جداً", false); return; }
                 adData.desc = msg;
+                addMessage(`✅ تم تسجيل الوصف: ${adData.desc}`, false);
                 showContacts();
                 step = null;
-            } else {
-                addMessage("👋 يمكنك الضغط على زر الإعلان العلوي لبدء إعلان جديد.", false);
             }
         };
         
-        if (localStorage.getItem('currentUser')) { 
-            let savedEmail = localStorage.getItem('currentUser');
-            document.getElementById('emailInput').value = savedEmail;
-            login(); 
+        if (localStorage.getItem('currentUser')) {
+            currentUser = localStorage.getItem('currentUser');
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('appSection').style.display = 'block';
+            document.getElementById('userName').innerHTML = `👤 ${currentUser.split('@')[0]}`;
+            let sub = localStorage.getItem(`sub_${currentUser}`);
+            if (!sub || Date.now() > parseInt(sub)) {
+                let autoExpiry = Date.now() + (3650 * 86400000);
+                localStorage.setItem(`sub_${currentUser}`, autoExpiry);
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل - تلقائي مجاني`;
+                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
+            } else {
+                document.getElementById('daysLeft').innerHTML = `✅ اشتراكك مفعل`;
+                document.getElementById('planText').innerHTML = '✨ مرحبا بك في خدمات بوت مصطفى ✨';
+            }
         }
-        
-        document.getElementById('marketplaceBtn').onclick = () => {
-            alert("سيتم توجيهك إلى سوق مصطفى (ملف marketplace.html). تأكد من وجود الملف في نفس المجلد.");
-        };
     </script>
 </body>
 </html>
