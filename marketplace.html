@@ -222,6 +222,8 @@
     const myAdsList = document.getElementById('myAdsList');
     const allAdsList = document.getElementById('allAdsList');
     let showMyAds = false;
+    // خريطة لحفظ قوائم الوسائط لكل إعلان (لتجنب مشاكل JSON في البيانات)
+    window.mediaCache = {};
 
     function renderUserBar() {
         if (currentUser) {
@@ -253,14 +255,26 @@
         if (showMyAds) loadAds();
     }
 
+    // تحويل الإعلانات القديمة إلى الصيغة الجديدة
+    function migrateAd(ad) {
+        if (!ad.mediaList) ad.mediaList = [];
+        // إذا كانت الوسائط قديمة وتحوي حقل `data` بدلاً من `url`
+        ad.mediaList = ad.mediaList.map(item => {
+            if (item.data && !item.url) {
+                return { url: item.data, type: item.type || 'image' };
+            }
+            return item;
+        });
+        if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
+        return ad;
+    }
+
     function loadAds() {
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-        allAds = allAds.map(ad => {
-            if (!ad.mediaList) ad.mediaList = [];
-            if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
-            return ad;
-        });
+        allAds = allAds.map(migrateAd);
         allAds.sort((a,b) => b.date - a.date);
+        // تخزين mediaList في cache
+        allAds.forEach(ad => { window.mediaCache[ad.id] = ad.mediaList; });
         displayAds(allAds, allAdsList, false);
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
@@ -281,6 +295,8 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
         });
     }
 
@@ -298,7 +314,7 @@
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url}')">`;
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url.replace(/'/g, "\\'")}')">`;
                 } else {
                     mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
                 }
@@ -336,7 +352,7 @@
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
 
             html += `
-                <div class="ad-card" id="ad-${ad.id}" data-media='${escapeHtml(JSON.stringify(mediaList))}'>
+                <div class="ad-card" id="ad-${ad.id}">
                     <div class="ad-header">
                         <div class="ad-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-date">${dateStr}</div>
@@ -359,32 +375,35 @@
     }
 
     window.changeMedia = function(adId, newIndex) {
-        let adDiv = document.getElementById(`ad-${adId}`);
-        if (!adDiv) return;
-        let mediaList = JSON.parse(adDiv.getAttribute('data-media'));
-        if (newIndex >= mediaList.length) return;
+        let mediaList = window.mediaCache[adId];
+        if (!mediaList || newIndex >= mediaList.length) return;
         let media = mediaList[newIndex];
         let container = document.getElementById(`media-container-${adId}`);
         if (!container) return;
         let newHtml = '';
         if (media.type === 'image') {
-            newHtml = `<img class="main-img" src="${media.url}" onclick="zoomImage('${media.url}')">`;
+            newHtml = `<img class="main-img" src="${media.url}" onclick="zoomImage('${media.url.replace(/'/g, "\\'")}')">`;
         } else {
             newHtml = `<video class="main-video" src="${media.url}" controls></video>`;
         }
         container.innerHTML = newHtml;
         // تحديث active في المصغرات
-        let thumbs = adDiv.querySelectorAll('.thumb-img, .thumb-video');
-        thumbs.forEach((thumb, idx) => {
-            if (idx === newIndex) thumb.classList.add('active');
-            else thumb.classList.remove('active');
-        });
+        let adDiv = document.getElementById(`ad-${adId}`);
+        if (adDiv) {
+            let thumbs = adDiv.querySelectorAll('.thumb-img, .thumb-video');
+            thumbs.forEach((thumb, idx) => {
+                if (idx === newIndex) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
         // حفظ mainMediaIndex في localStorage
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex !== -1) {
             allAds[adIndex].mainMediaIndex = newIndex;
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
+            // تحديث cache
+            window.mediaCache[adId] = allAds[adIndex].mediaList;
         }
     };
 
@@ -400,6 +419,7 @@
         if (confirm("⚠️ هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
             allAds.splice(adIndex, 1);
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
+            delete window.mediaCache[adId];
             loadAds();
             alert("✅ تم حذف الإعلان بنجاح.");
         }
