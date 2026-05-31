@@ -2,118 +2,192 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق مصطفى - الإعلانات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>سوق مصطفى - إعلانات مبوبة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #0b2b40, #1a4a5f);
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
             padding: 20px;
             direction: rtl;
         }
-        .container { max-width: 800px; margin: 0 auto; }
+        .container { max-width: 950px; margin: 0 auto; }
         .header {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            border-radius: 30px;
-            padding: 20px;
+            background: linear-gradient(115deg, #1e5f7a, #2c3e66);
+            border-radius: 40px;
+            padding: 25px 20px;
             text-align: center;
             color: white;
             margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
         }
-        .header h1 { font-size: 2rem; margin-bottom: 8px; }
-        .user-info {
-            background: rgba(255,255,255,0.2);
-            border-radius: 40px;
-            padding: 10px 15px;
-            display: inline-block;
-            margin-top: 10px;
+        .header h1 { font-size: 2rem; }
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50px;
+            padding: 8px 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .logout-btn {
+            background: #dc3545;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 18px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .toggle-btn {
+            background: #ffc107;
+            border: none;
+            border-radius: 50px;
+            padding: 10px;
+            width: 100%;
+            margin: 15px 0 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #2d2d2d;
+        }
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: white;
+            border-right: 5px solid #ffc107;
+            padding-right: 15px;
+            margin: 30px 0 15px 0;
         }
         .ad-card {
             background: white;
-            border-radius: 25px;
+            border-radius: 28px;
+            margin-bottom: 28px;
             overflow: hidden;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         .ad-header {
-            padding: 12px 16px;
-            background: #f8f9fa;
+            background: #fef7e0;
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e9ecef;
         }
-        .ad-name { font-weight: bold; font-size: 1.2rem; color: #0f3460; }
-        .ad-date { font-size: 0.8rem; color: #6c757d; }
-        .ad-media { width: 100%; max-height: 400px; object-fit: cover; background: #000; }
-        .ad-video { width: 100%; max-height: 400px; background: #000; }
-        .ad-description { padding: 16px; font-size: 1rem; line-height: 1.5; color: #212529; }
-        .ad-contact {
-            padding: 10px 16px;
+        .ad-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1d4e6e;
+        }
+        .ad-date {
+            font-size: 0.7rem;
             background: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .media-container {
+            background: #111;
+            text-align: center;
+        }
+        .main-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+        .main-video {
+            width: 100%;
+            max-height: 400px;
+        }
+        .thumbnails {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            background: #f2f4f8;
+            border-top: 1px solid #ddd;
+        }
+        .thumb-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .thumb-video {
+            width: 70px;
+            height: 70px;
+            background: #2c3e50;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
-        .ad-stats {
-            padding: 8px 16px;
-            color: #6c757d;
-            font-size: 0.8rem;
-            border-top: 1px solid #dee2e6;
+        .thumb-img.active, .thumb-video.active {
+            border-color: #007bff;
+        }
+        .ad-description {
+            padding: 16px 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #2d3e50;
+        }
+        .ad-contact {
+            padding: 10px 20px;
+            background: #eef2f5;
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .delete-btn {
             background: #dc3545;
-            color: white;
             border: none;
-            border-radius: 50px;
-            padding: 6px 15px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .delete-btn:hover { background: #c82333; transform: scale(1.02); }
-        .section-title {
+            border-radius: 30px;
+            padding: 5px 15px;
             color: white;
-            margin: 20px 0 10px 0;
-            font-size: 1.5rem;
-            border-right: 5px solid #ffc107;
-            padding-right: 15px;
+            cursor: pointer;
+        }
+        .ad-stats {
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            color: #6c757d;
+            display: flex;
+            gap: 20px;
+            border-top: 1px solid #e9ecef;
         }
         .no-ads {
             background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 40px;
             text-align: center;
             color: white;
-            margin: 15px 0;
         }
         .back-link {
             display: inline-block;
             background: #28a745;
             color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
             text-decoration: none;
-            margin-top: 20px;
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin: 20px 0;
             font-weight: bold;
         }
-        .back-link:hover { background: #218838; }
         footer {
             text-align: center;
-            margin-top: 30px;
             color: rgba(255,255,255,0.6);
+            margin-top: 20px;
         }
         @media (max-width: 600px) {
-            .ad-name { font-size: 1rem; }
-            .ad-description { font-size: 0.9rem; }
+            .ad-name { font-size: 1.1rem; }
+            .thumb-img, .thumb-video { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -121,12 +195,13 @@
 <div class="container">
     <div class="header">
         <h1>🛒 سوق مصطفى</h1>
-        <p>منصة الإعلانات المبوبة</p>
-        <div class="user-info" id="userInfo"></div>
+        <p>إعلانات مبوبة – تواصل مباشر</p>
+        <div class="user-bar" id="userBar"></div>
+        <button id="toggleMyAdsBtn" class="toggle-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
 
     <div id="myAdsSection" style="display: none;">
-        <div class="section-title">📌 إعلاناتي</div>
+        <div class="section-title">⭐ إعلاناتي</div>
         <div id="myAdsList"></div>
     </div>
 
@@ -134,37 +209,83 @@
     <div id="allAdsList"></div>
 
     <div style="text-align: center;">
-        <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
+        <a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a>
     </div>
-    <footer>بوت مصطفى - خدمة الإعلانات | تواصل عبر واتساب: 0556765445</footer>
+    <footer>بوت مصطفى – خدمة الإعلانات | تواصل: 0556765445</footer>
 </div>
 
 <script>
     let currentUser = localStorage.getItem('currentUser');
-    const userInfoDiv = document.getElementById('userInfo');
+    const userBar = document.getElementById('userBar');
+    const toggleBtn = document.getElementById('toggleMyAdsBtn');
     const myAdsSection = document.getElementById('myAdsSection');
     const myAdsList = document.getElementById('myAdsList');
     const allAdsList = document.getElementById('allAdsList');
+    let showMyAds = false;
+    // خريطة لحفظ قوائم الوسائط لكل إعلان (لتجنب مشاكل JSON في البيانات)
+    window.mediaCache = {};
 
-    if (currentUser) {
-        userInfoDiv.innerHTML = `👋 مرحباً ${currentUser.split('@')[0]} | <span style="font-size:0.8rem;">يمكنك حذف إعلاناتك</span>`;
-        myAdsSection.style.display = 'block';
-    } else {
-        userInfoDiv.innerHTML = `👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a> لحذف إعلاناتك`;
+    function renderUserBar() {
+        if (currentUser) {
+            userBar.innerHTML = `<span>👋 أهلاً ${escapeHtml(currentUser.split('@')[0])}</span><button class="logout-btn" onclick="logout()">🚪 خروج</button>`;
+            toggleBtn.style.display = 'block';
+        } else {
+            userBar.innerHTML = `<span>👤 زائر | <a href="index.html" style="color:#ffc107;">تسجيل الدخول</a></span>`;
+            toggleBtn.style.display = 'none';
+            myAdsSection.style.display = 'none';
+            showMyAds = false;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        renderUserBar();
+        loadAds();
+        toggleBtn.innerText = '📌 عرض إعلاناتي';
+        showMyAds = false;
+        myAdsSection.style.display = 'none';
+    }
+
+    function toggleMyAds() {
+        if (!currentUser) return;
+        showMyAds = !showMyAds;
+        myAdsSection.style.display = showMyAds ? 'block' : 'none';
+        toggleBtn.innerText = showMyAds ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
+        if (showMyAds) loadAds();
+    }
+
+    // تحويل الإعلانات القديمة إلى الصيغة الجديدة
+    function migrateAd(ad) {
+        if (!ad.mediaList) ad.mediaList = [];
+        // إذا كانت الوسائط قديمة وتحوي حقل `data` بدلاً من `url`
+        ad.mediaList = ad.mediaList.map(item => {
+            if (item.data && !item.url) {
+                return { url: item.data, type: item.type || 'image' };
+            }
+            return item;
+        });
+        if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
+        return ad;
     }
 
     function loadAds() {
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+        allAds = allAds.map(migrateAd);
         allAds.sort((a,b) => b.date - a.date);
+        // تخزين mediaList في cache
+        allAds.forEach(ad => { window.mediaCache[ad.id] = ad.mediaList; });
         displayAds(allAds, allAdsList, false);
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
             displayAds(myAds, myAdsList, true);
-            if (myAds.length === 0) myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك حتى الآن. انشر إعلانك من بوت مصطفى.</div>';
-        } else {
-            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل الدخول لترى إعلاناتك وتحذفها.</div>';
+            if (myAds.length === 0 && showMyAds) {
+                myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك. انشر من البوت.</div>';
+            }
+        } else if (showMyAds) {
+            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
         }
-        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً. كن أول من ينشر إعلاناً!</div>';
+        if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً.</div>';
     }
 
     function escapeHtml(str) {
@@ -174,43 +295,70 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
         });
     }
 
     function displayAds(ads, container, showDelete) {
-        if (!ads.length) return;
+        if (!ads.length) {
+            if (container === myAdsList && showMyAds) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
+            return;
+        }
         let html = '';
         for (let ad of ads) {
-            let mainMedia = null;
-            if (ad.mediaList && ad.mediaList.length > 0) {
-                let index = ad.mainMediaIndex !== undefined ? ad.mainMediaIndex : 0;
-                if (index >= ad.mediaList.length) index = 0;
-                mainMedia = ad.mediaList[index];
-            }
-            let mediaHtml = '';
-            if (mainMedia) {
-                if (mainMedia.type === 'image') mediaHtml = `<img class="ad-media" src="${mainMedia.data}" alt="صورة الإعلان">`;
-                else if (mainMedia.type === 'video') mediaHtml = `<video class="ad-video" src="${mainMedia.data}" controls></video>`;
+            let mediaList = ad.mediaList || [];
+            let mainIdx = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
+            let mainMedia = mediaList.length ? mediaList[mainIdx] : null;
+
+            let mainHtml = '';
+            if (mainMedia && mainMedia.url) {
+                if (mainMedia.type === 'image') {
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url.replace(/'/g, "\\'")}')">`;
+                } else {
+                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
+                }
             } else {
-                mediaHtml = `<div style="background:#dee2e6; padding:30px; text-align:center; color:#6c757d;">📷 لا توجد وسائط</div>`;
+                mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
             }
+
+            let thumbs = '';
+            if (mediaList.length > 1) {
+                thumbs = '<div class="thumbnails">';
+                for (let i = 0; i < mediaList.length; i++) {
+                    let m = mediaList[i];
+                    if (!m.url) continue;
+                    let activeClass = (i === mainIdx) ? 'active' : '';
+                    if (m.type === 'image') {
+                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" onclick="changeMedia(${ad.id}, ${i})">`;
+                    } else {
+                        thumbs += `<div class="thumb-video ${activeClass}" onclick="changeMedia(${ad.id}, ${i})">🎬</div>`;
+                    }
+                }
+                thumbs += '</div>';
+            }
+
             let contactIcon = '';
             if (ad.contactMethod === 'whatsapp') contactIcon = '💚 واتساب';
             else if (ad.contactMethod === 'messenger') contactIcon = '💬 مسنجر';
             else if (ad.contactMethod === 'phone') contactIcon = '📱 هاتف';
             else contactIcon = '📞';
+
             let deleteBtn = '';
             if (showDelete && currentUser && ad.userId === currentUser) {
-                deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف الإعلان</button>`;
+                deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف</button>`;
             }
+
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
+
             html += `
                 <div class="ad-card" id="ad-${ad.id}">
                     <div class="ad-header">
                         <div class="ad-name">${escapeHtml(ad.name)}</div>
                         <div class="ad-date">${dateStr}</div>
                     </div>
-                    ${mediaHtml}
+                    <div id="media-container-${ad.id}" class="media-container">${mainHtml}</div>
+                    ${thumbs}
                     <div class="ad-description">${escapeHtml(ad.description)}</div>
                     <div class="ad-contact">
                         <span>${contactIcon} ${escapeHtml(ad.phone)}</span>
@@ -226,23 +374,82 @@
         container.innerHTML = html;
     }
 
+    window.changeMedia = function(adId, newIndex) {
+        let mediaList = window.mediaCache[adId];
+        if (!mediaList || newIndex >= mediaList.length) return;
+        let media = mediaList[newIndex];
+        let container = document.getElementById(`media-container-${adId}`);
+        if (!container) return;
+        let newHtml = '';
+        if (media.type === 'image') {
+            newHtml = `<img class="main-img" src="${media.url}" onclick="zoomImage('${media.url.replace(/'/g, "\\'")}')">`;
+        } else {
+            newHtml = `<video class="main-video" src="${media.url}" controls></video>`;
+        }
+        container.innerHTML = newHtml;
+        // تحديث active في المصغرات
+        let adDiv = document.getElementById(`ad-${adId}`);
+        if (adDiv) {
+            let thumbs = adDiv.querySelectorAll('.thumb-img, .thumb-video');
+            thumbs.forEach((thumb, idx) => {
+                if (idx === newIndex) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
+        // حفظ mainMediaIndex في localStorage
+        let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+        let adIndex = allAds.findIndex(ad => ad.id === adId);
+        if (adIndex !== -1) {
+            allAds[adIndex].mainMediaIndex = newIndex;
+            localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
+            // تحديث cache
+            window.mediaCache[adId] = allAds[adIndex].mediaList;
+        }
+    };
+
     window.deleteAd = function(adId) {
         if (!currentUser) {
-            alert("يجب تسجيل الدخول أولاً لحذف الإعلان.");
+            alert("يجب تسجيل الدخول أولاً.");
             return;
         }
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex === -1) { alert("الإعلان غير موجود."); return; }
         if (allAds[adIndex].userId !== currentUser) { alert("لا يمكنك حذف إعلان ليس لك."); return; }
-        if (confirm("هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
+        if (confirm("⚠️ هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
             allAds.splice(adIndex, 1);
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
+            delete window.mediaCache[adId];
             loadAds();
             alert("✅ تم حذف الإعلان بنجاح.");
         }
     };
 
+    window.zoomImage = function(src) {
+        let modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+        modal.style.zIndex = '10000';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.cursor = 'pointer';
+        modal.onclick = () => modal.remove();
+        let img = document.createElement('img');
+        img.src = src;
+        img.style.maxWidth = '90%';
+        img.style.maxHeight = '90%';
+        img.style.borderRadius = '12px';
+        modal.appendChild(img);
+        document.body.appendChild(modal);
+    };
+
+    renderUserBar();
+    toggleBtn.onclick = toggleMyAds;
     loadAds();
     window.addEventListener('storage', function(e) { if (e.key === 'marketplace_ads') loadAds(); });
 </script>
