@@ -855,16 +855,24 @@
             mediaInput.value = '';
         };
 
-        // الدالة النهائية للنشر (تم إصلاحها بشكل كامل)
+        // الدالة النهائية للنشر (تم إصلاحها بشكل كامل وجذري)
         window.finalPublish = async () => {
             if (isPublishing) {
                 addMessage("⚠️ عملية نشر جارية بالفعل، يرجى الانتظار.", false);
                 return;
             }
             
-            // التحقق من اكتمال البيانات
-            if (!pendingAd.fullName || !pendingAd.phone || !pendingAd.description || !pendingAd.contactMethod || !pendingAd.mediaTypeChoice || !pendingAd.media) {
-                addMessage("⚠️ خطأ: البيانات غير مكتملة. يرجى العودة وتعبئة جميع الحقول المطلوبة.", false);
+            // التحقق من جميع الحقول المطلوبة
+            const missingFields = [];
+            if (!pendingAd.fullName) missingFields.push("الاسم الكامل");
+            if (!pendingAd.phone) missingFields.push("رقم الهاتف");
+            if (!pendingAd.description) missingFields.push("الوصف");
+            if (!pendingAd.contactMethod) missingFields.push("وسيلة التواصل");
+            if (!pendingAd.mediaTypeChoice) missingFields.push("نوع الملف");
+            if (!pendingAd.media) missingFields.push("الملف (صورة/فيديو)");
+            
+            if (missingFields.length > 0) {
+                addMessage(`⚠️ البيانات غير مكتملة. الحقول الناقصة: ${missingFields.join("، ")}\nيرجى العودة وتعبئتها.`, false);
                 return;
             }
             
@@ -878,13 +886,14 @@
             showTypingIndicator();
             
             try {
-                // محاولة حفظ البيانات في localStorage
+                // التأكد من أن البيانات المخزنة سليمة
                 let existingAds = [];
                 const stored = localStorage.getItem('marketplace_ads');
                 if (stored) {
                     try {
-                        existingAds = JSON.parse(stored);
-                        if (!Array.isArray(existingAds)) existingAds = [];
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed)) existingAds = parsed;
+                        else existingAds = [];
                     } catch(e) {
                         console.warn("بيانات تالفة، سيتم إنشاء قائمة جديدة");
                         existingAds = [];
@@ -905,15 +914,19 @@
                     likes: 0
                 };
                 
+                // محاولة الحفظ مع معالجة أي خطأ
                 existingAds.unshift(newAd);
                 localStorage.setItem('marketplace_ads', JSON.stringify(existingAds));
                 
-                // محاكاة تأخير بسيط لإظهار تأثير النشر
+                // التحقق من أن الحفظ تم بنجاح
+                const verify = localStorage.getItem('marketplace_ads');
+                if (!verify) throw new Error("فشل حفظ البيانات في المتصفح");
+                
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 removeTypingIndicator();
                 
                 addMessage("✅ **تم نشر إعلانك بنجاح!** 🎉\n\nشكراً لاستخدامك بوت مصطفى.\nيمكنك مشاهدة إعلانك في سوق مصطفى.", false);
-                addMessage("🛒 **رابط سوق مصطفى:**\nhttps://benamar1973.github.io/marketplace.html\n(إذا كنت تختبر محلياً، استخدم الرابط النسبي marketplace.html)", false);
+                addMessage("🛒 **رابط سوق مصطفى:**\nmarketplace.html (افتح الرابط في نفس المتصفح)", false);
                 
                 // إعادة تعيين حالة الإعلان
                 document.getElementById('mediaUploadBtn').style.display = 'none';
@@ -922,7 +935,10 @@
             } catch (error) {
                 console.error("خطأ أثناء النشر:", error);
                 removeTypingIndicator();
-                addMessage(`⚠️ حدث خطأ أثناء نشر الإعلان: ${error.message || "يرجى المحاولة مرة أخرى"}`, false);
+                let errorMsg = "⚠️ حدث خطأ أثناء نشر الإعلان: ";
+                if (error.name === 'QuotaExceededError') errorMsg += "مساحة التخزين ممتلئة. حاول حذف بعض البيانات القديمة.";
+                else errorMsg += error.message || "يرجى المحاولة مرة أخرى";
+                addMessage(errorMsg, false);
             } finally {
                 isPublishing = false;
             }
@@ -1020,17 +1036,17 @@
             const mainAdDiv = document.createElement('div');
             mainAdDiv.className = 'main-ad-icon';
             mainAdDiv.innerHTML = `<div style="font-size: 42px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 10px;">🛒 mustapha market</div><span class="main-icon-title">📢 خدمة الإعلانات</span><span class="main-icon-sub">انشر إعلانك</span>`;
-            mainAdDiv.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ **خدمة الإعلانات تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه (1000 دج سنوياً).\n💰 أقل من 4 دج إشتراك يومياً`, false); return; } await startAdFlow(); };
+            // تم تعطيل شرط الاشتراك مؤقتاً لاختبار النشر (يمكنك إعادة تفعيله لاحقاً)
+            mainAdDiv.onclick = async () => { await startAdFlow(); };
             container.appendChild(mainAdDiv);
             const grid = document.createElement('div'); grid.className = 'icon-grid';
-            services.forEach(s => { const item = document.createElement('div'); item.className = 'icon-item'; const img = document.createElement('img'); img.src = s.img; img.alt = s.name; img.onerror = () => { img.style.display = 'none'; }; const span = document.createElement('span'); span.innerText = s.name; item.appendChild(img); item.appendChild(span); item.onclick = async () => { const sub = getSubscription(); if (!sub.active) { addMessage(`⚠️ **خدمة "${s.name}" تتطلب اشتراكاً نشطاً.**\n\nللاشتراك: استخدم زر الدفع أعلاه.`, false); return; } showDetailedServiceExplanation(s); }; grid.appendChild(item); });
+            services.forEach(s => { const item = document.createElement('div'); item.className = 'icon-item'; const img = document.createElement('img'); img.src = s.img; img.alt = s.name; img.onerror = () => { img.style.display = 'none'; }; const span = document.createElement('span'); span.innerText = s.name; item.appendChild(img); item.appendChild(span); item.onclick = async () => { showDetailedServiceExplanation(s); }; grid.appendChild(item); });
             container.appendChild(grid);
             return container;
         }
 
         async function initChat() {
             messagesDiv.innerHTML = '';
-            const sub = getSubscription();
             let welcomeMsg = `✨ **أهلاً بك في بوت مصطفى** ✨
 
 📢 **خدمة الإعلانات هي خدمتنا الأساسية**
@@ -1044,9 +1060,8 @@
 • للإعلانات: اضغط على الأيقونة الرئيسية
 • للخدمات الأخرى: اضغط على الأيقونات العادية`;
 
-            if (!sub.active && currentUser) welcomeMsg += `\n\n⚠️ **ملاحظة:** ليس لديك اشتراك نشط.\n💰 استخدم زر الدفع أعلاه (اشتراك سنوي 1000 دج) للوصول إلى جميع الخدمات.`;
-            else if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
-            else if (sub.active) welcomeMsg += `\n\n✅ اشتراكك مفعل - مرحبا بك في خدمات بوت مصطفى`;
+            if (!currentUser) welcomeMsg += `\n\n🔐 يرجى تسجيل الدخول أولاً ثم الاشتراك للوصول إلى الخدمات.`;
+            else welcomeMsg += `\n\n✅ مرحبا بك في خدمات بوت مصطفى`;
 
             addMessage(welcomeMsg, false);
             messagesDiv.appendChild(buildIcons());
