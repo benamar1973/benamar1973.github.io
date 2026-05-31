@@ -2,286 +2,851 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق مصطفى</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>سوق مصطفى - منصة الإعلانات</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:linear-gradient(160deg,#1a1a2e,#16213e);font-family:'Cairo',sans-serif;padding:20px}
-        .header{text-align:center;margin-bottom:30px}
-        .header h1{color:white}
-        .filter-buttons{display:flex;gap:15px;justify-content:center;margin-bottom:25px;flex-wrap:wrap}
-        .filter-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:10px 25px;border-radius:50px;cursor:pointer}
-        .filter-btn.active{background:#007bff}
-        .marketplace-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:25px;max-width:1400px;margin:0 auto}
-        .ad-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.2);cursor:pointer;position:relative}
-        .delete-my-ad{position:absolute;top:10px;right:10px;background:#dc3545;color:white;border:none;border-radius:50%;width:35px;height:35px;cursor:pointer;z-index:10;font-weight:bold}
-        .ad-card-img{width:100%;height:220px;object-fit:cover;background:#f0f2f5}
-        .ad-card-video{width:100%;height:220px;object-fit:cover}
-        .ad-card-content{padding:18px}
-        .ad-card-name{font-size:18px;font-weight:bold;color:#0f3460}
-        .ad-card-date{font-size:11px;color:#999;margin:5px 0}
-        .ad-card-desc{font-size:14px;color:#444;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-        .ad-card-stats{display:flex;gap:20px;margin-bottom:12px}
-        .like-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;color:#666;font-size:14px}
-        .like-btn.liked{color:#dc3545}
-        .ad-card-contact{background:#e8f0fe;padding:10px;border-radius:12px;text-align:center}
-        .contact-link{display:inline-block;margin-top:8px;padding:6px 15px;background:#25D366;color:white;text-decoration:none;border-radius:25px;font-size:12px}
-        .no-ads{text-align:center;padding:60px;background:white;border-radius:20px;color:#666}
-        .footer{text-align:center;margin-top:40px;color:rgba(255,255,255,0.6)}
-        .back-link{display:inline-block;margin-bottom:20px;color:white;background:rgba(0,0,0,0.3);padding:8px 20px;border-radius:50px;text-decoration:none}
-        .refresh-btn{background:#28a745;color:white;border:none;border-radius:50px;padding:8px 20px;cursor:pointer;margin-right:10px}
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:white;z-index:10000;direction:rtl;overflow-y:auto}
-        .modal-content{max-width:800px;margin:0 auto;background:white}
-        .modal-close{position:fixed;top:15px;left:15px;background:#dc3545;color:white;border:none;border-radius:50%;width:45px;height:45px;font-size:28px;cursor:pointer;z-index:10001}
-        .main-media,.main-video{width:100%;max-height:400px;object-fit:contain;background:#f0f2f5}
-        .modal-content-inner{padding:20px}
-        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#28a745;color:white;padding:12px 24px;border-radius:30px;opacity:0;transition:0.3s;z-index:30000}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* الحاوية الرئيسية */
+        .marketplace-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر */
+        .market-header {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            border-radius: 40px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .logo-area h1 {
+            font-size: 1.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-area p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        .user-area {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+        .user-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .auth-buttons button, .new-ad-btn {
+            background: #ff9800;
+            border: none;
+            color: #1e2a3e;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .new-ad-btn {
+            background: linear-gradient(95deg, #28a745, #20c997);
+            color: white;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        /* شريط البحث والفلتر */
+        .search-bar {
+            background: white;
+            border-radius: 70px;
+            padding: 8px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            align-items: center;
+        }
+        .search-input {
+            flex: 3;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            background: #f0f2f5;
+            font-size: 1rem;
+        }
+        .filter-select {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 50px;
+            border: none;
+            background: #f0f2f5;
+        }
+        .stats-badge {
+            background: #e9ecef;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        /* شبكة الإعلانات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            margin-top: 20px;
+        }
+        .ad-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .ad-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+        }
+        .media-preview {
+            width: 100%;
+            height: 200px;
+            background: #1e1e2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .media-preview img, .media-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .media-type-icon {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.6);
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        .card-content {
+            padding: 18px;
+            flex: 1;
+        }
+        .ad-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #0f3460;
+        }
+        .ad-desc {
+            color: #4a5568;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .ad-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin: 10px 0;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+        .ad-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+        }
+        .like-btn, .detail-btn, .report-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .like-btn { color: #e83e8c; background: #fff0f3; }
+        .like-btn.liked { background: #e83e8c; color: white; }
+        .detail-btn { background: #e9ecef; color: #2c3e66; }
+        .report-btn { background: #f8d7da; color: #b00020; }
+
+        /* مودال التفاصيل */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .modal.open {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            direction: rtl;
+            padding: 20px;
+            position: relative;
+        }
+        .modal-media-area {
+            background: #000;
+            border-radius: 28px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .modal-media-main img, .modal-media-main video {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+        }
+        .thumb-gallery {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0;
+        }
+        .thumb-gallery img, .thumb-video {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .thumb-active {
+            border-color: #007bff;
+        }
+        .contact-badge {
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .whatsapp-link { background: #25D366; color: white; padding: 6px 14px; border-radius: 30px; text-decoration: none; display: inline-block; }
+        .close-modal {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: #dc3545;
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* نموذج إضافة إعلان */
+        .form-modal .modal-content {
+            max-width: 650px;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+        }
+        .media-upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            margin: 12px 0;
+        }
+        .preview-media-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .preview-media-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        .preview-media-item.active-main {
+            border-color: #ff9800;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #323232;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 9999;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        @media (max-width: 680px) {
+            .market-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .ads-grid { grid-template-columns: 1fr; }
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-<div style="max-width:1400px;margin:0 auto">
-    <div class="header">
-        <a href="index.html" class="back-link">← العودة إلى بوت مصطفى</a>
-        <button class="refresh-btn" id="refreshBtn">🔄 تحديث</button>
-        <h1>🛒 سوق مصطفى</h1>
+<div class="marketplace-container">
+    <div class="market-header">
+        <div class="logo-area">
+            <h1>🛒 سوق مصطفى <span style="font-size:1rem;">✨ Marketplace</span></h1>
+            <p>منصة إعلانات آمنة | تواصل مباشر</p>
+        </div>
+        <div class="user-area" id="userArea">
+            <div class="user-name" id="displayUserName">👤 زائر</div>
+            <div class="auth-buttons" id="authButtons">
+                <button id="openLoginModalBtn">🔐 تسجيل دخول</button>
+            </div>
+            <button id="newAdBtn" class="new-ad-btn" style="display:none;">➕ إعلان جديد</button>
+        </div>
     </div>
-    <div class="filter-buttons">
-        <button id="filterAllBtn" class="filter-btn active">🌍 جميع الإعلانات</button>
-        <button id="filterMyBtn" class="filter-btn">📋 إعلاناتي</button>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث بالاسم أو الوصف...">
+        <select id="filterMediaType" class="filter-select">
+            <option value="all">📱 الكل</option>
+            <option value="image">🖼️ صور فقط</option>
+            <option value="video">🎥 فيديوهات فقط</option>
+        </select>
+        <div class="stats-badge" id="adsCount">📢 0 إعلان</div>
     </div>
-    <div class="marketplace-grid" id="marketplaceGrid">📭 جاري التحميل...</div>
-    <div class="footer"><p>© بوت مصطفى | لنشر إعلان: <a href="index.html" style="color:#28a745">اضغط هنا</a></p></div>
+
+    <div class="ads-grid" id="adsGrid"></div>
 </div>
-<div id="adModal" class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div id="modalContent"></div></div>
-<div id="toast" class="toast"></div>
+
+<div id="toastMsg" class="toast-msg"></div>
+
+<!-- مودال تفاصيل الإعلان -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeDetailModal()">✕</button>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<!-- مودال تسجيل الدخول السريع -->
+<div id="loginModal" class="modal">
+    <div class="modal-content" style="max-width:400px; text-align:center;">
+        <h3>🔐 دخول إلى سوق مصطفى</h3>
+        <input type="email" id="loginEmail" placeholder="بريدك الإلكتروني" style="width:100%; margin:15px 0; padding:12px; border-radius:40px;">
+        <button id="confirmLoginBtn" class="btn-primary">دخول / إنشاء حساب</button>
+        <button class="close-modal" style="position:static; margin-top:12px; background:#6c757d;" onclick="closeLoginModal()">إلغاء</button>
+    </div>
+</div>
+
+<!-- مودال إضافة إعلان جديد -->
+<div id="newAdModal" class="modal form-modal">
+    <div class="modal-content">
+        <h2 style="margin-bottom:15px;">📢 إعلان جديد</h2>
+        <div id="newAdForm">
+            <div class="form-group"><input type="text" id="adName" placeholder="الاسم الكامل *"></div>
+            <div class="form-group"><input type="tel" id="adPhone" placeholder="رقم الهاتف *"></div>
+            <div class="form-group"><textarea id="adDesc" rows="3" placeholder="وصف المنتج / الخدمة *"></textarea></div>
+            <div class="form-group">
+                <select id="adContactMethod">
+                    <option value="whatsapp">💚 واتساب</option>
+                    <option value="messenger">💬 مسنجر</option>
+                    <option value="phone">📱 هاتف</option>
+                </select>
+            </div>
+            <div class="media-upload-area" id="dropArea">
+                📸 رفع صور/فيديوهات (اسحب أو اضغط)
+                <input type="file" id="mediaFilesInput" multiple accept="image/*,video/*" style="display:none;">
+                <button type="button" id="triggerUploadBtn" style="background:#007bff; color:white; border:none; border-radius:50px; padding:8px 15px; margin-top:8px;">اختر ملفات</button>
+            </div>
+            <div id="mediaPreviewList" class="preview-media-grid"></div>
+            <button id="publishAdBtn" class="btn-primary">🚀 نشر الإعلان</button>
+            <button id="cancelAdBtn" style="background:#dc3545; margin-top:8px;" class="btn-primary">إلغاء</button>
+        </div>
+    </div>
+</div>
 
 <script>
-    // المتغيرات العامة
-    let currentUser = null;      // البريد الإلكتروني للمستخدم الحالي
-    let allAds = [];            // جميع الإعلانات من localStorage
-    let currentFilter = 'all';  // 'all' أو 'my'
+    // ------------------- المتغيرات العامة -------------------
+    let currentUser = localStorage.getItem('currentUser') || null;
+    let tempAdMedia = [];      // {data, type, name}
+    let tempMainIndex = 0;
 
-    // قراءة المستخدم الحالي من localStorage (نفس نظام index.html)
-    function loadCurrentUser() {
-        const saved = localStorage.getItem('currentUser');
-        if (saved && saved.includes('@')) currentUser = saved;
-        else currentUser = null;
-    }
-
-    // دالة مساعدة: عرض رسالة مؤقتة
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
+    // helper functions
+    function showToast(msg, isError = false) {
+        let toast = document.getElementById('toastMsg');
         toast.innerText = msg;
+        toast.style.background = isError ? '#dc3545' : '#28a745';
         toast.style.opacity = '1';
         setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
-    // تحميل الإعلانات من localStorage
-    function loadAdsFromStorage() {
-        const stored = localStorage.getItem('marketplace_ads');
-        if (!stored) return [];
-        try {
-            const ads = JSON.parse(stored);
-            if (Array.isArray(ads)) return ads;
-            else return [];
-        } catch(e) {
-            console.error("خطأ في قراءة الإعلانات", e);
-            return [];
-        }
+    // تحقق من الاشتراك
+    function hasActiveSubscription() {
+        if (!currentUser) return false;
+        let expiry = localStorage.getItem(`sub_${currentUser}`);
+        return expiry && Date.now() < parseInt(expiry);
     }
 
-    // حفظ الإعلانات (بعد التعديل مثل الحذف أو الإعجاب)
-    function saveAdsToStorage(ads) {
+    // تحديث واجهة المستخدم (تسجيل الدخول)
+    function updateUserUI() {
+        const userNameSpan = document.getElementById('displayUserName');
+        const authDiv = document.getElementById('authButtons');
+        const newAdBtn = document.getElementById('newAdBtn');
+        if (currentUser) {
+            userNameSpan.innerHTML = `👤 ${currentUser.split('@')[0]}`;
+            authDiv.innerHTML = `<button id="logoutMarketBtn" class="logout-btn">🚪 خروج</button>`;
+            document.getElementById('logoutMarketBtn')?.addEventListener('click', () => {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                updateUserUI();
+                renderAds();
+                showToast("تم تسجيل الخروج");
+            });
+            if (hasActiveSubscription()) {
+                newAdBtn.style.display = 'inline-block';
+            } else {
+                newAdBtn.style.display = 'none';
+                showToast("⚠️ تحتاج اشتراك سنوي 1000 دج لنشر الإعلانات", true);
+            }
+        } else {
+            userNameSpan.innerHTML = `👤 زائر`;
+            authDiv.innerHTML = `<button id="openLoginModalBtn">🔐 تسجيل دخول</button>`;
+            newAdBtn.style.display = 'none';
+            document.getElementById('openLoginModalBtn')?.addEventListener('click', () => openLoginModal());
+        }
+        // اعادة ربط اذا كان موجود
+        const newBtn = document.getElementById('newAdBtn');
+        if(newBtn) newBtn.onclick = () => openNewAdModal();
+    }
+
+    // جلب الإعلانات وترقية البنية
+    function getAds() {
+        let ads = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
+        // توافق مع الإصدار السابق: إضافة likesUsers, likesCount, views إن لم توجد
+        ads = ads.map(ad => {
+            if (!ad.likesUsers) ad.likesUsers = [];
+            if (ad.likesCount === undefined) ad.likesCount = ad.likes || 0;
+            if (ad.views === undefined) ad.views = 0;
+            if (!ad.id) ad.id = Date.now() + Math.random();
+            return ad;
+        });
+        // ترتيب حسب الأحدث
+        ads.sort((a,b) => b.date - a.date);
+        return ads;
+    }
+
+    function saveAds(ads) {
         localStorage.setItem('marketplace_ads', JSON.stringify(ads));
     }
 
-    // تنسيق التاريخ من timestamp (مللي ثانية)
-    function formatDate(timestamp) {
-        if (!timestamp) return 'تاريخ غير معروف';
-        let date = new Date(timestamp);
-        return date.toLocaleDateString('ar');
-    }
-
-    // منع الـ XSS
-    function escapeHtml(str) {
-        if (!str) return '';
-        let div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    // حذف إعلان (لصاحبه فقط)
-    function deleteAd(adId, event) {
-        event.stopPropagation();
-        if (!currentUser) {
-            showToast('⚠️ سجل دخول أولاً بحسابك لحذف إعلاناتك');
+    // عرض الإعلانات مع بحث وتصفية
+    function renderAds() {
+        let ads = getAds();
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const mediaFilter = document.getElementById('filterMediaType').value;
+        let filtered = ads.filter(ad => {
+            const matchName = ad.name?.toLowerCase().includes(searchTerm) || ad.description?.toLowerCase().includes(searchTerm);
+            if (!matchName) return false;
+            if (mediaFilter === 'all') return true;
+            const hasMediaType = ad.mediaList?.some(m => m.type === mediaFilter);
+            return hasMediaType;
+        });
+        document.getElementById('adsCount').innerText = `📢 ${filtered.length} إعلان`;
+        const grid = document.getElementById('adsGrid');
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px;">📭 لا توجد إعلانات متاحة</div>`;
             return;
         }
-        const ad = allAds.find(a => a.id == adId);
-        if (!ad) return;
-        if (ad.userId !== currentUser) {
-            showToast('❌ هذا الإعلان ليس لك، لا يمكنك حذفه');
-            return;
-        }
-        if (confirm('هل أنت متأكد من حذف هذا الإعلان نهائياً؟')) {
-            const newAds = allAds.filter(a => a.id != adId);
-            saveAdsToStorage(newAds);
-            loadAds(); // إعادة تحميل العرض
-            showToast('✅ تم حذف الإعلان');
-        }
-    }
-
-    // معالجة الإعجاب (تخزين قائمة المستخدمين المعجبين)
-    function handleLike(adId, event) {
-        event.stopPropagation();
-        if (!currentUser) {
-            showToast('⚠️ سجل دخول أولاً للإعجاب');
-            return;
-        }
-        const adIndex = allAds.findIndex(a => a.id == adId);
-        if (adIndex === -1) return;
-        let likes = allAds[adIndex].likes || [];
-        if (likes.includes(currentUser)) {
-            // إزالة الإعجاب
-            likes = likes.filter(u => u !== currentUser);
-            showToast('👍 تم إلغاء الإعجاب');
-        } else {
-            // إضافة إعجاب
-            likes.push(currentUser);
-            showToast('❤️ تم الإعجاب');
-        }
-        allAds[adIndex].likes = likes;
-        saveAdsToStorage(allAds);
-        // تحديث الواجهة دون إعادة تحميل كامل
-        filterAds(currentFilter);
-    }
-
-    // فتح نافذة عرض التفاصيل
-    function openModal(ad) {
-        let mediaHtml = '';
-        if (ad.image) {
-            if (ad.imageType === 'image') mediaHtml = `<img class="main-media" src="${ad.image}" alt="صورة الإعلان">`;
-            else if (ad.imageType === 'video') mediaHtml = `<video class="main-video" src="${ad.image}" controls></video>`;
-        } else {
-            mediaHtml = '<div style="padding:50px;text-align:center">📷 لا توجد وسائط</div>';
-        }
-
-        let contactBtn = '';
-        if (ad.contactMethod === 'whatsapp')
-            contactBtn = `<a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" class="contact-link" style="background:#25D366;display:inline-block">واتساب</a>`;
-        else if (ad.contactMethod === 'messenger')
-            contactBtn = `<span style="color:#0084ff">مسنجر: ${ad.phone}</span>`;
-        else
-            contactBtn = `<a href="tel:${ad.phone}" class="contact-link" style="background:#34b7f1">اتصل</a>`;
-
-        const likesCount = ad.likes ? ad.likes.length : 0;
-        document.getElementById('modalContent').innerHTML = `
-            <div style="min-height:300px;background:#f5f5f5;display:flex;align-items:center;justify-content:center">${mediaHtml}</div>
-            <div class="modal-content-inner">
-                <div class="ad-card-name">${escapeHtml(ad.name)}</div>
-                <div class="ad-card-date">📅 ${formatDate(ad.date)}</div>
-                <div class="ad-card-desc" style="-webkit-line-clamp:unset">${escapeHtml(ad.description)}</div>
-                <div style="display:flex;gap:20px;margin:15px 0"><span>👁️ ${ad.views || 0}</span><span>❤️ ${likesCount}</span></div>
-                <div class="ad-card-contact">📞 ${escapeHtml(ad.phone)}<br>${contactBtn}</div>
-            </div>
-        `;
-        document.getElementById('adModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    window.closeModal = function() {
-        document.getElementById('adModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        // إيقاف أي فيديو داخل المودال
-        const vid = document.querySelector('#modalContent video');
-        if (vid) vid.pause();
-    };
-
-    // عرض الإعلانات في الشبكة
-    function renderAds(ads) {
-        const grid = document.getElementById('marketplaceGrid');
-        if (!ads.length) {
-            grid.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات حالياً\n\nأنشئ إعلانك الآن من البوت الرئيسي</div>';
-            return;
-        }
-        grid.innerHTML = '';
-        for (let ad of ads) {
-            const isMy = (currentUser && ad.userId === currentUser);
-            const isLiked = (currentUser && ad.likes && ad.likes.includes(currentUser));
+        grid.innerHTML = filtered.map(ad => {
+            let mainMedia = ad.mediaList?.[ad.mainMediaIndex || 0];
             let mediaHtml = '';
-            if (ad.image) {
-                if (ad.imageType === 'image')
-                    mediaHtml = `<img class="ad-card-img" src="${ad.image}" alt="صورة الإعلان" loading="lazy">`;
-                else if (ad.imageType === 'video')
-                    mediaHtml = `<video class="ad-card-video" src="${ad.image}" muted></video>`;
+            if (mainMedia) {
+                if (mainMedia.type === 'image') mediaHtml = `<img src="${mainMedia.data}" alt="صورة">`;
+                else mediaHtml = `<video src="${mainMedia.data}" muted></video>`;
             } else {
-                mediaHtml = '<div class="ad-card-img" style="display:flex;align-items:center;justify-content:center;background:#e9ecef">📷</div>';
+                mediaHtml = `<div style="background:#ddd; height:100%; display:flex; align-items:center;">📷 لا وسائط</div>`;
             }
-
-            let contactHtml = '';
-            if (ad.contactMethod === 'whatsapp')
-                contactHtml = `<div class="ad-card-contact">💚 ${escapeHtml(ad.phone)}<br><a href="https://wa.me/${ad.phone.replace(/^0/, '213')}" target="_blank" class="contact-link" onclick="event.stopPropagation()">واتساب</a></div>`;
-            else if (ad.contactMethod === 'messenger')
-                contactHtml = `<div class="ad-card-contact">💬 ${escapeHtml(ad.phone)}<br><span style="font-size:12px">🔍 ابحث في مسنجر</span></div>`;
-            else
-                contactHtml = `<div class="ad-card-contact">📱 ${escapeHtml(ad.phone)}<br><a href="tel:${ad.phone}" class="contact-link" onclick="event.stopPropagation()">اتصل</a></div>`;
-
-            const likesCount = ad.likes ? ad.likes.length : 0;
-            const card = document.createElement('div');
-            card.className = 'ad-card';
-            card.onclick = () => openModal(ad);
-            card.innerHTML = `
-                ${isMy ? `<button class="delete-my-ad" onclick="deleteAd(${ad.id}, event)">🗑️</button>` : ''}
-                ${mediaHtml}
-                <div class="ad-card-content">
-                    <div class="ad-card-name">${escapeHtml(ad.name)}</div>
-                    <div class="ad-card-date">📅 ${formatDate(ad.date)}</div>
-                    <div class="ad-card-desc">${escapeHtml(ad.description)}</div>
-                    <div class="ad-card-stats">
-                        <span>👁️ ${ad.views || 0}</span>
-                        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="event.stopPropagation(); handleLike(${ad.id}, event)">❤️ ${likesCount}</button>
+            let typeBadge = mainMedia?.type === 'image' ? '🖼️ صورة' : (mainMedia?.type === 'video' ? '🎥 فيديو' : '📄');
+            return `
+                <div class="ad-card" data-id="${ad.id}">
+                    <div class="media-preview">
+                        ${mediaHtml}
+                        <span class="media-type-icon">${typeBadge}</span>
                     </div>
-                    ${contactHtml}
+                    <div class="card-content">
+                        <div class="ad-title">${escapeHtml(ad.name)}</div>
+                        <div class="ad-desc">${escapeHtml(ad.description?.substring(0, 80) || '')}${ad.description?.length > 80 ? '...' : ''}</div>
+                        <div class="ad-meta">
+                            <span>❤️ ${ad.likesCount || 0}</span>
+                            <span>👁️ ${ad.views || 0}</span>
+                            <span>📅 ${new Date(ad.date).toLocaleDateString('ar')}</span>
+                        </div>
+                        <div class="ad-actions">
+                            <button class="like-btn" data-id="${ad.id}">❤️ ${ad.likesCount || 0}</button>
+                            <button class="detail-btn" data-id="${ad.id}">🔍 تفاصيل</button>
+                            <button class="report-btn" data-id="${ad.id}">⚠️ تبليغ</button>
+                        </div>
+                    </div>
                 </div>
             `;
-            grid.appendChild(card);
-        }
+        }).join('');
+
+        // أضف مستمعات للأزرار الديناميكية
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const adId = parseInt(btn.dataset.id);
+                toggleLike(adId);
+            });
+        });
+        document.querySelectorAll('.detail-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const adId = parseInt(btn.dataset.id);
+                openDetailModal(adId);
+            });
+        });
+        document.querySelectorAll('.report-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const adId = parseInt(btn.dataset.id);
+                reportAd(adId);
+            });
+        });
+        document.querySelectorAll('.ad-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.closest('.like-btn') || e.target.closest('.report-btn')) return;
+                const id = parseInt(card.dataset.id);
+                openDetailModal(id);
+            });
+        });
     }
 
-    // فلترة الإعلانات حسب الاختيار
-    function filterAds(filter) {
-        currentFilter = filter;
-        document.getElementById('filterAllBtn').classList.toggle('active', filter === 'all');
-        document.getElementById('filterMyBtn').classList.toggle('active', filter === 'my');
-        let filtered = [];
-        if (filter === 'my' && currentUser) {
-            filtered = allAds.filter(ad => ad.userId === currentUser);
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // الإعجاب
+    function toggleLike(adId) {
+        if (!currentUser) { showToast("يرجى تسجيل الدخول أولاً", true); openLoginModal(); return; }
+        let ads = getAds();
+        let adIndex = ads.findIndex(a => a.id === adId);
+        if (adIndex === -1) return;
+        let ad = ads[adIndex];
+        if (!ad.likesUsers) ad.likesUsers = [];
+        if (ad.likesUsers.includes(currentUser)) {
+            ad.likesUsers = ad.likesUsers.filter(u => u !== currentUser);
+            ad.likesCount = ad.likesUsers.length;
+            showToast("🗑️ تم إزالة الإعجاب");
         } else {
-            filtered = allAds;
+            ad.likesUsers.push(currentUser);
+            ad.likesCount = ad.likesUsers.length;
+            showToast("❤️ أضفت إعجابك!");
         }
-        renderAds(filtered);
+        ads[adIndex] = ad;
+        saveAds(ads);
+        renderAds();
     }
 
-    // تحميل البيانات بالكامل وتحديث الواجهة
-    function loadAds() {
-        loadCurrentUser();
-        allAds = loadAdsFromStorage();
-        // ترتيب تنازلي حسب التاريخ (الأحدث أولاً)
-        allAds.sort((a, b) => (b.date || 0) - (a.date || 0));
-        filterAds(currentFilter);
+    // فتح تفاصيل + زيادة المشاهدات
+    function openDetailModal(adId) {
+        let ads = getAds();
+        let ad = ads.find(a => a.id === adId);
+        if (!ad) return;
+        // زيادة المشاهدة
+        ad.views = (ad.views || 0) + 1;
+        saveAds(ads);
+        renderAds();  // تحديث العدد
+        // عرض المودال
+        let mainMedia = ad.mediaList?.[ad.mainMediaIndex || 0];
+        let mainHtml = '';
+        if (mainMedia) {
+            if (mainMedia.type === 'image') mainHtml = `<img src="${mainMedia.data}" style="max-width:100%; max-height:380px;">`;
+            else mainHtml = `<video src="${mainMedia.data}" controls style="max-width:100%; max-height:380px;"></video>`;
+        } else mainHtml = '<div style="padding:30px;">لا توجد وسائط</div>';
+        
+        let thumbnails = '';
+        if (ad.mediaList && ad.mediaList.length > 0) {
+            thumbnails = '<div class="thumb-gallery">';
+            ad.mediaList.forEach((med, idx) => {
+                let isActive = idx === (ad.mainMediaIndex || 0);
+                let activeClass = isActive ? 'thumb-active' : '';
+                if (med.type === 'image') {
+                    thumbnails += `<img src="${med.data}" class="${activeClass}" onclick="changeDetailMedia(${adId}, ${idx})">`;
+                } else {
+                    thumbnails += `<div class="thumb-video ${activeClass}" onclick="changeDetailMedia(${adId}, ${idx})">🎬 فيديو</div>`;
+                }
+            });
+            thumbnails += '</div>';
+        }
+        let contactText = '';
+        if (ad.contactMethod === 'whatsapp') contactText = `<a href="https://wa.me/${ad.phone?.replace(/\D/g,'')}" target="_blank" class="whatsapp-link">💬 واتساب: ${ad.phone}</a>`;
+        else if (ad.contactMethod === 'messenger') contactText = `💬 مسنجر: ${ad.phone}`;
+        else contactText = `📞 هاتف: ${ad.phone}`;
+        
+        const detailHtml = `
+            <h2>${escapeHtml(ad.name)}</h2>
+            <div class="modal-media-area"><div class="modal-media-main" id="modalMainMedia">${mainHtml}</div></div>
+            ${thumbnails}
+            <p style="margin:12px 0;"><strong>📝 الوصف:</strong><br>${escapeHtml(ad.description)}</p>
+            <div class="contact-badge">${contactText}</div>
+            <div style="display:flex; gap:12px; margin-top: 12px;">
+                <button id="modalLikeBtn" style="background:#e83e8c; color:white; border:none; border-radius:40px; padding:8px 20px;">❤️ ${ad.likesCount || 0}</button>
+                <button id="modalShareBtn" style="background:#28a745; border:none; border-radius:40px; padding:8px 20px;">📤 مشاركة</button>
+            </div>
+        `;
+        document.getElementById('detailContent').innerHTML = detailHtml;
+        document.getElementById('detailModal').classList.add('open');
+        document.getElementById('modalLikeBtn')?.addEventListener('click', () => { toggleLike(adId); closeDetailModal(); setTimeout(() => openDetailModal(adId), 200); });
+        document.getElementById('modalShareBtn')?.addEventListener('click', () => shareAd(ad));
+    }
+    window.changeDetailMedia = (adId, index) => {
+        let ads = getAds();
+        let ad = ads.find(a => a.id === adId);
+        if (ad && ad.mediaList && ad.mediaList[index]) {
+            ad.mainMediaIndex = index;
+            saveAds(ads);
+            openDetailModal(adId);
+        }
+    };
+    function shareAd(ad) {
+        let text = `🛒 إعلان: ${ad.name}\n📝 ${ad.description}\n📞 للتواصل عبر ${ad.contactMethod}: ${ad.phone}`;
+        if (navigator.share) navigator.share({ title: 'سوق مصطفى', text: text });
+        else { navigator.clipboard.writeText(text); showToast("📋 تم نسخ تفاصيل الإعلان"); }
+    }
+    function closeDetailModal() { document.getElementById('detailModal').classList.remove('open'); }
+    function openLoginModal() { document.getElementById('loginModal').classList.add('open'); }
+    function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
+    
+    // التبليغ
+    function reportAd(adId) {
+        if (!currentUser) { showToast("سجل دخول للتبليغ", true); openLoginModal(); return; }
+        let reason = prompt("سبب التبليغ (مثل إعلان مزعج، احتيال...)");
+        if (!reason) return;
+        let reports = JSON.parse(localStorage.getItem('marketplace_reports') || '[]');
+        reports.push({ adId, userId: currentUser, reason, date: Date.now() });
+        localStorage.setItem('marketplace_reports', JSON.stringify(reports));
+        showToast("✅ تم التبليغ، شكراً لمساعدتنا");
     }
 
-    // تحديث يدوي
-    document.getElementById('refreshBtn').onclick = () => loadAds();
-    document.getElementById('filterAllBtn').onclick = () => filterAds('all');
-    document.getElementById('filterMyBtn').onclick = () => filterAds('my');
-
-    // ربط دوال عامة
-    window.deleteAd = deleteAd;
-    window.handleLike = handleLike;
-
-    // التحميل الأولي
-    loadAds();
+    // ---------- إضافة إعلان جديد ----------
+    function openNewAdModal() {
+        if (!currentUser) { openLoginModal(); return; }
+        if (!hasActiveSubscription()) {
+            showToast("❌ لايوجد اشتراك نشط. يلزم الاشتراك السنوي (1000 دج) لنشر الإعلانات", true);
+            return;
+        }
+        tempAdMedia = [];
+        tempMainIndex = 0;
+        document.getElementById('adName').value = '';
+        document.getElementById('adPhone').value = '';
+        document.getElementById('adDesc').value = '';
+        document.getElementById('adContactMethod').value = 'whatsapp';
+        document.getElementById('mediaPreviewList').innerHTML = '';
+        document.getElementById('newAdModal').classList.add('open');
+    }
+    
+    // رفع الوسائط وضغط الصور
+    async function processFiles(files) {
+        for (let file of files) {
+            if (file.type.startsWith('image/')) {
+                let compressed = await compressImage(file, 900, 900, 0.75);
+                let reader = new FileReader();
+                let data = await new Promise((res) => { reader.onload = (e) => res(e.target.result); reader.readAsDataURL(compressed); });
+                tempAdMedia.push({ data, type: 'image', name: file.name });
+            } else if (file.type.startsWith('video/')) {
+                let reader = new FileReader();
+                let data = await new Promise((res) => { reader.onload = (e) => res(e.target.result); reader.readAsDataURL(file); });
+                tempAdMedia.push({ data, type: 'video', name: file.name });
+            }
+        }
+        renderMediaPreview();
+    }
+    
+    function compressImage(file, maxW, maxH, quality) {
+        return new Promise((resolve) => {
+            let reader = new FileReader();
+            reader.onload = (ev) => {
+                let img = new Image();
+                img.onload = () => {
+                    let width = img.width, height = img.height;
+                    if (width > maxW) { height *= maxW / width; width = maxW; }
+                    if (height > maxH) { width *= maxH / height; height = maxH; }
+                    let canvas = document.createElement('canvas');
+                    canvas.width = width; canvas.height = height;
+                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    canvas.toBlob(resolve, 'image/jpeg', quality);
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    function renderMediaPreview() {
+        let container = document.getElementById('mediaPreviewList');
+        if (!container) return;
+        container.innerHTML = '';
+        tempAdMedia.forEach((med, idx) => {
+            let div = document.createElement('div');
+            div.style.position = 'relative';
+            div.style.width = '80px';
+            div.style.height = '80px';
+            div.style.border = idx === tempMainIndex ? '3px solid #ff9800' : '1px solid #ccc';
+            div.style.borderRadius = '12px';
+            div.style.overflow = 'hidden';
+            div.style.cursor = 'pointer';
+            div.onclick = () => { tempMainIndex = idx; renderMediaPreview(); };
+            if (med.type === 'image') {
+                let img = document.createElement('img');
+                img.src = med.data;
+                img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
+                div.appendChild(img);
+            } else {
+                let video = document.createElement('video');
+                video.src = med.data;
+                video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
+                div.appendChild(video);
+            }
+            let delBtn = document.createElement('button');
+            delBtn.innerText = '✕';
+            delBtn.style.position = 'absolute'; delBtn.style.top = '2px'; delBtn.style.right = '2px';
+            delBtn.style.background = '#dc3545'; delBtn.style.color = 'white'; delBtn.style.border = 'none';
+            delBtn.style.borderRadius = '50%'; delBtn.style.width = '18px'; delBtn.style.height = '18px';
+            delBtn.style.fontSize = '10px';
+            delBtn.onclick = (e) => { e.stopPropagation(); tempAdMedia.splice(idx,1); if(tempMainIndex >= tempAdMedia.length) tempMainIndex = Math.max(0, tempAdMedia.length-1); renderMediaPreview(); };
+            div.appendChild(delBtn);
+            container.appendChild(div);
+        });
+        if(tempAdMedia.length === 0) container.innerHTML = '<div style="color:#aaa;">لا توجد ملفات مرفوعة</div>';
+    }
+    
+    async function publishNewAd() {
+        let name = document.getElementById('adName').value.trim();
+        let phone = document.getElementById('adPhone').value.trim();
+        let desc = document.getElementById('adDesc').value.trim();
+        let contactMethod = document.getElementById('adContactMethod').value;
+        if (!name || !phone || !desc) { showToast("يرجى ملء جميع الحقول *", true); return; }
+        if (tempAdMedia.length === 0) { showToast("يجب رفع صورة أو فيديو واحد على الأقل", true); return; }
+        let newAd = {
+            id: Date.now(),
+            name, phone, description: desc, contactMethod,
+            mediaList: tempAdMedia.map(m => ({ data: m.data, type: m.type, name: m.name })),
+            mainMediaIndex: tempMainIndex,
+            userId: currentUser,
+            date: Date.now(),
+            views: 0,
+            likesCount: 0,
+            likesUsers: []
+        };
+        let ads = getAds();
+        ads.unshift(newAd);
+        saveAds(ads);
+        showToast("✅ تم نشر إعلانك بنجاح!");
+        document.getElementById('newAdModal').classList.remove('open');
+        renderAds();
+    }
+    
+    // أحداث الصفحة
+    document.getElementById('confirmLoginBtn')?.addEventListener('click', () => {
+        let email = document.getElementById('loginEmail').value.trim();
+        if (!email.includes('@')) { alert("بريد إلكتروني صحيح"); return; }
+        currentUser = email;
+        localStorage.setItem('currentUser', currentUser);
+        closeLoginModal();
+        updateUserUI();
+        renderAds();
+        showToast(`مرحباً ${email.split('@')[0]}`);
+    });
+    document.getElementById('searchInput')?.addEventListener('input', () => renderAds());
+    document.getElementById('filterMediaType')?.addEventListener('change', () => renderAds());
+    
+    // رفع الملفات
+    const uploadTrigger = document.getElementById('triggerUploadBtn');
+    const mediaInput = document.getElementById('mediaFilesInput');
+    uploadTrigger?.addEventListener('click', () => mediaInput.click());
+    mediaInput?.addEventListener('change', (e) => { if(e.target.files.length) processFiles(Array.from(e.target.files)); mediaInput.value = ''; });
+    document.getElementById('publishAdBtn')?.addEventListener('click', publishNewAd);
+    document.getElementById('cancelAdBtn')?.addEventListener('click', () => document.getElementById('newAdModal').classList.remove('open'));
+    
+    window.addEventListener('click', (e) => { if(e.target.classList.contains('modal')) e.target.classList.remove('open'); });
+    
+    updateUserUI();
+    renderAds();
 </script>
 </body>
 </html>
