@@ -76,35 +76,20 @@
             justify-content: space-between;
             align-items: center;
         }
-        .ad-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #1d4e6e;
-        }
-        .ad-date {
-            font-size: 0.7rem;
-            background: #e9ecef;
-            padding: 4px 12px;
-            border-radius: 30px;
-        }
+        .ad-name { font-size: 1.3rem; font-weight: bold; color: #1d4e6e; }
+        .ad-date { font-size: 0.7rem; background: #e9ecef; padding: 4px 12px; border-radius: 30px; }
         .media-container {
             background: #111;
             text-align: center;
             min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
         }
-        .main-img {
+        .main-img, .main-video {
             width: 100%;
             max-height: 400px;
             object-fit: contain;
-            cursor: pointer;
         }
-        .main-video {
-            width: 100%;
-            max-height: 400px;
-        }
+        .main-img { cursor: pointer; }
         .thumbnails {
             display: flex;
             gap: 8px;
@@ -120,7 +105,6 @@
             border-radius: 12px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: 0.1s;
         }
         .thumb-video {
             width: 70px;
@@ -135,66 +119,15 @@
             cursor: pointer;
             border: 2px solid transparent;
         }
-        .thumb-img.active, .thumb-video.active {
-            border-color: #007bff;
-            transform: scale(0.98);
-        }
-        .ad-description {
-            padding: 16px 20px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #2d3e50;
-        }
-        .ad-contact {
-            padding: 10px 20px;
-            background: #eef2f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .delete-btn {
-            background: #dc3545;
-            border: none;
-            border-radius: 30px;
-            padding: 5px 15px;
-            color: white;
-            cursor: pointer;
-        }
-        .ad-stats {
-            padding: 8px 20px;
-            font-size: 0.7rem;
-            color: #6c757d;
-            display: flex;
-            gap: 20px;
-            border-top: 1px solid #e9ecef;
-        }
-        .no-ads {
-            background: rgba(255,255,255,0.1);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            color: white;
-        }
-        .back-link {
-            display: inline-block;
-            background: #28a745;
-            color: white;
-            text-decoration: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-        footer {
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-            margin-top: 20px;
-        }
-        @media (max-width: 600px) {
-            .ad-name { font-size: 1.1rem; }
-            .thumb-img, .thumb-video { width: 55px; height: 55px; }
-        }
+        .thumb-img.active, .thumb-video.active { border-color: #007bff; transform: scale(0.98); }
+        .ad-description { padding: 16px 20px; font-size: 0.95rem; line-height: 1.5; color: #2d3e50; }
+        .ad-contact { padding: 10px 20px; background: #eef2f5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .delete-btn { background: #dc3545; border: none; border-radius: 30px; padding: 5px 15px; color: white; cursor: pointer; }
+        .ad-stats { padding: 8px 20px; font-size: 0.7rem; color: #6c757d; display: flex; gap: 20px; border-top: 1px solid #e9ecef; }
+        .no-ads { background: rgba(255,255,255,0.1); border-radius: 25px; padding: 40px; text-align: center; color: white; }
+        .back-link { display: inline-block; background: #28a745; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; margin: 20px 0; font-weight: bold; }
+        footer { text-align: center; color: rgba(255,255,255,0.6); margin-top: 20px; }
+        @media (max-width: 600px) { .ad-name { font-size: 1.1rem; } .thumb-img, .thumb-video { width: 55px; height: 55px; } }
     </style>
 </head>
 <body>
@@ -205,15 +138,12 @@
         <div class="user-bar" id="userBar"></div>
         <button id="toggleMyAdsBtn" class="toggle-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
-
     <div id="myAdsSection" style="display: none;">
         <div class="section-title">⭐ إعلاناتي</div>
         <div id="myAdsList"></div>
     </div>
-
     <div class="section-title">🌍 جميع الإعلانات</div>
     <div id="allAdsList"></div>
-
     <div style="text-align: center;">
         <a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a>
     </div>
@@ -277,23 +207,14 @@
         if (currentUser) {
             let myAds = allAds.filter(ad => ad.userId === currentUser);
             displayAds(myAds, myAdsList, true);
-            if (myAds.length === 0 && showMyAds) {
-                myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك. انشر من البوت.</div>';
-            }
-        } else if (showMyAds) {
-            myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
-        }
+            if (myAds.length === 0 && showMyAds) myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك. انشر من البوت.</div>';
+        } else if (showMyAds) myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
         if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً.</div>';
     }
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
+        return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
     }
 
     function displayAds(ads, container, showDelete) {
@@ -306,21 +227,18 @@
             let mediaList = ad.mediaList || [];
             let mainIdx = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
             let mainMedia = mediaList.length ? mediaList[mainIdx] : null;
-            
+            let mainMediaId = `main-media-${ad.id}`;
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url.replace(/'/g, "\\'")}')">`;
+                    mainHtml = `<img id="${mainMediaId}" class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url.replace(/'/g, "\\'")}')">`;
                 } else {
-                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
+                    mainHtml = `<video id="${mainMediaId}" class="main-video" src="${mainMedia.url}" controls></video>`;
                 }
             } else {
                 mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
             }
 
-            // تخزين mediaList كـ JSON آمن
-            let mediaListJson = JSON.stringify(mediaList).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-            
             let thumbs = '';
             if (mediaList.length > 1) {
                 thumbs = '<div class="thumbnails">';
@@ -329,9 +247,9 @@
                     if (!m.url) continue;
                     let activeClass = (i === mainIdx) ? 'active' : '';
                     if (m.type === 'image') {
-                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' data-type="image" data-url="${m.url.replace(/'/g, "\\'")}">`;
+                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-type="image" data-url="${m.url.replace(/'/g, "\\'")}">`;
                     } else {
-                        thumbs += `<div class="thumb-video ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' data-type="video" data-url="${m.url.replace(/'/g, "\\'")}">🎬</div>`;
+                        thumbs += `<div class="thumb-video ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-type="video" data-url="${m.url.replace(/'/g, "\\'")}">🎬</div>`;
                     }
                 }
                 thumbs += '</div>';
@@ -349,106 +267,94 @@
             }
 
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
-
             html += `
                 <div class="ad-card" id="ad-${ad.id}">
-                    <div class="ad-header">
-                        <div class="ad-name">${escapeHtml(ad.name)}</div>
-                        <div class="ad-date">${dateStr}</div>
-                    </div>
+                    <div class="ad-header"><div class="ad-name">${escapeHtml(ad.name)}</div><div class="ad-date">${dateStr}</div></div>
                     <div id="media-container-${ad.id}" class="media-container">${mainHtml}</div>
                     ${thumbs}
                     <div class="ad-description">${escapeHtml(ad.description)}</div>
-                    <div class="ad-contact">
-                        <span>${contactIcon} ${escapeHtml(ad.phone)}</span>
-                        ${deleteBtn}
-                    </div>
-                    <div class="ad-stats">
-                        <span>👁️ ${ad.views || 0} مشاهدة</span>
-                        <span>❤️ ${ad.likes || 0} إعجاب</span>
-                    </div>
+                    <div class="ad-contact"><span>${contactIcon} ${escapeHtml(ad.phone)}</span>${deleteBtn}</div>
+                    <div class="ad-stats"><span>👁️ ${ad.views || 0} مشاهدة</span><span>❤️ ${ad.likes || 0} إعجاب</span></div>
                 </div>
             `;
         }
         container.innerHTML = html;
-        
-        // ربط الأحداث بعد إضافة العناصر إلى DOM (للهواتف: touchstart و click)
-        attachEventsToThumbnails();
+        attachThumbnailEvents();
     }
-    
-    function attachEventsToThumbnails() {
-        // نختار جميع المصغرات (صور وفيديوهات)
-        const thumbs = document.querySelectorAll('.thumb-img, .thumb-video');
-        thumbs.forEach(thumb => {
-            // إزالة الأحداث القديمة لتجنب التكرار
-            thumb.removeEventListener('click', thumbClickHandler);
-            thumb.removeEventListener('touchstart', thumbTouchHandler);
-            // إضافة الأحداث الجديدة
-            thumb.addEventListener('click', thumbClickHandler);
-            thumb.addEventListener('touchstart', thumbTouchHandler, { passive: false });
+
+    function attachThumbnailEvents() {
+        document.querySelectorAll('.thumb-img, .thumb-video').forEach(el => {
+            el.removeEventListener('click', globalThumbHandler);
+            el.removeEventListener('touchstart', globalThumbHandler);
+            el.addEventListener('click', globalThumbHandler);
+            el.addEventListener('touchstart', globalThumbHandler, { passive: false });
         });
     }
-    
-    function thumbClickHandler(e) {
+
+    function globalThumbHandler(e) {
         e.preventDefault();
         e.stopPropagation();
-        handleThumbChange(e.currentTarget);
-    }
-    
-    function thumbTouchHandler(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleThumbChange(e.currentTarget);
-    }
-    
-    function handleThumbChange(thumbElement) {
-        const adId = parseInt(thumbElement.getAttribute('data-adid'));
-        const newIndex = parseInt(thumbElement.getAttribute('data-index'));
-        const mediaType = thumbElement.getAttribute('data-type');
-        const mediaUrl = thumbElement.getAttribute('data-url');
-        
-        if (isNaN(adId) || isNaN(newIndex) || !mediaUrl) return;
-        
-        const container = document.getElementById(`media-container-${adId}`);
-        if (!container) return;
-        
-        // تحديث المحتوى فوراً
-        if (mediaType === 'image') {
-            container.innerHTML = `<img class="main-img" src="${mediaUrl}" onclick="zoomImage('${mediaUrl.replace(/'/g, "\\'")}')">`;
-        } else {
-            container.innerHTML = `<video class="main-video" src="${mediaUrl}" controls></video>`;
+        const thumb = e.currentTarget;
+        const adId = parseInt(thumb.getAttribute('data-adid'));
+        const idx = parseInt(thumb.getAttribute('data-index'));
+        const type = thumb.getAttribute('data-type');
+        let url = thumb.getAttribute('data-url');
+        if (!url || isNaN(adId) || isNaN(idx)) return;
+        // تحديث العنصر الرئيسي
+        const mainElem = document.getElementById(`main-media-${adId}`);
+        if (!mainElem) return;
+        if (type === 'image') {
+            if (mainElem.tagName !== 'IMG') {
+                const newImg = document.createElement('img');
+                newImg.id = `main-media-${adId}`;
+                newImg.className = 'main-img';
+                newImg.src = url;
+                newImg.onclick = () => zoomImage(url);
+                mainElem.parentNode.replaceChild(newImg, mainElem);
+            } else {
+                mainElem.src = url;
+                mainElem.onclick = () => zoomImage(url);
+            }
+        } else { // video
+            if (mainElem.tagName !== 'VIDEO') {
+                const newVideo = document.createElement('video');
+                newVideo.id = `main-media-${adId}`;
+                newVideo.className = 'main-video';
+                newVideo.src = url;
+                newVideo.controls = true;
+                mainElem.parentNode.replaceChild(newVideo, mainElem);
+            } else {
+                mainElem.src = url;
+                mainElem.load();
+            }
         }
-        
-        // تحديث الصنف active في المصغرات لنفس الإعلان
+        // تحديث الصنف active
         const adCard = document.getElementById(`ad-${adId}`);
         if (adCard) {
-            const allThumbs = adCard.querySelectorAll('.thumb-img, .thumb-video');
-            allThumbs.forEach((thumb, idx) => {
-                if (idx === newIndex) thumb.classList.add('active');
-                else thumb.classList.remove('active');
+            adCard.querySelectorAll('.thumb-img, .thumb-video').forEach((t, i) => {
+                if (i === idx) t.classList.add('active');
+                else t.classList.remove('active');
             });
         }
-        
-        // حفظ التغيير في localStorage
+        // حفظ في localStorage
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex !== -1) {
-            allAds[adIndex].mainMediaIndex = newIndex;
+            allAds[adIndex].mainMediaIndex = idx;
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
         }
+        // قوة إعادة الرسم
+        requestAnimationFrame(() => {});
     }
-    
+
     window.deleteAd = function(adId) {
-        if (!currentUser) {
-            alert("يجب تسجيل الدخول أولاً.");
-            return;
-        }
+        if (!currentUser) return alert("يجب تسجيل الدخول أولاً.");
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-        let adIndex = allAds.findIndex(ad => ad.id === adId);
-        if (adIndex === -1) { alert("الإعلان غير موجود."); return; }
-        if (allAds[adIndex].userId !== currentUser) { alert("لا يمكنك حذف إعلان ليس لك."); return; }
+        let i = allAds.findIndex(ad => ad.id === adId);
+        if (i === -1) return alert("الإعلان غير موجود.");
+        if (allAds[i].userId !== currentUser) return alert("لا يمكنك حذف إعلان ليس لك.");
         if (confirm("⚠️ هل أنت متأكد من حذف هذا الإعلان نهائياً؟")) {
-            allAds.splice(adIndex, 1);
+            allAds.splice(i, 1);
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
             loadAds();
             alert("✅ تم حذف الإعلان بنجاح.");
@@ -457,31 +363,20 @@
 
     window.zoomImage = function(src) {
         let modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
-        modal.style.zIndex = '10000';
-        modal.style.display = 'flex';
-        modal.style.alignItems = 'center';
-        modal.style.justifyContent = 'center';
-        modal.style.cursor = 'pointer';
-        modal.onclick = () => modal.remove();
+        modal.style.position = 'fixed'; modal.style.top = '0'; modal.style.left = '0';
+        modal.style.width = '100%'; modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.9)'; modal.style.zIndex = '10000';
+        modal.style.display = 'flex'; modal.style.alignItems = 'center'; modal.style.justifyContent = 'center';
+        modal.style.cursor = 'pointer'; modal.onclick = () => modal.remove();
         let img = document.createElement('img');
-        img.src = src;
-        img.style.maxWidth = '90%';
-        img.style.maxHeight = '90%';
-        img.style.borderRadius = '12px';
-        modal.appendChild(img);
-        document.body.appendChild(modal);
+        img.src = src; img.style.maxWidth = '90%'; img.style.maxHeight = '90%'; img.style.borderRadius = '12px';
+        modal.appendChild(img); document.body.appendChild(modal);
     };
 
     renderUserBar();
     toggleBtn.onclick = toggleMyAds;
     loadAds();
-    window.addEventListener('storage', function(e) { if (e.key === 'marketplace_ads') loadAds(); });
+    window.addEventListener('storage', e => { if (e.key === 'marketplace_ads') loadAds(); });
 </script>
 </body>
 </html>
