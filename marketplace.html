@@ -6,127 +6,37 @@
     <title>سوق مصطفى - إعلانات مبوبة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(145deg, #0b2b40, #1a4a5f);
-            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
-            padding: 20px;
-            direction: rtl;
-        }
+        body { background: linear-gradient(145deg, #0b2b40, #1a4a5f); font-family: 'Cairo', sans-serif; padding: 20px; direction: rtl; }
         .container { max-width: 950px; margin: 0 auto; }
-        .header {
-            background: linear-gradient(115deg, #1e5f7a, #2c3e66);
-            border-radius: 40px;
-            padding: 25px 20px;
-            text-align: center;
-            color: white;
-            margin-bottom: 25px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-        }
+        .header { background: linear-gradient(115deg, #1e5f7a, #2c3e66); border-radius: 40px; padding: 25px 20px; text-align: center; color: white; margin-bottom: 25px; }
         .header h1 { font-size: 2rem; }
-        .user-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255,255,255,0.15);
-            border-radius: 50px;
-            padding: 8px 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .logout-btn {
-            background: #dc3545;
-            border: none;
-            border-radius: 30px;
-            padding: 6px 18px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .toggle-btn {
-            background: #ffc107;
-            border: none;
-            border-radius: 50px;
-            padding: 10px;
-            width: 100%;
-            margin: 15px 0 5px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            color: #2d2d2d;
-        }
-        .section-title {
-            font-size: 1.7rem;
-            font-weight: bold;
-            color: white;
-            border-right: 5px solid #ffc107;
-            padding-right: 15px;
-            margin: 30px 0 15px 0;
-        }
-        .ad-card {
-            background: white;
-            border-radius: 28px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .ad-header {
-            background: #fef7e0;
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .user-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.15); border-radius: 50px; padding: 8px 20px; margin-top: 15px; flex-wrap: wrap; }
+        .logout-btn { background: #dc3545; border: none; border-radius: 30px; padding: 6px 18px; color: white; cursor: pointer; }
+        .toggle-btn { background: #ffc107; border: none; border-radius: 50px; padding: 10px; width: 100%; margin: 15px 0 5px; font-weight: bold; cursor: pointer; }
+        .section-title { font-size: 1.7rem; font-weight: bold; color: white; border-right: 5px solid #ffc107; padding-right: 15px; margin: 30px 0 15px 0; }
+        .ad-card { background: white; border-radius: 28px; margin-bottom: 28px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .ad-header { background: #fef7e0; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
         .ad-name { font-size: 1.3rem; font-weight: bold; color: #1d4e6e; }
         .ad-date { font-size: 0.7rem; background: #e9ecef; padding: 4px 12px; border-radius: 30px; }
-        .media-container {
-            background: #111;
-            text-align: center;
-            min-height: 200px;
-            position: relative;
-        }
-        .main-img, .main-video {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-        }
-        .main-img { cursor: pointer; }
-        .thumbnails {
-            display: flex;
-            gap: 8px;
-            padding: 12px;
-            overflow-x: auto;
-            background: #f2f4f8;
-            border-top: 1px solid #ddd;
-        }
-        .thumb-img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .thumb-video {
-            width: 70px;
-            height: 70px;
-            background: #2c3e50;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 26px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
+        .media-container { background: #111; text-align: center; min-height: 200px; }
+        .main-img, .main-video { width: 100%; max-height: 400px; object-fit: contain; cursor: pointer; }
+        .thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; background: #f2f4f8; border-top: 1px solid #ddd; }
+        .thumb-img { width: 70px; height: 70px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
+        .thumb-video { width: 70px; height: 70px; background: #2c3e50; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; cursor: pointer; border: 2px solid transparent; }
         .thumb-img.active, .thumb-video.active { border-color: #007bff; transform: scale(0.98); }
-        .ad-description { padding: 16px 20px; font-size: 0.95rem; line-height: 1.5; color: #2d3e50; }
+        .ad-description { padding: 16px 20px; font-size: 0.95rem; color: #2d3e50; }
         .ad-contact { padding: 10px 20px; background: #eef2f5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
         .delete-btn { background: #dc3545; border: none; border-radius: 30px; padding: 5px 15px; color: white; cursor: pointer; }
         .ad-stats { padding: 8px 20px; font-size: 0.7rem; color: #6c757d; display: flex; gap: 20px; border-top: 1px solid #e9ecef; }
         .no-ads { background: rgba(255,255,255,0.1); border-radius: 25px; padding: 40px; text-align: center; color: white; }
         .back-link { display: inline-block; background: #28a745; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; margin: 20px 0; font-weight: bold; }
         footer { text-align: center; color: rgba(255,255,255,0.6); margin-top: 20px; }
+        /* نافذة منبثقة لعرض الوسائط */
+        .media-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .media-modal .close { position: absolute; top: 20px; left: 20px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; }
+        .media-modal .content { max-width: 95%; max-height: 90%; }
+        .media-modal img { width: 100%; height: auto; border-radius: 12px; }
+        .media-modal video { width: 100%; max-height: 90vh; }
         @media (max-width: 600px) { .ad-name { font-size: 1.1rem; } .thumb-img, .thumb-video { width: 55px; height: 55px; } }
     </style>
 </head>
@@ -138,15 +48,10 @@
         <div class="user-bar" id="userBar"></div>
         <button id="toggleMyAdsBtn" class="toggle-btn" style="display: none;">📌 عرض إعلاناتي</button>
     </div>
-    <div id="myAdsSection" style="display: none;">
-        <div class="section-title">⭐ إعلاناتي</div>
-        <div id="myAdsList"></div>
-    </div>
+    <div id="myAdsSection" style="display: none;"><div class="section-title">⭐ إعلاناتي</div><div id="myAdsList"></div></div>
     <div class="section-title">🌍 جميع الإعلانات</div>
     <div id="allAdsList"></div>
-    <div style="text-align: center;">
-        <a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a>
-    </div>
+    <div style="text-align: center;"><a href="index.html" class="back-link" onclick="window.location.href='index.html'; return false;">← العودة إلى بوت مصطفى</a></div>
     <footer>بوت مصطفى – خدمة الإعلانات | تواصل: 0556765445</footer>
 </div>
 
@@ -170,75 +75,63 @@
             showMyAds = false;
         }
     }
-
-    function logout() {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        renderUserBar();
-        loadAds();
-        toggleBtn.innerText = '📌 عرض إعلاناتي';
-        showMyAds = false;
-        myAdsSection.style.display = 'none';
-    }
-
-    function toggleMyAds() {
-        if (!currentUser) return;
-        showMyAds = !showMyAds;
-        myAdsSection.style.display = showMyAds ? 'block' : 'none';
-        toggleBtn.innerText = showMyAds ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي';
-        if (showMyAds) loadAds();
-    }
-
-    function migrateAd(ad) {
-        if (!ad.mediaList) ad.mediaList = [];
-        ad.mediaList = ad.mediaList.map(item => {
-            if (item.data && !item.url) return { url: item.data, type: item.type || 'image' };
-            return item;
-        });
-        if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
-        return ad;
-    }
-
+    function logout() { localStorage.removeItem('currentUser'); currentUser = null; renderUserBar(); loadAds(); toggleBtn.innerText = '📌 عرض إعلاناتي'; showMyAds = false; myAdsSection.style.display = 'none'; }
+    function toggleMyAds() { if (!currentUser) return; showMyAds = !showMyAds; myAdsSection.style.display = showMyAds ? 'block' : 'none'; toggleBtn.innerText = showMyAds ? '🙈 إخفاء إعلاناتي' : '📌 عرض إعلاناتي'; if (showMyAds) loadAds(); }
+    function migrateAd(ad) { if (!ad.mediaList) ad.mediaList = []; ad.mediaList = ad.mediaList.map(item => { if (item.data && !item.url) return { url: item.data, type: item.type || 'image' }; return item; }); if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0; return ad; }
     function loadAds() {
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         allAds = allAds.map(migrateAd);
         allAds.sort((a,b) => b.date - a.date);
         displayAds(allAds, allAdsList, false);
-        if (currentUser) {
-            let myAds = allAds.filter(ad => ad.userId === currentUser);
-            displayAds(myAds, myAdsList, true);
-            if (myAds.length === 0 && showMyAds) myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك. انشر من البوت.</div>';
-        } else if (showMyAds) myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
+        if (currentUser) { let myAds = allAds.filter(ad => ad.userId === currentUser); displayAds(myAds, myAdsList, true); if (myAds.length === 0 && showMyAds) myAdsList.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات لك.</div>'; }
+        else if (showMyAds) myAdsList.innerHTML = '<div class="no-ads">🔐 سجل دخولك لرؤية إعلاناتك.</div>';
         if (allAds.length === 0) allAdsList.innerHTML = '<div class="no-ads">✨ لا توجد إعلانات حالياً.</div>';
     }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;')); }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+    // فتح النافذة المنبثقة
+    function openMediaModal(url, type) {
+        let modal = document.createElement('div');
+        modal.className = 'media-modal';
+        let closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✕';
+        closeBtn.className = 'close';
+        closeBtn.onclick = () => modal.remove();
+        let content = document.createElement('div');
+        content.className = 'content';
+        if (type === 'image') {
+            let img = document.createElement('img');
+            img.src = url;
+            content.appendChild(img);
+        } else {
+            let video = document.createElement('video');
+            video.src = url;
+            video.controls = true;
+            video.autoplay = false;
+            content.appendChild(video);
+        }
+        modal.appendChild(closeBtn);
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+        modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
     }
 
     function displayAds(ads, container, showDelete) {
-        if (!ads.length) {
-            if (container === myAdsList && showMyAds) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>';
-            return;
-        }
+        if (!ads.length) { if (container === myAdsList && showMyAds) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>'; return; }
         let html = '';
         for (let ad of ads) {
             let mediaList = ad.mediaList || [];
             let mainIdx = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
             let mainMedia = mediaList.length ? mediaList[mainIdx] : null;
-            let mainMediaId = `main-media-${ad.id}`;
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img id="${mainMediaId}" class="main-img" src="${mainMedia.url}" onclick="zoomImage('${mainMedia.url.replace(/'/g, "\\'")}')">`;
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="openMediaModal('${mainMedia.url.replace(/'/g, "\\'")}', 'image')">`;
                 } else {
-                    mainHtml = `<video id="${mainMediaId}" class="main-video" src="${mainMedia.url}" controls></video>`;
+                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls onclick="openMediaModal('${mainMedia.url.replace(/'/g, "\\'")}', 'video')"></video>`;
                 }
-            } else {
-                mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
-            }
-
+            } else mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
+            
             let thumbs = '';
             if (mediaList.length > 1) {
                 thumbs = '<div class="thumbnails">';
@@ -247,104 +140,35 @@
                     if (!m.url) continue;
                     let activeClass = (i === mainIdx) ? 'active' : '';
                     if (m.type === 'image') {
-                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-type="image" data-url="${m.url.replace(/'/g, "\\'")}">`;
+                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-url="${m.url.replace(/'/g, "\\'")}" data-type="image">`;
                     } else {
-                        thumbs += `<div class="thumb-video ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-type="video" data-url="${m.url.replace(/'/g, "\\'")}">🎬</div>`;
+                        thumbs += `<div class="thumb-video ${activeClass}" data-url="${m.url.replace(/'/g, "\\'")}" data-type="video">🎬</div>`;
                     }
                 }
                 thumbs += '</div>';
             }
-
             let contactIcon = '';
             if (ad.contactMethod === 'whatsapp') contactIcon = '💚 واتساب';
             else if (ad.contactMethod === 'messenger') contactIcon = '💬 مسنجر';
             else if (ad.contactMethod === 'phone') contactIcon = '📱 هاتف';
             else contactIcon = '📞';
-
             let deleteBtn = '';
-            if (showDelete && currentUser && ad.userId === currentUser) {
-                deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف</button>`;
-            }
-
+            if (showDelete && currentUser && ad.userId === currentUser) deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف</button>`;
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
-            html += `
-                <div class="ad-card" id="ad-${ad.id}">
-                    <div class="ad-header"><div class="ad-name">${escapeHtml(ad.name)}</div><div class="ad-date">${dateStr}</div></div>
-                    <div id="media-container-${ad.id}" class="media-container">${mainHtml}</div>
-                    ${thumbs}
-                    <div class="ad-description">${escapeHtml(ad.description)}</div>
-                    <div class="ad-contact"><span>${contactIcon} ${escapeHtml(ad.phone)}</span>${deleteBtn}</div>
-                    <div class="ad-stats"><span>👁️ ${ad.views || 0} مشاهدة</span><span>❤️ ${ad.likes || 0} إعجاب</span></div>
-                </div>
-            `;
+            html += `<div class="ad-card" id="ad-${ad.id}"><div class="ad-header"><div class="ad-name">${escapeHtml(ad.name)}</div><div class="ad-date">${dateStr}</div></div><div class="media-container">${mainHtml}</div>${thumbs}<div class="ad-description">${escapeHtml(ad.description)}</div><div class="ad-contact"><span>${contactIcon} ${escapeHtml(ad.phone)}</span>${deleteBtn}</div><div class="ad-stats"><span>👁️ ${ad.views || 0} مشاهدة</span><span>❤️ ${ad.likes || 0} إعجاب</span></div></div>`;
         }
         container.innerHTML = html;
-        attachThumbnailEvents();
-    }
-
-    function attachThumbnailEvents() {
-        document.querySelectorAll('.thumb-img, .thumb-video').forEach(el => {
-            el.removeEventListener('click', globalThumbHandler);
-            el.removeEventListener('touchstart', globalThumbHandler);
-            el.addEventListener('click', globalThumbHandler);
-            el.addEventListener('touchstart', globalThumbHandler, { passive: false });
+        // إضافة حدث النقر على المصغرات لفتح النافذة المنبثقة
+        document.querySelectorAll('.thumb-img, .thumb-video').forEach(thumb => {
+            const openModal = (e) => {
+                e.stopPropagation();
+                let url = thumb.getAttribute('data-url');
+                let type = thumb.getAttribute('data-type');
+                if (url) openMediaModal(url, type);
+            };
+            thumb.addEventListener('click', openModal);
+            thumb.addEventListener('touchstart', openModal);
         });
-    }
-
-    function globalThumbHandler(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const thumb = e.currentTarget;
-        const adId = parseInt(thumb.getAttribute('data-adid'));
-        const idx = parseInt(thumb.getAttribute('data-index'));
-        const type = thumb.getAttribute('data-type');
-        let url = thumb.getAttribute('data-url');
-        if (!url || isNaN(adId) || isNaN(idx)) return;
-        // تحديث العنصر الرئيسي
-        const mainElem = document.getElementById(`main-media-${adId}`);
-        if (!mainElem) return;
-        if (type === 'image') {
-            if (mainElem.tagName !== 'IMG') {
-                const newImg = document.createElement('img');
-                newImg.id = `main-media-${adId}`;
-                newImg.className = 'main-img';
-                newImg.src = url;
-                newImg.onclick = () => zoomImage(url);
-                mainElem.parentNode.replaceChild(newImg, mainElem);
-            } else {
-                mainElem.src = url;
-                mainElem.onclick = () => zoomImage(url);
-            }
-        } else { // video
-            if (mainElem.tagName !== 'VIDEO') {
-                const newVideo = document.createElement('video');
-                newVideo.id = `main-media-${adId}`;
-                newVideo.className = 'main-video';
-                newVideo.src = url;
-                newVideo.controls = true;
-                mainElem.parentNode.replaceChild(newVideo, mainElem);
-            } else {
-                mainElem.src = url;
-                mainElem.load();
-            }
-        }
-        // تحديث الصنف active
-        const adCard = document.getElementById(`ad-${adId}`);
-        if (adCard) {
-            adCard.querySelectorAll('.thumb-img, .thumb-video').forEach((t, i) => {
-                if (i === idx) t.classList.add('active');
-                else t.classList.remove('active');
-            });
-        }
-        // حفظ في localStorage
-        let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
-        let adIndex = allAds.findIndex(ad => ad.id === adId);
-        if (adIndex !== -1) {
-            allAds[adIndex].mainMediaIndex = idx;
-            localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
-        }
-        // قوة إعادة الرسم
-        requestAnimationFrame(() => {});
     }
 
     window.deleteAd = function(adId) {
@@ -359,18 +183,6 @@
             loadAds();
             alert("✅ تم حذف الإعلان بنجاح.");
         }
-    };
-
-    window.zoomImage = function(src) {
-        let modal = document.createElement('div');
-        modal.style.position = 'fixed'; modal.style.top = '0'; modal.style.left = '0';
-        modal.style.width = '100%'; modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.9)'; modal.style.zIndex = '10000';
-        modal.style.display = 'flex'; modal.style.alignItems = 'center'; modal.style.justifyContent = 'center';
-        modal.style.cursor = 'pointer'; modal.onclick = () => modal.remove();
-        let img = document.createElement('img');
-        img.src = src; img.style.maxWidth = '90%'; img.style.maxHeight = '90%'; img.style.borderRadius = '12px';
-        modal.appendChild(img); document.body.appendChild(modal);
     };
 
     renderUserBar();
