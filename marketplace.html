@@ -262,9 +262,7 @@
     function migrateAd(ad) {
         if (!ad.mediaList) ad.mediaList = [];
         ad.mediaList = ad.mediaList.map(item => {
-            if (item.data && !item.url) {
-                return { url: item.data, type: item.type || 'image' };
-            }
+            if (item.data && !item.url) return { url: item.data, type: item.type || 'image' };
             return item;
         });
         if (ad.mainMediaIndex === undefined) ad.mainMediaIndex = 0;
@@ -308,7 +306,7 @@
             let mediaList = ad.mediaList || [];
             let mainIdx = (ad.mainMediaIndex !== undefined && ad.mainMediaIndex < mediaList.length) ? ad.mainMediaIndex : 0;
             let mainMedia = mediaList.length ? mediaList[mainIdx] : null;
-
+            
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
@@ -331,9 +329,9 @@
                     if (!m.url) continue;
                     let activeClass = (i === mainIdx) ? 'active' : '';
                     if (m.type === 'image') {
-                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' onclick="changeMediaDirect(this)">`;
+                        thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' data-type="image" data-url="${m.url.replace(/'/g, "\\'")}">`;
                     } else {
-                        thumbs += `<div class="thumb-video ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' onclick="changeMediaDirect(this)">🎬</div>`;
+                        thumbs += `<div class="thumb-video ${activeClass}" data-adid="${ad.id}" data-index="${i}" data-media='${mediaListJson}' data-type="video" data-url="${m.url.replace(/'/g, "\\'")}">🎬</div>`;
                     }
                 }
                 thumbs += '</div>';
@@ -373,55 +371,73 @@
             `;
         }
         container.innerHTML = html;
+        
+        // ربط الأحداث بعد إضافة العناصر إلى DOM (للهواتف: touchstart و click)
+        attachEventsToThumbnails();
     }
-
-    // دالة التغيير المباشر والمضمونة
-    window.changeMediaDirect = function(thumbElement) {
+    
+    function attachEventsToThumbnails() {
+        // نختار جميع المصغرات (صور وفيديوهات)
+        const thumbs = document.querySelectorAll('.thumb-img, .thumb-video');
+        thumbs.forEach(thumb => {
+            // إزالة الأحداث القديمة لتجنب التكرار
+            thumb.removeEventListener('click', thumbClickHandler);
+            thumb.removeEventListener('touchstart', thumbTouchHandler);
+            // إضافة الأحداث الجديدة
+            thumb.addEventListener('click', thumbClickHandler);
+            thumb.addEventListener('touchstart', thumbTouchHandler, { passive: false });
+        });
+    }
+    
+    function thumbClickHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleThumbChange(e.currentTarget);
+    }
+    
+    function thumbTouchHandler(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleThumbChange(e.currentTarget);
+    }
+    
+    function handleThumbChange(thumbElement) {
         const adId = parseInt(thumbElement.getAttribute('data-adid'));
         const newIndex = parseInt(thumbElement.getAttribute('data-index'));
-        let mediaListRaw = thumbElement.getAttribute('data-media');
-        if (!mediaListRaw) return;
+        const mediaType = thumbElement.getAttribute('data-type');
+        const mediaUrl = thumbElement.getAttribute('data-url');
         
-        let mediaList;
-        try {
-            mediaList = JSON.parse(mediaListRaw);
-        } catch(e) {
-            console.error("JSON parsing error", e);
-            return;
-        }
+        if (isNaN(adId) || isNaN(newIndex) || !mediaUrl) return;
         
-        if (isNaN(adId) || isNaN(newIndex) || !mediaList || newIndex >= mediaList.length) return;
-        
-        const media = mediaList[newIndex];
         const container = document.getElementById(`media-container-${adId}`);
         if (!container) return;
         
-        // تغيير المحتوى فوراً
-        if (media.type === 'image') {
-            container.innerHTML = `<img class="main-img" src="${media.url}" onclick="zoomImage('${media.url.replace(/'/g, "\\'")}')">`;
+        // تحديث المحتوى فوراً
+        if (mediaType === 'image') {
+            container.innerHTML = `<img class="main-img" src="${mediaUrl}" onclick="zoomImage('${mediaUrl.replace(/'/g, "\\'")}')">`;
         } else {
-            container.innerHTML = `<video class="main-video" src="${media.url}" controls></video>`;
+            container.innerHTML = `<video class="main-video" src="${mediaUrl}" controls></video>`;
         }
         
-        // تحديث الكلاس active في المصغرات
-        const adDiv = document.getElementById(`ad-${adId}`);
-        if (adDiv) {
-            const thumbs = adDiv.querySelectorAll('.thumb-img, .thumb-video');
-            thumbs.forEach((thumb, idx) => {
+        // تحديث الصنف active في المصغرات لنفس الإعلان
+        const adCard = document.getElementById(`ad-${adId}`);
+        if (adCard) {
+            const allThumbs = adCard.querySelectorAll('.thumb-img, .thumb-video');
+            allThumbs.forEach((thumb, idx) => {
                 if (idx === newIndex) thumb.classList.add('active');
                 else thumb.classList.remove('active');
             });
         }
         
-        // حفظ الحالة في localStorage
+        // حفظ التغيير في localStorage
         let allAds = JSON.parse(localStorage.getItem('marketplace_ads') || '[]');
         let adIndex = allAds.findIndex(ad => ad.id === adId);
         if (adIndex !== -1) {
             allAds[adIndex].mainMediaIndex = newIndex;
             localStorage.setItem('marketplace_ads', JSON.stringify(allAds));
         }
-    };
-
+    }
+    
     window.deleteAd = function(adId) {
         if (!currentUser) {
             alert("يجب تسجيل الدخول أولاً.");
