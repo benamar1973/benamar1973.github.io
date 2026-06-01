@@ -18,10 +18,11 @@
         .ad-header { background: #fef7e0; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
         .ad-name { font-size: 1.3rem; font-weight: bold; color: #1d4e6e; }
         .ad-date { font-size: 0.7rem; background: #e9ecef; padding: 4px 12px; border-radius: 30px; }
-        .media-container { background: #111; text-align: center; min-height: 200px; }
-        .main-img, .main-video { width: 100%; max-height: 400px; object-fit: contain; cursor: pointer; }
+        .media-container { position: relative; background: #111; text-align: center; min-height: 200px; }
+        .main-img, .main-video { width: 100%; max-height: 400px; object-fit: contain; }
+        .zoom-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 30px; padding: 5px 10px; font-size: 12px; cursor: pointer; z-index: 5; }
         .thumbnails { display: flex; gap: 8px; padding: 12px; overflow-x: auto; background: #f2f4f8; border-top: 1px solid #ddd; }
-        .thumb-img { width: 70px; height: 70px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
+        .thumb-img { width: 70px; height: 70px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.1s; }
         .thumb-video { width: 70px; height: 70px; background: #2c3e50; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; cursor: pointer; border: 2px solid transparent; }
         .thumb-img.active, .thumb-video.active { border-color: #007bff; transform: scale(0.98); }
         .ad-description { padding: 16px 20px; font-size: 0.95rem; color: #2d3e50; line-height: 1.5; }
@@ -31,9 +32,9 @@
         .no-ads { background: rgba(255,255,255,0.1); border-radius: 25px; padding: 40px; text-align: center; color: white; }
         .back-link { display: inline-block; background: #28a745; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; margin: 20px 0; font-weight: bold; }
         footer { text-align: center; color: rgba(255,255,255,0.6); margin-top: 20px; }
-        /* مودال العرض */
+        /* المودال */
         .media-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .media-modal .close { position: absolute; top: 20px; left: 20px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; font-weight: bold; z-index: 20001; }
+        .media-modal .close { position: absolute; top: 20px; left: 20px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; z-index: 20001; }
         .media-modal .content { max-width: 95%; max-height: 90%; }
         .media-modal img { max-width: 100%; max-height: 90vh; border-radius: 12px; }
         .media-modal video { max-width: 100%; max-height: 90vh; }
@@ -89,18 +90,14 @@
     }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;')); }
 
-    // فتح المودال مع إغلاق من أول ضغطة
+    // دالة فتح المودال - تعمل مع الصورة أو الفيديو
     function openMediaModal(url, type) {
         let modal = document.createElement('div');
         modal.className = 'media-modal';
         let closeBtn = document.createElement('button');
         closeBtn.innerHTML = '✕';
         closeBtn.className = 'close';
-        // إغلاق فوري عند الضغط على X
-        closeBtn.onclick = (e) => {
-            e.stopPropagation();
-            modal.remove();
-        };
+        closeBtn.onclick = (e) => { e.stopPropagation(); modal.remove(); };
         let content = document.createElement('div');
         content.className = 'content';
         if (type === 'image') {
@@ -117,12 +114,10 @@
         modal.appendChild(closeBtn);
         modal.appendChild(content);
         document.body.appendChild(modal);
-        // إغلاق عند النقر على الخلفية
-        modal.onclick = (e) => {
-            if (e.target === modal) modal.remove();
-        };
+        modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
     }
 
+    // دالة عرض الإعلانات (الصورة الرئيسية ثابتة، والمصغرات تفتح مودال فقط)
     function displayAds(ads, container, showDelete) {
         if (!ads.length) { if (container === myAdsList && showMyAds) container.innerHTML = '<div class="no-ads">📭 لا توجد إعلانات</div>'; return; }
         let html = '';
@@ -133,18 +128,22 @@
             let mainHtml = '';
             if (mainMedia && mainMedia.url) {
                 if (mainMedia.type === 'image') {
-                    mainHtml = `<img class="main-img" src="${mainMedia.url}" onclick="openMediaModal('${mainMedia.url.replace(/'/g, "\\'")}', 'image')">`;
+                    mainHtml = `<img class="main-img" src="${mainMedia.url}" alt="صورة الإعلان">`;
                 } else {
-                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls onclick="openMediaModal('${mainMedia.url.replace(/'/g, "\\'")}', 'video')"></video>`;
+                    mainHtml = `<video class="main-video" src="${mainMedia.url}" controls></video>`;
                 }
-            } else mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
-            
+                mainHtml += `<button class="zoom-btn" onclick="openMediaModal('${mainMedia.url.replace(/'/g, "\\'")}', '${mainMedia.type}')">🔍 تكبير</button>`;
+            } else {
+                mainHtml = `<div style="background:#2c3e50; padding:40px; text-align:center; color:white;">📷 لا توجد وسائط</div>`;
+            }
+            // المصغرات (لكل الوسائط) - عند النقر تفتح مودال فقط، لا تغير الصورة الرئيسية
             let thumbs = '';
             if (mediaList.length > 1) {
                 thumbs = '<div class="thumbnails">';
                 for (let i = 0; i < mediaList.length; i++) {
                     let m = mediaList[i];
                     if (!m.url) continue;
+                    // تمييز المصغرة التي تطابق الصورة الرئيسية
                     let activeClass = (i === mainIdx) ? 'active' : '';
                     if (m.type === 'image') {
                         thumbs += `<img src="${m.url}" class="thumb-img ${activeClass}" data-url="${m.url.replace(/'/g, "\\'")}" data-type="image">`;
@@ -162,19 +161,26 @@
             let deleteBtn = '';
             if (showDelete && currentUser && ad.userId === currentUser) deleteBtn = `<button class="delete-btn" onclick="deleteAd(${ad.id})">🗑️ حذف</button>`;
             let dateStr = new Date(ad.date).toLocaleString('ar-EG');
-            html += `<div class="ad-card" id="ad-${ad.id}"><div class="ad-header"><div class="ad-name">${escapeHtml(ad.name)}</div><div class="ad-date">${dateStr}</div></div><div class="media-container">${mainHtml}</div>${thumbs}<div class="ad-description">${escapeHtml(ad.description)}</div><div class="ad-contact"><span>${contactIcon} ${escapeHtml(ad.phone)}</span>${deleteBtn}</div><div class="ad-stats"><span>👁️ ${ad.views || 0} مشاهدة</span><span>❤️ ${ad.likes || 0} إعجاب</span></div></div>`;
+            html += `<div class="ad-card" id="ad-${ad.id}">
+                        <div class="ad-header"><div class="ad-name">${escapeHtml(ad.name)}</div><div class="ad-date">${dateStr}</div></div>
+                        <div class="media-container">${mainHtml}</div>
+                        ${thumbs}
+                        <div class="ad-description">${escapeHtml(ad.description)}</div>
+                        <div class="ad-contact"><span>${contactIcon} ${escapeHtml(ad.phone)}</span>${deleteBtn}</div>
+                        <div class="ad-stats"><span>👁️ ${ad.views || 0} مشاهدة</span><span>❤️ ${ad.likes || 0} إعجاب</span></div>
+                    </div>`;
         }
         container.innerHTML = html;
-        // إضافة حدث النقر على المصغرات لفتح المودال
+        // إضافة حدث النقر على المصغرات لفتح المودال (دون تغيير الصورة الرئيسية)
         document.querySelectorAll('.thumb-img, .thumb-video').forEach(thumb => {
-            const openModal = (e) => {
+            const openModalHandler = (e) => {
                 e.stopPropagation();
                 let url = thumb.getAttribute('data-url');
                 let type = thumb.getAttribute('data-type');
                 if (url) openMediaModal(url, type);
             };
-            thumb.addEventListener('click', openModal);
-            thumb.addEventListener('touchstart', openModal);
+            thumb.addEventListener('click', openModalHandler);
+            thumb.addEventListener('touchstart', openModalHandler);
         });
     }
 
